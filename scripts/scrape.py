@@ -12,41 +12,33 @@ from bs4 import BeautifulSoup
 
 
 # ── HTTP ───────────────────────────────────────────────────────────────────────
+# Module-level session: one adapter, one connection pool, reused across all calls.
 
-def fetch_html(url):
-    session = requests.Session()
-    retry_strategy = Retry(
+def _make_session():
+    s = requests.Session()
+    adapter = HTTPAdapter(max_retries=Retry(
         total=3,
         backoff_factor=1,
-        status_forcelist=[429, 500, 502, 503, 504]
-    )
-    adapter = HTTPAdapter(max_retries=retry_strategy)
-    session.mount("http://", adapter)
-    session.mount("https://", adapter)
+        status_forcelist=[429, 500, 502, 503, 504],
+        raise_on_status=False,
+    ))
+    s.mount("http://",  adapter)
+    s.mount("https://", adapter)
+    s.headers.update({"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"})
+    return s
 
+_SESSION = _make_session()
+
+
+def fetch_html(url):
     try:
-        r = session.get(
-            url,
-            headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"},
-            timeout=45,
-        )
+        r = _SESSION.get(url, timeout=20)
         r.raise_for_status()
         return BeautifulSoup(r.text, 'html.parser')
     except requests.exceptions.RequestException as e:
         print(f"Network error on {url}: {e}")
         return None
 
-# ── Utility ───────────────────────────────────────────────────────────────────
-
-def _text(el):
-    return el.get_text(strip=True) if el else None
-
-def _url(el, base=""):
-    if not el or not el.get('href'): return None
-    return el['href'] if el['href'].startswith('http') else base + el['href']
-
-def _prices(orig, curr):
-    return (orig, curr) if orig != curr else (orig, None)
 
 # ── Primitive helpers ──────────────────────────────────────────────────────────
 
@@ -59,7 +51,7 @@ def _txt(el):
 
 
 def _url(el, base=""):
-    """Extract href from an element; prepend base if relative. Returns None if missing."""
+    """Extract href; prepend base if relative. Returns None if missing."""
     href = el.get('href') if el else None
     if not href:
         return None
@@ -67,7 +59,10 @@ def _url(el, base=""):
 
 
 def _norm(orig, curr):
-    """Nullify current_price when it equals original_price (no real discount)."""
+    """Nullify current_price when equal to original (no real discount).
+    Also promotes a lone curr into orig when orig is None."""
+    if orig is None and curr is not None:
+        return curr, None
     return (orig, None) if orig == curr else (orig, curr)
 
 
@@ -106,6 +101,18 @@ def _presta_prices(item):
     return _norm(reg or price, price if reg else None)
 
 
+def _old_new_prices(container, old_cls, new_cls):
+    """
+    Generic old/new price pair from two sibling elements.
+    Returns (original_price, current_price) via _norm.
+    """
+    if not container:
+        return None, None
+    old_e = container.find(class_=old_cls)
+    new_e = container.find(class_=new_cls)
+    return _norm(_txt(old_e) or _txt(new_e), _txt(new_e) if old_e else None)
+
+
 # ── Stock helpers ──────────────────────────────────────────────────────────────
 
 def _stock_flags(item, oos_cls='out_of_stock', discount_cls='discount', curr=None):
@@ -140,11 +147,12 @@ def _parse_woo_li(html, link_cls='woocommerce-LoopProduct-link',
                   extra_oos=None, extra_sale=None):
     """
     Generic WooCommerce parser for <li class='product'> grids.
-    Used by: cartonazo, mangaigames, revaruk, gatoarcano.
+    Used by: cartonazo, mangaigames, revaruk, gatoarcano, labovedadelmago,
+             kimunaustral, laloseta, lamadriguera, ludi, playlander, tertulia.
 
-    link_cls:    CSS class for the product anchor (None = first <a href>).
-    extra_oos:   callable(item) -> bool for store-specific OOS signals.
-    extra_sale:  callable(item) -> bool for store-specific sale signals.
+    link_cls:   CSS class for the product anchor (None = first <a href>).
+    extra_oos:  callable(item) -> bool for store-specific OOS signals.
+    extra_sale: callable(item) -> bool for store-specific sale signals.
     """
     res = []
     for item in (html.find_all('li', class_='product') if html else []):
@@ -172,7 +180,7 @@ def _parse_presta(html, title_tag='h2', title_cls='product-title',
                   item_cls='product-miniature', oos_flag='out_of_stock'):
     """
     Generic PrestaShop parser for <article class='product-miniature'> grids.
-    Used by: aldeajuegos, dementegames, planetaloz (h1 variant).
+    Used by: aldeajuegos, dementegames, planetaloz, lamesadevaras.
 
     title_tag / title_cls: heading element and class for the product name.
     oos_flag:  class on the <li> inside product-flags that signals out-of-stock.
@@ -197,7 +205,7 @@ def _parse_presta(html, title_tag='h2', title_cls='product-title',
 def _parse_bs(html, item_tag='section', item_cls='grid__item', base_url=''):
     """
     Generic BS-collection parser.
-    Used by: top8, gameofmagictienda, cardgame.
+    Used by: top8, gameofmagictienda, cardgame, peakgames, wargaming.
 
     item_tag / item_cls: container element and class for each product card.
     base_url: prepended to relative hrefs.
@@ -209,7 +217,6 @@ def _parse_bs(html, item_tag='section', item_cls='grid__item', base_url=''):
             if not t_elem:
                 continue
 
-            # Price — accept both div and section wrappers; old-price class varies slightly.
             orig, curr = None, None
             pc = item.find(['div', 'section'], class_='bs-collection__product-price')
             if pc:
@@ -218,7 +225,6 @@ def _parse_bs(html, item_tag='section', item_cls='grid__item', base_url=''):
                 orig, curr = (_txt(del_e), _txt(fin_e)) if del_e else (_txt(fin_e), None)
             orig, curr = _norm(orig, curr)
 
-            # Stock — aggregate text from all known notice / badge locations.
             pw  = item.find('div', class_='bs-collection__product')
             cls = list(item.get('class', [])) + list(pw.get('class', []) if pw else [])
             check = ' '.join(filter(None, [
@@ -236,6 +242,54 @@ def _parse_bs(html, item_tag='section', item_cls='grid__item', base_url=''):
             })
         except Exception as e:
             print(f"  [_parse_bs] skipping item: {e}")
+    return res
+
+
+def _parse_product_block(html, item_tag='article', item_cls='product-block',
+                          name_cls='product-block__name', pricing_cls='product-block__pricing',
+                          old_cls='product-block__price--old', new_cls='product-block__price--new',
+                          single_cls='product-block__price', label_cls='product-block__label--status',
+                          base_url=''):
+    """
+    Generic parser for stores using the 'product-block' card pattern.
+    Used by: vudugaming, playkingdom, juegosdelbosque, zonaxgamers.
+
+    Handles optional old/new price pair or single price.
+    OOS detected via label text (_oos) and disabled add-to-cart button.
+    """
+    res = []
+    for item in (html.find_all(item_tag, class_=item_cls) if html else []):
+        try:
+            t_elem = item.find('a', class_=name_cls)
+            if not t_elem:
+                continue
+
+            orig_txt, curr_txt = None, None
+            pc = item.find(class_=pricing_cls) if pricing_cls else item
+            if pc:
+                old_node = pc.find(class_=old_cls)
+                new_node = pc.find(class_=new_cls)
+                if old_node and new_node:
+                    orig_txt, curr_txt = _txt(old_node), _txt(new_node)
+                else:
+                    curr_txt = _txt(pc.find(class_=single_cls)) or _txt(pc)
+            orig, curr = _norm(orig_txt, curr_txt)
+
+            status_label = _txt(item.find(class_=label_cls))
+            btn = item.find('button', class_='product-block__button--add-to-cart')
+            oos = (
+                _oos(status_label)
+                or any(_oos(_txt(l)) for l in item.find_all('div', class_='product-block__label'))
+                or bool(btn and btn.has_attr('disabled'))
+            )
+            stock = "Agotado" if oos else ("Oferta" if curr else None)
+
+            res.append({
+                'title': _txt(t_elem), 'original_price': orig, 'current_price': curr,
+                'stock_status': stock, 'url': _url(t_elem, base_url),
+            })
+        except Exception as e:
+            print(f"  [_parse_product_block] skipping item: {e}")
     return res
 
 
@@ -284,7 +338,7 @@ def lafortalezapuq(html):
                 sale = dp.find('i')
                 curr = _txt(sale)
                 if sale:
-                    sale.extract()  # remove <i> so remaining text is the original
+                    sale.extract()          # remove <i> so remaining text is the original
                 orig = _txt(dp)
             else:
                 orig, curr = _txt(item.find('span', class_='product-price')), None
@@ -334,37 +388,39 @@ def aldeajuegos(html):
 def elpatiogeek(html):
     res = []
     for item in (html.find_all('div', class_='grid-item') if html else []):
-        if not (title := _text(item.find('p'))): continue
-        
-        pc = item.find('div', class_='product-item--price')
-        pval = None
-        is_sale = False
-        
-        if pc:
-            if sm := pc.find('small'): 
-                pval = _text(sm)
-            elif sh1 := pc.find('span', class_='h1'): 
-                pval = _text(s[-1]) if (s := sh1.find_all('span', class_='visually-hidden')) else _text(sh1)
-            
-            vh = pc.find('span', class_='visually-hidden')
-            if vh and 'venta' in _text(vh).lower(): 
-                is_sale = True
+        try:
+            title = _txt(item.find('p'))
+            if not title:
+                continue
 
-        sale_tag = item.find('div', class_='sale-tag')
-        
-        orig, curr = (_text(sale_tag), pval) if is_sale and sale_tag else (pval, None)
-        orig, curr = _prices(orig or None, curr)
-        
-        cls = item.get('class', [])
-        stock = "Agotado" if 'sold-out' in cls else ("Oferta" if 'on-sale' in cls or curr else None)
-        
-        res.append({
-            'title': title, 
-            'original_price': orig, 
-            'current_price': curr, 
-            'stock_status': stock, 
-            'url': _url(item.find('a', class_='product-grid-item'), "https://www.elpatiogeek.cl")
-        })
+            pc = item.find('div', class_='product-item--price')
+            pval, is_sale = None, False
+
+            if pc:
+                if sm := pc.find('small'):
+                    pval = _txt(sm)
+                elif sh1 := pc.find('span', class_='h1'):
+                    spans = sh1.find_all('span', class_='visually-hidden')
+                    pval  = _txt(spans[-1]) if spans else _txt(sh1)
+
+                vh = pc.find('span', class_='visually-hidden')
+                if vh and 'venta' in (_txt(vh) or '').lower():
+                    is_sale = True
+
+            sale_tag = item.find('div', class_='sale-tag')
+            orig, curr = (_txt(sale_tag), pval) if (is_sale and sale_tag) else (pval, None)
+            orig, curr = _norm(orig, curr)
+
+            cls   = item.get('class', [])
+            stock = "Agotado" if 'sold-out' in cls else ("Oferta" if 'on-sale' in cls or curr else None)
+
+            res.append({
+                'title': title, 'original_price': orig, 'current_price': curr,
+                'stock_status': stock,
+                'url': _url(item.find('a', class_='product-grid-item'), "https://www.elpatiogeek.cl"),
+            })
+        except Exception as e:
+            print(f"  [elpatiogeek] skipping item: {e}")
     return res
 
 
@@ -406,7 +462,7 @@ def drjuegos(html):
             t_elem = item.find('h5', class_='product-name')
             if not t_elem:
                 continue
-            # Uses 'price product-price' span (multi-class) instead of the standard 'price'.
+            # 'price product-price' is a multi-class span, not the standard 'price'.
             price_elem = item.find('span', class_='price product-price')
             reg_elem   = item.find('span', class_='regular-price')
             orig, curr = _norm(
@@ -425,32 +481,15 @@ def drjuegos(html):
 
 
 def vudugaming(html):
-    """Custom store. Stock detected via label text and disabled add-to-cart button."""
-    res = []
-    for item in (html.find_all('article', class_='product-block') if html else []):
-        try:
-            t_elem = item.find('a', class_='product-block__name')
-            if not t_elem:
-                continue
-            old  = item.find('div', class_='product-block__price--old')
-            new_ = item.find('div', class_='product-block__price--new')
-            orig, curr = _norm(
-                _txt(old) or _txt(item.find('div', class_='product-block__price')),
-                _txt(new_) if old else None,
-            )
-            btn = item.find('button', class_='product-block__button--add-to-cart')
-            oos = (
-                any(_oos(_txt(l)) for l in item.find_all('div', class_='product-block__label'))
-                or bool(btn and btn.has_attr('disabled'))
-            )
-            res.append({
-                'title': _txt(t_elem), 'original_price': orig, 'current_price': curr,
-                'stock_status': "Agotado" if oos else ("Oferta" if curr else None),
-                'url': _url(t_elem, "https://www.vudugaming.cl"),
-            })
-        except Exception as e:
-            print(f"  [vudugaming] skipping item: {e}")
-    return res
+    """Custom store using product-block card pattern."""
+    return _parse_product_block(
+        html,
+        item_tag='article', item_cls='product-block',
+        pricing_cls=None,           # prices live directly on item, not in a pricing wrapper
+        old_cls='product-block__price--old', new_cls='product-block__price--new',
+        single_cls='product-block__price', label_cls=None,
+        base_url="https://www.vudugaming.cl",
+    )
 
 
 def piedrabruja(html):
@@ -514,26 +553,27 @@ def ludipuerto(html):
 
 
 def magicsur(html):
-    """PrestaShop variant. Prices in product-price-and-shipping div."""
     res = []
     for item in (html.find_all('article', class_='product-miniature') if html else []):
         try:
-            t_elem = item.find('h2', class_='product-title')
-            if not t_elem:
+            if not (t_elem := item.find('h2', class_='product-title')):
                 continue
-            pc   = item.find('div', class_='product-price-and-shipping')
-            orig, curr = _norm(
-                _txt(pc.find('span', class_='regular-price') if pc else None),
-                _txt(pc.find('span', class_='product-price')  if pc else None),
-            )
+
+            pc       = item.find('div', class_='product-price-and-shipping')
+            orig_txt = _txt(pc.find('span', class_='regular-price')) if pc else None
+            curr_txt = _txt(pc.find('span', class_='product-price') or pc.find('span', class_='price')) if pc else None
+            orig, curr = _norm(orig_txt, curr_txt)
+
             check = ' '.join(filter(None, [
                 _txt(item.find('div', class_='product-availability')),
                 _txt(item.find('ul',  class_='product-flags')),
             ]))
             stock = "Agotado" if _oos(check) else ("Oferta" if curr else None)
+
             res.append({
                 'title': _txt(t_elem), 'original_price': orig, 'current_price': curr,
-                'stock_status': stock, 'url': _url(t_elem.find('a', href=True)),
+                'stock_status': stock,
+                'url': _url(t_elem.find('a', href=True), "https://www.magicsur.cl"),
             })
         except Exception as e:
             print(f"  [magicsur] skipping item: {e}")
@@ -571,72 +611,54 @@ def cardgame(html):
     """BS-collection store. Uses div containers instead of section."""
     return _parse_bs(html, item_tag='div', item_cls='bs-collection__product', base_url="https://www.cardgame.cl")
 
+
 def labovedadelmago(html):
-    """WooCommerce generic implementation. Relies on standard loop classes and _parse_woo_li."""
+    """WooCommerce generic. Extra sale via span.onsale."""
     return _parse_woo_li(
-        html, 
+        html,
         link_cls='woocommerce-LoopProduct-link',
-        extra_sale=lambda item: item.find('span', class_='onsale') is not None
+        extra_sale=lambda item: item.find('span', class_='onsale') is not None,
     )
+
+
 def calabozotienda(html):
     res = []
     for item in (html.find_all('div', class_='card mb-3 box-shadow') if html else []):
         try:
             p_elem = item.find('p', class_='card-text')
             t_elem = p_elem.find('span') if p_elem else None
-            if not t_elem: 
+            if not t_elem:
                 continue
 
             orig = _txt(item.find('span', style=lambda s: s and 'line-through' in s))
             curr = _txt(item.find('span', class_='font-color'))
             orig, curr = _norm(orig or curr, curr if orig else None)
 
-            stock = "Agotado" if item.find('span', class_='badge-danger') else ("Oferta" if curr or item.find('span', class_='burbuja-descuento') else None)
-
+            stock = "Agotado" if item.find('span', class_='badge-danger') else (
+                "Oferta" if curr or item.find('span', class_='burbuja-descuento') else None
+            )
             res.append({
-                'title': _txt(t_elem), 
-                'original_price': orig, 
-                'current_price': curr, 
-                'stock_status': stock, 
-                'url': _url(item.find('a', href=True), "https://www.calabozotienda.cl")
+                'title': _txt(t_elem), 'original_price': orig, 'current_price': curr,
+                'stock_status': stock,
+                'url': _url(item.find('a', href=True), "https://www.calabozotienda.cl"),
             })
-        except Exception as e: 
+        except Exception as e:
             print(f"  [calabozotienda] skip: {e}")
     return res
 
+
 def zonaxgamers(html):
-    res = []
-    for item in (html.find_all('div', class_='product-block__wrapper') if html else []):
-        try:
-            t_elem = item.find('a', class_='product-block__name')
-            if not t_elem:
-                continue
+    """Custom store sharing the product-block price/label conventions."""
+    return _parse_product_block(
+        html,
+        item_tag='div', item_cls='product-block__wrapper',
+        name_cls='product-block__name',
+        pricing_cls=None,
+        old_cls='product-block__price--old', new_cls='product-block__price--new',
+        single_cls='product-block__price', label_cls=None,
+        base_url="https://zonaxgamers.cl",
+    )
 
-            old = item.find('div', class_='product-block__price--old')
-            new_ = item.find('div', class_='product-block__price--new')
-            orig, curr = _norm(
-                _txt(old) or _txt(item.find('div', class_='product-block__price')),
-                _txt(new_) if old else None,
-            )
-
-            btn = item.find('button', class_='product-block__button--add-to-cart')
-            oos = (
-                any(_oos(_txt(l)) for l in item.find_all('div', class_='product-block__label'))
-                or bool(btn and btn.has_attr('disabled'))
-            )
-
-            stock = "Agotado" if oos else ("Oferta" if curr else None)
-
-            res.append({
-                'title': _txt(t_elem),
-                'original_price': orig,
-                'current_price': curr,
-                'stock_status': stock,
-                'url': _url(t_elem, "https://zonaxgamers.cl"),
-            })
-        except Exception as e:
-            print(f"  [zonaxgamers] skip: {e}")
-    return res
 
 def cafe2d6(html):
     res = []
@@ -646,33 +668,31 @@ def cafe2d6(html):
             if not t_elem:
                 continue
 
-            pc = item.find('p', class_='price')
             orig, curr = None, None
+            pc = item.find('p', class_='price')
             if pc:
                 span = pc.find('span')
                 if span:
                     orig = _txt(span)
-                    span.extract()
+                    span.extract()          # remove <span> so remaining text is the sale price
                     curr = _txt(pc)
                 else:
                     orig = _txt(pc)
-            
             orig, curr = _norm(orig, curr)
-            
-            cls = item.get('class', [])
-            oos = 'sold-out' in cls or item.find(class_='add-to-agotado')
+
+            cls   = item.get('class', [])
+            oos   = 'sold-out' in cls or bool(item.find(class_='add-to-agotado'))
             stock = "Agotado" if oos else ("Oferta" if 'on-sale' in cls or curr else None)
 
             res.append({
-                'title': _txt(t_elem),
-                'original_price': orig,
-                'current_price': curr,
+                'title': _txt(t_elem), 'original_price': orig, 'current_price': curr,
                 'stock_status': stock,
-                'url': _url(item.find('a', href=True), "https://www.cafe2d6.cl")
+                'url': _url(item.find('a', href=True), "https://www.cafe2d6.cl"),
             })
         except Exception as e:
             print(f"  [cafe2d6] skip: {e}")
     return res
+
 
 def griffingames(html):
     res = []
@@ -683,27 +703,25 @@ def griffingames(html):
                 continue
 
             orig, curr = _norm(*_woo_prices(item.find('span', class_='price')))
-            
+
             parent_cls = item.parent.get('class', []) if item.parent else []
             btn = item.find('a', class_='button')
             oos = 'outofstock' in parent_cls or (btn and _oos(_txt(btn)))
-            
             stock = "Agotado" if oos else ("Oferta" if curr or item.find('span', class_='onsale') else None)
 
             res.append({
-                'title': _txt(t_elem),
-                'original_price': orig,
-                'current_price': curr,
-                'stock_status': stock,
-                'url': _url(t_elem.find('a', href=True))
+                'title': _txt(t_elem), 'original_price': orig, 'current_price': curr,
+                'stock_status': stock, 'url': _url(t_elem.find('a', href=True)),
             })
         except Exception as e:
             print(f"  [griffingames] skip: {e}")
     return res
 
+
 def playcenter(html):
     """WooCommerce/Astra generic implementation."""
     return _parse_woo_li(html, link_cls='ast-loop-product__link')
+
 
 def enroque(html):
     res = []
@@ -720,55 +738,57 @@ def enroque(html):
                 cur = pc.find('strong', class_='price__current')
                 orig, curr = _norm(
                     _txt(was) or _txt(cur),
-                    _txt(cur) if _txt(was) else None
+                    _txt(cur) if _txt(was) else None,
                 )
-            
-            oos = bool(item.find('span', class_='product-label--sold-out') or item.find('div', class_=lambda c: c and 'price--sold-out' in c))
+
+            oos = bool(
+                item.find('span', class_='product-label--sold-out') or
+                item.find('div', class_=lambda c: c and 'price--sold-out' in c)
+            )
             stock = "Agotado" if oos else ("Oferta" if curr or item.find('span', class_='product-label--sale') else None)
 
             res.append({
-                'title': _txt(t_elem),
-                'original_price': orig,
-                'current_price': curr,
-                'stock_status': stock,
-                'url': _url(t_elem, "https://juegosenroque.cl")
+                'title': _txt(t_elem), 'original_price': orig, 'current_price': curr,
+                'stock_status': stock, 'url': _url(t_elem, "https://juegosenroque.cl"),
             })
         except Exception as e:
             print(f"  [enroque] skip: {e}")
     return res
 
+
 def kaiojuegos(html):
     res = []
     for item in (html.find_all('div', class_='thumbnail-container') if html else []):
         try:
-            if not (t_elem := item.find('h3', class_='product-title')): continue
-            
-            pc = item.find('div', class_='product-price-and-shipping')
-            reg = _txt(pc.find('span', class_='regular-price')) if pc else None
-            price = _txt(pc.find('span', class_='price')) if pc else None
+            if not (t_elem := item.find('h3', class_='product-title')):
+                continue
+
+            pc    = item.find('div', class_='product-price-and-shipping')
+            reg   = _txt(pc.find('span', class_='regular-price')) if pc else None
+            price = _txt(pc.find('span', class_='price'))          if pc else None
             orig, curr = _norm(reg or price, price if reg else None)
-            
+
             flags = _txt(item.find('ul', class_='product-flags')) or ''
-            oos = _oos(flags) or bool((btn := item.find('button', class_='add-to-cart')) and btn.has_attr('disabled'))
+            oos   = _oos(flags) or bool((btn := item.find('button', class_='add-to-cart')) and btn.has_attr('disabled'))
             stock = "Agotado" if oos else ("Oferta" if curr or 'oferta' in flags.lower() else None)
 
             res.append({
-                'title': _txt(t_elem), 
-                'original_price': orig, 
-                'current_price': curr, 
-                'stock_status': stock, 
-                'url': _url(t_elem.find('a', href=True), "https://kaiojuegos.cl")
+                'title': _txt(t_elem), 'original_price': orig, 'current_price': curr,
+                'stock_status': stock,
+                'url': _url(t_elem.find('a', href=True), "https://kaiojuegos.cl"),
             })
-        except Exception as e: 
+        except Exception as e:
             print(f"  [kaiojuegos] skip: {e}")
     return res
+
 
 def manahouse(html):
     res = []
     for item in (html.find_all('div', class_='product-grid-item') if html else []):
         try:
-            if not (t_elem := item.find('a', class_='product-grid-item__title')): continue
-            
+            if not (t_elem := item.find('a', class_='product-grid-item__title')):
+                continue
+
             orig, curr = None, None
             if pc := item.find(class_='product-grid-item__price'):
                 was = pc.find(['s', 'del'])
@@ -779,64 +799,59 @@ def manahouse(html):
                 else:
                     orig, curr = _norm(_txt(pc), None)
 
-            btn = item.find('button', attrs={'name': 'add'})
+            btn    = item.find('button', attrs={'name': 'add'})
             badges = item.find_all(class_=lambda c: c and ('badge' in c.lower() or 'label' in c.lower()))
-            oos = bool(btn and btn.has_attr('disabled')) or any(_oos(_txt(b)) for b in badges)
-            
-            stock = "Agotado" if oos else ("Oferta" if curr else None)
+            oos    = bool(btn and btn.has_attr('disabled')) or any(_oos(_txt(b)) for b in badges)
+            stock  = "Agotado" if oos else ("Oferta" if curr else None)
 
             res.append({
-                'title': _txt(t_elem),
-                'original_price': orig,
-                'current_price': curr,
-                'stock_status': stock,
-                'url': _url(t_elem, "https://manahouse.cl")
+                'title': _txt(t_elem), 'original_price': orig, 'current_price': curr,
+                'stock_status': stock, 'url': _url(t_elem, "https://manahouse.cl"),
             })
         except Exception as e:
             print(f"  [manahouse] skip: {e}")
     return res
 
+
 def devir(html):
     res = []
     for item in (html.find_all('li', class_='product-item') if html else []):
         try:
-            if not (t_elem := item.find('a', class_='product-item-link')): continue
-            
+            if not (t_elem := item.find('a', class_='product-item-link')):
+                continue
+
             orig, curr = None, None
             pc = item.find('div', class_='price-box')
             if pc:
                 old_p = pc.find('span', class_='old-price')
                 new_p = pc.find('span', class_='special-price')
-                
                 if old_p and new_p:
-                    orig_val = _txt(old_p.find('span', class_='price'))
-                    curr_val = _txt(new_p.find('span', class_='price'))
-                    orig, curr = _norm(orig_val, curr_val)
+                    orig, curr = _norm(
+                        _txt(old_p.find('span', class_='price')),
+                        _txt(new_p.find('span', class_='price')),
+                    )
                 else:
                     orig, curr = _norm(_txt(pc.find('span', class_='price')), None)
 
             action_area = item.find('div', class_='actions-primary')
-            action_text = _txt(action_area).lower() if action_area else ""
-            
-            oos = 'avísame' in action_text or 'avisame' in action_text or bool(item.find('div', class_='stock unavailable'))
+            action_text = (_txt(action_area) or '').lower()
+            oos   = 'avísame' in action_text or 'avisame' in action_text or bool(item.find('div', class_='stock unavailable'))
             stock = "Agotado" if oos else ("Oferta" if curr else None)
 
             res.append({
-                'title': _txt(t_elem),
-                'original_price': orig,
-                'current_price': curr,
-                'stock_status': stock,
-                'url': _url(t_elem, "https://devir.cl")
+                'title': _txt(t_elem), 'original_price': orig, 'current_price': curr,
+                'stock_status': stock, 'url': _url(t_elem, "https://devir.cl"),
             })
         except Exception as e:
             print(f"  [devir] skip: {e}")
     return res
-    
+
+
 def thirdimpact(html):
     res = []
     for item in (html.find_all('section', class_='grid__item') if html else []):
         try:
-            if not (t_elem := item.find('h3', class_='bs-collection__product-title')): 
+            if not (t_elem := item.find('h3', class_='bs-collection__product-title')):
                 continue
 
             orig, curr = None, None
@@ -846,26 +861,26 @@ def thirdimpact(html):
                 fin_e = pc.find('div', class_=lambda c: c and 'bs-collection__product-final-price' in c)
                 orig, curr = _norm(_txt(del_e) or _txt(fin_e), _txt(fin_e) if del_e else None)
 
-            btn = item.find('button', attrs={'data-bs': 'cart.add.collection'})
-            oos = not btn or btn.has_attr('disabled')
+            btn   = item.find('button', attrs={'data-bs': 'cart.add.collection'})
+            oos   = not btn or btn.has_attr('disabled')
             stock = "Agotado" if oos else ("Oferta" if curr else None)
 
             res.append({
-                'title': _txt(t_elem),
-                'original_price': orig,
-                'current_price': curr,
+                'title': _txt(t_elem), 'original_price': orig, 'current_price': curr,
                 'stock_status': stock,
-                'url': _url(item.find('a', href=True), "https://www.thirdimpact.cl")
+                'url': _url(item.find('a', href=True), "https://www.thirdimpact.cl"),
             })
         except Exception as e:
             print(f"  [thirdimpact] skip: {e}")
     return res
 
+
 def buhojuegosdemesa(html):
     res = []
     for item in (html.find_all('a', class_='product-card') if html else []):
         try:
-            if not (t_elem := item.find('div', class_='product-card__name')): continue
+            if not (t_elem := item.find('div', class_='product-card__name')):
+                continue
 
             orig, curr = None, None
             pc = item.find('div', class_='product-card__price')
@@ -880,43 +895,309 @@ def buhojuegosdemesa(html):
                 else:
                     orig, curr = _norm(_txt(pc), None)
 
-            btn = item.find('span', class_='product-card__overlay-btn')
+            btn  = item.find('span', class_='product-card__overlay-btn')
             tags = item.find_all('div', class_='product-tag')
-            check_text = f"{_txt(btn)} {' '.join(_txt(t) for t in tags)}"
-            
-            oos = _oos(check_text)
+            check_text = ' '.join(filter(None, [_txt(btn)] + [_txt(t) for t in tags]))
+            oos   = _oos(check_text)
             stock = "Agotado" if oos else ("Oferta" if curr else None)
 
             res.append({
-                'title': _txt(t_elem),
-                'original_price': orig,
-                'current_price': curr,
-                'stock_status': stock,
-                'url': _url(item, "https://buhojuegosdemesa.cl")
+                'title': _txt(t_elem), 'original_price': orig, 'current_price': curr,
+                'stock_status': stock, 'url': _url(item, "https://buhojuegosdemesa.cl"),
             })
         except Exception as e:
             print(f"  [buhojuegosdemesa] skip: {e}")
     return res
 
+
 def mirzu(html):
     """WooCommerce/Astra theme."""
     return _parse_woo_li(html, link_cls='ast-loop-product__link')
+
+
 def peakgames(html):
     """BS-collection store."""
     return _parse_bs(html, item_tag='section', item_cls='grid__item', base_url="https://www.peakgames.cl")
+
+
 def laloseta(html):
     """WooCommerce generic implementation."""
     return _parse_woo_li(html, link_cls='woocommerce-LoopProduct-link')
+
+
 def lamadriguera(html):
     """WooCommerce generic implementation."""
     return _parse_woo_li(html, link_cls='woocommerce-LoopProduct-link')
+
+
 def lamesadevaras(html):
     """PrestaShop."""
     return _parse_presta(html)
+
+
 def ludi(html):
     """WooCommerce generic implementation."""
     return _parse_woo_li(html, link_cls='woocommerce-LoopProduct-link')
-    
+
+
+def wargaming(html):
+    """BS-collection store."""
+    return _parse_bs(html, item_tag='section', item_cls='grid__item', base_url="https://www.wargaming.cl")
+
+
+def darkhobbies(html):
+    res = []
+    for item in (html.find_all('product-card') if html else []):
+        try:
+            t_elem = item.find('h3', class_='h4') or item.find('a', ref='productTitleLink')
+            if not t_elem:
+                continue
+
+            orig, curr = None, None
+            pc = item.find('product-price')
+            if pc:
+                orig, curr = _norm(
+                    _txt(pc.find('span', class_='compare-at-price')),
+                    _txt(pc.find('span', class_='price')),
+                )
+
+            btn    = item.find('button', attrs={'name': 'add'})
+            badges = ' '.join(_txt(b) for b in item.find_all(class_='product-badges__badge'))
+            oos    = (btn and btn.has_attr('disabled')) or _oos(badges) or _oos(_txt(btn))
+            stock  = "Agotado" if oos else ("Oferta" if curr else None)
+
+            res.append({
+                'title': _txt(t_elem), 'original_price': orig, 'current_price': curr,
+                'stock_status': stock,
+                'url': _url(item.find('a', class_='product-card__link'), "https://www.darkhobbies.cl"),
+            })
+        except Exception as e:
+            print(f"  [darkhobbies] skip: {e}")
+    return res
+
+def shivano(html):
+    res = []
+    for item in (html.find_all('li', class_='ajax_block_product') if html else []):
+        try:
+            if not (t_elem := item.find('a', class_='product-name')): 
+                continue
+
+            title_str = t_elem.get('title')
+            if not title_str:
+                title_str = _txt(t_elem.find('span', class_='list-name'))
+
+            orig, curr = None, None
+            pc = item.find('div', class_='content_price')
+            if pc:
+                orig_txt = _txt(pc.find('span', class_='old-price'))
+                curr_txt = _txt(pc.find('span', class_='price'))
+                orig, curr = _norm(orig_txt, curr_txt)
+                
+                if orig is None and curr is not None:
+                    orig, curr = curr, None
+
+            btn = item.find('a', class_='ajax_add_to_cart_button')
+            avail = _txt(item.find('span', class_='availability'))
+            
+            oos = not btn or _oos(avail)
+            stock = "Agotado" if oos else ("Oferta" if curr else None)
+
+            res.append({
+                'title': title_str,
+                'original_price': orig,
+                'current_price': curr,
+                'stock_status': stock,
+                'url': _url(t_elem, "https://shivano.cl")
+            })
+        except Exception as e:
+            print(f"  [shivano] skip: {e}")
+    return res
+
+def playlander(html):
+    """WooCommerce generic implementation."""
+    return _parse_woo_li(html, link_cls='woocommerce-LoopProduct-link')
+
+
+def guildreams(html):
+    res = []
+    for item in (html.find_all('div', class_='bs-product') if html else []):
+        try:
+            if not (t_elem := item.find('h2')):
+                continue
+
+            orig_txt, curr_txt = None, None
+            if pc := item.find('div', class_='bs-product-price'):
+                orig_txt = _txt(pc.find('div', class_='bs-product-old-price'))
+                curr_txt = _txt(pc.find('div', class_='bs-product-final-price'))
+            orig, curr = _norm(orig_txt, curr_txt)
+
+            btn        = item.find('button', attrs={'data-bs': 'cart.add.collection'})
+            oos        = _oos(_txt(item)) or not btn
+            stock      = "Agotado" if oos else ("Oferta" if curr else None)
+
+            res.append({
+                'title': _txt(t_elem), 'original_price': orig, 'current_price': curr,
+                'stock_status': stock,
+                'url': _url(item.find('a', href=True), "https://www.guildreams.com"),
+            })
+        except Exception as e:
+            print(f"  [guildreams] skip: {e}")
+    return res
+
+
+def _parse_product_block_simple(html, base_url):
+    """
+    Shared implementation for playkingdom and juegosdelbosque.
+    Both use identical DOM structure; only the base URL differs.
+    """
+    res = []
+    for item in (html.find_all('article', class_='product-block') if html else []):
+        try:
+            if not (t_elem := item.find('a', class_='product-block__name')):
+                continue
+
+            orig_txt, curr_txt = None, None
+            if pc := item.find('div', class_='product-block__pricing'):
+                old_node = pc.find('div', class_='product-block__price--old')
+                new_node = pc.find('div', class_='product-block__price--new')
+                if old_node and new_node:
+                    orig_txt, curr_txt = _txt(old_node), _txt(new_node)
+                else:
+                    curr_txt = _txt(pc.find('div', class_='product-block__price'))
+            orig, curr = _norm(orig_txt, curr_txt)
+
+            status_label = _txt(item.find('div', class_='product-block__label--status'))
+            stock = "Agotado" if _oos(status_label) else ("Oferta" if curr else None)
+
+            res.append({
+                'title': _txt(t_elem), 'original_price': orig, 'current_price': curr,
+                'stock_status': stock, 'url': _url(t_elem, base_url),
+            })
+        except Exception as e:
+            print(f"  [{base_url}] skip: {e}")
+    return res
+
+
+def playkingdom(html):
+    return _parse_product_block_simple(html, "https://playkingdom.cl")
+
+
+def juegosdelbosque(html):
+    return _parse_product_block_simple(html, "https://www.juegosdelbosque.cl")
+
+
+def kimunaustral(html):
+    """WooCommerce generic implementation."""
+    return _parse_woo_li(html, link_cls='woocommerce-LoopProduct-link')
+
+
+def jugones(html):
+    res = []
+    for item in (html.find_all('div', class_='producto') if html else []):
+        try:
+            if not (t_elem := item.find('a', class_='modelo')):
+                continue
+
+            orig_txt, curr_txt = None, None
+            is_sale = False
+
+            pc = item.find('a', class_='precio')
+            if pc:
+                is_sale = 'oferta' in pc.get('class', [])
+                if orig_node := pc.find('small'):
+                    if is_sale:
+                        orig_txt = (_txt(orig_node) or '').replace('Antes:', '').strip() or None
+                    orig_node.extract()
+                curr_txt = _txt(pc)
+
+            orig, curr = _norm(orig_txt, curr_txt)
+            if not is_sale:
+                orig, curr = orig or curr, None
+
+            stock = "Agotado" if _oos(_txt(item)) else ("Oferta" if curr else None)
+
+            res.append({
+                'title': _txt(t_elem), 'original_price': orig, 'current_price': curr,
+                'stock_status': stock, 'url': _url(t_elem, "https://www.jugones.cl"),
+            })
+        except Exception as e:
+            print(f"  [jugones] skip: {e}")
+    return res
+
+
+def tertulia(html):
+    """WooCommerce generic implementation."""
+    return _parse_woo_li(html, link_cls='woocommerce-LoopProduct-link')
+
+
+def lautarojuegos(html):
+    res = []
+    for item in (html.find_all('div', class_='product-block') if html else []):
+        try:
+            if not (t_elem := item.find('h4')):
+                continue
+            a_tag = t_elem.find('a')
+            if not a_tag:
+                continue
+
+            orig_txt, curr_txt = None, None
+            if pc := item.find('div', class_='list-price'):
+                orig_node = pc.find('span', class_='product-block-discount')
+                curr_node = pc.find('span', class_='product-block-normal')
+                if orig_node and curr_node:
+                    orig_txt, curr_txt = _txt(orig_node), _txt(curr_node)
+                else:
+                    curr_txt = _txt(pc)
+            orig, curr = _norm(orig_txt, curr_txt)
+
+            btn  = item.find('button', class_='adc')
+            tags = item.find_all('span', class_='status-tag')
+            check_text = ' '.join(filter(None, [_txt(btn)] + [_txt(t) for t in tags]))
+            oos   = _oos(check_text) or btn is None
+            stock = "Agotado" if oos else ("Oferta" if curr else None)
+
+            res.append({
+                'title': _txt(a_tag), 'original_price': orig, 'current_price': curr,
+                'stock_status': stock, 'url': _url(a_tag, "https://www.lautarojuegos.cl"),
+            })
+        except Exception as e:
+            print(f"  [lautarojuegos] skip: {e}")
+    return res
+
+
+def araucania(html):
+    res = []
+    for item in (html.find_all('li', class_='product') if html else []):
+        try:
+            if not (t_elem := item.find('h3', class_='woocommerce-loop-product__title')):
+                continue
+
+            orig_txt, curr_txt = None, None
+            if pc := item.find('span', class_='price'):
+                orig_node = pc.find('del')
+                curr_node = pc.find('ins')
+                if orig_node and curr_node:
+                    orig_txt = _txt(orig_node)
+                    curr_txt = _txt(curr_node)
+                else:
+                    curr_txt = _txt(pc)
+            orig, curr = _norm(orig_txt, curr_txt)
+
+            oos   = 'outofstock' in item.get('class', []) or _oos(_txt(item.find('span', class_='stock-label')))
+            stock = "Agotado" if oos else ("Oferta" if curr else None)
+
+            res.append({
+                'title': _txt(t_elem), 'original_price': orig, 'current_price': curr,
+                'stock_status': stock,
+                'url': _url(t_elem.find('a'), "https://araucaniagaming.cl"),
+            })
+        except Exception as e:
+            print(f"  [araucania] skip: {e}")
+    return res
+
+def carontejuegosdemesa(html):
+    """WooCommerce generic implementation."""
+    return _parse_woo_li(html, link_cls='woocommerce-LoopProduct-link')
 # ── Site registry ──────────────────────────────────────────────────────────────
 #
 # pagination styles:
@@ -946,35 +1227,45 @@ sites = [
     {'name': 'top8',             'base_url': 'https://www.top8.cl/collection/juegos-de-mesa',                    'parser': top8,             'pagination': 'page_param', 'output': '../data/top8_jdm.csv'},
     {'name': 'revaruk',          'base_url': 'https://revaruk.cl/product-category/juegos-de-mesa',               'parser': revaruk,          'pagination': 'woo',        'output': '../data/revaruk_jdm.csv'},
     {'name': 'cardgame',         'base_url': 'https://www.cardgame.cl/collection/juegos-de-mesa',                'parser': cardgame,         'pagination': 'page_param', 'output': '../data/cardgame_jdm.csv'},
-    {'name': 'labovedadelmago',  'base_url': 'https://www.labovedadelmago.cl/categoria-producto/juegos-de-mesa', 'parser': labovedadelmago,'pagination': 'woo', 'output': '../data/labovedadelmago_jdm.csv'},
-    {'name': 'calabozotienda', 'base_url': 'https://www.calabozotienda.cl/tienda/familia/JUEGOS%20DE%20MESA', 'parser': calabozotienda, 'pagination': 'calabozo', 'output': '../data/calabozotienda_jdm.csv'},
-    {'name': 'zonaxgamers', 'base_url': 'https://zonaxgamers.cl/juegos-de-mesa', 'parser': zonaxgamers, 'pagination': 'page_param', 'output': '../data/zonaxgamers_jdm.csv'},
-    {'name': 'cafe2d6', 'base_url': 'https://www.cafe2d6.cl/collections/all', 'parser': cafe2d6, 'pagination': 'shopify', 'output': '../data/cafe2d6_jdm.csv'},
-    {'name': 'griffingames', 'base_url': 'https://www.griffingames.cl/categoria-producto/juegos-de-mesa', 'parser': griffingames, 'pagination': 'woo', 'output': '../data/griffingames_jdm.csv'},
-    {'name': 'playcenter', 'base_url': 'https://playcenter.cl/categoria-producto/juegos-de-mesa', 'parser': playcenter, 'pagination': 'woo', 'output': '../data/playcenter_jdm.csv'},
-    {'name': 'enroque', 'base_url': 'https://juegosenroque.cl/collections/todos-los-juegos-de-mesa', 'parser': enroque, 'pagination': 'shopify', 'output': '../data/enroque_jdm.csv'},
-    {'name': 'kaiojuegos', 'base_url': 'https://kaiojuegos.cl/18-juegos-de-mesa', 'parser': kaiojuegos, 'pagination': 'page_param', 'output': '../data/kaiojuegos_jdm.csv'},
-    {'name': 'manahouse', 'base_url': 'https://manahouse.cl/collections/juegos-de-mesa', 'parser': manahouse, 'pagination': 'shopify', 'output': '../data/manahouse_jdm.csv'},
-    {'name': 'devir', 'base_url': 'https://devir.cl/juegos-de-mesa', 'parser': devir, 'pagination': 'devir', 'output': '../data/devir_jdm.csv'},
-    {'name': 'thirdimpact_asmodee', 'base_url': 'https://www.thirdimpact.cl/brand/asmodee', 'parser': thirdimpact, 'pagination': 'page_param', 'output': '../data/thirdimpact_asmodee_jdm.csv'},
-    {'name': 'thirdimpact_devir', 'base_url': 'https://www.thirdimpact.cl/brand/devir', 'parser': thirdimpact, 'pagination': 'page_param', 'output': '../data/thirdimpact_devir_jdm.csv'},
-    {'name': 'buho', 'base_url': 'https://buhojuegosdemesa.cl/collections/catalogo', 'parser': buhojuegosdemesa, 'pagination': 'shopify', 'output': '../data/buho_jdm.csv'},
-    {'name': 'mirzu', 'base_url': 'https://mirzu.cl/tienda', 'parser': mirzu, 'pagination': 'woo', 'output': '../data/mirzu_jdm.csv'},
-    {'name': 'peakgames', 'base_url': 'https://www.peakgames.cl/collection/juegos-de-mesa', 'parser': peakgames, 'pagination': 'page_param', 'output': '../data/peakgames_jdm.csv'},
-    {'name': 'laloseta', 'base_url': 'https://laloseta.cl/categoria-producto/juego-de-mesa', 'parser': laloseta, 'pagination': 'woo', 'output': '../data/laloseta_jdm.csv'},
-    {'name': 'lamadriguera', 'base_url': 'https://tiendalamadriguera.cl/product-category/juegos-de-mesa', 'parser': lamadriguera, 'pagination': 'woo', 'output': '../data/tiendalamadriguera_jdm.csv'},
-    {'name': 'lamesadevaras', 'base_url': 'https://lamesadevaras.cl/9-juegos-de-mesa', 'parser': lamesadevaras, 'pagination': 'page_param', 'output': '../data/lamesadevaras_jdm.csv'},
-    {'name': 'ludi', 'base_url': 'https://www.ludi.cl/tienda', 'parser': ludi, 'pagination': 'product-page', 'output': '../data/ludi_jdm.csv'}
-    
+    {'name': 'labovedadelmago',  'base_url': 'https://www.labovedadelmago.cl/categoria-producto/juegos-de-mesa', 'parser': labovedadelmago,  'pagination': 'woo',        'output': '../data/labovedadelmago_jdm.csv'},
+    {'name': 'calabozotienda',   'base_url': 'https://www.calabozotienda.cl/tienda/familia/JUEGOS%20DE%20MESA',  'parser': calabozotienda,   'pagination': 'calabozo',   'output': '../data/calabozotienda_jdm.csv'},
+    {'name': 'zonaxgamers',      'base_url': 'https://zonaxgamers.cl/juegos-de-mesa',                            'parser': zonaxgamers,      'pagination': 'page_param', 'output': '../data/zonaxgamers_jdm.csv'},
+    {'name': 'cafe2d6',          'base_url': 'https://www.cafe2d6.cl/collections/all',                           'parser': cafe2d6,          'pagination': 'shopify',    'output': '../data/cafe2d6_jdm.csv'},
+    {'name': 'griffingames',     'base_url': 'https://www.griffingames.cl/categoria-producto/juegos-de-mesa',    'parser': griffingames,     'pagination': 'woo',        'output': '../data/griffingames_jdm.csv'},
+    {'name': 'playcenter',       'base_url': 'https://playcenter.cl/categoria-producto/juegos-de-mesa',          'parser': playcenter,       'pagination': 'woo',        'output': '../data/playcenter_jdm.csv'},
+    {'name': 'enroque',          'base_url': 'https://juegosenroque.cl/collections/todos-los-juegos-de-mesa',    'parser': enroque,          'pagination': 'shopify',    'output': '../data/enroque_jdm.csv'},
+    {'name': 'kaiojuegos',       'base_url': 'https://kaiojuegos.cl/18-juegos-de-mesa',                          'parser': kaiojuegos,       'pagination': 'page_param', 'output': '../data/kaiojuegos_jdm.csv'},
+    {'name': 'manahouse',        'base_url': 'https://manahouse.cl/collections/juegos-de-mesa',                  'parser': manahouse,        'pagination': 'shopify',    'output': '../data/manahouse_jdm.csv'},
+    {'name': 'devir',            'base_url': 'https://devir.cl/juegos-de-mesa',                                  'parser': devir,            'pagination': 'p',          'output': '../data/devir_jdm.csv'},
+    {'name': 'thirdimpact_asmodee', 'base_url': 'https://www.thirdimpact.cl/brand/asmodee',                      'parser': thirdimpact,      'pagination': 'page_param', 'output': '../data/thirdimpact_asmodee_jdm.csv'},
+    {'name': 'thirdimpact_devir',   'base_url': 'https://www.thirdimpact.cl/brand/devir',                        'parser': thirdimpact,      'pagination': 'page_param', 'output': '../data/thirdimpact_devir_jdm.csv'},
+    {'name': 'buho',             'base_url': 'https://buhojuegosdemesa.cl/collections/catalogo',                 'parser': buhojuegosdemesa, 'pagination': 'shopify',    'output': '../data/buho_jdm.csv'},
+    {'name': 'mirzu',            'base_url': 'https://mirzu.cl/tienda',                                          'parser': mirzu,            'pagination': 'woo',        'output': '../data/mirzu_jdm.csv'},
+    {'name': 'peakgames',        'base_url': 'https://www.peakgames.cl/collection/juegos-de-mesa',               'parser': peakgames,        'pagination': 'page_param', 'output': '../data/peakgames_jdm.csv'},
+    {'name': 'laloseta',         'base_url': 'https://laloseta.cl/categoria-producto/juego-de-mesa',             'parser': laloseta,         'pagination': 'woo',        'output': '../data/laloseta_jdm.csv'},
+    {'name': 'lamadriguera',     'base_url': 'https://tiendalamadriguera.cl/product-category/juegos-de-mesa',    'parser': lamadriguera,     'pagination': 'woo',        'output': '../data/tiendalamadriguera_jdm.csv'},
+    {'name': 'lamesadevaras',    'base_url': 'https://lamesadevaras.cl/9-juegos-de-mesa',                        'parser': lamesadevaras,    'pagination': 'page_param', 'output': '../data/lamesadevaras_jdm.csv'},
+    {'name': 'ludi',             'base_url': 'https://www.ludi.cl/tienda',                                       'parser': ludi,             'pagination': 'product-page','output': '../data/ludi_jdm.csv'},
+    {'name': 'wargaming',        'base_url': 'https://www.wargaming.cl/collection/juegos-de-mesa',               'parser': wargaming,        'pagination': 'page_param', 'output': '../data/wargaming_jdm.csv'},
+    {'name': 'darkhobbies',      'base_url': 'https://www.darkhobbies.cl/collections/all',                       'parser': darkhobbies,      'pagination': 'shopify',    'output': '../data/darkhobbies_jdm.csv'},
+    {'name': 'shivano',          'base_url': 'https://shivano.cl/12-juegos-de-mesa',                             'parser': shivano,          'pagination': 'p',          'output': '../data/shivano_jdm.csv'},
+    {'name': 'playlander',       'base_url': 'https://playlander.cl/categoria-producto/juegosdemesa',            'parser': playlander,       'pagination': 'woo',        'output': '../data/playlander_jdm.csv'},
+    {'name': 'guildreams',       'base_url': 'https://www.guildreams.com/collection/juegos-de-mesa',             'parser': guildreams,       'pagination': 'page_param', 'output': '../data/guildreams_jdm.csv'},
+    {'name': 'playkingdom',      'base_url': 'https://playkingdom.cl/juegos-de-mesa',                            'parser': playkingdom,      'pagination': 'page_param', 'output': '../data/playkingdom_jdm.csv'},
+    {'name': 'juegosdelbosque',  'base_url': 'https://www.juegosdelbosque.cl/categorias',                        'parser': juegosdelbosque,  'pagination': 'page_param', 'output': '../data/juegosdelbosque_jdm.csv'},
+    {'name': 'kimunaustral',     'base_url': 'https://kimunaustral.cl/shop',                                     'parser': kimunaustral,     'pagination': 'woo',        'output': '../data/kimunaustral_jdm.csv'},
+    {'name': 'jugones',          'base_url': 'https://www.jugones.cl/juegos-de-mesa',                            'parser': jugones,          'pagination': 'page_param', 'output': '../data/jugones_jdm.csv'},
+    {'name': 'tertulia',         'base_url': 'https://tertulia.cl/categoria-producto/juego-de-mesa',             'parser': tertulia,         'pagination': 'product-page','output': '../data/tertulia_jdm.csv'},
+    {'name': 'lautarojuegos',    'base_url': 'https://www.lautarojuegos.cl/juegos-de-mesa',                      'parser': lautarojuegos,    'pagination': 'page_param', 'output': '../data/lautarojuegos_jdm.csv'},
+    {'name': 'araucania',        'base_url': 'https://araucaniagaming.cl/productos/juegosdemesa',                 'parser': araucania,        'pagination': 'woo',        'output': '../data/araucania_jdm.csv'},
+    {'name': 'carontejuegosdemesa', 'base_url': 'https://carontejuegosdemesa.cl/categoria-producto/juego-de-mesa', 'parser': carontejuegosdemesa, 'pagination': 'woo', 'output': '../data/caronte_jdm.csv'}
 ]
-
 
 
 def build_url(base_url, pagination, page):
     """Construct the paginated URL for a given page number and pagination style."""
-
     sep = '&' if '?' in base_url else '?'
-    
+
     if pagination == 'gatoarcano':
         return f"{base_url}/?jsf=epro-archive-products&pagenum={page}"
     if pagination == 'calabozo':
@@ -983,7 +1274,7 @@ def build_url(base_url, pagination, page):
         return base_url
     if pagination in ('shopify', 'page_param'):
         return f"{base_url}?page={page}"
-    if pagination == 'devir':
+    if pagination == 'p':
         return f"{base_url}?p={page}"
     if pagination == 'woo':
         return f"{base_url}/page/{page}/"

@@ -5,7 +5,7 @@ title,original_price,current_price,stock_status,url
 ¡Aventureros al tren! Aurora Boreal,$49.990,,,https://www.labovedadelmago.cl/producto/aventureros-al-tren-aurora-boreal/
 ¡Aventureros al Tren! Europa,$49.990,,,https://www.labovedadelmago.cl/producto/aventureros-al-tren-europa/
 ¡Aventureros al Tren! Europa 15th Anniversary,$104.990,,,https://www.labovedadelmago.cl/producto/aventureros-al-tren-europa-15th-anniversary/
-¡Aventureros al Tren! La Vuelta al Mundo,$83.990,,,https://www.labovedadelmago.cl/producto/aventureros-al-tren-la-vuelta-al-mundo/
+¡Aventureros al Tren! La Vuelta al Mundo,$83.990,,Agotado,https://www.labovedadelmago.cl/producto/aventureros-al-tren-la-vuelta-al-mundo/
 ¡Aventureros al Tren! Legacy Leyendas del Oeste,$109.990,,Agotado,https://www.labovedadelmago.cl/producto/aventureros-al-tren-legacy-leyendas-del-oeste/
 ¡Aventureros al Tren! Londres,$20.990,,,https://www.labovedadelmago.cl/producto/aventureros-al-tren-londres/
 ¡Aventureros al Tren! New York,$20.990,,,https://www.labovedadelmago.cl/producto/aventureros-al-tren-new-york/
@@ -22,7 +22,7 @@ title,original_price,current_price,stock_status,url
 3 Ring Circus,$35.990,,,https://www.labovedadelmago.cl/producto/3-ring-circus/
 3000 Granujas,$49.990,,,https://www.labovedadelmago.cl/producto/3000-granujas/
 5 minute Dungeon,$31.990,,,https://www.labovedadelmago.cl/producto/5-minute-dungeon/
-7 Wonders,$49.990,,,https://www.labovedadelmago.cl/producto/7-wonders/
+7 Wonders,$49.990,,Agotado,https://www.labovedadelmago.cl/producto/7-wonders/
 7 Wonders – Architects,$40.990,,Agotado,https://www.labovedadelmago.cl/producto/7-wonders-architects/
 7 Wonders – Armada,$30.990,,,https://www.labovedadelmago.cl/producto/7-wonders-armada/
 7 Wonders – Cities,$30.990,,,https://www.labovedadelmago.cl/producto/7-wonders-cities/
@@ -34,7 +34,7 @@ title,original_price,current_price,stock_status,url
 8 Bit box,$35.990,,,https://www.labovedadelmago.cl/producto/8-bit-box/
 A Fake Artist Goes to New York,$23.990,,,https://www.labovedadelmago.cl/producto/a-fake-artist-goes-to-new-york/
 Abalone,$35.990,$30.990,Agotado,https://www.labovedadelmago.cl/producto/abalone/
-Abalone GO,$14.990,,Agotado,https://www.labovedadelmago.cl/producto/abalone-go/
+Abalone GO,$14.990,,,https://www.labovedadelmago.cl/producto/abalone-go/
 Abominación: El heredero de Frankenstein,$55.990,,Agotado,https://www.labovedadelmago.cl/producto/abominacion-el-heredero-de-frankenstein/
 Adventure games Monocromo S.A.,$23.990,,Agotado,https://www.labovedadelmago.cl/producto/adventure-games-monocromo-s-a/
 Aeon’s End,$104.990,,Agotado,https://www.labovedadelmago.cl/producto/aeons-end/
@@ -176,7 +176,7 @@ Challengers,$39.990,,Agotado,https://www.labovedadelmago.cl/producto/challengers
 Checkpoint Charlie 2da Edicin,$18.990,,Agotado,https://www.labovedadelmago.cl/producto/checkpoint-charlie-2da-edicin/
 Chimera Station,$51.990,,,https://www.labovedadelmago.cl/producto/chimera-station/
 Chromino,$20.990,,Agotado,https://www.labovedadelmago.cl/producto/chromino/
-Chromino Smallbox,$18.990,,Agotado,https://www.labovedadelmago.cl/producto/chromino-smallbox/
+Chromino Smallbox,$18.990,,,https://www.labovedadelmago.cl/producto/chromino-smallbox/
 Circadians: Primera Luz,$51.990,,,https://www.labovedadelmago.cl/producto/circadians-primera-luz/
 Cities,$32.990,,Agotado,https://www.labovedadelmago.cl/producto/cities/
 Ciudad de Puntos,$31.990,,,https://www.labovedadelmago.cl/producto/ciudad-de-puntos/
@@ -187,7 +187,7 @@ Coatl,$40.990,,,https://www.labovedadelmago.cl/producto/coatl/
 Cobra Paw,$15.990,,Agotado,https://www.labovedadelmago.cl/producto/cobra-paw/
 Código secreto,$23.990,,,https://www.labovedadelmago.cl/producto/537/
 Código Secreto Imágenes,$25.990,,,https://www.labovedadelmago.cl/producto/codigo-secreto-imagenes/
-Coffee Rush,$39.990,,,https://www.labovedadelmago.cl/producto/coffee-rush/
+Coffee Rush,$39.990,,Agotado,https://www.labovedadelmago.cl/producto/coffee-rush/
 Coloma,$56.990,,,https://www.labovedadelmago.cl/producto/coloma/
 Colonos de Marte,$59.990,,Agotado,https://www.labovedadelmago.cl/producto/colonos-de-marte/
 Colonos del Imperio,$35.990,,Agotado,https://www.labovedadelmago.cl/producto/colonos-del-imperio/
@@ -204,6 +204,7 @@ Concept,$33.990,,,https://www.labovedadelmago.cl/producto/concept/
 Concept KIDS,$25.990,,,https://www.labovedadelmago.cl/producto/concept-kids/
 Cooper Island,$62.990,,,https://www.labovedadelmago.cl/producto/cooper-island/
 Copenhagen,$51.990,,,https://www.labovedadelmago.cl/producto/copenhagen/
+"Coquimbo Nuestro Puerto, un juego de la Bitacora Pirata",$19.990,,,https://www.labovedadelmago.cl/producto/coquimbo-nuestro-puerto-un-juego-de-la-bitacora-pirata/
 Corinth,$20.990,,,https://www.labovedadelmago.cl/producto/corinth/
 Corruptia,$21.990,,,https://www.labovedadelmago.cl/producto/corruptia/
 Cortex Challenge – Celeste,$16.990,,,https://www.labovedadelmago.cl/producto/cortex-challenge-celeste/
@@ -332,7 +333,7 @@ Exit: El Cementerio de las Tinieblas,$15.990,,,https://www.labovedadelmago.cl/pr
 Exit: El laberinto Maldito,$15.990,,,https://www.labovedadelmago.cl/producto/exit-el-laberinto-maldito/
 Exit: El Laboratorio Secreto,$15.990,,Agotado,https://www.labovedadelmago.cl/producto/exit-el-laboratorio-secreto/
 Exit: El Legado del Profesor,$15.990,,,https://www.labovedadelmago.cl/producto/exit-el-legado-del-profesor/
-Exit: El Museo Misterioso,$15.990,,,https://www.labovedadelmago.cl/producto/exit-el-museo-misterioso/
+Exit: El Museo Misterioso,$15.990,,Agotado,https://www.labovedadelmago.cl/producto/exit-el-museo-misterioso/
 Exit: El Señor de los Anillos,$15.990,,,https://www.labovedadelmago.cl/producto/exit-el-senor-de-los-anillos/
 Exit: El Tesoro Hundido,$15.990,,,https://www.labovedadelmago.cl/producto/exit-el-tesoro-hundido/
 Exit: La Cabaña Abandonada,$13.990,,Agotado,https://www.labovedadelmago.cl/producto/exit-la-cabana-abandonada/
@@ -359,9 +360,9 @@ Fairy Tale Inn,$40.990,,,https://www.labovedadelmago.cl/producto/fairy-tale-inn/
 Fairy Trails,$15.990,,,https://www.labovedadelmago.cl/producto/fairy-trails/
 Fallout: El juego de tablero,$67.990,,Agotado,https://www.labovedadelmago.cl/producto/fallout-el-juego-de-tablero/
 Fantasma Blitz,$17.990,,,https://www.labovedadelmago.cl/producto/fantasma-blitz/
-Fantasma Blitz 2.0,$16.990,,Agotado,https://www.labovedadelmago.cl/producto/fantasma-blitz-2-0/
+Fantasma Blitz 2.0,$16.990,,,https://www.labovedadelmago.cl/producto/fantasma-blitz-2-0/
 Fantasma Blitz Dados,$20.990,,,https://www.labovedadelmago.cl/producto/fantasma-blitz-dados/
-Fantasma Blitz Mini,$9.990,,Agotado,https://www.labovedadelmago.cl/producto/fantasma-blitz-mini/
+Fantasma Blitz Mini,$9.990,,,https://www.labovedadelmago.cl/producto/fantasma-blitz-mini/
 Fauna,$40.990,,,https://www.labovedadelmago.cl/producto/fauna/
 Fertility,$35.990,,,https://www.labovedadelmago.cl/producto/fertility/
 Fila Filo,$30.990,,Agotado,https://www.labovedadelmago.cl/producto/886/
@@ -406,13 +407,13 @@ Hanabi Nueva Versión,$14.990,,,https://www.labovedadelmago.cl/producto/hanabi-n
 Hand to Hand Wombat,$29.990,,Agotado,https://www.labovedadelmago.cl/producto/hand-to-hand-wombat/
 Happy Little Dinosaurs,$23.990,,,https://www.labovedadelmago.cl/producto/happy-little-dinosaurs/
 Happy Little Dinosaurs – Citas Desastrosas,$14.990,,,https://www.labovedadelmago.cl/producto/happy-little-dinosaurs-citas-desastrosas/
-Happy Little Dinosaurs Exp. 5-6 Jugadores,$16.990,,,https://www.labovedadelmago.cl/producto/happy-little-dinosaurs-exp-5-6-jugadores/
+Happy Little Dinosaurs Exp. 5-6 Jugadores,$16.990,,Agotado,https://www.labovedadelmago.cl/producto/happy-little-dinosaurs-exp-5-6-jugadores/
 Happy Little Dinosaurs Los Peligros de la Pubertad,$16.990,,,https://www.labovedadelmago.cl/producto/happy-little-dinosaurs-los-peligros-de-la-pubertad/
-Happy Little Dinosaurs Peligros a la Vista,$14.990,,,https://www.labovedadelmago.cl/producto/happy-little-dinosaurs-peligros-a-la-vista/
+Happy Little Dinosaurs Peligros a la Vista,$14.990,,Agotado,https://www.labovedadelmago.cl/producto/happy-little-dinosaurs-peligros-a-la-vista/
 Harmonies,$34.990,,Agotado,https://www.labovedadelmago.cl/producto/harmonies/
 Harry Potter – Desmaius!,$43.990,,Agotado,https://www.labovedadelmago.cl/producto/harry-potter-desmaius/
 Harry Potter Hogwarts Battle,$53.990,,Agotado,https://www.labovedadelmago.cl/producto/harry-potter-hogwarts-battle/
-Heat,$67.990,,,https://www.labovedadelmago.cl/producto/heat/
+Heat,$67.990,,Agotado,https://www.labovedadelmago.cl/producto/heat/
 Hellapagos,$23.990,,Agotado,https://www.labovedadelmago.cl/producto/hellapagos/
 Here to Slay,$26.990,,,https://www.labovedadelmago.cl/producto/here-to-slay/
 HERO REALMS,$15.990,,Agotado,https://www.labovedadelmago.cl/producto/hero-realms/
@@ -420,7 +421,7 @@ Hero Realms La Perdición de Thandar,$18.990,,,https://www.labovedadelmago.cl/pr
 Hero Realms: La Aldea Perdida,$16.990,,,https://www.labovedadelmago.cl/producto/hero-realms-la-aldea-perdida/
 High Score: ¡Acepta el Reto!,$12.990,,Agotado,https://www.labovedadelmago.cl/producto/high-score-acepta-el-reto/
 HINT Pocket,$9.990,,,https://www.labovedadelmago.cl/producto/hint-pocket/
-Hive Pocket,$19.990,,Agotado,https://www.labovedadelmago.cl/producto/hive-pocket/
+Hive Pocket,$24.990,,,https://www.labovedadelmago.cl/producto/hive-pocket/
 Hogar Dulce Hogar o No…,$38.990,,,https://www.labovedadelmago.cl/producto/2135/
 Holmes,$22.990,,,https://www.labovedadelmago.cl/producto/holmes/
 Hombres Lobo de Castronegro,$12.990,,,https://www.labovedadelmago.cl/producto/hombres-lobo-de-castronegro/
@@ -448,15 +449,15 @@ Kitten Box,$23.990,,,https://www.labovedadelmago.cl/producto/kitten-box/
 Kutná Hora: La Ciudad de la Plata,$59.990,,,https://www.labovedadelmago.cl/producto/kutna-hora-la-ciudad-de-la-plata/
 La Busqueda del Anillo,$43.990,,,https://www.labovedadelmago.cl/producto/la-busqueda-del-anillo/
 La Escalera Encantada,$28.990,,Agotado,https://www.labovedadelmago.cl/producto/la-escalera-encantada/
-La Guerra del Anillo,$99.990,,,https://www.labovedadelmago.cl/producto/la-guerra-del-anillo/
+La Guerra del Anillo,$99.990,,Agotado,https://www.labovedadelmago.cl/producto/la-guerra-del-anillo/
 La Isla de los Gatos,$54.990,,,https://www.labovedadelmago.cl/producto/la-isla-de-los-gatos/
 La Isla de Pan,$47.990,,,https://www.labovedadelmago.cl/producto/la-isla-de-pan/
 La Isla Prohibida,$25.990,,,https://www.labovedadelmago.cl/producto/2069/
 La Morada Maldita,$22.990,,,https://www.labovedadelmago.cl/producto/la-morada-maldita/
-La Noche de Gansferatu,$17.990,,,https://www.labovedadelmago.cl/producto/la-noche-de-gansferatu/
+La Noche de Gansferatu,$17.990,,Agotado,https://www.labovedadelmago.cl/producto/la-noche-de-gansferatu/
 La Selva Prohibida,$32.990,,Agotado,https://www.labovedadelmago.cl/producto/la-selva-prohibida/
 La Torre Encantada,$14.990,,Agotado,https://www.labovedadelmago.cl/producto/la-torre-encantada/
-Laberinto Mágico,$35.990,,,https://www.labovedadelmago.cl/producto/laberinto-magico/
+Laberinto Mágico,$35.990,,Agotado,https://www.labovedadelmago.cl/producto/laberinto-magico/
 Lacrimosa,$67.990,,,https://www.labovedadelmago.cl/producto/988/
 Las Aventuras de Robin Hood,$52.990,,,https://www.labovedadelmago.cl/producto/las-aventuras-de-robin-hood/
 Las Leyendas de Andor,$41.990,,,https://www.labovedadelmago.cl/producto/las-leyendas-de-andor/
@@ -508,7 +509,7 @@ Micro Macro,$33.990,,Agotado,https://www.labovedadelmago.cl/producto/micro-macro
 Micro Macro. Full House,$33.990,,Agotado,https://www.labovedadelmago.cl/producto/micro-macro-full-house/
 Mille Fiori,$45.990,,,https://www.labovedadelmago.cl/producto/mille-fiori/
 MindBug,$18.990,,,https://www.labovedadelmago.cl/producto/mindbug/
-Mixmo,$15.990,,,https://www.labovedadelmago.cl/producto/mixmo/
+Mixmo,$15.990,,Agotado,https://www.labovedadelmago.cl/producto/mixmo/
 MLEM Space Agency,$27.990,,Agotado,https://www.labovedadelmago.cl/producto/mlem-space-agency/
 Monkey Palace,$42.990,,,https://www.labovedadelmago.cl/producto/monkey-palace/
 MONO GLOTÓN,$17.990,,,https://www.labovedadelmago.cl/producto/mono-gloton/
@@ -519,10 +520,11 @@ Namiji,$40.990,,,https://www.labovedadelmago.cl/producto/namiji/
 Nemesis,$159.990,,Agotado,https://www.labovedadelmago.cl/producto/nemesis/
 No Game Over,$21.990,,Agotado,https://www.labovedadelmago.cl/producto/no-game-over/
 No puedo parar,$21.990,,,https://www.labovedadelmago.cl/producto/no-puedo-parar/
-No sin mi gato,$14.990,,Agotado,https://www.labovedadelmago.cl/producto/no-sin-mi-gato/
+No sin mi gato,$14.990,,,https://www.labovedadelmago.cl/producto/no-sin-mi-gato/
 Nova Luna,$33.990,,,https://www.labovedadelmago.cl/producto/nova-luna/
 Odín,$13.990,,,https://www.labovedadelmago.cl/producto/odin/
 Osopark,$40.990,,,https://www.labovedadelmago.cl/producto/osopark/
+Pack Bitacora Pirata + Coquimbo Nuestro Puerto,$30.000,,,https://www.labovedadelmago.cl/producto/pack-bitacora-pirata-coquimbo-nuestro-puerto/
 Pacto con el Diablo,$57.990,,,https://www.labovedadelmago.cl/producto/pacto-con-el-diablo/
 Paleo,$44.990,,Agotado,https://www.labovedadelmago.cl/producto/paleo/
 Pandemic,$38.990,,Agotado,https://www.labovedadelmago.cl/producto/pandemic/
@@ -575,7 +577,7 @@ San Francisco,$30.990,,,https://www.labovedadelmago.cl/producto/san-francisco/
 Sand,$30.990,,,https://www.labovedadelmago.cl/producto/sand/
 Savernake Forest,$20.990,,,https://www.labovedadelmago.cl/producto/savernake-forest/
 Scooby-Doo! El juego de mesa,$62.990,,Agotado,https://www.labovedadelmago.cl/producto/scooby-doo-el-juego-de-mesa/
-Scythe,$94.990,,,https://www.labovedadelmago.cl/producto/scythe/
+Scythe,$105.990,,,https://www.labovedadelmago.cl/producto/scythe/
 Seasons,$53.990,,,https://www.labovedadelmago.cl/producto/seasons/
 Sekigahara,$69.990,,,https://www.labovedadelmago.cl/producto/sekigahara/
 Seti,$75.990,,,https://www.labovedadelmago.cl/producto/seti/
@@ -594,10 +596,10 @@ Splendor,$35.990,,Agotado,https://www.labovedadelmago.cl/producto/splendor/
 Splendor – El Sol nunca se pone,$16.990,,,https://www.labovedadelmago.cl/producto/splendor-el-sol-nunca-se-pone/
 Splendor Duel,$24.990,,,https://www.labovedadelmago.cl/producto/splendor-duel/
 Splendor La Ruta de la Seda,$16.990,,,https://www.labovedadelmago.cl/producto/splendor-la-ruta-de-la-seda/
-Splendor Refresh,$36.990,,,https://www.labovedadelmago.cl/producto/splendor-refresh/
+Splendor Refresh,$36.990,,Agotado,https://www.labovedadelmago.cl/producto/splendor-refresh/
 Splendor: Marvel,$40.990,,Agotado,https://www.labovedadelmago.cl/producto/splendor-marvel/
 Squadro,$33.990,,,https://www.labovedadelmago.cl/producto/squadro/
-Star Wars La Batalla de Hoth,$54.990,,Agotado,https://www.labovedadelmago.cl/producto/star-wars-la-batalla-de-hoth/
+Star Wars La Batalla de Hoth,$54.990,,,https://www.labovedadelmago.cl/producto/star-wars-la-batalla-de-hoth/
 Star Wars: Las Guerras Clon,$65.990,,,https://www.labovedadelmago.cl/producto/star-wars-las-guerras-clon/
 Star Wars: Rebellion,$115.990,,Agotado,https://www.labovedadelmago.cl/producto/star-wars-rebellion/
 Stella – Dixit Universe,$35.990,,,https://www.labovedadelmago.cl/producto/stella-dixit-universe/
@@ -623,7 +625,7 @@ The Mandalorian: Adventures,$54.990,,Agotado,https://www.labovedadelmago.cl/prod
 The Mind,$13.990,,,https://www.labovedadelmago.cl/producto/the-mind/
 The Mind: Soulmates,$17.990,,,https://www.labovedadelmago.cl/producto/the-mind-soulmates/
 The Number,$15.990,,,https://www.labovedadelmago.cl/producto/the-number/
-The White Castle,$32.990,,,https://www.labovedadelmago.cl/producto/the-white-castle/
+The White Castle,$32.990,,Agotado,https://www.labovedadelmago.cl/producto/the-white-castle/
 This War of Mine: El juego de tablero,$69.990,,Agotado,https://www.labovedadelmago.cl/producto/this-war-of-mine-el-juego-de-tablero/
 Through The Ages Una Nueva Historia,$57.990,,,https://www.labovedadelmago.cl/producto/through-the-ages-una-nueva-historia/
 Throw Throw Avocado,$29.990,,,https://www.labovedadelmago.cl/producto/throw-throw-avocado/
@@ -638,7 +640,7 @@ Timeline Twist Pop Culture,$14.990,,,https://www.labovedadelmago.cl/producto/tim
 Timeline Twist Star Wars,$17.990,,,https://www.labovedadelmago.cl/producto/timeline-twist-star-wars/
 Tiranos del Underdark,$59.990,,Agotado,https://www.labovedadelmago.cl/producto/tiranos-del-underdark/
 Tokaido,$40.990,,,https://www.labovedadelmago.cl/producto/tokaido/
-Tranvía Mortal,$26.990,,,https://www.labovedadelmago.cl/producto/tranvia-mortal/
+Tranvía Mortal,$26.990,,Agotado,https://www.labovedadelmago.cl/producto/tranvia-mortal/
 Tras los pasos de Darwin,$35.990,,Agotado,https://www.labovedadelmago.cl/producto/tras-los-pasos-de-darwin/
 Trio,$14.990,,Agotado,https://www.labovedadelmago.cl/producto/trio/
 Tuareg,$25.990,,,https://www.labovedadelmago.cl/producto/tuareg/

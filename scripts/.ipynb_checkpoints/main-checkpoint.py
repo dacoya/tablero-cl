@@ -28,17 +28,7 @@ from rapidfuzz import process, fuzz
 from tqdm import tqdm
 
 from scrape import sites, build_url, fetch_html
-from utils import normalize, format_discount, sort_table, paginate, SORT_OPTIONS
-import textwrap
-
-MAX_WIDTHS = {
-    'Producto': 30,
-    'URL': 80,
-    'Disponibilidad': 15,
-}
-
-def wrap_cell(text, width):
-    return textwrap.wrap(str(text), width=width) or ['']
+from utils import normalize, format_discount, sort_table, paginate, render_table, SORT_OPTIONS
 
 def scrape_site(site, dry_run=False, position=0):
     """
@@ -151,50 +141,33 @@ def fuzzy_search(query, df, score_cutoff=80):
 
 
 def print_price_table(df, norm_key, sort_by='discount'):
-    """
-    Print a formatted price comparison table for all rows whose normalized
-    title matches norm_key, across every store that carries the game.
-
-    Columns: Tienda | Precio | Oferta | Descuento | Disponibilidad | URL
-    Sorted by `sort_by` (discount / price / store).
-    """
     rows = df[df['norm'] == norm_key].copy()
-
     if rows.empty:
         print("No results found.")
         return
 
-    display_title = rows['title'].mode().iloc[0]
-
-    # Sort before building display columns so sort_table can access raw price fields.
-    rows = sort_table(rows, by=sort_by)
-
-    # Compute discount display column from raw price strings.
+    title = rows['title'].mode().iloc[0]
+    rows  = sort_table(rows, by=sort_by)
     rows['descuento'] = rows.apply(
-        lambda r: format_discount(r.get('original_price'), r.get('current_price')),
-        axis=1,
+        lambda r: format_discount(r.get('original_price'), r.get('current_price')), axis=1)
+    rows['url'] = rows['url'].apply(
+        lambda x: x if pd.notnull(x) and str(x).startswith('http') else 'N/A')
+    rows['stock_status'] = rows['stock_status'].fillna('Disponible')
+    rows['current_price'] = rows['current_price'].fillna('-')
+
+    render_table(
+        rows,
+        title=title,
+        col_order=['store', 'original_price', 'current_price', 'descuento', 'stock_status', 'url'],
+        col_names={
+            'store':          'Tienda',
+            'original_price': 'Precio',
+            'current_price':  'Oferta',
+            'descuento':      'Descuento',
+            'stock_status':   'Disponibilidad',
+            'url':            'URL',
+        },
     )
-
-    rows = rows[['store', 'original_price', 'current_price', 'descuento', 'stock_status', 'url']].copy()
-    rows.columns = ['Tienda', 'Precio', 'Oferta', 'Descuento', 'Disponibilidad', 'URL']
-
-    rows['Oferta']         = rows['Oferta'].fillna('-')
-    rows['Disponibilidad'] = rows['Disponibilidad'].fillna('Disponible')
-    rows['URL']            = rows['URL'].apply(
-        lambda x: x if pd.notnull(x) and str(x).startswith('http') else 'N/A'
-    )
-
-    col_widths = {col: max(len(col), rows[col].astype(str).str.len().max())
-                  for col in rows.columns}
-
-    header = '  '.join(col.ljust(int(col_widths[col])) for col in rows.columns)
-    separator = '  '.join('-' * int(col_widths[col]) for col in rows.columns)
-    
-    lines = [f"\n{display_title}", header, separator]
-    for _, row in rows.iterrows():
-        lines.append('  '.join(str(row[col]).ljust(int(col_widths[col])) for col in rows.columns))
-
-    paginate(lines)
 
 
 def search_mode(query, sort_by='discount'):
@@ -318,37 +291,23 @@ def deals_mode(
     else:
         deals = sort_table(deals, by=sort_by)
 
-    display = deals[
-        ['store', 'title', 'original_price', 'current_price', 'descuento', 'stock_status', 'url']
-    ].copy()
-    display.columns = ['Tienda', 'Producto', 'Precio', 'Oferta', 'Descuento', 'Disponibilidad', 'URL']
-
-    col_widths = {}
-    for col in display.columns:
-        max_len = int(display[col].fillna('').astype(str).str.len().max())
-        max_len = max(max_len, len(col))
-        if col in MAX_WIDTHS:
-            max_len = min(max_len, MAX_WIDTHS[col])
-        col_widths[col] = max_len
-
-    header    = '  '.join(col.ljust(col_widths[col]) for col in display.columns)
-    separator = '  '.join('-' * col_widths[col] for col in display.columns)
-
+    deals['stock_status'] = deals['stock_status'].fillna('Disponible')
     label = f"en {store_filter}" if store_filter else "en todas las tiendas"
-    lines = [f"\nOfertas activas {label} ({len(display)} productos)\n", header, separator]
 
-    for _, row in display.iterrows():
-        wrapped_cells = {col: wrap_cell(row[col], col_widths[col]) for col in display.columns}
-        max_lines = max(len(v) for v in wrapped_cells.values())
-        for i in range(max_lines):
-            line = []
-            for col in display.columns:
-                cell_lines = wrapped_cells[col]
-                text = cell_lines[i] if i < len(cell_lines) else ''
-                line.append(text.ljust(col_widths[col]))
-            lines.append('  '.join(line))
-
-    paginate(lines)
+    render_table(
+        deals,
+        title=f"Ofertas activas {label} ({len(deals)} productos)",
+        col_order=['store', 'title', 'original_price', 'current_price', 'descuento', 'stock_status', 'url'],
+        col_names={
+            'store':          'Tienda',
+            'title':          'Producto',
+            'original_price': 'Precio',
+            'current_price':  'Oferta',
+            'descuento':      'Descuento',
+            'stock_status':   'Disponibilidad',
+            'url':            'URL',
+        },
+    )
 
 def list_mode(store_filter=None, sort_by='store', in_stock_only=False):
     df = load_all_csvs()
@@ -376,39 +335,24 @@ def list_mode(store_filter=None, sort_by='store', in_stock_only=False):
             return
 
     df = sort_table(df, by=sort_by)
-
-    df['descuento'] = df.apply(
-        lambda r: format_discount(r.get('original_price'), r.get('current_price')),
-        axis=1,
-    )
-
-    display = df[['store', 'title', 'original_price', 'current_price', 'descuento', 'stock_status', 'url']].copy()
-    display.columns = ['Tienda', 'Producto', 'Precio', 'Oferta', 'Descuento', 'Disponibilidad', 'URL']
-    display['Disponibilidad'] = display['Disponibilidad'].fillna('Disponible')
-
-    col_widths = {}
-    for col in display.columns:
-        max_len = display[col].astype(str).str.len().max()
-        
-        if pd.isna(max_len):
-            max_len = 0
-        
-        max_len = int(max_len)
-        col_widths[col] = max(len(col), max_len)
-
-    for col in col_widths:
-        col_widths[col] = int(max(col_widths[col], len(col)))
-
-    header = '  '.join(col.ljust(col_widths[col]) for col in display.columns)
-    separator = '  '.join('-' * col_widths[col] for col in display.columns)
+    df['descuento']    = df.apply(lambda r: format_discount(r.get('original_price'), r.get('current_price')), axis=1)
+    df['stock_status'] = df['stock_status'].fillna('Disponible')
 
     label = store_filter or "todas las tiendas"
-    lines = [f"\nProductos — {label} ({len(display)} total)\n", header, separator]
-
-    for _, row in display.iterrows():
-        lines.append('  '.join(str(row[col]).ljust(col_widths[col]) for col in display.columns))
-
-    paginate(lines)
+    render_table(
+        df,
+        title=f"Productos — {label} ({len(df)} total)",
+        col_order=['store', 'title', 'original_price', 'current_price', 'descuento', 'stock_status', 'url'],
+        col_names={
+            'store':          'Tienda',
+            'title':          'Producto',
+            'original_price': 'Precio',
+            'current_price':  'Oferta',
+            'descuento':      'Descuento',
+            'stock_status':   'Disponibilidad',
+            'url':            'URL',
+        },
+    )
 
 
 def main():

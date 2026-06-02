@@ -8,17 +8,24 @@ Usage:
   python main.py -u --sites flexo updown  Update a subset of sites
 
   python main.py --name clank             Fuzzy search, pick a result, see prices
-  python main.py --name clank --sort discount   Sort price table by discount (default)
+  python main.py --name clank --sort discount   Sort by discount (default)
   python main.py --name clank --sort price      Sort by cheapest effective price
+  python main.py --name clank --sort offer      Sort by offer/sale price
+  python main.py --name clank --sort original   Sort by original price
   python main.py --name clank --sort store      Sort alphabetically by store
 
   python main.py --deals                  All discounted products, best deals first
+  python main.py --deals --sort price     Sort deals by cheapest effective price
+  python main.py --deals --sort offer     Sort deals by offer price
   python main.py --deals --store flexo    Deals from one store only
   python main.py --list                   Paginated listing of all products
+  python main.py --list --sort price      Sort listing by cheapest effective price
+  python main.py --list --sort offer      Sort listing by offer price
   python main.py --list --store updown    Products from one store
 """
 
 import os
+import json
 import math
 import time
 import argparse
@@ -28,17 +35,40 @@ from rapidfuzz import process, fuzz
 from tqdm import tqdm
 
 from scrape import sites, build_url, fetch_html
-from utils import normalize, format_discount, sort_table, paginate, SORT_OPTIONS
-import textwrap
+from utils import normalize, clean_title, format_discount, sort_table, paginate, render_table, SORT_OPTIONS, LIST_DEAL_SORT_OPTIONS
 
-MAX_WIDTHS = {
-    'Producto': 30,
-    'URL': 80,
-    'Disponibilidad': 15,
-}
+# Single merged data file — replaces per-query iteration over 50+ CSVs.
+JSON_PATH = '../data/products.json'
 
-def wrap_cell(text, width):
-    return textwrap.wrap(str(text), width=width) or ['']
+
+def merge_to_json(results: dict, targets: list) -> None:
+    """
+    Merge scrape results into a single JSON file keyed by store name.
+
+    For full updates (targets == all sites) the file is rebuilt from scratch.
+    For partial updates (--sites subset) the existing JSON is loaded first and
+    only the targeted stores are replaced, leaving all others intact.
+
+    Each store's value is a list of product dicts (records orientation).
+    """
+    # Load existing data so partial updates don't wipe untouched stores.
+    existing = {}
+    if os.path.exists(JSON_PATH):
+        try:
+            with open(JSON_PATH, 'r', encoding='utf-8') as f:
+                existing = json.load(f)
+        except (json.JSONDecodeError, OSError):
+            existing = {}
+
+    target_names = {s['name'] for s in targets}
+    for name, df in results.items():
+        if name not in target_names:
+            continue
+        existing[name] = [] if df.empty else df.to_dict(orient='records')
+
+    os.makedirs(os.path.dirname(JSON_PATH), exist_ok=True)
+    with open(JSON_PATH, 'w', encoding='utf-8') as f:
+        json.dump(existing, f, ensure_ascii=False)
 
 def scrape_site(site, dry_run=False, position=0):
     """
@@ -99,10 +129,31 @@ def scrape_site(site, dry_run=False, position=0):
 
 def load_all_csvs():
     """
-    Load every site's CSV into a single DataFrame with a 'store' column.
-    Skips files that don't exist yet (site not scraped).
-    Returns an empty DataFrame if no CSVs are found.
+    Load all product data into a single DataFrame with a 'store' column.
+
+    Reads from the merged JSON file (../data/products.json) when available —
+    one file open instead of 50+ CSV reads.  Falls back to per-site CSVs if
+    the JSON doesn't exist yet (e.g. first run before --update completes).
     """
+    if os.path.exists(JSON_PATH):
+        try:
+            with open(JSON_PATH, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            frames = []
+            for name, records in data.items():
+                if not records:
+                    continue
+                df = pd.DataFrame(records)
+                df['store'] = name
+                df['title'] = df['title'].apply(clean_title)
+                df['norm']  = df['title'].apply(normalize)
+                frames.append(df)
+            if frames:
+                return pd.concat(frames, ignore_index=True)
+        except (json.JSONDecodeError, OSError):
+            pass  # fall through to CSV fallback
+
+    # CSV fallback — used before the first full --update produces products.json.
     frames = []
     for site in sites:
         path = site['output']
@@ -110,8 +161,8 @@ def load_all_csvs():
             continue
         df = pd.read_csv(path)
         df['store'] = site['name']
-        # Precompute normalized title for fuzzy matching; original kept for display.
-        df['norm'] = df['title'].apply(normalize)
+        df['title'] = df['title'].apply(clean_title)
+        df['norm']  = df['title'].apply(normalize)
         frames.append(df)
 
     if not frames:
@@ -151,50 +202,33 @@ def fuzzy_search(query, df, score_cutoff=80):
 
 
 def print_price_table(df, norm_key, sort_by='discount'):
-    """
-    Print a formatted price comparison table for all rows whose normalized
-    title matches norm_key, across every store that carries the game.
-
-    Columns: Tienda | Precio | Oferta | Descuento | Disponibilidad | URL
-    Sorted by `sort_by` (discount / price / store).
-    """
     rows = df[df['norm'] == norm_key].copy()
-
     if rows.empty:
         print("No results found.")
         return
 
-    display_title = rows['title'].mode().iloc[0]
-
-    # Sort before building display columns so sort_table can access raw price fields.
-    rows = sort_table(rows, by=sort_by)
-
-    # Compute discount display column from raw price strings.
+    title = rows['title'].mode().iloc[0]
+    rows  = sort_table(rows, by=sort_by)
     rows['descuento'] = rows.apply(
-        lambda r: format_discount(r.get('original_price'), r.get('current_price')),
-        axis=1,
+        lambda r: format_discount(r.get('original_price'), r.get('current_price')), axis=1)
+    rows['url'] = rows['url'].apply(
+        lambda x: x if pd.notnull(x) and str(x).startswith('http') else 'N/A')
+    rows['stock_status'] = rows['stock_status'].fillna('Disponible')
+    rows['current_price'] = rows['current_price'].fillna('-')
+
+    render_table(
+        rows,
+        title=title,
+        col_order=['store', 'original_price', 'current_price', 'descuento', 'stock_status', 'url'],
+        col_names={
+            'store':          'Tienda',
+            'original_price': 'Precio',
+            'current_price':  'Oferta',
+            'descuento':      'Descuento',
+            'stock_status':   'Disponibilidad',
+            'url':            'URL',
+        },
     )
-
-    rows = rows[['store', 'original_price', 'current_price', 'descuento', 'stock_status', 'url']].copy()
-    rows.columns = ['Tienda', 'Precio', 'Oferta', 'Descuento', 'Disponibilidad', 'URL']
-
-    rows['Oferta']         = rows['Oferta'].fillna('-')
-    rows['Disponibilidad'] = rows['Disponibilidad'].fillna('Disponible')
-    rows['URL']            = rows['URL'].apply(
-        lambda x: x if pd.notnull(x) and str(x).startswith('http') else 'N/A'
-    )
-
-    col_widths = {col: max(len(col), rows[col].astype(str).str.len().max())
-                  for col in rows.columns}
-
-    header = '  '.join(col.ljust(int(col_widths[col])) for col in rows.columns)
-    separator = '  '.join('-' * int(col_widths[col]) for col in rows.columns)
-    
-    lines = [f"\n{display_title}", header, separator]
-    for _, row in rows.iterrows():
-        lines.append('  '.join(str(row[col]).ljust(int(col_widths[col])) for col in rows.columns))
-
-    paginate(lines)
 
 
 def search_mode(query, sort_by='discount'):
@@ -318,37 +352,23 @@ def deals_mode(
     else:
         deals = sort_table(deals, by=sort_by)
 
-    display = deals[
-        ['store', 'title', 'original_price', 'current_price', 'descuento', 'stock_status', 'url']
-    ].copy()
-    display.columns = ['Tienda', 'Producto', 'Precio', 'Oferta', 'Descuento', 'Disponibilidad', 'URL']
-
-    col_widths = {}
-    for col in display.columns:
-        max_len = int(display[col].fillna('').astype(str).str.len().max())
-        max_len = max(max_len, len(col))
-        if col in MAX_WIDTHS:
-            max_len = min(max_len, MAX_WIDTHS[col])
-        col_widths[col] = max_len
-
-    header    = '  '.join(col.ljust(col_widths[col]) for col in display.columns)
-    separator = '  '.join('-' * col_widths[col] for col in display.columns)
-
+    deals['stock_status'] = deals['stock_status'].fillna('Disponible')
     label = f"en {store_filter}" if store_filter else "en todas las tiendas"
-    lines = [f"\nOfertas activas {label} ({len(display)} productos)\n", header, separator]
 
-    for _, row in display.iterrows():
-        wrapped_cells = {col: wrap_cell(row[col], col_widths[col]) for col in display.columns}
-        max_lines = max(len(v) for v in wrapped_cells.values())
-        for i in range(max_lines):
-            line = []
-            for col in display.columns:
-                cell_lines = wrapped_cells[col]
-                text = cell_lines[i] if i < len(cell_lines) else ''
-                line.append(text.ljust(col_widths[col]))
-            lines.append('  '.join(line))
-
-    paginate(lines)
+    render_table(
+        deals,
+        title=f"Ofertas activas {label} ({len(deals)} productos)",
+        col_order=['store', 'title', 'original_price', 'current_price', 'descuento', 'stock_status', 'url'],
+        col_names={
+            'store':          'Tienda',
+            'title':          'Producto',
+            'original_price': 'Precio',
+            'current_price':  'Oferta',
+            'descuento':      'Descuento',
+            'stock_status':   'Disponibilidad',
+            'url':            'URL',
+        },
+    )
 
 def list_mode(store_filter=None, sort_by='store', in_stock_only=False):
     df = load_all_csvs()
@@ -376,39 +396,24 @@ def list_mode(store_filter=None, sort_by='store', in_stock_only=False):
             return
 
     df = sort_table(df, by=sort_by)
-
-    df['descuento'] = df.apply(
-        lambda r: format_discount(r.get('original_price'), r.get('current_price')),
-        axis=1,
-    )
-
-    display = df[['store', 'title', 'original_price', 'current_price', 'descuento', 'stock_status', 'url']].copy()
-    display.columns = ['Tienda', 'Producto', 'Precio', 'Oferta', 'Descuento', 'Disponibilidad', 'URL']
-    display['Disponibilidad'] = display['Disponibilidad'].fillna('Disponible')
-
-    col_widths = {}
-    for col in display.columns:
-        max_len = display[col].astype(str).str.len().max()
-        
-        if pd.isna(max_len):
-            max_len = 0
-        
-        max_len = int(max_len)
-        col_widths[col] = max(len(col), max_len)
-
-    for col in col_widths:
-        col_widths[col] = int(max(col_widths[col], len(col)))
-
-    header = '  '.join(col.ljust(col_widths[col]) for col in display.columns)
-    separator = '  '.join('-' * col_widths[col] for col in display.columns)
+    df['descuento']    = df.apply(lambda r: format_discount(r.get('original_price'), r.get('current_price')), axis=1)
+    df['stock_status'] = df['stock_status'].fillna('Disponible')
 
     label = store_filter or "todas las tiendas"
-    lines = [f"\nProductos — {label} ({len(display)} total)\n", header, separator]
-
-    for _, row in display.iterrows():
-        lines.append('  '.join(str(row[col]).ljust(col_widths[col]) for col in display.columns))
-
-    paginate(lines)
+    render_table(
+        df,
+        title=f"Productos — {label} ({len(df)} total)",
+        col_order=['store', 'title', 'original_price', 'current_price', 'descuento', 'stock_status', 'url'],
+        col_names={
+            'store':          'Tienda',
+            'title':          'Producto',
+            'original_price': 'Precio',
+            'current_price':  'Oferta',
+            'descuento':      'Descuento',
+            'stock_status':   'Disponibilidad',
+            'url':            'URL',
+        },
+    )
 
 
 def main():
@@ -454,7 +459,11 @@ Usage:
         help="Fuzzy-search for a game across all local CSVs")
     
     parser.add_argument('--sort', choices=SORT_OPTIONS, default='discount',
-        help="Sort order for --name results (default: discount)")
+        help=(
+            "Sort order (default: discount). "
+            "--name also accepts: original, store. "
+            "--list/--deals accept: discount, price (highest first), offer (highest first)"
+        ))
     
     parser.add_argument('--deals', action='store_true',
         help="List all discounted products, best discount first")
@@ -489,21 +498,26 @@ Usage:
 
     # --- deals ---
     if args.deals:
+        if args.sort not in LIST_DEAL_SORT_OPTIONS:
+            parser.error(f"--deals only supports --sort {{{', '.join(LIST_DEAL_SORT_OPTIONS)}}}")
         deals_mode(
             store_filter=args.store,
             in_stock_only=args.in_stock,
             lower_price=args.lower_price,
             higher_price=args.higher_price,
-            price_range=args.price
+            price_range=args.price,
+            sort_by=args.sort,
         )
         return
 
     # --- list ---
     if args.list_all:
+        if args.sort not in LIST_DEAL_SORT_OPTIONS:
+            parser.error(f"--list only supports --sort {{{', '.join(LIST_DEAL_SORT_OPTIONS)}}}")
         list_mode(
             store_filter=args.store,
             sort_by=args.sort,
-            in_stock_only=args.in_stock
+            in_stock_only=args.in_stock,
         )
         return
 
@@ -544,6 +558,9 @@ Usage:
             for name in [s['name'] for s in targets] if name in results
         ])
         print("\n" + summary.to_string(index=False))
+
+        merge_to_json(results, targets)
+        tqdm.write(f"  Merged → {JSON_PATH}")
         return
 
     parser.print_help()

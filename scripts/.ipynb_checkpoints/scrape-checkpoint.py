@@ -514,26 +514,36 @@ def ludipuerto(html):
 
 
 def magicsur(html):
-    """PrestaShop variant. Prices in product-price-and-shipping div."""
     res = []
     for item in (html.find_all('article', class_='product-miniature') if html else []):
         try:
-            t_elem = item.find('h2', class_='product-title')
-            if not t_elem:
+            if not (t_elem := item.find('h2', class_='product-title')):
                 continue
-            pc   = item.find('div', class_='product-price-and-shipping')
-            orig, curr = _norm(
-                _txt(pc.find('span', class_='regular-price') if pc else None),
-                _txt(pc.find('span', class_='product-price')  if pc else None),
-            )
+            
+            pc = item.find('div', class_='product-price-and-shipping')
+            orig_txt = _txt(pc.find('span', class_='regular-price')) if pc else None
+            # Reverted class selector to 'product-price' to match Magicsur's specific DOM
+            curr_txt = _txt(pc.find('span', class_='product-price') or pc.find('span', class_='price')) if pc else None
+            
+            orig, curr = _norm(orig_txt, curr_txt)
+            
+            # Shift single prices into the baseline variable to remove false positive 'Oferta' tags
+            if orig is None and curr is not None:
+                orig, curr = curr, None
+                
             check = ' '.join(filter(None, [
                 _txt(item.find('div', class_='product-availability')),
                 _txt(item.find('ul',  class_='product-flags')),
             ]))
+            
             stock = "Agotado" if _oos(check) else ("Oferta" if curr else None)
+            
             res.append({
-                'title': _txt(t_elem), 'original_price': orig, 'current_price': curr,
-                'stock_status': stock, 'url': _url(t_elem.find('a', href=True)),
+                'title': _txt(t_elem), 
+                'original_price': orig, 
+                'current_price': curr,
+                'stock_status': stock, 
+                'url': _url(t_elem.find('a', href=True), "https://www.magicsur.cl"),
             })
         except Exception as e:
             print(f"  [magicsur] skipping item: {e}")
@@ -916,6 +926,297 @@ def lamesadevaras(html):
 def ludi(html):
     """WooCommerce generic implementation."""
     return _parse_woo_li(html, link_cls='woocommerce-LoopProduct-link')
+def wargaming(html):
+    """BS-collection store."""
+    return _parse_bs(html, item_tag='section', item_cls='grid__item', base_url="https://www.wargaming.cl")
+def darkhobbies(html):
+    res = []
+    for item in (html.find_all('product-card') if html else []):
+        try:
+            if not (t_elem := item.find('h3', class_='h4') or item.find('a', ref='productTitleLink')):
+                continue
+
+            orig, curr = None, None
+            pc = item.find('product-price')
+            if pc:
+                orig_txt = _txt(pc.find('span', class_='compare-at-price'))
+                curr_txt = _txt(pc.find('span', class_='price'))
+                
+                orig, curr = _norm(orig_txt, curr_txt)
+                
+                if orig is None and curr is not None:
+                    orig, curr = curr, None
+
+            btn = item.find('button', attrs={'name': 'add'})
+            badges = ' '.join(_txt(b) for b in item.find_all(class_='product-badges__badge'))
+            
+            oos = (btn and btn.has_attr('disabled')) or _oos(badges) or _oos(_txt(btn))
+            stock = "Agotado" if oos else ("Oferta" if curr else None)
+
+            res.append({
+                'title': _txt(t_elem),
+                'original_price': orig,
+                'current_price': curr,
+                'stock_status': stock,
+                'url': _url(item.find('a', class_='product-card__link'), "https://www.darkhobbies.cl")
+            })
+        except Exception as e:
+            print(f"  [darkhobbies] skip: {e}")
+    return res
+def shivano(html):
+    res = []
+    for item in (html.find_all('li', class_='ajax_block_product') if html else []):
+        try:
+            if not (t_elem := item.find('a', class_='product-name')): 
+                continue
+
+            orig, curr = None, None
+            pc = item.find('div', class_='content_price')
+            if pc:
+                orig_txt = _txt(pc.find('span', class_='old-price'))
+                curr_txt = _txt(pc.find('span', class_='price'))
+                orig, curr = _norm(orig_txt, curr_txt)
+                
+                if orig is None and curr is not None:
+                    orig, curr = curr, None
+
+            btn = item.find('a', class_='ajax_add_to_cart_button')
+            avail = _txt(item.find('span', class_='availability'))
+            
+            oos = not btn or _oos(avail)
+            stock = "Agotado" if oos else ("Oferta" if curr else None)
+
+            res.append({
+                'title': _txt(t_elem),
+                'original_price': orig,
+                'current_price': curr,
+                'stock_status': stock,
+                'url': _url(t_elem, "https://shivano.cl")
+            })
+        except Exception as e:
+            print(f"  [shivano] skip: {e}")
+    return res
+def playlander(html):
+    """WooCommerce generic implementation."""
+    return _parse_woo_li(html, link_cls='woocommerce-LoopProduct-link')
+def guildreams(html):
+    res = []
+    for item in (html.find_all('div', class_='bs-product') if html else []):
+        try:
+            if not (t_elem := item.find('h2')):
+                continue
+
+            orig_txt, curr_txt = None, None
+            if pc := item.find('div', class_='bs-product-price'):
+                orig_txt = _txt(pc.find('div', class_='bs-product-old-price'))
+                curr_txt = _txt(pc.find('div', class_='bs-product-final-price'))
+
+            orig, curr = _norm(orig_txt, curr_txt)
+            if orig is None and curr is not None:
+                orig, curr = curr, None
+
+            btn = item.find('button', attrs={'data-bs': 'cart.add.collection'})
+            check_text = _txt(item)
+            
+            oos = _oos(check_text) or not btn
+            stock = "Agotado" if oos else ("Oferta" if curr else None)
+
+            res.append({
+                'title': _txt(t_elem),
+                'original_price': orig,
+                'current_price': curr,
+                'stock_status': stock,
+                'url': _url(item.find('a', href=True), "https://www.guildreams.com")
+            })
+        except Exception as e:
+            print(f"  [guildreams] skip: {e}")
+    return res
+def playkingdom(html):
+    res = []
+    for item in (html.find_all('article', class_='product-block') if html else []):
+        try:
+            if not (t_elem := item.find('a', class_='product-block__name')):
+                continue
+
+            orig_txt, curr_txt = None, None
+            if pc := item.find('div', class_='product-block__pricing'):
+                orig_node = pc.find('div', class_='product-block__price--old')
+                curr_node = pc.find('div', class_='product-block__price--new')
+                if orig_node and curr_node:
+                    orig_txt = _txt(orig_node)
+                    curr_txt = _txt(curr_node)
+                else:
+                    curr_txt = _txt(pc.find('div', class_='product-block__price'))
+
+            orig, curr = _norm(orig_txt, curr_txt)
+            if orig is None and curr is not None:
+                orig, curr = curr, None
+
+            status_label = _txt(item.find('div', class_='product-block__label--status'))
+            stock = "Agotado" if _oos(status_label) else ("Oferta" if curr else None)
+
+            res.append({
+                'title': _txt(t_elem),
+                'original_price': orig,
+                'current_price': curr,
+                'stock_status': stock,
+                'url': _url(t_elem, "https://playkingdom.cl")
+            })
+        except Exception as e:
+            print(f"  [playkingdom] skip: {e}")
+    return res
+def juegosdelbosque(html):
+    res = []
+    for item in (html.find_all('article', class_='product-block') if html else []):
+        try:
+            if not (t_elem := item.find('a', class_='product-block__name')):
+                continue
+
+            orig_txt, curr_txt = None, None
+            if pc := item.find('div', class_='product-block__pricing'):
+                orig_node = pc.find('div', class_='product-block__price--old')
+                curr_node = pc.find('div', class_='product-block__price--new')
+                if orig_node and curr_node:
+                    orig_txt = _txt(orig_node)
+                    curr_txt = _txt(curr_node)
+                else:
+                    curr_txt = _txt(pc.find('div', class_='product-block__price'))
+
+            orig, curr = _norm(orig_txt, curr_txt)
+            if orig is None and curr is not None:
+                orig, curr = curr, None
+
+            status_label = _txt(item.find('div', class_='product-block__label--status'))
+            stock = "Agotado" if _oos(status_label) else ("Oferta" if curr else None)
+
+            res.append({
+                'title': _txt(t_elem),
+                'original_price': orig,
+                'current_price': curr,
+                'stock_status': stock,
+                'url': _url(t_elem, "https://www.juegosdelbosque.cl")
+            })
+        except Exception as e:
+            print(f"  [juegosdelbosque] skip: {e}")
+    return res
+def kimunaustral(html):
+    """WooCommerce generic implementation."""
+    return _parse_woo_li(html, link_cls='woocommerce-LoopProduct-link')
+def jugones(html):
+    res = []
+    for item in (html.find_all('div', class_='producto') if html else []):
+        try:
+            if not (t_elem := item.find('a', class_='modelo')):
+                continue
+
+            orig_txt, curr_txt = None, None
+            if pc := item.find('a', class_='precio'):
+                is_sale = 'oferta' in pc.get('class', [])
+                
+                if orig_node := pc.find('small'):
+                    if is_sale:
+                        orig_txt = _txt(orig_node).replace('Antes:', '')
+                    orig_node.extract()
+                    
+                curr_txt = _txt(pc)
+
+            orig, curr = _norm(orig_txt, curr_txt)
+            
+            if not is_sale:
+                orig, curr = orig or curr, None
+            elif orig is None and curr is not None:
+                orig, curr = curr, None
+
+            stock = "Agotado" if _oos(_txt(item)) else ("Oferta" if curr else None)
+
+            res.append({
+                'title': _txt(t_elem),
+                'original_price': orig,
+                'current_price': curr,
+                'stock_status': stock,
+                'url': _url(t_elem, "https://www.jugones.cl")
+            })
+        except Exception as e:
+            print(f"  [jugones] skip: {e}")
+    return res
+def tertulia(html):
+    """WooCommerce generic implementation."""
+    return _parse_woo_li(html, link_cls='woocommerce-LoopProduct-link')
+def lautarojuegos(html):
+    res = []
+    for item in (html.find_all('div', class_='product-block') if html else []):
+        try:
+            if not (t_elem := item.find('h4')):
+                continue
+            a_tag = t_elem.find('a')
+            if not a_tag:
+                continue
+
+            orig_txt, curr_txt = None, None
+            if pc := item.find('div', class_='list-price'):
+                orig_node = pc.find('span', class_='product-block-discount')
+                curr_node = pc.find('span', class_='product-block-normal')
+                if orig_node and curr_node:
+                    orig_txt = _txt(orig_node)
+                    curr_txt = _txt(curr_node)
+                else:
+                    curr_txt = _txt(pc)
+
+            orig, curr = _norm(orig_txt, curr_txt)
+            if orig is None and curr is not None:
+                orig, curr = curr, None
+
+            btn = item.find('button', class_='adc')
+            tags = item.find_all('span', class_='status-tag')
+            check_text = f"{_txt(btn)} {' '.join(_txt(t) for t in tags)}"
+            
+            oos = _oos(check_text) or (btn is None)
+            stock = "Agotado" if oos else ("Oferta" if curr else None)
+
+            res.append({
+                'title': _txt(a_tag),
+                'original_price': orig,
+                'current_price': curr,
+                'stock_status': stock,
+                'url': _url(a_tag, "https://www.lautarojuegos.cl")
+            })
+        except Exception as e:
+            print(f"  [lautarojuegos] skip: {e}")
+    return res
+def araucania(html):
+    res = []
+    for item in (html.find_all('li', class_='product') if html else []):
+        try:
+            if not (t_elem := item.find('h3', class_='woocommerce-loop-product__title')):
+                continue
+
+            orig_txt, curr_txt = None, None
+            if pc := item.find('span', class_='price'):
+                orig_node = pc.find('del')
+                curr_node = pc.find('ins')
+                if orig_node and curr_node:
+                    orig_txt = _txt(orig_node)
+                    curr_txt = _txt(curr_node)
+                else:
+                    curr_txt = _txt(pc)
+
+            orig, curr = _norm(orig_txt, curr_txt)
+            if orig is None and curr is not None:
+                orig, curr = curr, None
+
+            oos = 'outofstock' in item.get('class', []) or _oos(_txt(item.find('span', class_='stock-label')))
+            stock = "Agotado" if oos else ("Oferta" if curr else None)
+
+            res.append({
+                'title': _txt(t_elem),
+                'original_price': orig,
+                'current_price': curr,
+                'stock_status': stock,
+                'url': _url(t_elem.find('a'), "https://araucaniagaming.cl")
+            })
+        except Exception as e:
+            print(f"  [araucania] skip: {e}")
+    return res
     
 # ── Site registry ──────────────────────────────────────────────────────────────
 #
@@ -955,7 +1256,7 @@ sites = [
     {'name': 'enroque', 'base_url': 'https://juegosenroque.cl/collections/todos-los-juegos-de-mesa', 'parser': enroque, 'pagination': 'shopify', 'output': '../data/enroque_jdm.csv'},
     {'name': 'kaiojuegos', 'base_url': 'https://kaiojuegos.cl/18-juegos-de-mesa', 'parser': kaiojuegos, 'pagination': 'page_param', 'output': '../data/kaiojuegos_jdm.csv'},
     {'name': 'manahouse', 'base_url': 'https://manahouse.cl/collections/juegos-de-mesa', 'parser': manahouse, 'pagination': 'shopify', 'output': '../data/manahouse_jdm.csv'},
-    {'name': 'devir', 'base_url': 'https://devir.cl/juegos-de-mesa', 'parser': devir, 'pagination': 'devir', 'output': '../data/devir_jdm.csv'},
+    {'name': 'devir', 'base_url': 'https://devir.cl/juegos-de-mesa', 'parser': devir, 'pagination': 'p', 'output': '../data/devir_jdm.csv'},
     {'name': 'thirdimpact_asmodee', 'base_url': 'https://www.thirdimpact.cl/brand/asmodee', 'parser': thirdimpact, 'pagination': 'page_param', 'output': '../data/thirdimpact_asmodee_jdm.csv'},
     {'name': 'thirdimpact_devir', 'base_url': 'https://www.thirdimpact.cl/brand/devir', 'parser': thirdimpact, 'pagination': 'page_param', 'output': '../data/thirdimpact_devir_jdm.csv'},
     {'name': 'buho', 'base_url': 'https://buhojuegosdemesa.cl/collections/catalogo', 'parser': buhojuegosdemesa, 'pagination': 'shopify', 'output': '../data/buho_jdm.csv'},
@@ -964,7 +1265,19 @@ sites = [
     {'name': 'laloseta', 'base_url': 'https://laloseta.cl/categoria-producto/juego-de-mesa', 'parser': laloseta, 'pagination': 'woo', 'output': '../data/laloseta_jdm.csv'},
     {'name': 'lamadriguera', 'base_url': 'https://tiendalamadriguera.cl/product-category/juegos-de-mesa', 'parser': lamadriguera, 'pagination': 'woo', 'output': '../data/tiendalamadriguera_jdm.csv'},
     {'name': 'lamesadevaras', 'base_url': 'https://lamesadevaras.cl/9-juegos-de-mesa', 'parser': lamesadevaras, 'pagination': 'page_param', 'output': '../data/lamesadevaras_jdm.csv'},
-    {'name': 'ludi', 'base_url': 'https://www.ludi.cl/tienda', 'parser': ludi, 'pagination': 'product-page', 'output': '../data/ludi_jdm.csv'}
+    {'name': 'ludi', 'base_url': 'https://www.ludi.cl/tienda', 'parser': ludi, 'pagination': 'product-page', 'output': '../data/ludi_jdm.csv'},
+    {'name': 'wargaming', 'base_url': 'https://www.wargaming.cl/collection/juegos-de-mesa', 'parser': wargaming, 'pagination': 'page_param', 'output': '../data/wargaming_jdm.csv'},
+    {'name': 'darkhobbies', 'base_url': 'https://www.darkhobbies.cl/collections/all', 'parser': darkhobbies, 'pagination': 'shopify', 'output': '../data/darkhobbies_jdm.csv'},
+    {'name': 'shivano', 'base_url': 'https://shivano.cl/12-juegos-de-mesa', 'parser': shivano, 'pagination': 'p', 'output': '../data/shivano_jdm.csv'},
+    {'name': 'playlander', 'base_url': 'https://playlander.cl/categoria-producto/juegosdemesa', 'parser': playlander, 'pagination': 'woo', 'output': '../data/playlander_jdm.csv'},
+    {'name': 'guildreams', 'base_url': 'https://www.guildreams.com/collection/juegos-de-mesa', 'parser': guildreams, 'pagination': 'page_param', 'output': '../data/guildreams_jdm.csv'},
+    {'name': 'playkingdom', 'base_url': 'https://playkingdom.cl/juegos-de-mesa', 'parser': playkingdom, 'pagination': 'page_param', 'output': '../data/playkingdom_jdm.csv'},
+    {'name': 'juegosdelbosque', 'base_url': 'https://www.juegosdelbosque.cl/categorias', 'parser': juegosdelbosque, 'pagination': 'page_param', 'output': '../data/juegosdelbosque_jdm.csv'},
+    {'name': 'kimunaustral', 'base_url': 'https://kimunaustral.cl/shop', 'parser': kimunaustral, 'pagination': 'woo', 'output': '../data/kimunaustral_jdm.csv'},
+    {'name': 'jugones', 'base_url': 'https://www.jugones.cl/juegos-de-mesa', 'parser': jugones, 'pagination': 'page_param', 'output': '../data/jugones_jdm.csv'},
+    {'name': 'tertulia', 'base_url': 'https://tertulia.cl/categoria-producto/juego-de-mesa', 'parser': tertulia, 'pagination': 'product-page', 'output': '../data/tertulia_jdm.csv'},
+    {'name': 'lautarojuegos', 'base_url': 'https://www.lautarojuegos.cl/juegos-de-mesa', 'parser': lautarojuegos, 'pagination': 'page_param', 'output': '../data/lautarojuegos_jdm.csv'},
+    {'name': 'araucania', 'base_url': 'https://araucaniagaming.cl/productos/juegosdemesa', 'parser': araucania, 'pagination': 'woo', 'output': '../data/araucania_jdm.csv'}
     
 ]
 
@@ -983,7 +1296,7 @@ def build_url(base_url, pagination, page):
         return base_url
     if pagination in ('shopify', 'page_param'):
         return f"{base_url}?page={page}"
-    if pagination == 'devir':
+    if pagination == 'p':
         return f"{base_url}?p={page}"
     if pagination == 'woo':
         return f"{base_url}/page/{page}/"
