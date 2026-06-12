@@ -1,6 +1,7 @@
 title,original_price,current_price,stock_status,url
 Amigos de Mierda,$12.990,$11.990,Oferta,https://www.elpatiogeek.cl/products/amigos-de-mierda
 La Feria de las Pulgas de Titirilquen,$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/la-feria-de-las-pulgas-de-titirilquen
+Hitster Temazos,$24.990,,,https://www.elpatiogeek.cl/products/hitster-temazos
 Decisiones De Mierda,$12.990,$11.990,Oferta,https://www.elpatiogeek.cl/products/decisiones-de-mierda
 Funda Stronghold Standard (63.5 x 88 mm),$2.490,,,https://www.elpatiogeek.cl/products/funda-stronghold-standard-63-5mm-x-88mm
 Amigos de Mierda 2,$12.990,$11.990,Oferta,https://www.elpatiogeek.cl/products/amigos-de-mierda-2
@@ -10,7 +11,6 @@ Hitster Latino,$24.990,$22.990,Oferta,https://www.elpatiogeek.cl/products/hitste
 Dobble Blister Eco,$11.990,,,https://www.elpatiogeek.cl/products/dobble-blister-eco
 Curao' Volao' o Weón,$19.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/curao-volao-o-weon
 Chupilca Hetero Love,$10.990,$9.500,Oferta,https://www.elpatiogeek.cl/products/chupilca-hetero-love
-The Mind,$12.990,$11.500,Oferta,https://www.elpatiogeek.cl/products/the-mind
 Telestrations Refresh,$29.990,$27.100,Oferta,https://www.elpatiogeek.cl/products/telestrations
 Hitster,$24.990,$22.990,Oferta,https://www.elpatiogeek.cl/products/hitster
 Taco Gato Cabra Queso Pizza,$11.990,$10.500,Oferta,https://www.elpatiogeek.cl/products/taco-gato-cabra-queso-pizza
@@ -29,8 +29,8 @@ Pelusas,$12.990,,,https://www.elpatiogeek.cl/products/pelusas
 Funda Stronghold Standard American (56  x 87 mm),$2.490,,,https://www.elpatiogeek.cl/products/fundas-stronghold-standard-true-american-56mm-x-87mm
 Dixit Odyssey Refresh,$31.990,$29.990,Oferta,https://www.elpatiogeek.cl/products/dixit-odyssey-refresh
 Exploding Kittens: Recetas del Desastre,$33.990,$29.990,Oferta,https://www.elpatiogeek.cl/products/exploding-kittens-recetas-del-desastre
-7 Wonders Duel,$26.990,$24.500,Oferta,https://www.elpatiogeek.cl/products/7wondersduel
 Dobble 31 Minutos,$15.990,$14.990,Oferta,https://www.elpatiogeek.cl/products/dobble-31-minutos
+7 Wonders Duel,$26.990,$24.500,Oferta,https://www.elpatiogeek.cl/products/7wondersduel
 "Promociones, nuevos productos y ventas. Directamente a tu bandeja de entrada.",,,,
 Cortex Challenge 2,$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/cortex-challenge-2
 Chromino Smallbox,$16.990,$14.500,Oferta,https://www.elpatiogeek.cl/products/chromino-smallbox
@@ -38,12 +38,12 @@ What Do You Meme? Edición Latina,$29.990,$26.990,Oferta,https://www.elpatiogeek
 Unstable Unicorns,$21.990,$19.990,Oferta,https://www.elpatiogeek.cl/products/unstable-unicorns
 Happy Little Dinosaurs,$21.990,$19.500,Oferta,https://www.elpatiogeek.cl/products/happy-little-dinosaurs
 Taco Gorro Torta Caja Pizza,$11.990,$10.500,Oferta,https://www.elpatiogeek.cl/products/taco-gorro-torta-caja-pizza
+Dobble,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/dobble
 Exploding Kittens: Party Pack,$29.990,$27.000,Oferta,https://www.elpatiogeek.cl/products/copia-de-exploding-kittens-base
 Juego De Expresiones Cambia Caras (Cubos),$14.990,$9.990,Oferta,https://www.elpatiogeek.cl/products/juego-de-expresiones-cambia-caras
-Dobble,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/dobble
 Chupilca! Charadas,$10.990,$8.990,Oferta,https://www.elpatiogeek.cl/products/chupilca-charadas
-Trio,$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/juego-trio
 Mal Trago,$15.990,$14.000,Oferta,https://www.elpatiogeek.cl/products/mal-trago
+Trio,$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/juego-trio
 Mala Leche de Marihuana,$21.990,$19.990,Oferta,https://www.elpatiogeek.cl/products/mala-leche-de-marihuana
 The Red Cathedral,$29.990,$26.990,Oferta,https://www.elpatiogeek.cl/products/red-cathedral
 Océanos de Papel,$12.990,$11.500,Oferta,https://www.elpatiogeek.cl/products/oceanos-de-papel
@@ -55,46 +55,47 @@ Tomalo Tú,$6.990,$5.500,Oferta,https://www.elpatiogeek.cl/products/tomalo-tu-to
 Unstable Unicorns NSFW,$21.990,$20.000,Oferta,https://www.elpatiogeek.cl/products/unstable-unicorns-nsfw
 Mójate El Potito,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/mojate-el-potito
 Ilari Ilarié Cántalo,$19.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/ilari-ilarie-cantalo
-Coup X,$17.990,$15.990,Oferta,https://www.elpatiogeek.cl/products/coup-x
 JUST ONE REFRESH,$22.990,$19.990,Oferta,https://www.elpatiogeek.cl/products/just-one
-Hombres Lobo de Castronegro (Blister),$9.990,$8.990,Oferta,https://www.elpatiogeek.cl/products/hombres-lobo-de-castronegro-blister-1
 Here to Slay,$24.990,$22.990,Oferta,https://www.elpatiogeek.cl/products/here-to-slay
+Coup X,$17.990,$15.990,Oferta,https://www.elpatiogeek.cl/products/coup-x
+Hombres Lobo de Castronegro (Blister),$9.990,$8.990,Oferta,https://www.elpatiogeek.cl/products/hombres-lobo-de-castronegro-blister-1
 Dixit (Nueva Versión),$31.990,$28.000,Oferta,https://www.elpatiogeek.cl/products/dixit-nueva-version
 La Cultura de Chupilca,$16.990,$14.990,Oferta,https://www.elpatiogeek.cl/products/la-cultura-de-chupilca
 Ensalada de puntos,$12.990,,,https://www.elpatiogeek.cl/products/ensalada-de-puntos
+Exit: El Señor de los Anillos,$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/exit-el-senor-de-los-anillos
 ¡Toma 6!,$12.990,$11.500,Oferta,https://www.elpatiogeek.cl/products/toma-6
 Dixit Disney,$34.990,$29.990,Oferta,https://www.elpatiogeek.cl/products/dixit-disney
 Happy Salmon,$12.990,,,https://www.elpatiogeek.cl/products/happy-salmon-1
-Exit: El Señor de los Anillos,$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/exit-el-senor-de-los-anillos
 Funda Stronghold Dixit (80 x 120 mm),$2.990,,,https://www.elpatiogeek.cl/products/funda-stronghold-dixit-80mm-x-120mm
 Catan Expansión 5-6 Jugadores,$24.990,,,https://www.elpatiogeek.cl/products/catan-basico-expansion-5-6-jugadores
+69: Un Juego para traviesos (+18),$12.990,$11.500,Oferta,https://www.elpatiogeek.cl/products/69-un-juego-para-traviesos-18
+Wonder Woods,$24.990,$9.990,Oferta,https://www.elpatiogeek.cl/products/wonder-woods
 Condorito: La Batalla de Pelotillehue,$6.990,$3.990,Oferta,https://www.elpatiogeek.cl/products/condorito-la-batalla-de-pelotillehue
 Time's Up! Party,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/times-up-party
 Chupilca! Lesbian Love,$10.990,$9.990,Oferta,https://www.elpatiogeek.cl/products/chupilca-lesbian-love
 Patchwork,$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/patchwork
 Exploding Kittens NSFW,$19.990,$17.500,Oferta,https://www.elpatiogeek.cl/products/exploding-kittens-nsfw
-69: Un Juego para traviesos (+18),$12.990,$11.500,Oferta,https://www.elpatiogeek.cl/products/69-un-juego-para-traviesos-18
-Wonder Woods,$24.990,$9.990,Oferta,https://www.elpatiogeek.cl/products/wonder-woods
+Juicio Final,$19.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/juicio-final
 Speed Cups,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/speed-cups
 Llama,$12.990,,,https://www.elpatiogeek.cl/products/llama
-Juicio Final,$19.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/juicio-final
-Dioses! Aún Más Divinos,$17.990,$14.990,Oferta,https://www.elpatiogeek.cl/products/dioses-aun-mas-divinos
 Los Odiosos 7,$12.990,$11.990,Oferta,https://www.elpatiogeek.cl/products/los-odiosos-7
-Namiji,$39.990,$22.000,Oferta,https://www.elpatiogeek.cl/products/namiji
-Sky Team,$29.990,$27.000,Oferta,https://www.elpatiogeek.cl/products/sky-team
 Harmonies,$32.990,$29.990,Oferta,https://www.elpatiogeek.cl/products/harmonies
 Taco 31 Minutos - Tulio Lulo Lana Tarro Patana,$14.990,$13.990,Oferta,https://www.elpatiogeek.cl/products/taco-31-minutos-tulio-lulo-lana-tarro-patana
-Rory's Story Cubes: Clasico (Blister Eco),$11.990,$10.500,Oferta,https://www.elpatiogeek.cl/products/rorysstorycubes-clasico
-Olé Guacamole,$10.990,$9.990,Oferta,https://www.elpatiogeek.cl/products/ole-guacamole
+Dioses! Aún Más Divinos,$17.990,$14.990,Oferta,https://www.elpatiogeek.cl/products/dioses-aun-mas-divinos
+Namiji,$39.990,$22.000,Oferta,https://www.elpatiogeek.cl/products/namiji
+Sky Team,$29.990,$27.000,Oferta,https://www.elpatiogeek.cl/products/sky-team
 Doggy Style (Segunda Edición),$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/doggy-style
 Llamagedón,$15.990,$13.990,Oferta,https://www.elpatiogeek.cl/products/llamagedon
-Código Secreto,$20.990,$18.500,Oferta,https://www.elpatiogeek.cl/products/codigo-secreto
+Rory's Story Cubes: Clasico (Blister Eco),$11.990,$10.500,Oferta,https://www.elpatiogeek.cl/products/rorysstorycubes-clasico
+Olé Guacamole,$10.990,$9.990,Oferta,https://www.elpatiogeek.cl/products/ole-guacamole
 Donde las Papas Queman: Apapalipsis,$16.990,$14.990,Oferta,https://www.elpatiogeek.cl/products/donde-las-papas-queman-apapalipsis
+Scout,$19.990,$16.990,Oferta,https://www.elpatiogeek.cl/products/scout
+Código Secreto,$20.990,$18.500,Oferta,https://www.elpatiogeek.cl/products/codigo-secreto
 Exit Vuelo hacia lo desconocido (Principiante),$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/exit-vuelo-hacia-lo-desconocido-principiante
 Fantasma Blitz,$15.990,$14.000,Oferta,https://www.elpatiogeek.cl/products/fantasma-blitz
 MindBug,$17.990,$15.990,Oferta,https://www.elpatiogeek.cl/products/mindbug
-Scout,$19.990,$16.990,Oferta,https://www.elpatiogeek.cl/products/scout
 Illusion,$12.990,,,https://www.elpatiogeek.cl/products/illusion
+Funda Stronghold Mini American (41 x 63 mm),$1.990,,,https://www.elpatiogeek.cl/products/funda-stronghold-mini-american-41mm-x-63mm
 Faraway,$22.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/faraway
 Streaking Kittens,$5.990,,,https://www.elpatiogeek.cl/products/streaking-kittens
 Akropolis,$24.990,$21.990,Oferta,https://www.elpatiogeek.cl/products/akropolis
@@ -102,53 +103,53 @@ Chupilca Gay Love,$10.990,$9.990,Oferta,https://www.elpatiogeek.cl/products/chup
 Ludo (LUD8),$9.990,$8.000,Oferta,https://www.elpatiogeek.cl/products/ludo-lud8
 MARVEL CHAMPIONS - CIVIL WAR EXPANSION,$47.990,$44.000,Oferta,https://www.elpatiogeek.cl/products/marvel-champions-civil-war-expansion
 Wingspan,$64.990,$58.990,Oferta,https://www.elpatiogeek.cl/products/wingspan
-Funda Stronghold Mini American (41 x 63 mm),$1.990,,,https://www.elpatiogeek.cl/products/funda-stronghold-mini-american-41mm-x-63mm
 La Palta Borracha,$10.990,$9.000,Oferta,https://www.elpatiogeek.cl/products/la-palta-borracha
 Love Letter Blister,$12.990,$11.500,Oferta,https://www.elpatiogeek.cl/products/love-letter-blister
+Mente Vacuna,$20.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/mente-vacuna
 Sushi Go Party,$22.990,$19.990,Oferta,https://www.elpatiogeek.cl/products/sushi-go-party
 Imploding Kittens,$16.990,$15.200,Oferta,https://www.elpatiogeek.cl/products/imploding-kittens
 Alcachofas ¡No gracias!,$12.990,$11.500,Oferta,https://www.elpatiogeek.cl/products/alcachofas-no-gracias
+Anda A Lavar,$15.990,$13.990,Oferta,https://www.elpatiogeek.cl/products/anda-a-lavar
 Sherlock Propagación,$3.990,,,https://www.elpatiogeek.cl/products/sherlock-propagacin
-Mente Vacuna,$20.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/mente-vacuna
 Dobble Impermeable,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/dobble-impermeable
 Sound Box,$29.990,$27.000,Oferta,https://www.elpatiogeek.cl/products/sound-box
 Yo Soy Tu Peli,$19.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/yo-soy-tu-peli
-Anda A Lavar,$15.990,$13.990,Oferta,https://www.elpatiogeek.cl/products/anda-a-lavar
+La Tripulación: Misión Mar Profundo,$19.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/la-tripulacion-mision-mar-profundo
 Suburbia,$62.990,$36.490,Oferta,https://www.elpatiogeek.cl/products/suburbia
+Survive The Island,$27.990,$25.990,Oferta,https://www.elpatiogeek.cl/products/survive-the-island
 Mazescape - Ariadne,$9.990,,,https://www.elpatiogeek.cl/products/regicide-display
 ¡Aventureros al Tren! Europa,$44.990,$39.990,Oferta,https://www.elpatiogeek.cl/products/aventureros-al-tren
-Colt Express,$32.990,$29.000,Oferta,https://www.elpatiogeek.cl/products/colt-express
-La Tripulación: Misión Mar Profundo,$19.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/la-tripulacion-mision-mar-profundo
-Carcassonne Basico (2da Edición),$29.990,$26.990,Oferta,https://www.elpatiogeek.cl/products/carcassonne-basico-2da-edicion
-Exit El Museo Misterioso (Principiante),$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/exit-el-museo-misterioso
-Survive The Island,$27.990,$25.990,Oferta,https://www.elpatiogeek.cl/products/survive-the-island
-El Abejorro Tramposo,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/el-abejorro-tramposo
-Taco Revés Cabra Queso Pizza,$11.990,$10.500,Oferta,https://www.elpatiogeek.cl/products/taco-reves-cabra-queso-pizza
 7 Wonders Edición 2020,$47.990,$44.990,Oferta,https://www.elpatiogeek.cl/products/7wondersedicion2020
 Rabbitz & Robots,$15.990,$14.000,Oferta,https://www.elpatiogeek.cl/products/rabbitz-robots
 Kittin,$12.990,$11.500,Oferta,https://www.elpatiogeek.cl/products/kittin
 The White Castle,$31.990,$28.500,Oferta,https://www.elpatiogeek.cl/products/the-white-castle
-Say My Name,$19.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/say-my-name
-Exploding Kittens El Bien Contra el Mal,$21.990,$19.990,Oferta,https://www.elpatiogeek.cl/products/exploding-kittens-el-bien-contra-el-mal
+Colt Express,$32.990,$29.000,Oferta,https://www.elpatiogeek.cl/products/colt-express
+Carcassonne Basico (2da Edición),$29.990,$26.990,Oferta,https://www.elpatiogeek.cl/products/carcassonne-basico-2da-edicion
 The Game,$12.990,$11.500,Oferta,https://www.elpatiogeek.cl/products/the-game
+Exit El Museo Misterioso (Principiante),$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/exit-el-museo-misterioso
+El Abejorro Tramposo,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/el-abejorro-tramposo
+Taco Revés Cabra Queso Pizza,$11.990,$10.500,Oferta,https://www.elpatiogeek.cl/products/taco-reves-cabra-queso-pizza
+Say My Name,$19.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/say-my-name
+Catan El Juego de Cartas,$10.990,$9.500,Oferta,https://www.elpatiogeek.cl/products/catan-el-juego-de-cartas
+Exploding Kittens El Bien Contra el Mal,$21.990,$19.990,Oferta,https://www.elpatiogeek.cl/products/exploding-kittens-el-bien-contra-el-mal
 No sin mi Gato,$12.990,$11.500,Oferta,https://www.elpatiogeek.cl/products/no-sin-mi-gato-2
 Barbecubes,$11.990,$9.990,Oferta,https://www.elpatiogeek.cl/products/barbecubes
 Bandido,$12.990,,,https://www.elpatiogeek.cl/products/bandido
 Rhino Hero,$13.990,$12.100,Oferta,https://www.elpatiogeek.cl/products/rhino-hero
 HINT Pocket - Español,$7.990,,,https://www.elpatiogeek.cl/products/hint-pocket-espanol
-Catan El Juego de Cartas,$10.990,$9.500,Oferta,https://www.elpatiogeek.cl/products/catan-el-juego-de-cartas
+Hive Pocket Nueva edición,$18.990,$17.500,Oferta,https://www.elpatiogeek.cl/products/hive-pocket-nueva-edicion
 Azul,$39.990,$37.990,Oferta,https://www.elpatiogeek.cl/products/azul
+DRAXOS Protectores Standard,$2.490,,,https://www.elpatiogeek.cl/products/draxos-protectores-standard
 La Banda de Condorito,$6.990,$3.990,Oferta,https://www.elpatiogeek.cl/products/la-banda-de-condorito
+MARVEL CHAMPIONS - TRICKSTER TAKEOVER SCENARIO PACK,$21.990,$20.000,Oferta,https://www.elpatiogeek.cl/products/marvel-champions-trickster-takeover-scenario-pack
 Throw Throw Avocado,$27.990,$24.990,Oferta,https://www.elpatiogeek.cl/products/throw-throw-avocado
 Condorito Rasca Cielos,$14.990,$7.990,Oferta,https://www.elpatiogeek.cl/products/condorito-rasca-cielos
-Hive Pocket Nueva edición,$18.990,$17.500,Oferta,https://www.elpatiogeek.cl/products/hive-pocket-nueva-edicion
 Soviet Kitchen,$17.990,$15.990,Oferta,https://www.elpatiogeek.cl/products/soviet-kitchen
 Burger ¡Ya!,$10.990,$9.990,Oferta,https://www.elpatiogeek.cl/products/burger-ya
 Zombie Kittens,$20.990,$19.000,Oferta,https://www.elpatiogeek.cl/products/zombie-kittens
 Mazescape: Cryo – C,$9.990,$8.500,Oferta,https://www.elpatiogeek.cl/products/regicide-display-1
 Century Maravillas del Oriente,$34.990,$19.990,Oferta,https://www.elpatiogeek.cl/products/century-maravillas-del-oriente
-DRAXOS Protectores Standard,$2.490,,,https://www.elpatiogeek.cl/products/draxos-protectores-standard
-MARVEL CHAMPIONS - TRICKSTER TAKEOVER SCENARIO PACK,$21.990,$20.000,Oferta,https://www.elpatiogeek.cl/products/marvel-champions-trickster-takeover-scenario-pack
+Tinderblox,$11.990,$9.990,Oferta,https://www.elpatiogeek.cl/products/tinderblox
 BrainBox Animales,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/brainbox-animales
 Cortex Challenge 3,$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/copia-de-cortex-challenge-3
 Dobble Connect,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/dobble-connect
@@ -176,20 +177,19 @@ Silver & Gold,$14.990,$10.500,Oferta,https://www.elpatiogeek.cl/products/silver-
 ¡No Puedo Parar! (Can’t Stop),$19.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/no-puedo-parar
 Sand,$29.990,$23.990,Oferta,https://www.elpatiogeek.cl/products/sand
 Unstable Unicorns: Dragones,$12.990,$11.500,Oferta,https://www.elpatiogeek.cl/products/unstable-unicorns-dragones
-Micro Macro,$35.990,$31.990,Oferta,https://www.elpatiogeek.cl/products/micro-macro
+Marvel Champions - Magneto,$15.990,$11.200,Oferta,https://www.elpatiogeek.cl/products/marvel-champions-magneto
 BrainBox El Mundo,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/brainbox-el-mundo
 Terapeuta de Pacotilla,$19.990,$17.500,Oferta,https://www.elpatiogeek.cl/products/terapeuta-de-pacotilla
 Joking Hazard,$24.990,$22.990,Oferta,https://www.elpatiogeek.cl/products/joking-hazard
 Cortex Kids,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/cortex-kids
 Exit La Cabaña Abandonada (Avanzado),$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/exit-la-cabana-abandonada
-Tinderblox,$11.990,$9.990,Oferta,https://www.elpatiogeek.cl/products/tinderblox
 Splendor Refresh,$34.990,$30.990,Oferta,https://www.elpatiogeek.cl/products/splendor-refresh
 8 BitBox,$34.990,$19.990,Oferta,https://www.elpatiogeek.cl/products/8-bitbox
 Exit: El laberinto Maldito,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/exit-el-laberinto-maldito
 Naturalia,$17.990,$15.990,Oferta,https://www.elpatiogeek.cl/products/naturalia
 Tapple (Basta en Ingles),$24.990,$14.990,Oferta,https://www.elpatiogeek.cl/products/tapple
-Marvel Champions - Magneto,$15.990,$11.200,Oferta,https://www.elpatiogeek.cl/products/marvel-champions-magneto
-Patchwork Andina,$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/patchwork-andina
+Takenoko: Chibis (Expansión),$21.990,$15.400,Oferta,https://www.elpatiogeek.cl/products/takenoko-chibis-expansion
+Cascadia,$44.990,$39.990,Oferta,https://www.elpatiogeek.cl/products/cascadia
 5 Minute Dungeon: ¡Maldición! ¡Otra vez no!,$22.990,$21.000,Oferta,https://www.elpatiogeek.cl/products/5-minute-dungeon-maldicion-otra-vez-no
 Asesino En Serie,$18.990,$17.000,Oferta,https://www.elpatiogeek.cl/products/asesino-en-serie
 Star Wars Unlimited - Jump to Lightspeed Spotlight Deck Display (Español),$24.990,$18.990,Oferta,https://www.elpatiogeek.cl/products/star-wars-unlimited-jump-to-lightspeed-spotlight-deck-display-espanol
@@ -198,9 +198,11 @@ Dobble Lilo y Stitch,$15.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/
 Lost Cities Exploradores,$19.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/lost-cities-exploradores
 Jungle Speed Eco,$17.990,$15.990,Oferta,https://www.elpatiogeek.cl/products/jungle-speed-eco
 Exit La Isla Olvidada (Avanzado),$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/exit-la-isla-olvidada-principiante
+Funda Stronghold Crystal Clear Perfect Fit (Inner) Standard 64x89mm,$2.490,,,https://www.elpatiogeek.cl/products/funda-stronghold-crystal-clear-perfect-fit-inner-standard-64x89mm
 Timeline Twist,$16.990,$14.500,Oferta,https://www.elpatiogeek.cl/products/timeline-twist
-Cascadia,$44.990,$39.990,Oferta,https://www.elpatiogeek.cl/products/cascadia
 Dobble Formas y Números,$12.990,,,https://www.elpatiogeek.cl/products/dobble-formas-y-numeros
+Unstable Unicorns Para Niños,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/unstable-unicorns-para-ninos
+"Si te ríes, tomas",$16.990,$14.900,Oferta,https://www.elpatiogeek.cl/products/si-te-ries-tomas
 ¡Aventureros al Tren! Londres,$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/aventureros-al-tren-londres
 Exit La Casa De Los Enigmas (Principiante),$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/exit-la-casa-de-los-enigmas
 Íntimoos,$24.990,$22.990,Oferta,https://www.elpatiogeek.cl/products/intimoos
@@ -213,65 +215,65 @@ Amazonia,$24.990,$21.990,Oferta,https://www.elpatiogeek.cl/products/amazonia
 Mazescape Kids: Hipnos,$9.990,$8.500,Oferta,https://www.elpatiogeek.cl/products/mazescape-kids-hipnos
 Marvel Champions - Iceman,$15.990,$11.200,Oferta,https://www.elpatiogeek.cl/products/marvel-champions-iceman
 Cielos de Metal,$34.990,$31.990,Oferta,https://www.elpatiogeek.cl/products/cielos-de-metal
-Takenoko: Chibis (Expansión),$21.990,$15.400,Oferta,https://www.elpatiogeek.cl/products/takenoko-chibis-expansion
 Everdell: Edición Esencial,$64.990,$58.990,Oferta,https://www.elpatiogeek.cl/products/everdell
 Exit El Castillo Prohibido (Experto),$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/exit-el-castillo-prohibido-experto
 ¡A Prueba de Retos!,$29.990,$27.000,Oferta,https://www.elpatiogeek.cl/products/a-prueba-de-retos
 Dixit Harmonies,$19.990,$18.000,Oferta,https://www.elpatiogeek.cl/products/dixit-harmonies
-Unstable Unicorns Para Niños,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/unstable-unicorns-para-ninos
 Unstable Unicorns: Unicornios de Leyenda,$12.990,$11.500,Oferta,https://www.elpatiogeek.cl/products/unstable-unicorns-unicornios-de-leyenda
-"Si te ríes, tomas",$16.990,$14.900,Oferta,https://www.elpatiogeek.cl/products/si-te-ries-tomas
 Dominion – Intriga II,$34.990,$31.990,Oferta,https://www.elpatiogeek.cl/products/dominion-intriga-ii
 Skull King,$19.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/skull-king
 Tras Los Pasos De Darwin,$35.990,$31.990,Oferta,https://www.elpatiogeek.cl/products/tras-los-pasos-de-darwin
 Villa Panda,$19.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/villa-panda
 Takenoko,$36.990,$32.990,Oferta,https://www.elpatiogeek.cl/products/takenoko
 ¡Aventureros al Tren! San Francisco,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/aventureros-al-tren-san-francisco
+GG Just Sleeves Clear Sleeves - Standard 250 uds. (66 x 92 mm),$8.990,,,https://www.elpatiogeek.cl/products/gg-just-sleeves-value-pack-clear-250
 A fake artist goes to New York,$22.990,$21.000,Oferta,https://www.elpatiogeek.cl/products/a-fake-artist-goes-to-new-york
 Unstable Unicorns: Aventuras,$12.990,$11.500,Oferta,https://www.elpatiogeek.cl/products/unstable-unicorns-aventuras
+Forest Shuffle,$32.990,$28.990,Oferta,https://www.elpatiogeek.cl/products/forest-shuffle
 Power Hungry Pets,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/power-hungry-pets
+Criaturas de las Sombras,$34.990,$31.990,Oferta,https://www.elpatiogeek.cl/products/criaturas-de-las-sombras
+Monopoly Deal,$5.990,$4.500,Oferta,https://www.elpatiogeek.cl/products/monopoly-deal
 Dobble Disney,$15.990,$14.500,Oferta,https://www.elpatiogeek.cl/products/dobble-disney
 Isla Calavera,$11.990,$9.990,Oferta,https://www.elpatiogeek.cl/products/isla-calavera
 HINT,$21.990,$19.990,Oferta,https://www.elpatiogeek.cl/products/hint
-Saboteur 2,$12.990,$9.990,Oferta,https://www.elpatiogeek.cl/products/saboteur-2
 Dungeon Petz,$54.990,$41.990,Oferta,https://www.elpatiogeek.cl/products/dungeon-petz
 My City,$34.990,$31.990,Oferta,https://www.elpatiogeek.cl/products/copia-de-ten
 Party & Co Family,$27.990,$24.990,Oferta,https://www.elpatiogeek.cl/products/party-co-family
 DOBBLE GIANT,$24.990,$22.990,Oferta,https://www.elpatiogeek.cl/products/dobble-giant
 Zombicide Segunda Edición,$109.990,$104.990,Oferta,https://www.elpatiogeek.cl/products/zombicide-segunda-edicion
 DRAXOS Protectores American Standard,$2.490,,,https://www.elpatiogeek.cl/products/protectores-american-standard
-Funda Stronghold Crystal Clear Perfect Fit (Inner) Standard 64x89mm,$2.490,,,https://www.elpatiogeek.cl/products/funda-stronghold-crystal-clear-perfect-fit-inner-standard-64x89mm
 Hero Realms La Perdición de Thandar,$17.990,$15.990,Oferta,https://www.elpatiogeek.cl/products/hero-realms-la-perdicion-de-thandar
 Concept,$29.990,$27.000,Oferta,https://www.elpatiogeek.cl/products/concept
+No Puedes Decir Eh!,$22.990,$19.990,Oferta,https://www.elpatiogeek.cl/products/no-puedes-decir-eh
 Timeline Twist Pop Culture,$13.990,$12.490,Oferta,https://www.elpatiogeek.cl/products/timeline-twist-pop-culture
 ¡Aventureros al Tren! Amsterdam,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/aventureros-al-tren-amsterdam
 Dragomino,$22.990,$21.000,Oferta,https://www.elpatiogeek.cl/products/dragominio
+Caca: El Juego,$9.990,$8.500,Oferta,https://www.elpatiogeek.cl/products/caca-el-juego
 Ubongo Classic,$35.990,$31.990,Oferta,https://www.elpatiogeek.cl/products/ubongo-trilingue
 Cometas,$19.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/cometas
-GG Just Sleeves Clear Sleeves - Standard 250 uds. (66 x 92 mm),$8.990,,,https://www.elpatiogeek.cl/products/gg-just-sleeves-value-pack-clear-250
+Magic Maze Kids,$32.990,$19.990,Oferta,https://www.elpatiogeek.cl/products/magic-maze-kids
 Bananagrams,$15.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/bananagrams
-Forest Shuffle,$32.990,$28.990,Oferta,https://www.elpatiogeek.cl/products/forest-shuffle
 Bang! El juego de dados,$19.990,$17.500,Oferta,https://www.elpatiogeek.cl/products/bang-el-juego-de-dados
 Ten,$21.990,$19.990,Oferta,https://www.elpatiogeek.cl/products/ten
 Hues and Cues,$29.990,$27.000,Oferta,https://www.elpatiogeek.cl/products/hues-and-cues
 SPLENDOR EL SOL NUNCA SE PONE,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/splendor-el-sol-nunca-se-pone
-Criaturas de las Sombras,$34.990,$31.990,Oferta,https://www.elpatiogeek.cl/products/criaturas-de-las-sombras
 Unmatched: Cobble & Fog (Español),$53.990,$47.990,Oferta,https://www.elpatiogeek.cl/products/unmatched-cobble-fog
 Concept Kids: Animales,$24.990,$22.000,Oferta,https://www.elpatiogeek.cl/products/concept-kids-animales
+Piko Piko,$19.990,$14.000,Oferta,https://www.elpatiogeek.cl/products/piko-piko
 La Morada Maldita y Los Tesoros de Pirita,$11.990,$9.990,Oferta,https://www.elpatiogeek.cl/products/la-morada-maldita-y-los-tesoros-de-pirita
 Jenga,$16.990,$13.990,Oferta,https://www.elpatiogeek.cl/products/jenga
-Monopoly Deal,$5.990,$4.500,Oferta,https://www.elpatiogeek.cl/products/monopoly-deal
 Regroup! Chicken Army,$13.990,,,https://www.elpatiogeek.cl/products/regroup-chicken-army
 Tabernas de Valfonda,$44.990,$39.990,Oferta,https://www.elpatiogeek.cl/products/tabernas-de-valfonda
 Nebula,$34.990,$30.990,Oferta,https://www.elpatiogeek.cl/products/nebula
 Carcassonne: Posadas y Catedrales (2da edición),$19.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/carcassonne-posadas-y-catedrales-2da-edicion-1
+Hitster Summer Hits,$24.990,$22.990,Oferta,https://www.elpatiogeek.cl/products/hitster-summer-hits
 Barking Kittens,$15.990,$14.200,Oferta,https://www.elpatiogeek.cl/products/barking-kittens
 UNLOCK! MINI LA CANCIÓN DE LA ESPUMA MARINA,$6.990,,,https://www.elpatiogeek.cl/products/unlock-mini-la-cancion-de-la-espuma-marina
-No Puedes Decir Eh!,$22.990,$19.990,Oferta,https://www.elpatiogeek.cl/products/no-puedes-decir-eh
+Forest Shuffle Linde del bosque,$11.990,$9.990,Oferta,https://www.elpatiogeek.cl/products/forest-shuffle-linde-del-bosque
 Brainbox Fútbol,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/brainbox-futbol
 Exit La Estación Polar (Avanzado),$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/exit-la-estacion-polar-avanzado
+Exit El Cementerio de las Tinieblas (Avanzado),$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/exit-el-cementerio-de-las-tinieblas-avanzado
 Yogi 2,$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/yogi
-Caca: El Juego,$9.990,$8.500,Oferta,https://www.elpatiogeek.cl/products/caca-el-juego
 Aves de Chile,$16.500,$15.200,Oferta,https://www.elpatiogeek.cl/products/aves-de-chile
 Super Cats,$13.990,$9.990,Oferta,https://www.elpatiogeek.cl/products/super-cats
 Pictures,$43.990,$33.000,Oferta,https://www.elpatiogeek.cl/products/pictures
@@ -279,12 +281,9 @@ La Previa,$19.990,$17.500,Oferta,https://www.elpatiogeek.cl/products/la-previa
 Fantasma Blitz Mini,$7.990,,,https://www.elpatiogeek.cl/products/fantasma-blitz-mini
 Taco Gatito Pizza,$11.990,$10.500,Oferta,https://www.elpatiogeek.cl/products/taco-gatito-pizza
 Amazonas,$12.990,$11.500,Oferta,https://www.elpatiogeek.cl/products/amazonas
-Magic Maze Kids,$32.990,$19.990,Oferta,https://www.elpatiogeek.cl/products/magic-maze-kids
-FOREST SHUFFLE CUMBRES ALPINAS,$11.990,,,https://www.elpatiogeek.cl/products/forest-shuffle-cumbres-alpinas
 Rory's Story Cubes: Acciones (Blister Eco),$11.990,$10.500,Oferta,https://www.elpatiogeek.cl/products/rorys-story-cubes-acciones-blister-eco
+Whispering Woods,$24.990,$21.990,Oferta,https://www.elpatiogeek.cl/products/whispering-woods
 Poquer de Bichos,$15.990,$14.200,Oferta,https://www.elpatiogeek.cl/products/poquer-de-bichos
-Piko Piko,$19.990,$14.000,Oferta,https://www.elpatiogeek.cl/products/piko-piko
-Belfort Edicion Limitada,$59.990,$34.990,Oferta,https://www.elpatiogeek.cl/products/belfort-edicion-limitada
 GG Altered Premium Markers,$19.990,$10.000,Oferta,https://www.elpatiogeek.cl/products/gg-altered-premium-markers
 Castle Party,$11.990,,,https://www.elpatiogeek.cl/products/castle-party
 Curao' Volao' o Weón Expansión,$12.990,$9.990,Oferta,https://www.elpatiogeek.cl/products/curao-volao-o-weon-expansion
@@ -296,24 +295,22 @@ Happy Little Dinosaurs - Citas Desastrosas,$12.990,$11.500,Oferta,https://www.el
 Block Block Burrito,$19.990,$18.000,Oferta,https://www.elpatiogeek.cl/products/block-block-burrito
 La Comunidad del Anillo - El juego de bazas,$21.990,$19.500,Oferta,https://www.elpatiogeek.cl/products/la-comunidad-del-anillo-el-juego-de-bazas
 Unánimo,$15.990,$13.990,Oferta,https://www.elpatiogeek.cl/products/unanimo
-Forest Shuffle Linde del bosque,$11.990,$9.990,Oferta,https://www.elpatiogeek.cl/products/forest-shuffle-linde-del-bosque
 Exit Kids: Acertijos en la Jungla,$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/exit-kids-acertijos-en-la-jungla
 TIEMPO DE TUMULTO,$34.990,$32.000,Oferta,https://www.elpatiogeek.cl/products/tiempo-de-tumulto
+Paren la Nave,$19.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/paren-la-nave
 ESE JUEGO DE LOS SONIDOS,$29.990,$27.000,Oferta,https://www.elpatiogeek.cl/products/ese-juego-de-los-sonidos
 VIEJOS GRUÑONES,$19.990,$17.500,Oferta,https://www.elpatiogeek.cl/products/viejos-grunones
-Exit El Cementerio de las Tinieblas (Avanzado),$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/exit-el-cementerio-de-las-tinieblas-avanzado
 La Torre Encantada,$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/la-torre-encantada
 DRAXOS Protectores Mini Euro,$1.990,,,https://www.elpatiogeek.cl/products/protectores-mini-euro
-¡PECA TÚ! (DEADLIES),$19.990,$14.000,Oferta,https://www.elpatiogeek.cl/products/peca-tu-deadlies
 PELUSAS: REVOLUTION,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/pelusas-revolution
-GG Matte BG Sleeves - Standard American (59 x 91 mm),$3.990,,,https://www.elpatiogeek.cl/products/gg-matte-bg-sleeves-standard-american-59-x-91-mm
-Whispering Woods,$24.990,$21.990,Oferta,https://www.elpatiogeek.cl/products/whispering-woods
 Exit La Mansión Siniestra (Avanzado),$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/exit-la-mansion-siniestra-avanzado
 Protectores - Mini Euro (45 x 68 mm),$3.490,,,https://www.elpatiogeek.cl/products/protectores-mini-euro-45-x-68-mm
 Susurro Bajo Tierra,$16.990,$15.200,Oferta,https://www.elpatiogeek.cl/products/susurro-bajo-tierra
 GG Prime BG Sleeves - Standard American (59 x 91 mm),$3.490,,,https://www.elpatiogeek.cl/products/gg-prime-bg-sleeves-standard-american-59-x-91-mm
 Crop Circle,$7.990,$6.400,Oferta,https://www.elpatiogeek.cl/products/crop-circle-2
 Draftosaurus,$19.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/draftosaurus
+Minino Desastre,$4.990,$4.000,Oferta,https://www.elpatiogeek.cl/products/minimo-desastre
+Monopoly Deal New,$4.990,,,https://www.elpatiogeek.cl/products/monopoly-deal-new
 Dominio de los Elementos,$19.990,$17.500,Oferta,https://www.elpatiogeek.cl/products/dominio-de-los-elementos
 Pa'l Viaje,$16.990,$13.000,Oferta,https://www.elpatiogeek.cl/products/pal-viaje
 "Hockey De Mesa, Fast Sling Puck (35x22x2.5cm)",$12.990,$11.500,Oferta,https://www.elpatiogeek.cl/products/hockey-de-mesa-fast-sling-puck-35x22x2-5cm
@@ -326,22 +323,25 @@ Barrio,$15.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/barrio
 GG Prime BG Sleeves - Dixit (81 x 122 mm),$5.490,,,https://www.elpatiogeek.cl/products/gg-prime-bg-sleeves-dixit-81-x-122-mm
 Dixit Revelations,$19.990,$17.500,Oferta,https://www.elpatiogeek.cl/products/dixit-revelations
 Next Station: London,$16.990,$11.900,Oferta,https://www.elpatiogeek.cl/products/next-station-london
-Hitster Summer Hits,$24.990,$22.990,Oferta,https://www.elpatiogeek.cl/products/hitster-summer-hits
 MARVEL CHAMPIONS - WONDER MAN HERO PACK,$15.990,$14.990,Oferta,https://www.elpatiogeek.cl/products/marvel-champions-wonder-man-hero-pack
 Mesa Para Dos,$19.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/mesa-para-dos
+Piles,$19.990,$17.500,Oferta,https://www.elpatiogeek.cl/products/piles
 Party Panda Pirates,$34.990,$29.990,Oferta,https://www.elpatiogeek.cl/products/party-panda-pirates
 Unmatched: Battle of Legends Volumen 1,$45.990,$42.990,Oferta,https://www.elpatiogeek.cl/products/unmatched-battle-of-legends-volumen-1-espanol
+Funda Stronghold Tarot 70x120mm,$3.449,,,https://www.elpatiogeek.cl/products/funda-stronghold-tarot-70x120mm
 Sherlock Express,$12.990,$11.500,Oferta,https://www.elpatiogeek.cl/products/sherlock-express
 Catfé,$16.990,$15.200,Oferta,https://www.elpatiogeek.cl/products/catfe
 El gato y la torre,$21.990,$19.990,Oferta,https://www.elpatiogeek.cl/products/el-gato-y-la-torre
 Play HIT,$24.990,$21.990,Oferta,https://www.elpatiogeek.cl/products/play-hit
+TWISTED CRYPTIDS,$21.990,$20.000,Oferta,https://www.elpatiogeek.cl/products/twisted-cryptids
 Quoridor Pac Man,$39.990,$33.990,Oferta,https://www.elpatiogeek.cl/products/quoridor-pac-man
+Fantasma Blitz 2.0,$15.990,$13.990,Oferta,https://www.elpatiogeek.cl/products/fantasma-blitz-2-0
 La Escalera Encantada,$29.990,$27.000,Oferta,https://www.elpatiogeek.cl/products/la-escalera-encantada
 Codigo Secreto Duo 2ª edición,$21.990,$19.000,Oferta,https://www.elpatiogeek.cl/products/codigo-secreto-duo
 Deckbox Donde las Papas Queman,$8.990,$6.500,Oferta,https://www.elpatiogeek.cl/products/deckbox-donde-las-papas-queman
 Dados Pato Mar,$13.990,$11.990,Oferta,https://www.elpatiogeek.cl/products/dados-pato-mar
 Misión Cumplida,$12.990,$11.500,Oferta,https://www.elpatiogeek.cl/products/mision-cumplida
-The White Castle Matcha,$24.990,$21.990,Oferta,https://www.elpatiogeek.cl/products/the-white-castle-matcha
+Exit: El legado del Profesor (Avanzado),$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/exit-el-legado-del-profesor-avanzado
 Gold West,$44.990,$25.990,Oferta,https://www.elpatiogeek.cl/products/gold-west
 Munchkin,$27.990,$24.990,Oferta,https://www.elpatiogeek.cl/products/copia-de-1000-km
 HIVE POCKET ULTIMATE,$21.990,$19.500,Oferta,https://www.elpatiogeek.cl/products/hive-pocket-ultimate
@@ -360,8 +360,6 @@ Azul Duel,$26.990,$23.990,Oferta,https://www.elpatiogeek.cl/products/azul-duel
 Hero Realms: Linaje Display,$5.990,,,https://www.elpatiogeek.cl/products/hero-realms-linaje-display
 Pylos,$32.990,$28.990,Oferta,https://www.elpatiogeek.cl/products/pylos
 Un Día en las Carreras,$34.990,$31.990,Oferta,https://www.elpatiogeek.cl/products/un-dia-en-las-carreras
-Minino Desastre,$4.990,$4.000,Oferta,https://www.elpatiogeek.cl/products/minimo-desastre
-Monopoly Deal New,$4.990,,,https://www.elpatiogeek.cl/products/monopoly-deal-new
 La Asamblea del Mal,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/la-asamblea-del-mal
 Black Stories Vacaciones,$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/black-stories-vacaciones
 Captain Flip,$31.990,$29.990,Oferta,https://www.elpatiogeek.cl/products/captain-flip
@@ -369,6 +367,7 @@ Lost Cities: Roll & Write,$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/prod
 En Una Escala de 1 a T-Rex,$19.990,$18.000,Oferta,https://www.elpatiogeek.cl/products/en-una-escala-de-1-a-t-rex
 Wizard,$12.990,,,https://www.elpatiogeek.cl/products/wizard
 Exit: La Desaparición de Sherlock Holmes (Avanzado),$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/exit-la-desaparicion-de-sherlock-holmes-avanzado
+Zombicide Segunda Edición Tiles Set,$19.990,$12.000,Oferta,https://www.elpatiogeek.cl/products/zombicide-segunda-edicion-tiles-set
 Dixit Memories,$19.990,$17.500,Oferta,https://www.elpatiogeek.cl/products/dixit-memories
 Circadians: Primera Luz,$49.990,$34.990,Oferta,https://www.elpatiogeek.cl/products/circadians-primera-luz-1
 Three Sisters,$29.990,$22.990,Oferta,https://www.elpatiogeek.cl/products/three-sisters
@@ -377,29 +376,25 @@ Blue Lagoon,$24.990,$21.990,Oferta,https://www.elpatiogeek.cl/products/blue-lago
 Paleo,$44.990,$39.990,Oferta,https://www.elpatiogeek.cl/products/paleo
 Maui,$39.990,$24.990,Oferta,https://www.elpatiogeek.cl/products/maui
 SET,$15.990,$14.000,Oferta,https://www.elpatiogeek.cl/products/illusion-copia
-Piles,$19.990,$17.500,Oferta,https://www.elpatiogeek.cl/products/piles
 Memorice Solaris,$16.500,$14.000,Oferta,https://www.elpatiogeek.cl/products/memorice-solaris
 Unmatched Battle of the Legends Volumen 2,$44.990,$39.990,Oferta,https://www.elpatiogeek.cl/products/unmatched-battle-of-the-legends-volumen-2
-Carcassonne: La Princesa y el Dragon (2da edición),$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/carcassonne-laprincesayeldrag
 MARVEL CHAMPIONS - SYNTHEZOID SMACKDOWN SCENARIO PACK,$24.990,$22.500,Oferta,https://www.elpatiogeek.cl/products/marvel-champions-synthezoid-smackdown-scenario-pack
 Colo Colo 100 Años,$23.990,$21.500,Oferta,https://www.elpatiogeek.cl/products/colo-colo-100-anos
 Exploding Kittens Catchables Core Pack,$19.990,$17.500,Oferta,https://www.elpatiogeek.cl/products/exploding-kittens-catchables-core-pack
 TELESTRATIONS 80S Y 90S EXPANSION,$7.990,$5.990,Oferta,https://www.elpatiogeek.cl/products/telestrations-80s-y-90s-expansion
-Paren la Nave,$19.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/paren-la-nave
-¡AVENTUREROS AL TREN! AURORA BOREAL,$44.990,$39.990,Oferta,https://www.elpatiogeek.cl/products/aventureros-al-tren-aurora-boreal
-TWISTED CRYPTIDS,$21.990,$20.000,Oferta,https://www.elpatiogeek.cl/products/twisted-cryptids
-Fantasma Blitz 2.0,$15.990,$13.990,Oferta,https://www.elpatiogeek.cl/products/fantasma-blitz-2-0
 PLANET,$46.990,$42.300,Oferta,https://www.elpatiogeek.cl/products/planet
 Sanssouci,$35.990,$25.200,Oferta,https://www.elpatiogeek.cl/products/sanssouci
 La Noche de Gansferatu,$15.990,$13.990,Oferta,https://www.elpatiogeek.cl/products/la-noche-de-gansferatu
-Exit: El legado del Profesor (Avanzado),$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/exit-el-legado-del-profesor-avanzado
-Smart 10,$25.990,$22.990,Oferta,https://www.elpatiogeek.cl/products/smart-10
+DRAXOS Protectores Chimera,$2.490,,,https://www.elpatiogeek.cl/products/draxos-protectores-chimera
+ILAN: Explorando la Vida Antártica,$21.990,$19.500,Oferta,https://www.elpatiogeek.cl/products/ilan-explorando-la-vida-antartica
+Preguntas de mierda 2ª edición,$19.990,$17.500,Oferta,https://www.elpatiogeek.cl/products/preguntas-de-mierda-2%C2%AA-edicion
 GG Matte BG Sleeves - Standard (66 x 91 mm),$3.990,,,https://www.elpatiogeek.cl/products/gg-matte-bg-sleeves-standard-66-x-91-mm
 Dragones Del Mar,$34.990,$30.990,Oferta,https://www.elpatiogeek.cl/products/dragones-del-mar
+Coloretto,$12.990,$11.500,Oferta,https://www.elpatiogeek.cl/products/coloretto
 La Búsqueda del Planeta X,$45.990,$40.990,Oferta,https://www.elpatiogeek.cl/products/la-busqueda-del-planeta-x
 Quorum,$25.990,$19.990,Oferta,https://www.elpatiogeek.cl/products/quorum
 Altered Trial by Frost - Booster Display - Sobres (Inglés),$4.490,$2.000,Oferta,https://www.elpatiogeek.cl/products/altered-trial-by-frost-booster-display-sobre-ingles
-Altered - Starter Deck Yzmir,$14.990,$12.000,Oferta,https://www.elpatiogeek.cl/products/altered-starter-deck-yzmir
+Next Station: Paris,$16.990,$11.900,Oferta,https://www.elpatiogeek.cl/products/next-station-paris
 Trama,$27.990,$19.600,Oferta,https://www.elpatiogeek.cl/products/trama
 Cities,$25.990,$22.000,Oferta,https://www.elpatiogeek.cl/products/cities
 Flash 10 ⚡,$9.990,$8.500,Oferta,https://www.elpatiogeek.cl/products/flash-10-%E2%9A%A1
@@ -411,12 +406,12 @@ Danger Danger,$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/danger-
 El Monstruo de Colores,$29.990,$27.000,Oferta,https://www.elpatiogeek.cl/products/el-monstruo-de-colores
 Misión Chungungo,$13.990,$9.800,Oferta,https://www.elpatiogeek.cl/products/mision-chungungo
 Multiverse Money,$12.990,$9.990,Oferta,https://www.elpatiogeek.cl/products/multiverse-money
-Zombicide Segunda Edición Tiles Set,$19.990,$12.000,Oferta,https://www.elpatiogeek.cl/products/zombicide-segunda-edicion-tiles-set
 Llamaland,$35.990,$29.990,Oferta,https://www.elpatiogeek.cl/products/llamaland
 Happy Little Dinosaurs Los Peligros de la Pubertad,$12.990,$11.500,Oferta,https://www.elpatiogeek.cl/products/happy-little-dinosaurs-los-peligros-de-la-pubertad
 No Game Over,$19.990,$18.000,Oferta,https://www.elpatiogeek.cl/products/no-game-over
 Onirim,$27.990,$24.990,Oferta,https://www.elpatiogeek.cl/products/copia-de-gummi-land
 King Of Tokyo Origins,$29.990,$24.000,Oferta,https://www.elpatiogeek.cl/products/king-of-tokyo-origins
+Jardines de Bolsillo,$12.990,$11.500,Oferta,https://www.elpatiogeek.cl/products/jardines-de-bolsillo
 P DE PIZZA,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/p-de-pizza
 La Resistencia: Avalon,$24.990,$21.990,Oferta,https://www.elpatiogeek.cl/products/la-resistencia-avalon
 Catan: Mercaderes y Barbaros de Catan,$34.990,$31.990,Oferta,https://www.elpatiogeek.cl/products/catanjunior
@@ -424,46 +419,38 @@ Catan: Mercaderes y Barbaros de Catan,$34.990,$31.990,Oferta,https://www.elpatio
 Micro Macro Kids,$32.990,$29.990,Oferta,https://www.elpatiogeek.cl/products/micro-macro-kids
 High Society,$17.990,$15.990,Oferta,https://www.elpatiogeek.cl/products/high-society
 Unmatched: Robin Hood VS Bigfoot (Español),$36.990,$32.990,Oferta,https://www.elpatiogeek.cl/products/unmatched-robin-hood-vs-bigfoot-espanol
-Funda Stronghold Tarot 70x120mm,$3.449,,,https://www.elpatiogeek.cl/products/funda-stronghold-tarot-70x120mm
 Unmatched: Caperucita Roja VS Beowulf (Español),$36.990,$32.990,Oferta,https://www.elpatiogeek.cl/products/unmatched-caperucita-roja-vs-beowulf-espanol
 Line-It,$13.990,$10.500,Oferta,https://www.elpatiogeek.cl/products/line-it
 DOMINIO DE LOS ELEMENTOS - ARENA Y VIENTO,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/dominio-de-los-elementos-arena-y-viento
 PAREJA DE PACOTILLA,$22.990,$19.990,Oferta,https://www.elpatiogeek.cl/products/pareja-de-pacotilla
 UNLOCK! MINI 12 EL CORAZÓN DEL OCÉANO,$6.990,,,https://www.elpatiogeek.cl/products/unlock-mini-12-el-corazon-del-oceano
 PILI PILI,$19.990,$17.500,Oferta,https://www.elpatiogeek.cl/products/pili-pili
-Micro Macro: All In,$35.990,$31.990,Oferta,https://www.elpatiogeek.cl/products/micro-macro-crime-city-all-in
 Yo Siento,$16.500,$15.200,Oferta,https://www.elpatiogeek.cl/products/yo-siento
 Los colores de mi huerta,$16.500,$14.500,Oferta,https://www.elpatiogeek.cl/products/los-colores-de-mi-huerta
-Art Society,$44.990,$39.990,Oferta,https://www.elpatiogeek.cl/products/art-society
 Cascadia: Hitos Expansión,$38.990,$34.990,Oferta,https://www.elpatiogeek.cl/products/cascadia-hitos-expansion
 EXPLODING KITTENS THE BOARD GAME - SUPER FAN EDITION (PREMIUM VERSION),$29.990,$27.000,Oferta,https://www.elpatiogeek.cl/products/exploding-kittens-the-board-game-super-fan-edition-premium-version
 Catan El Duelo,$24.990,$21.990,Oferta,https://www.elpatiogeek.cl/products/catan-el-duelo
-Twilight Struggle: La Guerra Fría,$39.990,$36.990,Oferta,https://www.elpatiogeek.cl/products/twilight-struggle-la-guerra-fria
-DRAXOS Protectores Chimera,$2.490,,,https://www.elpatiogeek.cl/products/draxos-protectores-chimera
+Cabanga!,$9.990,$8.500,Oferta,https://www.elpatiogeek.cl/products/cabanga
 DRAXOS Inner Sealable Sleeves Standar,$2.990,,,https://www.elpatiogeek.cl/products/draxos-inner-sealable-sleeves-standar
-ILAN: Explorando la Vida Antártica,$21.990,$19.500,Oferta,https://www.elpatiogeek.cl/products/ilan-explorando-la-vida-antartica
 Bibliotecarios Gritones,$29.990,$27.000,Oferta,https://www.elpatiogeek.cl/products/bibliotecarios-gritones
-Preguntas de mierda 2ª edición,$19.990,$17.500,Oferta,https://www.elpatiogeek.cl/products/preguntas-de-mierda-2%C2%AA-edicion
 Las Leyendas de Andor Junior,$29.990,$26.990,Oferta,https://www.elpatiogeek.cl/products/las-leyendas-de-andor-junior
-Dorfromantik,$46.990,$40.990,Oferta,https://www.elpatiogeek.cl/products/dorfromantik
+The Cousins War,$15.990,$10.990,Oferta,https://www.elpatiogeek.cl/products/the-cousins-war
 Grúa de Peluches,$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/grua-de-peluches
 POH! EXPANSIÓN S.D.A. (+18 AÑOS),$4.990,,,https://www.elpatiogeek.cl/products/poh-expansion-s-d-a-18-anos
 DOBBLE CATAN,$16.990,$14.990,Oferta,https://www.elpatiogeek.cl/products/dobble-catan
 Crónicas de Avel: Adventurer Toolkit,$4.990,,,https://www.elpatiogeek.cl/products/cronicas-de-avel-adventurer-toolkit
 Welcome: Hacia el perfecto hogar ( Segunda edición ),$24.990,$21.990,Oferta,https://www.elpatiogeek.cl/products/welcome-hacia-el-perfecto-hogar
-Coloretto,$12.990,$11.500,Oferta,https://www.elpatiogeek.cl/products/coloretto
 DOBBLE DINOSAURS ECO SLEEVE,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/dobble-dinosaurs-eco-sleeve
+Star Wars The Deckbuilding Game - Clone Wars,$37.990,$33.000,Oferta,https://www.elpatiogeek.cl/products/star-wars-the-deckbuilding-game-clone-wars
 GG Matte BG Sleeves - Square (73 x 73 mm),$3.990,,,https://www.elpatiogeek.cl/products/gg-matte-bg-sleeves-square-73-x-73-mm
 Timeline Twist Star Wars,$16.990,$15.200,Oferta,https://www.elpatiogeek.cl/products/timeline-twist-star-wars
 Dive,$29.990,$19.990,Oferta,https://www.elpatiogeek.cl/products/dive
 Fritanga,$13.990,$11.990,Oferta,https://www.elpatiogeek.cl/products/fritanga
 Magic Maze Expansión: Roles Ocultos,$14.990,$9.990,Oferta,https://www.elpatiogeek.cl/products/magic-maze-expansion-roles-ocultos
 GG Altered Premium Adventure Track,$19.990,$15.000,Oferta,https://www.elpatiogeek.cl/products/gg-altered-premium-adventure-track
-Grafaiai Ex Box (Inglés),$24.990,$19.990,Oferta,https://www.elpatiogeek.cl/products/grafaiai-ex-box-producto-en-ingles
 Hero Realms Mazo de Jefe Dragón,$7.990,$6.500,Oferta,https://www.elpatiogeek.cl/products/hero-realms-mazo-de-jefe-dragon
 Poltergeist,$16.990,$13.000,Oferta,https://www.elpatiogeek.cl/products/poltergeist
 Black Stories Cadaveres y Mala Suerte,$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/black-stories-cadaveres-y-mala-suerte
-Next Station: Paris,$16.990,$11.900,Oferta,https://www.elpatiogeek.cl/products/next-station-paris
 Zombie Burrito,$24.990,$21.990,Oferta,https://www.elpatiogeek.cl/products/zombie-burrito
 Yapo ¡te toca!,$16.990,$13.000,Oferta,https://www.elpatiogeek.cl/products/yapo-te-toca
 Celestia,$30.990,$26.990,Oferta,https://www.elpatiogeek.cl/products/celestia
@@ -474,6 +461,7 @@ Similo - Fábulas,$9.990,,,https://www.elpatiogeek.cl/products/similo-fabulas
 Zombicide: Gear Up,$24.990,$22.990,Oferta,https://www.elpatiogeek.cl/products/zombicide-gear-up
 What Do You Meme? Edición Familiar,$24.990,$21.990,Oferta,https://www.elpatiogeek.cl/products/what-do-you-meme-edicion-familiar
 Dobble Paw Patrol,$15.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/dobble-paw-patrol
+Next Station: Tokyo,$16.990,$14.500,Oferta,https://www.elpatiogeek.cl/products/next-station-tokyo
 Kawarimi,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/kawarimi
 Pikit,$15.990,$14.200,Oferta,https://www.elpatiogeek.cl/products/pikit
 Coalt,$39.990,$29.990,Oferta,https://www.elpatiogeek.cl/products/coalt
@@ -488,18 +476,18 @@ Meeple Land,$32.990,$28.990,Oferta,https://www.elpatiogeek.cl/products/meeple-la
 Mind Bug Fruta de Batallas Galaxia,$25.990,$22.990,Oferta,https://www.elpatiogeek.cl/products/mind-bug-fruta-de-batallas-galaxia
 El Señor de los Anillos Aventura Hacia El Monte Del Destino,$34.990,$31.990,Oferta,https://www.elpatiogeek.cl/products/el-senor-de-los-anillos-aventura-hacia-el-monte-del-destino
 Mind Bug Fruta de Batallas Reino,$25.990,$22.990,Oferta,https://www.elpatiogeek.cl/products/mind-bug-fruta-de-batallas-reino
-Jardines de Bolsillo,$12.990,$11.500,Oferta,https://www.elpatiogeek.cl/products/jardines-de-bolsillo
+Fiebre de Papas por la Noche,$15.990,$13.990,Oferta,https://www.elpatiogeek.cl/products/fiebre-de-papas-por-la-noche
 Montaña Pingüino,$22.990,$19.990,Oferta,https://www.elpatiogeek.cl/products/montana-pinguino
 Simplicity,$22.990,$15.990,Oferta,https://www.elpatiogeek.cl/products/simplicity
 Linko,$12.990,$9.990,Oferta,https://www.elpatiogeek.cl/products/linko
 UNLOCK! MINI - LA ESCALADA,$6.990,,,https://www.elpatiogeek.cl/products/unlock-mini-la-escalada
+Exit Conspiración en Venencia,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/exit-conspiracion-en-venencia
 Panots,$15.990,$14.200,Oferta,https://www.elpatiogeek.cl/products/panots
 Colour Brain (Nueva Edición),$22.990,$19.990,Oferta,https://www.elpatiogeek.cl/products/colour-brain-nueva-edicion
 Terraforming Mars,$64.990,$58.990,Oferta,https://www.elpatiogeek.cl/products/terraforming-mars
 HEAT - TERRENO INESTABLE,$29.990,$27.000,Oferta,https://www.elpatiogeek.cl/products/heat-terreno-inestable
 UNLOCK! - ENCHANTED ADVENTURES,$31.990,$28.500,Oferta,https://www.elpatiogeek.cl/products/unlock-enchanted-adventures
 Onus Roma vs Cartago,$37.990,$19.990,Oferta,https://www.elpatiogeek.cl/products/onus-roma-vs-cartago
-Peak Oil,$44.990,$22.990,Oferta,https://www.elpatiogeek.cl/products/peak-oil
 MIGUEL STROGOFF,$26.990,$14.990,Oferta,https://www.elpatiogeek.cl/products/miguel-strogoff
 Patchwork San Valentín,$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/patchwork-san-valentin
 GG SPLENDOR ART SLEEVES,$15.990,,,https://www.elpatiogeek.cl/products/gg-splendor-art-sleeves
@@ -507,6 +495,7 @@ Micro Macro: Showdown,$35.990,$31.990,Oferta,https://www.elpatiogeek.cl/products
 Nínive,$10.990,$9.100,Oferta,https://www.elpatiogeek.cl/products/ninive
 Pequeños Grandes Mechs,$21.990,$19.990,Oferta,https://www.elpatiogeek.cl/products/copia-de-carcassonne-colinas-y-ovejas-2da-edicion
 Imagine Refresh,$21.990,$20.000,Oferta,https://www.elpatiogeek.cl/products/imagine
+GG JUST SLEEVES - STANDARD AMERICAN (50),$1.990,,,https://www.elpatiogeek.cl/products/gg-just-sleeves-standard-american-50
 GG Prime BG Sleeves - Mini American (44 x 67 mm),$3.490,,,https://www.elpatiogeek.cl/products/gg-prime-bg-sleeves-mini-american-44-x-67-mm
 Dice Throne 3 Piromante vs Ladrón Sombrío,$33.990,$29.990,Oferta,https://www.elpatiogeek.cl/products/copia-de-dice-throne-monje-vs-paladin
 Catan: Piratas y Exploradores de Catan,$39.990,$36.990,Oferta,https://www.elpatiogeek.cl/products/copia-de-clank
@@ -514,22 +503,23 @@ Clank,$59.990,$54.990,Oferta,https://www.elpatiogeek.cl/products/clank
 Carrera Carroña,$12.990,$11.500,Oferta,https://www.elpatiogeek.cl/products/carrera-carrona
 GIGANTES MOVIENDO MUEBLECITOS,$24.990,$22.990,Oferta,https://www.elpatiogeek.cl/products/gigantes-moviendo-mueblecitos
 ¡AVENTUREROS AL TREN! ASIA,$37.990,$34.990,Oferta,https://www.elpatiogeek.cl/products/aventureros-al-tren-asia
-Cabanga!,$9.990,$8.500,Oferta,https://www.elpatiogeek.cl/products/cabanga
 Animazombis,$17.990,$9.990,Oferta,https://www.elpatiogeek.cl/products/animazombis
 DRAXOS Protectores Dixit 80x120mm Magnum Premium,$2.990,,,https://www.elpatiogeek.cl/products/draxos-protectores-dixit-80x120mm-magnum-premium
 7 WONDERS DICE,$29.990,$27.000,Oferta,https://www.elpatiogeek.cl/products/7-wonders-dice
 Alhambra Edición 2020,$37.990,$34.990,Oferta,https://www.elpatiogeek.cl/products/copia-de-kingdomino
-The Cousins War,$15.990,$10.990,Oferta,https://www.elpatiogeek.cl/products/the-cousins-war
 BANG! EXPLOSION DE DADOS,$44.990,$40.990,Oferta,https://www.elpatiogeek.cl/products/bang-explosion-de-dados
 DAME CINCO,$9.990,$9.000,Oferta,https://www.elpatiogeek.cl/products/dame-cinco
 Smart 10 - Música Paquete de Ampliación,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/smart-10-musica-paquete-de-ampliacion
+GG Just Sleeves Clear Sleeves - Standard ( 66 x 92 mm),$1.990,,,https://www.elpatiogeek.cl/products/just-sleeves-standard-card-game-clear-50
 Fórmula 31,$19.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/formula-31
 Alebrijes,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/alebrijes
 POH! EXPANSIÓN ANIMALES,$4.990,,,https://www.elpatiogeek.cl/products/poh-expansion-animales
 El Susurro de las Hojas,$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/el-susurro-de-las-hojas
+BAJO LAS HOJAS,$24.990,$21.990,Oferta,https://www.elpatiogeek.cl/products/bajo-las-hojas
 Marvel Champions - Falcon Hero Pack,$15.990,$14.100,Oferta,https://www.elpatiogeek.cl/products/marvel-champions-falcon-hero-pack-copia
 Desamparados,$24.990,$21.990,Oferta,https://www.elpatiogeek.cl/products/desamparados
 Coleccionistas de Bichos Raros,$21.490,$19.000,Oferta,https://www.elpatiogeek.cl/products/coleccionistas-de-bichos-raros
+Rescate Animal,$17.990,$15.990,Oferta,https://www.elpatiogeek.cl/products/rescate-animal
 BrainBox Imágenes,$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/brainbox-imagenes
 GG Prime BG Sleeves - Square (73 x 73 mm),$3.490,,,https://www.elpatiogeek.cl/products/gg-prime-bg-sleeves-square-73-x-73-mm
 Siempre de WN,$19.990,$18.000,Oferta,https://www.elpatiogeek.cl/products/siempre-de-wn
@@ -538,11 +528,11 @@ HAPPY MOCHI - CLUTCH BOX,$11.990,$9.990,Oferta,https://www.elpatiogeek.cl/produc
 GG Altered Expedition Soft Box - Beyond the Gates,$7.900,$5.500,Oferta,https://www.elpatiogeek.cl/products/gg-altered-expedition-soft-box-beyond-the-gates
 NOVA ERA,$34.990,$32.990,Oferta,https://www.elpatiogeek.cl/products/nova-era
 Altered Beyond the Gates - Booster Display (Inglés),$161.640,$120.000,Oferta,https://www.elpatiogeek.cl/products/altered-beyond-the-gates-booster-display-ingles
-Monopoly Knockout,$24.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/monopoly-knockout
 GG Altered Prime Gamemat XL,$34.990,$27.000,Oferta,https://www.elpatiogeek.cl/products/gg-altered-prime-gamemat-xl
 GG Altered Premium Hero Standees - Ordis,$9.990,$8.000,Oferta,https://www.elpatiogeek.cl/products/gg-altered-premium-hero-standees-ordis
 GG Altered Premium Hero Standees - Lyra,$9.990,$8.000,Oferta,https://www.elpatiogeek.cl/products/gg-altered-premium-hero-standees-lyra
 GG Altered Premium Hero Standees - Yzmir,$9.990,$8.000,Oferta,https://www.elpatiogeek.cl/products/gg-altered-premium-hero-standees-yzmir
+GG ALTERED ART SLEEVES - ICE STORM,$7.490,$5.000,Oferta,https://www.elpatiogeek.cl/products/gg-altered-art-sleeves-ice-storm
 HILO,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/hilo
 Lista de Santa,$12.990,$9.990,Oferta,https://www.elpatiogeek.cl/products/lista-de-santa
 Unlock! Miniaventuras - Recetas Secretas de Antaño,$6.990,,,https://www.elpatiogeek.cl/products/unlock-miniaventuras-recetas-secretas-de-antano
@@ -554,11 +544,13 @@ Daitoshi,$59.990,$48.000,Oferta,https://www.elpatiogeek.cl/products/daitoshi
 GG Altered Premium Hero Standees - Axiom,$9.990,$8.000,Oferta,https://www.elpatiogeek.cl/products/gg-altered-premium-hero-standees-axiom
 Saber Ancestral,$44.990,$37.990,Oferta,https://www.elpatiogeek.cl/products/8-bitbox-copia
 Star Wars Unlimited - Twilight of the Republic Booster Display (Español),$119.760,$96.000,Oferta,https://www.elpatiogeek.cl/products/star-wars-unlimited-twilight-of-the-republic-booster-display-espanol
-Next Station: Tokyo,$16.990,$14.500,Oferta,https://www.elpatiogeek.cl/products/next-station-tokyo
 ¡Campeones!,$21.990,$17.600,Oferta,https://www.elpatiogeek.cl/products/campeones
 Adopta un Callejero,$15.990,$11.000,Oferta,https://www.elpatiogeek.cl/products/adopta-un-callejero
+Corrales a Tope,$4.990,$4.000,Oferta,https://www.elpatiogeek.cl/products/corrales-a-tope-1
 Schotten Totten 2,$15.990,$10.990,Oferta,https://www.elpatiogeek.cl/products/schotten-totten-2
 "Puzzle juego busca y encuentra, conciencia ecológica ""Brigada Planeta""",$10.990,,,https://www.elpatiogeek.cl/products/puzle-juego-busca-y-encuentra-conciencia-ecologica-brigada-planeta
+Zenith,$39.990,,,https://www.elpatiogeek.cl/products/zenith
+Turing Machine,$56.990,,,https://www.elpatiogeek.cl/products/turing-machine
 Nucleum,$74.990,$68.990,Oferta,https://www.elpatiogeek.cl/products/nucleum
 Pioneros de la aviación,$44.990,$35.990,Oferta,https://www.elpatiogeek.cl/products/pioneros-de-la-aviacion
 MindBug — Más Allá: Eternidad,$22.990,$21.000,Oferta,https://www.elpatiogeek.cl/products/mind-bug-mas-alla-eternidad
@@ -566,33 +558,36 @@ MindBug: Primer Contacto Nuevas Criaturas,$14.990,$13.500,Oferta,https://www.elp
 Ming Bug King of Tokio,$29.990,$26.990,Oferta,https://www.elpatiogeek.cl/products/ming-bug-king-of-tokio
 MindBug — Más Allá: Evolución,$22.990,$21.000,Oferta,https://www.elpatiogeek.cl/products/mind-bug-mas-alla-evolucion
 Space Base,$39.990,$34.990,Oferta,https://www.elpatiogeek.cl/products/space-base
+Spring,$9.990,,,https://www.elpatiogeek.cl/products/spring
 Pagan: El Destino de Roanoke,$39.990,$36.990,Oferta,https://www.elpatiogeek.cl/products/pagan-el-destino-de-roanoke
 Cosas en Circulos,$24.990,$21.990,Oferta,https://www.elpatiogeek.cl/products/cosas-en-circulos
 Earth,$52.990,$46.990,Oferta,https://www.elpatiogeek.cl/products/earth
 Wyrmspan,$69.990,$64.990,Oferta,https://www.elpatiogeek.cl/products/wyrmspan
 Five Tribes,$54.990,$49.990,Oferta,https://www.elpatiogeek.cl/products/five-tribes
-Fiebre de Papas por la Noche,$15.990,$13.990,Oferta,https://www.elpatiogeek.cl/products/fiebre-de-papas-por-la-noche
 Salami (Deluxe),$49.990,$44.990,Oferta,https://www.elpatiogeek.cl/products/salami-deluxe
 DOBBLE ONE PIECE,$16.990,$14.990,Oferta,https://www.elpatiogeek.cl/products/dobble-one-piece
 DEWAN,$37.990,$34.990,Oferta,https://www.elpatiogeek.cl/products/dewan
+Cards vs Gravity Pro,$19.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/cards-vs-gravity-pro
 Barbecubes Veggie,$11.990,$9.990,Oferta,https://www.elpatiogeek.cl/products/barbecubes-veggie
-Exit Conspiración en Venencia,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/exit-conspiracion-en-venencia
 Linkee,$23.990,$21.500,Oferta,https://www.elpatiogeek.cl/products/linkee
 Bananya,$16.990,$14.990,Oferta,https://www.elpatiogeek.cl/products/bananya
 LEALTAD CERO,$22.990,$21.000,Oferta,https://www.elpatiogeek.cl/products/lealtad-cero
+NUTRIAS,$11.990,$10.500,Oferta,https://www.elpatiogeek.cl/products/nutrias
 We Will Rock you,$9.990,,,https://www.elpatiogeek.cl/products/we-will-rock-you
 Carcassonne Torneos y Blasones Exp6,$19.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/carcassonne-torneos-y-blasones-exp6
 Carcassonne Asedios Y Fortaleza Exp7,$19.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/carcassonne-asedios-y-fortaleza-exp7
 Imperial Struggle,$59.990,$54.990,Oferta,https://www.elpatiogeek.cl/products/imperial-struggle
 Dragones Del Mar: Tesoros de las Profundidades,$19.990,$18.000,Oferta,https://www.elpatiogeek.cl/products/dragones-del-mar-tesoros-de-las-profundidades
-Suspects: Claire Harper Entra En Escena,$34.990,$19.990,Oferta,https://www.elpatiogeek.cl/products/suspects-claire-harper-entra-en-escena
 Cartagena,$22.990,$14.990,Oferta,https://www.elpatiogeek.cl/products/cartagena
 Pandemic,$36.990,$32.990,Oferta,https://www.elpatiogeek.cl/products/pandemic
 MENSAJE EN LA BOTELLA,$11.990,$10.200,Oferta,https://www.elpatiogeek.cl/products/mensaje-en-la-botella
 GG JUST SLEEVES - Standard American Value Pack (150),$4.989,,,https://www.elpatiogeek.cl/products/gg-just-sleeves-standard-american-value-pack-150
 Escuela de Pinguinos,$29.990,$26.990,Oferta,https://www.elpatiogeek.cl/products/escuela-de-pinguinos-edicion-kinderspiele
+Quillén - El Bosque Esclerófilo,$24.990,$22.500,Oferta,https://www.elpatiogeek.cl/products/quillen-el-bosque-esclerofilo
 Calico,$34.990,$31.990,Oferta,https://www.elpatiogeek.cl/products/calico
 Plenus,$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/plenus
+Rudolph,$9.990,,,https://www.elpatiogeek.cl/products/rudolph
+Exit: La Fuga (Experto),$17.990,$15.990,Oferta,https://www.elpatiogeek.cl/products/exit-la-fuga-experto
 Brass Lancashire,$62.990,$57.990,Oferta,https://www.elpatiogeek.cl/products/brass-lancashire
 Ubongo Brain Games,$15.990,$14.000,Oferta,https://www.elpatiogeek.cl/products/ubongo-brain-games
 Pequeñas Grandes Galaxias,$29.990,$27.000,Oferta,https://www.elpatiogeek.cl/products/pequenas-grandes-galaxias
@@ -601,25 +596,23 @@ Cereal Killer,$12.990,,,https://www.elpatiogeek.cl/products/cereal-killer
 Pichanga: Trivia de Fútbol,$19.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/pichanga-trivia-de-futbol
 GG MATTE BG Sleeves - Mini American (44 x 67 mm),$3.990,,,https://www.elpatiogeek.cl/products/gg-matte-bg-sleeves-mini-american-44-x-67-mm
 LAS DOS TORRES - EL JUEGO DE BAZAS,$21.990,$19.990,Oferta,https://www.elpatiogeek.cl/products/las-dos-torres-el-juego-de-bazas
-GG JUST SLEEVES - STANDARD AMERICAN (50),$1.990,,,https://www.elpatiogeek.cl/products/gg-just-sleeves-standard-american-50
 Play HIT 2000,$24.990,$21.990,Oferta,https://www.elpatiogeek.cl/products/play-hit-2000
 MATCH PERRRFECTO,$19.990,$17.500,Oferta,https://www.elpatiogeek.cl/products/match-perrrfecto
 Carcassonne Contructores y Comerciantes Exp2,$16.990,$15.200,Oferta,https://www.elpatiogeek.cl/products/carcassonne-contructores-y-comerciantes-exp2
 Clank!: En el espacio,$59.990,$54.990,Oferta,https://www.elpatiogeek.cl/products/clank-en-el-espacio
 Ubongo Junior 2da Edición,$29.990,$26.990,Oferta,https://www.elpatiogeek.cl/products/ubongo-junior-2da-edicion
-Exit La Academia de las Artes Mágicas (Principiante),$17.990,$15.990,Oferta,https://www.elpatiogeek.cl/products/exit-la-academia-de-las-artes-magicas-principiante
 Carcassonne Hadas y Dragones Exp3,$19.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/carcassonne-hadas-y-dragones-exp3
 El Valle Secreto,$12.990,$11.500,Oferta,https://www.elpatiogeek.cl/products/el-valle-secreto
 Cakes!,$26.990,$24.500,Oferta,https://www.elpatiogeek.cl/products/cakes
 El monstruo de los calcetines,$24.990,$22.500,Oferta,https://www.elpatiogeek.cl/products/el-monstruo-de-los-calcetines
 Unicornio Destello: Bingo Chispeante,$13.990,$11.990,Oferta,https://www.elpatiogeek.cl/products/unicornio-destello-bingo-chispeante
 Banjooli Xeet,$21.990,$10.990,Oferta,https://www.elpatiogeek.cl/products/banjooli-xeet
-Guardians,$29.990,$13.990,Oferta,https://www.elpatiogeek.cl/products/guardians
 Kingdom Builder,$47.990,$29.990,Oferta,https://www.elpatiogeek.cl/products/kingdom-builder
 Puzzle Juego: Entre Patas y Bigotes,$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/puzzle-juego-entre-patas-y-bigotes
 Paleo Atacama,$45.990,$40.990,Oferta,https://www.elpatiogeek.cl/products/paleo-atacama
 MARVEL ¡ESCARAMUZA! EN NEW YORK,$27.990,$25.500,Oferta,https://www.elpatiogeek.cl/products/marvel-escaramuza-en-new-york
 CAT HORROR COSTUME,$22.990,$20.500,Oferta,https://www.elpatiogeek.cl/products/cat-horror-costume
+Dungeon Raiders,$12.990,$11.500,Oferta,https://www.elpatiogeek.cl/products/dungeon-raiders
 Sushi Go! Gira y come Dim Sum,$24.990,$21.990,Oferta,https://www.elpatiogeek.cl/products/sushi-go-gira-y-come-dim-sum
 Catan: Ciudades y Caballeros de Catan,$35.990,$31.990,Oferta,https://www.elpatiogeek.cl/products/catan-ciudades-y-caballeros-de-catan
 Pequeño Gran Cthulhu,$29.990,$26.990,Oferta,https://www.elpatiogeek.cl/products/pequeno-gran-cthulhu
@@ -634,7 +627,6 @@ BLACK STORIES MARRONES MORTALES,$14.990,$12.990,Oferta,https://www.elpatiogeek.c
 MAGIC MAZE POCKET,$18.990,$17.500,Oferta,https://www.elpatiogeek.cl/products/magic-maze-pocket
 Los Gatos de Schrödinger,$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/los-gatos-de-schrodinger
 EXPLODING PIGEON,$24.990,$21.990,Oferta,https://www.elpatiogeek.cl/products/exploding-pigeon
-GG Just Sleeves Clear Sleeves - Standard ( 66 x 92 mm),$1.990,,,https://www.elpatiogeek.cl/products/just-sleeves-standard-card-game-clear-50
 Smart 10: Familiar,$25.990,$22.990,Oferta,https://www.elpatiogeek.cl/products/smart-10-familiar
 Tic Tac Trek,$11.990,$10.500,Oferta,https://www.elpatiogeek.cl/products/tic-tac-trek
 Photograph,$15.990,$14.200,Oferta,https://www.elpatiogeek.cl/products/photograph
@@ -645,27 +637,23 @@ Mind Bug Equipos 2 Contra 2,$19.990,$18.000,Oferta,https://www.elpatiogeek.cl/pr
 Veggies,$9.990,,,https://www.elpatiogeek.cl/products/veggies
 WHERE IS THAT?: SUDAMÉRICA,$12.990,,,https://www.elpatiogeek.cl/products/where-is-that-sudamerica
 WHERE IS THAT?: EUROPA,$12.990,,,https://www.elpatiogeek.cl/products/where-is-that-europa
-BAJO LAS HOJAS,$24.990,$21.990,Oferta,https://www.elpatiogeek.cl/products/bajo-las-hojas
+EL PANTANO DE FEYA,$34.990,$29.990,Oferta,https://www.elpatiogeek.cl/products/el-pantano-de-feya
 Combo Breaker,$12.990,$9.990,Oferta,https://www.elpatiogeek.cl/products/combo-breaker
 The Mind: Soulmates,$16.990,$15.200,Oferta,https://www.elpatiogeek.cl/products/the-mind-soulmates
 GG Matte Prime Sleeves - Orange - Standard (66 x 91 mm),$7.490,,,https://www.elpatiogeek.cl/products/gg-matte-prime-sleeves-orange-standard-66-x-91-mm
 Asesinato en la Mansion Cthulhu,$27.990,$16.800,Oferta,https://www.elpatiogeek.cl/products/asesinato-en-la-mansion-cthulhu
-Dino Fiesta,$17.990,$15.990,Oferta,https://www.elpatiogeek.cl/products/dino-fiesta
 3 Actos,$12.990,$11.500,Oferta,https://www.elpatiogeek.cl/products/3-actos
 DOBBLE BLUEY,$16.990,$14.990,Oferta,https://www.elpatiogeek.cl/products/dobble-bluey
 Venturesome,$9.990,,,https://www.elpatiogeek.cl/products/venturesome
 Guarro Pig,$15.990,$14.200,Oferta,https://www.elpatiogeek.cl/products/guarro-pig
 Armadillo,$13.990,,,https://www.elpatiogeek.cl/products/armadillo
-Rescate Animal,$17.990,$15.990,Oferta,https://www.elpatiogeek.cl/products/rescate-animal
-Star Wars The Deckbuilding Game - Clone Wars,$37.990,$33.000,Oferta,https://www.elpatiogeek.cl/products/star-wars-the-deckbuilding-game-clone-wars
 Smart 10: Paquete de Ampliación,$19.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/smart-10-paquete-de-ampliacion
 Smart 10 - Viajes Paquete de Ampliacion,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/smart-10-viajes-paquete-de-ampliacion
 Brainbox Mascotas,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/brainbox-mascotas
 ALTERED WHISPERS FROM THE MAZE - BOOSTER DISPLAY (inglés),$143.640,$110.000,Oferta,https://www.elpatiogeek.cl/products/altered-whispers-from-the-maze-booster-display-ingles
 GG ART SLEEVES MARVEL CHAMPIONS - IRON MAN,$7.990,$5.600,Oferta,https://www.elpatiogeek.cl/products/gg-art-sleeves-marvel-champions-iron-man
-GG ART SLEEVES MARVEL CHAMPIONS - MARVEL PURPLE,$7.990,$5.600,Oferta,https://www.elpatiogeek.cl/products/gg-art-sleeves-marvel-champions-marvel-purple
+Guacamole,$15.990,$13.990,Oferta,https://www.elpatiogeek.cl/products/guacamole
 Chakra Expansión Yin Yang,$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/chakra-expansion-yin-yang
-Auztralia,$82.990,$58.100,Oferta,https://www.elpatiogeek.cl/products/auztralia
 Tank Up,$29.990,$26.990,Oferta,https://www.elpatiogeek.cl/products/tank-up
 Fugitive,$24.990,$14.990,Oferta,https://www.elpatiogeek.cl/products/fugitive
 Gravity Superstar,$29.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/gravity-superstar
@@ -674,8 +662,8 @@ Marvel Champions - X-23 (Español),$15.990,$14.990,Oferta,https://www.elpatiogee
 Tinco,$9.990,,,https://www.elpatiogeek.cl/products/tinco
 Autumn 🍂,$9.990,,,https://www.elpatiogeek.cl/products/autumn-%F0%9F%8D%82
 GG ALTERED PLAYMATE - ICE STORM,$22.990,$18.000,Oferta,https://www.elpatiogeek.cl/products/gg-altered-playmate-ice-storm
-GG ALTERED ART SLEEVES - ICE STORM,$7.490,$5.000,Oferta,https://www.elpatiogeek.cl/products/gg-altered-art-sleeves-ice-storm
 Draxos - Set de dados de Rol Double Color Glitter,$8.990,,,https://www.elpatiogeek.cl/products/set-de-dados-de-rol-double-color-glitter
+For a Crown,$34.990,$31.990,Oferta,https://www.elpatiogeek.cl/products/for-a-crown
 Spotlight,$24.990,$21.990,Oferta,https://www.elpatiogeek.cl/products/spotlight
 Exit La Tumba del Faraón (Experto),$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/exit-la-tumba-del-faraon
 La Selva Prohibida,$29.990,$27.000,Oferta,https://www.elpatiogeek.cl/products/la-selva-prohibida
@@ -694,13 +682,13 @@ Little Secret,$26.990,$23.990,Oferta,https://www.elpatiogeek.cl/products/little-
 Marvel Zombies: Fantastic 4 Under Siege,$59.990,$48.000,Oferta,https://www.elpatiogeek.cl/products/marvel-zombies-fantastic-4-under-siege
 GG Marvel Champions FINE ART Sleeves – Nebula,$7.990,$5.600,Oferta,https://www.elpatiogeek.cl/products/gg-marvel-champions-fine-art-sleeves-nebula
 GG Marvel Champions FINE ART Sleeves – Drax,$7.990,$5.600,Oferta,https://www.elpatiogeek.cl/products/gg-marvel-champions-fine-art-sleeves-drax
+Altered - Starter Deck Axiom,$14.990,$10.000,Oferta,https://www.elpatiogeek.cl/products/altered-starter-deck-axiom
 ReFumanyi - Fumanyi 2,$11.990,$10.990,Oferta,https://www.elpatiogeek.cl/products/refumanyi-fumanyi-2
 Azul: Pabellón Acristalado,$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/azul-pabellon-acristalado
 QWIXX: Conectado,$5.990,,,https://www.elpatiogeek.cl/products/qwixx-conectado
 Anarchy Pancakes,$15.990,$14.200,Oferta,https://www.elpatiogeek.cl/products/anarchy-pancakes
 La Gran División,$46.990,$37.600,Oferta,https://www.elpatiogeek.cl/products/la-gran-division
 Little Tavern,$15.990,$14.100,Oferta,https://www.elpatiogeek.cl/products/little-tavern
-Corrales a Tope,$4.990,$4.000,Oferta,https://www.elpatiogeek.cl/products/corrales-a-tope-1
 "Roba, Dispara, Whisky",$4.990,$4.000,Oferta,https://www.elpatiogeek.cl/products/roba-dispara
 WOW! PODS Harry Potter - Ron,$10.990,$9.500,Oferta,https://www.elpatiogeek.cl/products/wow-pods-harry-potter-ron
 Puzzle para las emociones. Puzle Juego Dra. Motus,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/puzle-para-las-emociones-puzle-juego-dra-motus
@@ -710,13 +698,18 @@ Blockits,$13.990,$9.800,Oferta,https://www.elpatiogeek.cl/products/blockits
 Unmatched Houdini VS El Genio,$36.990,$32.990,Oferta,https://www.elpatiogeek.cl/products/unmatched-houdini-vs-el-genio
 GG Matte BG Sleeves - Standard European (62 x 94 mm),$3.990,,,https://www.elpatiogeek.cl/products/gg-matte-bg-sleeves-standard-european-62-x-94-mm
 Dixit Journey,$19.990,$16.000,Oferta,https://www.elpatiogeek.cl/products/dixit-journey
+Martes 13,$15.990,,,https://www.elpatiogeek.cl/products/martes-13
+Aventura Z – Héroes,$31.990,,,https://www.elpatiogeek.cl/products/aventura-z-heroes-1
+Ramen Ramen,$16.990,,,https://www.elpatiogeek.cl/products/ramen-ramen
+Chispas,$17.990,,,https://www.elpatiogeek.cl/products/chispas
+Kronologic: París 1920,$32.990,,,https://www.elpatiogeek.cl/products/kronologic-paris-1920
+El Portero Baldomero,$15.990,,,https://www.elpatiogeek.cl/products/el-portero-baldomero
+Cómo Conocí a tu Serie,$19.990,,,https://www.elpatiogeek.cl/products/como-conoci-a-tu-serie
+Caper Europe,$44.990,,,https://www.elpatiogeek.cl/products/caper-europe
 Tichu,$9.990,,,https://www.elpatiogeek.cl/products/tichu
 Cyberion,$31.990,$27.990,Oferta,https://www.elpatiogeek.cl/products/cyberion
 Tantrix,$29.990,$26.990,Oferta,https://www.elpatiogeek.cl/products/tantrix
-Agent Avenue,$22.990,$21.000,Oferta,https://www.elpatiogeek.cl/products/agent-avenue
-Spring,$9.990,,,https://www.elpatiogeek.cl/products/spring
 Academia Abstracta,$9.990,,,https://www.elpatiogeek.cl/products/academia-abstracta
-Flamecraft,$39.990,$36.990,Oferta,https://www.elpatiogeek.cl/products/flamecraft
 Codex Naturalis 2 Edición,$19.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/codex-naturalis-2-edicion
 Cubirds,$19.990,$18.000,Oferta,https://www.elpatiogeek.cl/products/cubirds
 Exit: Aventuras de Catan,$15.990,$14.000,Oferta,https://www.elpatiogeek.cl/products/exit-aventuras-de-catan
@@ -725,14 +718,11 @@ Saque Toque Caño Chute Gol,$15.990,$13.990,Oferta,https://www.elpatiogeek.cl/pr
 Supercracks,$15.990,$13.990,Oferta,https://www.elpatiogeek.cl/products/supercracks
 Historias de Fútbol,$15.990,$13.990,Oferta,https://www.elpatiogeek.cl/products/historias-de-futbol
 DNUP,$13.990,$11.990,Oferta,https://www.elpatiogeek.cl/products/dnup
-JINXO,$24.990,$21.990,Oferta,https://www.elpatiogeek.cl/products/jinxo
 HINT BASE REFRESH,$19.990,$17.500,Oferta,https://www.elpatiogeek.cl/products/hint-base-refresh
 SPOOKY TOWER,$21.990,$20.000,Oferta,https://www.elpatiogeek.cl/products/spooky-tower
 BURST,$9.990,,,https://www.elpatiogeek.cl/products/burst
 One Piece Nakama – Amigos y Enemigos,$25.990,$22.990,Oferta,https://www.elpatiogeek.cl/products/one-piece-nakama-amigos-y-enemigos
 Smart 10: Videojuegos – Paquete de Ampliación,$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/smart-10-videojuegos-paquete-de-ampliacion
-Smart 10: Superhéroes – Paquete de Ampliación,$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/smart-10-superheroes-paquete-de-ampliacion
-Cards vs Gravity Pro,$19.990,$17.990,Oferta,https://www.elpatiogeek.cl/products/cards-vs-gravity-pro
 Kado,$15.990,$14.200,Oferta,https://www.elpatiogeek.cl/products/kado
 Pokemon Trainer Toolkit 2025 (Inglés),$43.990,$34.990,Oferta,https://www.elpatiogeek.cl/products/trainer-toolkit-2025-ingles
 Perritos,$15.990,$14.000,Oferta,https://www.elpatiogeek.cl/products/perritos
@@ -743,7 +733,6 @@ Kingdomino 2º Edición,$21.990,$19.990,Oferta,https://www.elpatiogeek.cl/produc
 Listo para Imprenta,$35.990,$31.990,Oferta,https://www.elpatiogeek.cl/products/listo-para-imprenta
 Conversaciones Profundas,$29.990,$25.990,Oferta,https://www.elpatiogeek.cl/products/cuentero-copia
 FOREST SHUFFLE DARTMOOR,$32.990,$29.990,Oferta,https://www.elpatiogeek.cl/products/forest-shuffle-dartmoor
-NUTRIAS,$11.990,$10.500,Oferta,https://www.elpatiogeek.cl/products/nutrias
 5 Minute One Piece,$31.990,$28.500,Oferta,https://www.elpatiogeek.cl/products/5-minute-one-piece
 Carnuta,$19.990,$17.500,Oferta,https://www.elpatiogeek.cl/products/carnuta
 DOS TIPOS DE PERSONAS,$23.990,$21.000,Oferta,https://www.elpatiogeek.cl/products/dos-tipos-de-personas
@@ -777,8 +766,6 @@ EXPLODING KITTENS EDICIÓN 2 JUGADORES,$9.990,,,https://www.elpatiogeek.cl/produ
 MASTER DATER,$24.990,$22.990,Oferta,https://www.elpatiogeek.cl/products/master-dater
 Dorfromantik Sakura,$46.990,$40.990,Oferta,https://www.elpatiogeek.cl/products/dorfromantik-sakura
 Otro Día Será,$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/otro-dia-sera
-Quillén - El Bosque Esclerófilo,$24.990,$22.500,Oferta,https://www.elpatiogeek.cl/products/quillen-el-bosque-esclerofilo
-Rudolph,$9.990,,,https://www.elpatiogeek.cl/products/rudolph
 La Isla de Los Gatos,$49.990,$44.990,Oferta,https://www.elpatiogeek.cl/products/la-isla-de-los-gatos
 Catan: Mercaderes y Bárbaros Exp. 5-6 Jug.,$27.990,$24.990,Oferta,https://www.elpatiogeek.cl/products/catan-mercaderes-y-barbaros-exp-5-6-jug
 Deep Dreams,$9.990,,,https://www.elpatiogeek.cl/products/deep-dreams
@@ -786,14 +773,12 @@ Catan: Piratas y Exploradores Exp. 5-6 Jug.,$26.990,$23.990,Oferta,https://www.e
 Catan: Ciudades y Caballeros Exp. 5-6 Jug.,$27.990,$24.990,Oferta,https://www.elpatiogeek.cl/products/catan-ciudades-y-caballeros-exp-5-6-jug
 Caza Bombas,$44.990,$39.990,Oferta,https://www.elpatiogeek.cl/products/caza-bombas
 Obsesion,$89.990,$79.990,Oferta,https://www.elpatiogeek.cl/products/obsesion
-Exit: La Fuga (Experto),$17.990,$15.990,Oferta,https://www.elpatiogeek.cl/products/exit-la-fuga-experto
 Tranquilidad,$15.990,$14.000,Oferta,https://www.elpatiogeek.cl/products/tranquilidad
 Ding!,$12.990,$11.500,Oferta,https://www.elpatiogeek.cl/products/ding
 DIXIT KIDS,$24.990,$22.000,Oferta,https://www.elpatiogeek.cl/products/dixit-kids
 Port Royal – Small Box,$17.990,$15.990,Oferta,https://www.elpatiogeek.cl/products/port-royal-small-box
 Junk Art Revolution,$39.990,$36.990,Oferta,https://www.elpatiogeek.cl/products/junk-art-revolution
 Dice Throne 4 Ninja vs Treant,$33.990,$29.990,Oferta,https://www.elpatiogeek.cl/products/dice-throne-4-ninja-vs-treant-1
-Carrera de Cerditos,$22.990,$21.000,Oferta,https://www.elpatiogeek.cl/products/carrera-de-cerditos
 Lucky Numbers,$25.990,$22.990,Oferta,https://www.elpatiogeek.cl/products/lucky-numbers
 Cerdeña,$24.990,$21.990,Oferta,https://www.elpatiogeek.cl/products/cerdena
 DOBBLE SPORTS,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/dobble-sports
@@ -824,7 +809,6 @@ Plata,$14.990,$12.990,Oferta,https://www.elpatiogeek.cl/products/plata
 50 50,$24.990,$21.990,Oferta,https://www.elpatiogeek.cl/products/50-50
 ¿CUÁNTO CUESTA ESTO?,$22.990,$21.000,Oferta,https://www.elpatiogeek.cl/products/cuanto-cuesta-esto
 Red Carpet,$25.990,$22.990,Oferta,https://www.elpatiogeek.cl/products/red-carpet
-Dungeon Raiders,$12.990,$11.500,Oferta,https://www.elpatiogeek.cl/products/dungeon-raiders
 Maravillas Del Mundo,$49.990,$44.990,Oferta,https://www.elpatiogeek.cl/products/maravillas-del-mundo
 Sagrada Exp 5-6 Jugadores,$27.990,$24.990,Oferta,https://www.elpatiogeek.cl/products/sagrada-exp-5-6-jugadores
 La Resistencia,$22.990,$21.000,Oferta,https://www.elpatiogeek.cl/products/la-resistencia
@@ -855,7 +839,6 @@ Finspan,$64.990,$58.000,Oferta,https://www.elpatiogeek.cl/products/finspan
 Panda Royale,$34.990,$31.990,Oferta,https://www.elpatiogeek.cl/products/panda-royale
 Dracula VS Van Helsing,$21.990,$19.990,Oferta,https://www.elpatiogeek.cl/products/dracula-vs-van-helsing
 Radlands,$27.990,$25.000,Oferta,https://www.elpatiogeek.cl/products/radlands
-EL PANTANO DE FEYA,$34.990,$29.990,Oferta,https://www.elpatiogeek.cl/products/el-pantano-de-feya
 Link City,$21.990,$19.990,Oferta,https://www.elpatiogeek.cl/products/link-city-1
 Transgalactica,$54.990,$49.990,Oferta,https://www.elpatiogeek.cl/products/transgalactica
 Rock Hard 1977,$52.990,$46.990,Oferta,https://www.elpatiogeek.cl/products/rock-hard-1977
@@ -874,7 +857,6 @@ Unmatched Sun's Origin,$34.990,$31.990,Oferta,https://www.elpatiogeek.cl/product
 50 Tangram,$9.990,,,https://www.elpatiogeek.cl/products/50-tangram
 Tesoro Brillante,$24.990,$21.990,Oferta,https://www.elpatiogeek.cl/products/tesoro-brillante
 ALTERED SUSURROS DEL LABERINTO - BOOSTER DISPLAY (español),$143.640,$99.000,Oferta,https://www.elpatiogeek.cl/products/altered-susurros-del-laberinto-booster-display
-Guacamole,$15.990,$13.990,Oferta,https://www.elpatiogeek.cl/products/guacamole
 RIN RIN RAJA,$15.990,$13.990,Oferta,https://www.elpatiogeek.cl/products/rin-rin-raja
 BARAJA SPL,$6.990,$5.000,Oferta,https://www.elpatiogeek.cl/products/baraja-spl
 Plenus 2,$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/plenus-2
@@ -910,7 +892,6 @@ GG ALTERED EXPEDITION SOFT BOX - ICE STORM,$7.990,$6.000,Oferta,https://www.elpa
 GG Altered Prime Playmat - Arkaster,$22.990,$18.000,Oferta,https://www.elpatiogeek.cl/products/gg-altered-prime-playmat-arkaster
 DRAXOS Protectores Dual Color Standard (Negro),$5.940,,,https://www.elpatiogeek.cl/products/draxos-protectores-dual-color-standard-matte-negro
 DRAXOS Protectores Dual Color Standard (Rojo),$5.940,,,https://www.elpatiogeek.cl/products/draxos-protectores-dual-color-standard-matte-rojo
-For a Crown,$34.990,$31.990,Oferta,https://www.elpatiogeek.cl/products/for-a-crown
 Tebas,$52.990,$46.990,Oferta,https://www.elpatiogeek.cl/products/tebas
 Bienvenido a la Mazmorra,$14.990,$13.500,Oferta,https://www.elpatiogeek.cl/products/bienvenido-a-la-mazmorra
 Catan Miniexpansión Santa Claus,$9.990,,,https://www.elpatiogeek.cl/products/catan-miniexpansion-santa-claus
@@ -941,7 +922,6 @@ Bienvenido de nuevo a la Mazmorra,$12.990,,,https://www.elpatiogeek.cl/products/
 GG Altered 18-Pocket Album - Beyond the Gates,$24.990,$19.000,Oferta,https://www.elpatiogeek.cl/products/gg-altered-18-pocket-album-beyond-the-gates
 GG Matte Prime Sleeves - Red - Standard (66 x 91 mm),$7.490,,,https://www.elpatiogeek.cl/products/gg-matte-prime-sleeves-red-standard-66-x-91-mm
 GG Prime Sleeves - Green - Standard (66 x 91 mm),$7.490,,,https://www.elpatiogeek.cl/products/gg-prime-sleeves-green-standard-66-x-91mm
-GG Matte Prime Sleeves - Green - Standard (66 x 91 mm),$7.490,,,https://www.elpatiogeek.cl/products/gg-matte-prime-sleeves-green-standard-66-x-91-mm
 Bolicheros de Barrio Yungay,$28.990,$25.990,Oferta,https://www.elpatiogeek.cl/products/bolicheros-de-barrio-yungay
 Gobblers Family Mix,$26.990,$20.250,Oferta,https://www.elpatiogeek.cl/products/gobblers-family-mix
 Winter Kingdom,$54.990,$49.990,Oferta,https://www.elpatiogeek.cl/products/winter-kingdom
@@ -950,8 +930,6 @@ Star Wars Unlimited - Twilight of the Republic Booster Display (Inglés),$119.99
 Novatos en el Espacio,$16.990,$14.500,Oferta,https://www.elpatiogeek.cl/products/novatos-en-el-espacio
 Belratti,$19.990,$18.000,Oferta,https://www.elpatiogeek.cl/products/belratti
 Dominations,$59.990,$45.000,Oferta,https://www.elpatiogeek.cl/products/dominations
-Altered - Starter Deck Axiom,$14.990,$10.000,Oferta,https://www.elpatiogeek.cl/products/altered-starter-deck-axiom
-Volto,$19.990,$11.990,Oferta,https://www.elpatiogeek.cl/products/volto
 Epic Juego de Cartas,$12.990,,,https://www.elpatiogeek.cl/products/epic-juego-de-cartas
 Vamos a Pegarnos con Espadas de Mentira,$24.990,$21.990,Oferta,https://www.elpatiogeek.cl/products/vamos-a-pegarnos-con-espadas-de-mentira
 Yummy Kitty,$19.990,$18.000,Oferta,https://www.elpatiogeek.cl/products/yummy-kitty
