@@ -30,6 +30,12 @@ GUTTER = 2
 # keep genuinely different rows distinguishable.
 MAX_FLEX_COL = 38
 
+# Third element of a column spec, in place of the flexible flag: render this
+# column whole, never clipped and never shrunk. A truncated title still names
+# its product, but half a URL cannot be opened or pasted, so clipping one
+# destroys the only thing it was there for.
+NO_CLIP = "no-clip"
+
 # Fallback when PAGER is unset. Most systems have less; more is the floor.
 DEFAULT_PAGER = "less"
 
@@ -106,8 +112,12 @@ def stock_label(in_stock) -> str:
     return "Disponible" if in_stock else "Agotado"
 
 
-def _truncate(text: str, width: int) -> str:
-    text = "" if text is None else str(text)
+def _cell(value) -> str:
+    return "" if value is None else str(value)
+
+
+def _truncate(text, width: int) -> str:
+    text = _cell(text)
     return text if len(text) <= width else text[: max(1, width - 1)] + "…"
 
 
@@ -138,7 +148,8 @@ def _widths(rows: list[dict], columns: list[tuple], available: int) -> list[int]
         max(len(label), *(len(str(r.get(key, "") or "")) for r in rows)) if rows else len(label)
         for key, label, _ in columns
     ]
-    flexible = [i for i, (_, _, flex) in enumerate(columns) if flex]
+    flexible = [i for i, (_, _, flex) in enumerate(columns)
+                if flex and flex is not NO_CLIP]
     widths = [
         min(w, MAX_FLEX_COL) if i in flexible else w
         for i, w in enumerate(natural)
@@ -204,13 +215,14 @@ def table(rows: list[dict], columns: list[tuple], title: str = "",
     # alignment with the data beneath it.
     out.append("  ".join(
         _truncate(label, w).ljust(w) for (_, label, _), w in zip(columns, widths)
-    ))
+    ).rstrip())
     out.append("  ".join("-" * w for w in widths))
 
     for row in shown:
         cells = (
-            _truncate(row.get(key, ""), w).ljust(w)
-            for (key, _, _), w in zip(columns, widths)
+            (_cell(row.get(key, "")) if flex is NO_CLIP
+             else _truncate(row.get(key, ""), w)).ljust(w)
+            for (key, _, flex), w in zip(columns, widths)
         )
         out.append("  ".join(cells).rstrip())
 
@@ -284,7 +296,7 @@ def price_table(offers: list[dict], title: str) -> None:
         ("offer", "Oferta", False),
         ("disc", "Desc.", False),
         ("stock", "Disponibilidad", False),
-        ("url", "URL", True),
+        ("url", "URL", NO_CLIP),
     ], title=f"\n{title}")
 
 

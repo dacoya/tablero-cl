@@ -275,3 +275,23 @@ def test_export_rejects_unknown_format(tmp_path):
     import export
     with _pytest.raises(ValueError, match="Unknown export format"):
         export.export_comparison([{"a": 1}], "pdf", tmp_path / "x.pdf")
+
+
+def test_urls_are_never_clipped(capsys, monkeypatch):
+    """
+    A half URL cannot be opened or pasted.
+
+    The price table used to treat its URL column as flexible, so on any normal
+    terminal every link came out as "https://www.updown.cl/producto/keyflo…",
+    which is the one thing that column exists to provide.
+    """
+    monkeypatch.setattr(render, "term_width", lambda default=100: 60)
+    url = "https://www.updown.cl/producto/keyflower-tercera-edicion-espanol/"
+    render.price_table(
+        [{"store": "updown", "price_original": 54990, "price_current": None,
+          "discount_pct": None, "in_stock": True, "url": url}],
+        "Keyflower",
+    )
+    out = capsys.readouterr().out
+    assert url in out
+    assert "…" not in out
