@@ -1,7 +1,7 @@
 """The TUI's price filter: a picker for the bound, then the amount."""
 import pytest
 
-import tui
+from tablero import tui
 
 
 def _answers(*values):

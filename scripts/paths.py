@@ -11,13 +11,13 @@ Where the data lives depends on how the package was installed, in this order:
   1. ``TABLERO_DATA_DIR`` -- an explicit override, which is what lets a sync
      job, a scratch copy, or a test fixture point somewhere else.
   2. ``<repo>/data`` when running from a source checkout (editable install or
-     ``python scripts/cli.py``), so development keeps using the tracked CSVs.
+     ``python -m tablero.cli``), so development keeps using the tracked CSVs.
   3. A per-user data directory otherwise. A normal ``pip install`` puts the
      package under ``site-packages``, and writing a 15 MB database there would
      be wrong: it is not the user's data, and a reinstall would delete it.
 
-Pure ``pathlib`` with no cross-module imports, so it is safe to import in both
-package mode (``tablero.paths``) and flat mode (``paths``).
+Pure ``pathlib`` with no cross-module imports, so nothing else in the package
+has to be importable before the data root is known.
 """
 import os
 import sys

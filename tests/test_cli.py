@@ -8,8 +8,8 @@ import importlib
 
 import pytest
 
-import cli
-import update
+from tablero import cli
+from tablero import update
 
 
 # ---------------------------------------------------------------------------
@@ -134,7 +134,7 @@ def test_watch_add_requires_a_game():
 def test_data_dir_env_override(tmp_path, monkeypatch):
     """TABLERO_DATA_DIR is what lets a sync job or test relocate the data root."""
     monkeypatch.setenv("TABLERO_DATA_DIR", str(tmp_path))
-    import paths
+    from tablero import paths
     reloaded = importlib.reload(paths)
     try:
         assert reloaded.DATA_DIR == tmp_path.resolve()
@@ -146,7 +146,7 @@ def test_data_dir_env_override(tmp_path, monkeypatch):
 
 def test_data_dir_defaults_to_repo(monkeypatch):
     monkeypatch.delenv("TABLERO_DATA_DIR", raising=False)
-    import paths
+    from tablero import paths
     reloaded = importlib.reload(paths)
     assert reloaded.DATA_DIR == reloaded.REPO_ROOT / "data"
 
@@ -154,7 +154,7 @@ def test_data_dir_defaults_to_repo(monkeypatch):
 def test_blank_env_var_falls_back(monkeypatch):
     """An exported-but-empty variable must not resolve the root to the cwd."""
     monkeypatch.setenv("TABLERO_DATA_DIR", "   ")
-    import paths
+    from tablero import paths
     reloaded = importlib.reload(paths)
     try:
         assert reloaded.DATA_DIR == reloaded.REPO_ROOT / "data"
@@ -170,7 +170,7 @@ def test_installed_package_does_not_write_into_site_packages(monkeypatch, tmp_pa
     reinstall would delete it -- so a non-checkout falls back to a user dir.
     """
     monkeypatch.delenv("TABLERO_DATA_DIR", raising=False)
-    import paths
+    from tablero import paths
 
     fake_site_packages = tmp_path / "site-packages"
     (fake_site_packages / "tablero").mkdir(parents=True)
@@ -185,7 +185,7 @@ def test_installed_package_does_not_write_into_site_packages(monkeypatch, tmp_pa
 def test_source_checkout_still_uses_repo_data(monkeypatch, tmp_path):
     """A checkout keeps using its tracked data/, which is what development needs."""
     monkeypatch.delenv("TABLERO_DATA_DIR", raising=False)
-    import paths
+    from tablero import paths
 
     checkout = tmp_path / "repo"
     checkout.mkdir()
@@ -197,19 +197,19 @@ def test_source_checkout_still_uses_repo_data(monkeypatch, tmp_path):
 
 def test_env_override_beats_both(monkeypatch, tmp_path):
     monkeypatch.setenv("TABLERO_DATA_DIR", str(tmp_path))
-    import paths
+    from tablero import paths
     assert paths.default_data_dir() == tmp_path.resolve()
 
 
 def test_resolve_output_keeps_absolute_paths():
-    import paths
+    from tablero import paths
     absolute = paths.Path("/tmp/somewhere/x.csv")
     assert paths.resolve_output(absolute) == absolute
 
 
 def test_resolve_output_lands_beside_the_database_when_installed(monkeypatch, tmp_path):
     """An installed copy must not write scraped CSVs into site-packages."""
-    import paths
+    from tablero import paths
     fake_site_packages = tmp_path / "site-packages"
     (fake_site_packages / "tablero").mkdir(parents=True)
     monkeypatch.setattr(paths, "REPO_ROOT", fake_site_packages)

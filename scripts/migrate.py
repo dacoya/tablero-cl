@@ -20,18 +20,11 @@ import time
 from collections import Counter, defaultdict
 from pathlib import Path
 
-try:
-    from . import db as db_mod
-    from .classify import kind_rank
-    from .derive import derive
-    from .paths import DATA_DIR
-    from . import validation
-except ImportError:
-    import db as db_mod
-    from classify import kind_rank
-    from derive import derive
-    from paths import DATA_DIR
-    import validation
+from . import db as db_mod
+from .classify import kind_rank
+from .derive import derive
+from .paths import DATA_DIR
+from . import validation
 
 
 def _load_json(path, default):
@@ -53,10 +46,7 @@ def _store_timestamps(metadata: dict) -> dict:
 
 
 def _sites():
-    try:
-        from .scrape import sites
-    except ImportError:
-        from scrape import sites
+    from .scrape import sites
     return sites
 
 

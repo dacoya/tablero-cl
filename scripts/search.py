@@ -14,14 +14,9 @@ Pure: takes a connection, returns list[dict]. Nothing here prints.
 """
 from rapidfuzz import fuzz, process
 
-try:
-    from . import repo
-    from .classify import KIND_GAME, kind_rank
-    from .utils import normalize
-except ImportError:
-    import repo
-    from classify import KIND_GAME, kind_rank
-    from utils import normalize
+from . import repo
+from .classify import KIND_GAME, kind_rank
+from .utils import normalize
 
 # Below this blended relevance a candidate is noise, not a weak match.
 RELEVANCE_FLOOR = 55.0

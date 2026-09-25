@@ -7,7 +7,7 @@ fails here, loudly, instead of quietly returning nothing on the next scrape.
 """
 import pytest
 
-import fixtures
+from tablero import fixtures
 
 FIXTURE_PATHS = fixtures.all_fixtures()
 

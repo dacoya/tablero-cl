@@ -12,10 +12,7 @@ greedy middle:
 
 All functions are pure: connection in, plain dicts out. Nothing prints.
 """
-try:
-    from . import repo
-except ImportError:
-    import repo
+from . import repo
 
 # Rough default parcel cost within Chile. Overridable per call; the point is
 # that a 3-store split is only cheaper if the savings beat the extra postage.

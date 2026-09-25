@@ -13,11 +13,7 @@ transaction simple.
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-try:
-    from . import ingest as ingest_mod, repo
-except ImportError:
-    import ingest as ingest_mod
-    import repo
+from . import ingest as ingest_mod, repo
 
 
 class UnknownSiteError(ValueError):
@@ -48,10 +44,7 @@ def update_stores(conn, targets, workers: int = 5, dry_run: bool = False,
     Scrape `targets` and write the results. Returns totals for the caller to
     report; an empty scrape is treated as a failure and leaves data untouched.
     """
-    try:
-        from .runner import scrape_site
-    except ImportError:
-        from runner import scrape_site
+    from .runner import scrape_site
 
     # Counters plus a "rejected" breakdown, so the values are not all ints.
     totals: dict = {"ingested": 0, "new": 0, "restock": 0, "failed": 0}

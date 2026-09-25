@@ -12,10 +12,7 @@ not redefine what a game "normally" costs.
 
 Pure: connection in, list[dict] out. Nothing prints.
 """
-try:
-    from . import repo
-except ImportError:
-    import repo
+from . import repo
 
 SMART_SORT_OPTIONS = ("value", "scarcity", "volatility")
 

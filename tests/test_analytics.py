@@ -1,13 +1,13 @@
 """Smart sorts, leaderboard, history trends, alerts, and price validation."""
 import pytest
 
-import alerts
-import changes
-import analytics
-import history
-import search
-import validation
-import watchlist
+from tablero import alerts
+from tablero import changes
+from tablero import analytics
+from tablero import history
+from tablero import search
+from tablero import validation
+from tablero import watchlist
 
 
 # ---------------------------------------------------------------------------

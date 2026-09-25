@@ -6,7 +6,7 @@ development.
 """
 import pytest
 
-from classify import (KIND_ACCESSORY, KIND_EXPANSION, KIND_GAME, KIND_PUZZLE,
+from tablero.classify import (KIND_ACCESSORY, KIND_EXPANSION, KIND_GAME, KIND_PUZZLE,
                       KIND_TCG, classify, kind_rank)
 
 

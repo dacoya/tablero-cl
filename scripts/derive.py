@@ -7,12 +7,8 @@ like a catalog-wide change.
 """
 import re
 
-try:
-    from .classify import classify
-    from .utils import clean_title, normalize, parse_price
-except ImportError:
-    from classify import classify
-    from utils import clean_title, normalize, parse_price
+from .classify import classify
+from .utils import clean_title, normalize, parse_price
 
 
 def canonical_url(url) -> str:

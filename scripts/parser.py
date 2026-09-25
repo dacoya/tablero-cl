@@ -12,12 +12,8 @@ any dependency on cli.py; the dispatch table lives there.
 """
 import argparse
 
-try:
-    from .basket import DEFAULT_SHIPPING
-    from .classify import KIND_ORDER
-except ImportError:
-    from basket import DEFAULT_SHIPPING
-    from classify import KIND_ORDER
+from .basket import DEFAULT_SHIPPING
+from .classify import KIND_ORDER
 
 SORTS = ("discount", "price", "price_desc", "store", "title",
          "value", "scarcity", "volatility")

@@ -4,7 +4,7 @@ import sys
 
 import pytest
 
-import render
+from tablero import render
 
 
 COLUMNS = [
@@ -210,8 +210,8 @@ def test_back_sentinel_is_not_mistaken_for_a_value():
     """
     import questionary
 
-    import export
-    import tui
+    from tablero import export
+    from tablero import tui
 
     assert questionary.Choice("No", value=None).value == "No"      # the trap
     assert questionary.Choice("No", value=tui.BACK).value is tui.BACK
@@ -243,7 +243,7 @@ def test_export_takes_plain_rows(tmp_path):
     import csv as csv_mod
     import json as json_mod
 
-    import export
+    from tablero import export
 
     rows = [{"store": "updown", "price": 1000, "title": "Catan"},
             {"store": "flexo", "price": None, "title": 'Un "raro" <b>'}]
@@ -262,7 +262,7 @@ def test_export_takes_plain_rows(tmp_path):
 
 def test_export_handles_rows_with_different_keys(tmp_path):
     """Different queries return different columns; the union is the header."""
-    import export
+    from tablero import export
     out = export.export_comparison(
         [{"a": 1}, {"b": 2}], "csv", tmp_path / "x.csv")
     header = open(out, encoding="utf-8").readline().strip()
@@ -272,7 +272,7 @@ def test_export_handles_rows_with_different_keys(tmp_path):
 def test_export_rejects_unknown_format(tmp_path):
     import pytest as _pytest
 
-    import export
+    from tablero import export
     with _pytest.raises(ValueError, match="Unknown export format"):
         export.export_comparison([{"a": 1}], "pdf", tmp_path / "x.pdf")
 

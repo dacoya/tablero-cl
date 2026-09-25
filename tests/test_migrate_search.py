@@ -1,9 +1,9 @@
 """Migration integrity, search ranking, and the personal-use features."""
-import basket
-import changes
-import repo
-import search
-import watchlist
+from tablero import basket
+from tablero import changes
+from tablero import repo
+from tablero import search
+from tablero import watchlist
 
 
 # ---------------------------------------------------------------------------

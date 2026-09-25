@@ -16,12 +16,8 @@ from pathlib import Path
 
 from bs4 import BeautifulSoup
 
-try:
-    from . import scrape
-    from .paths import REPO_ROOT
-except ImportError:
-    import scrape
-    from paths import REPO_ROOT
+from . import scrape
+from .paths import REPO_ROOT
 
 FIXTURE_DIR = REPO_ROOT / "tests" / "fixtures"
 

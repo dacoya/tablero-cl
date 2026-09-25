@@ -14,10 +14,7 @@ import shutil
 import subprocess
 import sys
 
-try:
-    from .classify import KIND_GAME
-except ImportError:
-    from classify import KIND_GAME
+from .classify import KIND_GAME
 
 FLAG_MARK = {"new": "🆕", "restock": "🔄"}
 KIND_MARK = {"expansion": "+exp", "accessory": "acc", "tcg": "tcg", "puzzle": "puz"}

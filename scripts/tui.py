@@ -17,27 +17,12 @@ version:
 """
 import questionary
 
-try:
-    from . import alerts as alerts_mod
-    from . import analytics, basket as basket_mod
-    from . import changes, db as db_mod, export as exporter, history
-    from . import parser as parser_mod, render, repo
-    from . import search as search_mod, update as update_mod
-    from . import watchlist as watch_mod
-except ImportError:
-    import alerts as alerts_mod
-    import analytics
-    import basket as basket_mod
-    import changes
-    import db as db_mod
-    import export as exporter
-    import history
-    import parser as parser_mod
-    import render
-    import repo
-    import search as search_mod
-    import update as update_mod
-    import watchlist as watch_mod
+from . import alerts as alerts_mod
+from . import analytics, basket as basket_mod
+from . import changes, db as db_mod, export as exporter, history
+from . import parser as parser_mod, render, repo
+from . import search as search_mod, update as update_mod
+from . import watchlist as watch_mod
 
 BANNER = "\n🎲  tablero-cl — comparador de juegos de mesa\n"
 
@@ -412,10 +397,7 @@ def _update_flow(conn) -> None:
             "Esto hará scraping en vivo. ¿Continuar?", default=True)):
         return
 
-    try:
-        from .scrape import sites
-    except ImportError:
-        from scrape import sites
+    from .scrape import sites
 
     targets = update_mod.select_sites(
         conn, sites, names, scope == "incremental", 24)

@@ -1,5 +1,5 @@
 """Live scrape ingest: identity, flags, and price-history collapsing."""
-import ingest
+from tablero import ingest
 
 
 def _record(title, url, original="$10.000", current=None, stock=None):
@@ -103,7 +103,7 @@ def test_database_rebuildable_from_csvs_alone(tmp_path, monkeypatch):
     """
     import csv as csv_mod
 
-    import migrate
+    from tablero import migrate
 
     data_dir = tmp_path / "data"
     data_dir.mkdir()
@@ -132,10 +132,10 @@ def test_watchlist_survives_rebuild(tmp_path, sample_products, sample_history):
     """
     import json
 
-    import db as db_mod
-    import migrate
-    import search
-    import watchlist
+    from tablero import db as db_mod
+    from tablero import migrate
+    from tablero import search
+    from tablero import watchlist
 
     data_dir = tmp_path / "data"
     data_dir.mkdir()
@@ -147,7 +147,7 @@ def test_watchlist_survives_rebuild(tmp_path, sample_products, sample_history):
 
     conn = db_mod.connect(db_path)
     watchlist.add(conn, search.best_match(conn, "catan")["game_id"], target=40000)
-    import changes
+    from tablero import changes
     changes.set_cursor(conn, ts=1_700_500_000)
     conn.close()
 

@@ -105,7 +105,7 @@ pip install -e .            # instala las dependencias y el comando `tablero`
 ```
 
 Tras la instalación, el comando `tablero` queda disponible desde cualquier directorio.
-Para desarrollo también puedes correr el módulo directamente: `python scripts/cli.py <args>`.
+Para desarrollo también puedes correr el módulo directamente: `python -m tablero.cli <args>`.
 
 > **Si `tablero` falla con `ModuleNotFoundError`**, el script instalado quedó
 > apuntando a un punto de entrada viejo. Vuelve a instalar para regenerarlo:
@@ -125,7 +125,7 @@ En este orden:
 
 1. `TABLERO_DATA_DIR`, si está definida.
 2. `<repo>/data` cuando corres desde un clon del proyecto (instalación editable
-   o `python scripts/cli.py`), que es lo que mantiene los CSV versionados en uso.
+   o `python -m tablero.cli`), que es lo que mantiene los CSV versionados en uso.
 3. Un directorio de usuario en cualquier otro caso —en macOS
    `~/Library/Application Support/tablero-cl`—. Una instalación normal deja el
    paquete en `site-packages`, y escribir ahí una base de 15 MB estaría mal: no

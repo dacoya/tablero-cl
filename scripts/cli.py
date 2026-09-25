@@ -10,30 +10,12 @@ This module is a thin shell: parse, call a service, hand the result to render.
 """
 import sys
 
-try:
-    from . import alerts, analytics, basket as basket_mod
-    from . import changes, db as db_mod, export as exporter, history
-    from . import migrate as migrate_mod, parser as parser_mod
-    from . import paths, render, repo, search as search_mod
-    from . import update as update_mod, validation
-    from . import watchlist as watch_mod
-except ImportError:
-    import alerts
-    import analytics
-    import basket as basket_mod
-    import changes
-    import db as db_mod
-    import export as exporter
-    import history
-    import migrate as migrate_mod
-    import parser as parser_mod
-    import paths
-    import render
-    import repo
-    import search as search_mod
-    import update as update_mod
-    import validation
-    import watchlist as watch_mod
+from . import alerts, analytics, basket as basket_mod
+from . import changes, db as db_mod, export as exporter, history
+from . import migrate as migrate_mod, parser as parser_mod
+from . import paths, render, repo, search as search_mod
+from . import update as update_mod, validation
+from . import watchlist as watch_mod
 
 build_parser = parser_mod.build_parser
 
@@ -301,10 +283,7 @@ def cmd_basket(args) -> int:
 
 
 def cmd_update(args) -> int:
-    try:
-        from .scrape import sites
-    except ImportError:
-        from scrape import sites
+    from .scrape import sites
 
     conn = _open_db(read_only=False)
     try:
@@ -379,10 +358,7 @@ def main(argv=None) -> int:
     args = parser.parse_args(argv)
 
     if not getattr(args, "command", None):
-        try:
-            from .tui import run_tui
-        except ImportError:
-            from tui import run_tui
+        from .tui import run_tui
         run_tui()
         return 0
 
