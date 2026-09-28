@@ -64,7 +64,6 @@ def default_data_dir() -> Path:
 
 
 DATA_DIR = default_data_dir()
-JSON_PATH = DATA_DIR / "products.json"
 
 
 def resolve_output(output) -> Path:

@@ -138,7 +138,6 @@ def test_data_dir_env_override(tmp_path, monkeypatch):
     reloaded = importlib.reload(paths)
     try:
         assert reloaded.DATA_DIR == tmp_path.resolve()
-        assert reloaded.JSON_PATH == tmp_path.resolve() / "products.json"
     finally:
         monkeypatch.delenv("TABLERO_DATA_DIR", raising=False)
         importlib.reload(paths)
