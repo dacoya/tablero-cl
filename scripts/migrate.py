@@ -62,9 +62,10 @@ def _load_from_csvs(data_dir) -> dict:
     """
     Rebuild the {store: [records]} shape from the per-store CSVs.
 
-    The CSVs are what every scrape writes and what version control tracks, so
-    they -- not products.json, which is now frozen legacy -- are the source that
-    makes the database reproducible from a clean checkout.
+    The CSVs are what every scrape writes, so they -- not products.json, which
+    is frozen legacy -- are the source that stays current. Nothing under data/
+    is in version control, so on a fresh clone these do not exist yet: scrape
+    once with `tablero update` and they appear.
     """
     import csv
 

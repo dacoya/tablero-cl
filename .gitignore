@@ -12,19 +12,15 @@ dist/
 # OS
 .DS_Store
 
-# Frozen legacy catalog, superseded by the per-store CSVs that ARE tracked.
-# Kept on disk if you have it, but not worth 5.3 MB in every clone.
-data/products.json
-
-# SQLite database — a 15 MB binary that changes on every scrape. Rebuild it
-# with `tablero migrate`, which reads the per-store CSVs that ARE tracked.
-# Sync it to other devices with Syncthing/Dropbox, not git.
-data/tablero.db
-data/tablero.db-wal
-data/tablero.db-shm
+# Everything under data/ is scraped output, not source: per-store CSVs, the
+# SQLite database and the legacy JSON. It is 22 MB that changes on every run
+# and is reproducible by scraping, so the repository carries code only.
+#
+# Consequence worth knowing: a fresh clone has no catalog. Run
+# `tablero update` to scrape one, then `tablero migrate` to build the
+# database. Your own data lives on your machine and in your backups.
+data/
 
 # pytest
 .pytest_cache/
 
-# On-demand export output
-data/exports/

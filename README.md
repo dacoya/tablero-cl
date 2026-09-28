@@ -125,7 +125,8 @@ En este orden:
 
 1. `TABLERO_DATA_DIR`, si está definida.
 2. `<repo>/data` cuando corres desde un clon del proyecto (instalación editable
-   o `python -m tablero.cli`), que es lo que mantiene los CSV versionados en uso.
+   o `python -m tablero.cli`), para que sigas usando los datos que ya scrapeaste
+   y no una segunda copia en otro lado.
 3. Un directorio de usuario en cualquier otro caso —en macOS
    `~/Library/Application Support/tablero-cl`—. Una instalación normal deja el
    paquete en `site-packages`, y escribir ahí una base de 15 MB estaría mal: no
@@ -179,7 +180,7 @@ tablero-cl/
 │   ├── utils.py      # normalización de títulos y precios
 │   └── paths.py      # rutas (respeta TABLERO_DATA_DIR)
 ├── tests/            # pytest
-├── data/
+├── data/             # nada de esto está versionado (ver .gitignore)
 │   ├── tablero.db    # base de datos canónica (SQLite)
 │   └── *.csv         # respaldo por tienda de cada scrape
 └── README.md
@@ -251,8 +252,14 @@ menú. Los filtros duran lo que dure la sesión.
 ### Primera vez
 
 ```bash
-tablero migrate            # construye data/tablero.db desde los JSON existentes
+tablero update             # scrapea las tiendas y escribe data/*.csv
+tablero migrate            # construye data/tablero.db desde esos CSV
 ```
+
+El repositorio trae **solo código**: `data/` está en `.gitignore` completo, así
+que un clon nuevo no tiene catálogo hasta que scrapees uno. Un scrape completo
+mueve ~150 MB y demora; `tablero update --sites <tienda>` sirve para probar con
+una sola.
 
 ### Buscar un juego
 
