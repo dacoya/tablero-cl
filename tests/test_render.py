@@ -295,3 +295,59 @@ def test_urls_are_never_clipped(capsys, monkeypatch):
     out = capsys.readouterr().out
     assert url in out
     assert "…" not in out
+
+
+# ---------------------------------------------------------------------------
+# product_rows: numbering, URLs, and the cross-store columns
+# ---------------------------------------------------------------------------
+
+def _product(**over):
+    row = {"title": "Wingspan", "store": "tiendaA", "price_original": 62000,
+           "price_current": None, "discount_pct": None, "in_stock": True,
+           "url": "https://tiendaa.cl/producto/wingspan/"}
+    row.update(over)
+    return row
+
+
+def test_product_rows_number_from_one(capsys):
+    """The number is how a caller refers to a row, so it must start at 1."""
+    render.product_rows([_product(title="A"), _product(title="B")])
+    body = [l for l in capsys.readouterr().out.splitlines() if "tiendaA" in l]
+    assert body[0].split()[0] == "1"
+    assert body[1].split()[0] == "2"
+
+
+def test_product_rows_hide_urls_by_default(capsys):
+    render.product_rows([_product()])
+    assert "tiendaa.cl" not in capsys.readouterr().out
+
+
+def test_product_rows_print_urls_whole(capsys, monkeypatch):
+    """
+    Opt-in URLs must survive a terminal too narrow to hold them.
+
+    The title is what gives way instead -- it is still recognisable clipped,
+    and a clipped URL is worth nothing. This is the cost of `--urls` that the
+    flag exists to make deliberate.
+    """
+    monkeypatch.setattr(render, "term_width", lambda default=100: 60)
+    url = "https://tiendaa.cl/producto/wingspan-segunda-edicion-espanol-2024/"
+    render.product_rows([_product(url=url)], urls=True)
+    out = capsys.readouterr().out
+    assert url in out
+    assert "…" in out          # the title, not the link
+
+
+def test_smart_columns_appear_only_for_smart_rows(capsys):
+    """
+    Only analytics.smart_products returns a median.
+
+    A fixed column set would leave 'Mediana' empty on every ordinary listing,
+    which is worse than not showing it at all.
+    """
+    render.product_rows([_product()])
+    assert "Mediana" not in capsys.readouterr().out
+
+    render.product_rows([_product(n_stores=9, median=19990.0, score=1.25)])
+    out = capsys.readouterr().out
+    assert "Mediana" in out and "$19.990" in out and "+1.25" in out

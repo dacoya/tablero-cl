@@ -297,26 +297,56 @@ def price_table(offers: list[dict], title: str) -> None:
     ], title=f"\n{title}")
 
 
-def product_rows(rows: list[dict], title: str = "", limit: int | None = None) -> None:
+def product_rows(rows: list[dict], title: str = "", limit: int | None = None,
+                 urls: bool = False) -> None:
+    """
+    The catalog/deals table.
+
+    Rows are numbered from one so a caller can ask "which one?" and take a
+    number back, the way the CLI's search list already works.
+
+    `urls` is off by default on purpose. A store URL runs 60-100 characters,
+    and next to the title, store and three money columns it pushes the line
+    past any normal terminal, wrapping every row -- a worse table than one
+    with no link at all. Turn it on deliberately (`--urls`) when the links are
+    the point.
+
+    The three cross-store columns are inferred from the data rather than asked
+    for: only `analytics.smart_products` returns a median, and without them a
+    "mejor valor" ordering is a list in a mysterious order.
+    """
     prepared = [
         {
+            "n": i,
             "title": (FLAG_MARK.get(r.get("flag"), "") + " " + (r.get("title") or "")).strip(),
             "store": r.get("store", ""),
             "price": money(r.get("price_original")),
             "offer": money(r.get("price_current")),
             "disc": pct(r["discount_pct"]) if r.get("discount_pct") else "-",
             "stock": stock_label(r.get("in_stock")),
+            "stores": r.get("n_stores", ""),
+            "median": money(r["median"]) if r.get("median") is not None else "",
+            "score": f"{r['score']:+.2f}" if r.get("score") is not None else "",
+            "url": r.get("url", ""),
         }
-        for r in rows
+        for i, r in enumerate(rows, 1)
     ]
-    table(prepared, [
+    columns = [
+        ("n", "#", False),
         ("title", "Producto", True),
         ("store", "Tienda", False),
         ("price", "Precio", False),
         ("offer", "Oferta", False),
         ("disc", "Desc.", False),
         ("stock", "Estado", False),
-    ], title=title, limit=limit)
+    ]
+    if rows and "median" in rows[0]:
+        columns += [("stores", "Tiendas", False),
+                    ("median", "Mediana", False),
+                    ("score", "Índice", False)]
+    if urls:
+        columns.append(("url", "URL", NO_CLIP))
+    table(prepared, columns, title=title, limit=limit)
 
 
 def leaderboard(rows: list[dict]) -> None:

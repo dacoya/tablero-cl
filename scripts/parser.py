@@ -14,6 +14,7 @@ import argparse
 
 from .basket import DEFAULT_SHIPPING
 from .classify import KIND_ORDER
+from .search import ORDER_OPTIONS
 
 SORTS = ("discount", "price", "price_desc", "store", "title",
          "value", "scarcity", "volatility")
@@ -56,6 +57,10 @@ def _add_browse_flags(p) -> None:
                         "se calculan comparando entre tiendas")
     p.add_argument("--limit", type=int, default=DEFAULT_LIMIT, metavar="N",
                    help="máximo de filas (default: todas)")
+    p.add_argument("--offset", type=int, default=0, metavar="N",
+                   help="saltar las primeras N filas (paginar junto con --limit)")
+    p.add_argument("--urls", action="store_true",
+                   help="mostrar la URL de cada producto (alarga mucho cada fila)")
     _add_export_flag(p)
 
 
@@ -78,6 +83,12 @@ def build_parser() -> argparse.ArgumentParser:
                    help="incluir accesorios (fundas, dados), ocultos por defecto")
     p.add_argument("--include-stale", action="store_true",
                    help="incluir productos ausentes del último scrape de su tienda")
+    p.add_argument("--min-price", type=float, metavar="N",
+                   help="precio mínimo, sobre la oferta más barata del juego")
+    p.add_argument("--max-price", type=float, metavar="N",
+                   help="precio máximo, sobre la oferta más barata del juego")
+    p.add_argument("--sort", choices=ORDER_OPTIONS, default="relevance",
+                   help="orden de los resultados (default: relevance)")
 
     p = sub.add_parser("deals", help="productos en oferta")
     _add_browse_flags(p)

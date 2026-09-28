@@ -1,4 +1,6 @@
 """Migration integrity, search ranking, and the personal-use features."""
+import pytest
+
 from tablero import basket
 from tablero import changes
 from tablero import repo
@@ -170,3 +172,29 @@ def test_resolve_store_partial_match(db_conn):
     assert repo.resolve_store(db_conn, "tiendaa") == ["tiendaA"]
     assert {"tiendaA", "tiendaB"} <= set(repo.resolve_store(db_conn, "tienda"))
     assert repo.resolve_store(db_conn, "nope") == []
+
+
+# ---------------------------------------------------------------------------
+# Search filters and ordering
+# ---------------------------------------------------------------------------
+
+def test_search_respects_max_price(db_conn):
+    """The bound applies to a game's cheapest offer -- what a shopper means."""
+    unbounded = search.search(db_conn, "catan")
+    assert unbounded, "fixture should match something"
+    cheapest = min(h["min_price"] for h in unbounded)
+
+    bounded = search.search(db_conn, "catan", max_price=cheapest - 1)
+    assert all(h["min_price"] <= cheapest - 1 for h in bounded)
+    assert len(bounded) < len(unbounded)
+
+
+def test_search_order_price_puts_cheapest_first(db_conn):
+    hits = search.search(db_conn, "catan", order="price")
+    prices = [h["min_price"] for h in hits if h["min_price"] is not None]
+    assert prices == sorted(prices)
+
+
+def test_search_rejects_an_unknown_order(db_conn):
+    with pytest.raises(ValueError, match="Unknown search order"):
+        search.search(db_conn, "catan", order="cheapness")

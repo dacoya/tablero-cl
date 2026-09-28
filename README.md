@@ -226,6 +226,28 @@ tablero migrate            construir/reconstruir la base SQLite
 tablero doctor             estado de la base + precios atípicos
 ```
 
+### El menú interactivo
+
+`tablero` sin argumentos abre el menú, agrupado en **Explorar**, **Mis juegos**
+y **Tiendas y datos**.
+
+Entrar a una vista no pregunta nada: las ofertas y el catálogo aparecen de
+inmediato, de a 20 filas, con los filtros que ya tenga la sesión. Desde ahí:
+
+- `Abrir un producto (nº)` toma el número impreso a la izquierda y muestra la
+  tabla de precios por tienda, con las URL completas. Al volver sigues en la
+  misma página.
+- `Página siguiente` / `Página anterior` recorren el resto.
+- `Filtros y orden…` edita tienda, stock, precio, orden y URL de a uno, con el
+  valor actual a la vista. Antes había que responder las cuatro preguntas
+  antes de ver una sola fila, y cambiar una implicaba responderlas todas otra
+  vez.
+- `Exportar…` escribe el conjunto filtrado completo, no solo la página.
+
+La búsqueda funciona igual: desde la lista de resultados puedes cambiar la
+consulta, poner un precio máximo, incluir accesorios o reordenar sin volver al
+menú. Los filtros duran lo que dure la sesión.
+
 ### Primera vez
 
 ```bash
@@ -236,8 +258,10 @@ tablero migrate            # construye data/tablero.db desde los JSON existentes
 
 ```bash
 tablero search "catan"
-tablero search "pandemic" --first    # muestra directo la tabla de precios
-tablero search "fundas" --all-kinds  # incluye accesorios (ocultos por defecto)
+tablero search "pandemic" --first        # muestra directo la tabla de precios
+tablero search "fundas" --all-kinds      # incluye accesorios (ocultos por defecto)
+tablero search "catan" --max-price 25000 # sobre la oferta más barata del juego
+tablero search "catan" --sort price      # relevance (default) | price | stores
 ```
 
 Los resultados se ordenan por relevancia y toleran errores de tipeo
@@ -262,7 +286,20 @@ coinciden en vez de fallar con un error sin salida.
 `deals` y `list` muestran **todos** los resultados, no una muestra: el
 paginador se encarga del largo. Un tope silencioso de 50 filas escondía la
 mayor parte de una búsqueda filtrada sin avisar. `--limit N` acota cuando
-quieras menos.
+quieras menos, y `--offset N` salta filas para paginar:
+
+```bash
+tablero deals --limit 20 --offset 20      # el segundo bloque de 20
+tablero deals --urls                      # agrega la URL de cada producto
+```
+
+`--urls` está apagado por defecto a propósito: una URL de tienda ocupa 60-100
+caracteres y, junto al título y las tres columnas de precio, hace que cada fila
+se corte en un terminal normal. Enciéndelo cuando el link sea lo que buscas.
+
+Con `--sort value`, `scarcity` o `volatility` la tabla agrega tres columnas
+—tiendas, mediana e índice— para que el orden se pueda leer y no haya que
+confiar en él a ciegas.
 
 Los listados largos se abren en el paginador (`less`, o lo que indique `PAGER`).
 Al redirigir la salida —`tablero list | head`, `--export`— se escribe directo,
