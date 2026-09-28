@@ -123,6 +123,65 @@ def test_database_rebuildable_from_csvs_alone(tmp_path, monkeypatch):
     assert report["games"] == 1
 
 
+def test_csvs_win_over_the_frozen_products_json(tmp_path):
+    """
+    A rebuild must not resurrect the legacy catalog over live scrape output.
+
+    products.json was frozen when SQLite took over; the CSVs are rewritten by
+    every scrape. Loading the JSON first meant `migrate --rebuild` quietly
+    restored a months-old catalog while fresher data sat in the same folder.
+    """
+    import csv as csv_mod
+    import json as json_mod
+
+    from tablero import migrate
+
+    data_dir = tmp_path / "data"
+    data_dir.mkdir()
+    with open(data_dir / "tertulia_jdm.csv", "w", encoding="utf-8", newline="") as f:
+        writer = csv_mod.DictWriter(
+            f, fieldnames=["title", "original_price", "current_price",
+                           "stock_status", "url"])
+        writer.writeheader()
+        writer.writerow({"title": "Catan", "original_price": "$45.990",
+                         "current_price": "", "stock_status": "",
+                         "url": "https://tertulia.cl/producto/catan/"})
+
+    (data_dir / "products.json").write_text(json_mod.dumps({
+        "tertulia": [
+            {"title": "Juego Viejo", "original_price": "$1.000",
+             "current_price": None, "stock_status": None,
+             "url": "https://tertulia.cl/producto/viejo/"},
+            {"title": "Otro Viejo", "original_price": "$2.000",
+             "current_price": None, "stock_status": None,
+             "url": "https://tertulia.cl/producto/otro/"},
+        ]
+    }), encoding="utf-8")
+
+    report = migrate.migrate(db_path=tmp_path / "rebuilt.db", data_dir=data_dir)
+    assert report["source"] == "csv"
+    assert report["records_read"] == 1
+
+
+def test_products_json_still_covers_a_checkout_with_no_csvs(tmp_path):
+    """The legacy file is the fallback, not the default."""
+    import json as json_mod
+
+    from tablero import migrate
+
+    data_dir = tmp_path / "data"
+    data_dir.mkdir()
+    (data_dir / "products.json").write_text(json_mod.dumps({
+        "tertulia": [{"title": "Catan", "original_price": "$45.990",
+                      "current_price": None, "stock_status": None,
+                      "url": "https://tertulia.cl/producto/catan/"}]
+    }), encoding="utf-8")
+
+    report = migrate.migrate(db_path=tmp_path / "rebuilt.db", data_dir=data_dir)
+    assert report["source"] == "products.json"
+    assert report["records_read"] == 1
+
+
 def test_watchlist_survives_rebuild(tmp_path, sample_products, sample_history):
     """
     A schema rebuild must not silently destroy the user's own state.
