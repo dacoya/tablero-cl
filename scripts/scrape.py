@@ -2,8 +2,10 @@
 scrape.py
 ---------
 HTML parsers for each board game store and the site configuration registry.
-No I/O or scraping logic lives here — import this from main.py.
+No I/O or scraping logic lives here — runner.py drives these.
 """
+
+from functools import partial
 
 import requests
 from requests.adapters import HTTPAdapter
@@ -394,9 +396,6 @@ def lafortalezapuq(html):
     return res
 
 
-def planetaloz(html):
-    """PrestaShop. h1 title variant."""
-    return _parse_presta(html, title_tag='h1', title_cls='product-title')
 
 
 def updown_juegos(html):
@@ -421,9 +420,6 @@ def updown_juegos(html):
     return res
 
 
-def aldeajuegos(html):
-    """PrestaShop."""
-    return _parse_presta(html)
 
 
 def elpatiogeek(html):
@@ -485,14 +481,8 @@ def cartonespesados(html):
     return res
 
 
-def cartonazo(html):
-    """WooCommerce."""
-    return _parse_woo_li(html, link_cls='woocommerce-LoopProduct-link')
 
 
-def dementegames(html):
-    """PrestaShop. OOS flag uses hyphenated class 'out-of-stock'."""
-    return _parse_presta(html, oos_flag='out-of-stock')
 
 
 def drjuegos(html):
@@ -521,16 +511,6 @@ def drjuegos(html):
     return res
 
 
-def vudugaming(html):
-    """Custom store using product-block card pattern."""
-    return _parse_product_block(
-        html,
-        item_tag='article', item_cls='product-block',
-        pricing_cls=None,           # prices live directly on item, not in a pricing wrapper
-        old_cls='product-block__price--old', new_cls='product-block__price--new',
-        single_cls='product-block__price', label_cls=None,
-        base_url="https://www.vudugaming.cl",
-    )
 
 
 def piedrabruja(html):
@@ -565,13 +545,6 @@ def piedrabruja(html):
     return res
 
 
-def gatoarcano(html):
-    """WooCommerce with custom AJAX pagination. Extra OOS via span.now_sold."""
-    return _parse_woo_li(
-        html,
-        link_cls=None,
-        extra_oos=lambda item: bool(item.find('span', class_='now_sold')),
-    )
 
 
 def ludipuerto(html):
@@ -621,40 +594,14 @@ def magicsur(html):
     return res
 
 
-def mangaigames(html):
-    """WooCommerce with Astra theme link class."""
-    return _parse_woo_li(html, link_cls='ast-loop-product__link')
 
 
-def revaruk(html):
-    """WooCommerce/Astra. Extra OOS via ast-shop-product-out-of-stock; extra sale via ast-onsale-card."""
-    return _parse_woo_li(
-        html,
-        link_cls='ast-loop-product__link',
-        extra_oos=lambda item: bool(
-            (s := item.find('span', class_='ast-shop-product-out-of-stock')) and _oos(_txt(s))
-        ),
-        extra_sale=lambda item: bool(item.find('span', class_='ast-onsale-card')),
-    )
 
 
-def top8(html):
-    """BS-collection store."""
-    return _parse_bs(html, item_tag='section', item_cls='grid__item', base_url="https://www.top8.cl")
 
 
-def gameofmagictienda(html):
-    """BS-collection store."""
-    return _parse_bs(html, item_tag='section', item_cls='grid__item', base_url="https://www.gameofmagictienda.cl")
 
 
-def labovedadelmago(html):
-    """WooCommerce generic. Extra sale via span.onsale."""
-    return _parse_woo_li(
-        html,
-        link_cls='woocommerce-LoopProduct-link',
-        extra_sale=lambda item: item.find('span', class_='onsale') is not None,
-    )
 
 
 def calabozotienda(html):
@@ -683,17 +630,6 @@ def calabozotienda(html):
     return res
 
 
-def zonaxgamers(html):
-    """Custom store sharing the product-block price/label conventions."""
-    return _parse_product_block(
-        html,
-        item_tag='div', item_cls='product-block__wrapper',
-        name_cls='product-block__name',
-        pricing_cls=None,
-        old_cls='product-block__price--old', new_cls='product-block__price--new',
-        single_cls='product-block__price', label_cls=None,
-        base_url="https://zonaxgamers.cl",
-    )
 
 
 def cafe2d6(html):
@@ -730,15 +666,8 @@ def cafe2d6(html):
     return res
 
 
-def griffingames(html):
-    """WooCommerce (Astra theme). Migrated to the standard <li class='product'>
-    grid — the old custom 'product_item--inner' markup is gone."""
-    return _parse_woo_li(html, link_cls='woocommerce-LoopProduct-link')
 
 
-def playcenter(html):
-    """WooCommerce/Astra generic implementation."""
-    return _parse_woo_li(html, link_cls='ast-loop-product__link')
 
 
 def enroque(html):
@@ -928,34 +857,16 @@ def buhojuegosdemesa(html):
     return res
 
 
-def mirzu(html):
-    """WooCommerce/Astra theme."""
-    return _parse_woo_li(html, link_cls='ast-loop-product__link')
 
 
-def peakgames(html):
-    """BS-collection store."""
-    return _parse_bs(html, item_tag='section', item_cls='grid__item', base_url="https://www.peakgames.cl")
 
 
-def laloseta(html):
-    """WooCommerce generic implementation."""
-    return _parse_woo_li(html, link_cls='woocommerce-LoopProduct-link')
 
 
-def lamadriguera(html):
-    """WooCommerce generic implementation."""
-    return _parse_woo_li(html, link_cls='woocommerce-LoopProduct-link')
 
 
-def lamesadevaras(html):
-    """PrestaShop."""
-    return _parse_presta(html)
 
 
-def wargaming(html):
-    """BS-collection store."""
-    return _parse_bs(html, item_tag='section', item_cls='grid__item', base_url="https://www.wargaming.cl")
 
 
 def darkhobbies(html):
@@ -1114,8 +1025,6 @@ def _parse_product_block_simple(html, base_url):
     return res
 
 
-def playkingdom(html):
-    return _parse_product_block_simple(html, "https://playkingdom.cl")
 
 
 def jugones(html):
@@ -1152,9 +1061,6 @@ def jugones(html):
     return res
 
 
-def tertulia(html):
-    """WooCommerce generic implementation."""
-    return _parse_woo_li(html, link_cls='woocommerce-LoopProduct-link')
 
 
 def lautarojuegos(html):
@@ -1222,6 +1128,61 @@ def araucania(html):
             print(f"  [araucania] skip: {e}")
     return res
 
+# ── Parser bindings ────────────────────────────────────────────────────────────
+#
+# A store whose parser is a generic with fixed arguments is a binding, not a
+# function. Five stores had an identical one-line wrapper around the same
+# WooCommerce call; they now share it.
+
+_woo = partial(_parse_woo_li, link_cls='woocommerce-LoopProduct-link')    # cartonazo, griffingames, laloseta, lamadriguera, tertulia
+_woo_astra = partial(_parse_woo_li, link_cls='ast-loop-product__link')    # mangaigames, mirzu, playcenter
+_presta = _parse_presta    # aldeajuegos, lamesadevaras
+
+
+def _bs_grid(base_url):
+    """BS-collection store: same section.grid__item markup, only the host differs."""
+    return partial(_parse_bs, item_tag='section', item_cls='grid__item',
+                   base_url=base_url)
+
+# PrestaShop. h1 title variant.
+planetaloz = partial(_parse_presta, title_tag='h1', title_cls='product-title')
+# PrestaShop. OOS flag uses hyphenated class 'out-of-stock'.
+dementegames = partial(_parse_presta, oos_flag='out-of-stock')
+# Custom store using product-block card pattern.
+vudugaming = partial(
+    _parse_product_block, item_tag='article', item_cls='product-block',
+    pricing_cls=None, old_cls='product-block__price--old',
+    new_cls='product-block__price--new', single_cls='product-block__price',
+    label_cls=None, base_url='https://www.vudugaming.cl')
+# WooCommerce with custom AJAX pagination. Extra OOS via span.now_sold.
+gatoarcano = partial(
+    _parse_woo_li, link_cls=None,
+    extra_oos=lambda item: bool(item.find('span', class_='now_sold')))
+# WooCommerce/Astra. Extra OOS via ast-shop-product-out-of-stock; extra sale via ast-onsale-card.
+revaruk = partial(
+    _parse_woo_li, link_cls='ast-loop-product__link',
+    extra_oos=lambda item: bool(
+        (s := item.find('span', class_='ast-shop-product-out-of-stock'))
+        and _oos(_txt(s))),
+    extra_sale=lambda item: bool(item.find('span', class_='ast-onsale-card')))
+top8 = _bs_grid('https://www.top8.cl')
+gameofmagictienda = _bs_grid('https://www.gameofmagictienda.cl')
+# WooCommerce generic. Extra sale via span.onsale.
+labovedadelmago = partial(
+    _parse_woo_li, link_cls='woocommerce-LoopProduct-link',
+    extra_sale=lambda item: item.find('span', class_='onsale') is not None)
+# Custom store sharing the product-block price/label conventions.
+zonaxgamers = partial(
+    _parse_product_block, item_tag='div', item_cls='product-block__wrapper',
+    name_cls='product-block__name', pricing_cls=None,
+    old_cls='product-block__price--old', new_cls='product-block__price--new',
+    single_cls='product-block__price', label_cls=None,
+    base_url='https://zonaxgamers.cl')
+peakgames = _bs_grid('https://www.peakgames.cl')
+wargaming = _bs_grid('https://www.wargaming.cl')
+playkingdom = partial(_parse_product_block_simple, 'https://playkingdom.cl')
+
+
 # ── Site registry ──────────────────────────────────────────────────────────────
 #
 # pagination styles:
@@ -1235,11 +1196,11 @@ sites = [
     {'name': 'lafortalezapuq',   'base_url': 'https://www.lafortalezapuq.cl/jdm',                               'parser': lafortalezapuq,   'pagination': 'shopify',    'output': '../data/lafortalezapuq_jdm.csv'},
     {'name': 'planetaloz',       'base_url': 'https://www.planetaloz.cl/14-juegos-de-mesa',                      'parser': planetaloz,       'pagination': 'page_param', 'output': '../data/planetaloz_jdm.csv'},
     {'name': 'updown',           'base_url': 'https://www.updown.cl/categoria-producto/juegos-de-mesa',          'parser': updown_juegos,    'pagination': 'woo',        'output': '../data/updown_jdm.csv'},
-    {'name': 'aldeajuegos',      'base_url': 'https://www.aldeajuegos.cl/7-juegos-de-mesa',                      'parser': aldeajuegos,      'pagination': 'page_param', 'output': '../data/aldeajuegos_jdm.csv'},
+    {'name': 'aldeajuegos',      'base_url': 'https://www.aldeajuegos.cl/7-juegos-de-mesa',                      'parser': _presta,      'pagination': 'page_param', 'output': '../data/aldeajuegos_jdm.csv'},
     {'name': 'elpatiogeek',      'base_url': 'https://www.elpatiogeek.cl/collections/all',                       'parser': elpatiogeek,      'pagination': 'shopify',    'output': '../data/elpatiogeek_jdm.csv'},
-    {'name': 'mangaigames',      'base_url': 'https://mangaigames.cl/tienda',                                    'parser': mangaigames,      'pagination': 'woo',        'output': '../data/mangaigames_jdm.csv'},
+    {'name': 'mangaigames',      'base_url': 'https://mangaigames.cl/tienda',                                    'parser': _woo_astra,      'pagination': 'woo',        'output': '../data/mangaigames_jdm.csv'},
     {'name': 'cartonespesados',  'base_url': 'https://cartonespesados.cl/product-category/juegos-de-mesa',       'parser': cartonespesados,  'pagination': 'woo',        'output': '../data/cartonespesados_jdm.csv'},
-    {'name': 'cartonazo',        'base_url': 'https://cartonazo.com/categoria-producto/juego-de-mesa',           'parser': cartonazo,        'pagination': 'woo',        'output': '../data/cartonazo_jdm.csv'},
+    {'name': 'cartonazo',        'base_url': 'https://cartonazo.com/categoria-producto/juego-de-mesa',           'parser': _woo,        'pagination': 'woo',        'output': '../data/cartonazo_jdm.csv'},
     {'name': 'dementegames',     'base_url': 'https://dementegames.cl/10-juegos-de-mesa',                        'parser': dementegames,     'pagination': 'page_param', 'output': '../data/dementegames_jdm.csv'},
     {'name': 'drjuegos',         'base_url': 'https://www.drjuegos.cl/2-todos-los-productos',                    'parser': drjuegos,         'pagination': 'page_param', 'output': '../data/drjuegos_jdm.csv'},
     {'name': 'vudugaming',       'base_url': 'https://www.vudugaming.cl/juegos-de-mesa',                         'parser': vudugaming,       'pagination': 'page_param', 'output': '../data/vudugaming_jdm.csv'},
@@ -1254,8 +1215,8 @@ sites = [
     {'name': 'calabozotienda',   'base_url': 'https://www.calabozotienda.cl/tienda/familia/JUEGOS%20DE%20MESA',  'parser': calabozotienda,   'pagination': 'calabozo',   'output': '../data/calabozotienda_jdm.csv'},
     {'name': 'zonaxgamers',      'base_url': 'https://zonaxgamers.cl/juegos-de-mesa',                            'parser': zonaxgamers,      'pagination': 'page_param', 'output': '../data/zonaxgamers_jdm.csv'},
     {'name': 'cafe2d6',          'base_url': 'https://www.cafe2d6.cl/collections/all',                           'parser': cafe2d6,          'pagination': 'shopify',    'output': '../data/cafe2d6_jdm.csv'},
-    {'name': 'griffingames',     'base_url': 'https://www.griffingames.cl/categoria-producto/juegos-de-mesa',    'parser': griffingames,     'pagination': 'woo',        'output': '../data/griffingames_jdm.csv'},
-    {'name': 'playcenter',       'base_url': 'https://playcenter.cl/categoria-producto/juegos-de-mesa',          'parser': playcenter,       'pagination': 'woo',        'output': '../data/playcenter_jdm.csv'},
+    {'name': 'griffingames',     'base_url': 'https://www.griffingames.cl/categoria-producto/juegos-de-mesa',    'parser': _woo,     'pagination': 'woo',        'output': '../data/griffingames_jdm.csv'},
+    {'name': 'playcenter',       'base_url': 'https://playcenter.cl/categoria-producto/juegos-de-mesa',          'parser': _woo_astra,       'pagination': 'woo',        'output': '../data/playcenter_jdm.csv'},
     {'name': 'enroque',          'base_url': 'https://juegosenroque.cl/collections/todos-los-juegos-de-mesa',    'parser': enroque,          'pagination': 'shopify',    'output': '../data/enroque_jdm.csv'},
     {'name': 'kaiojuegos',       'base_url': 'https://kaiojuegos.cl/18-juegos-de-mesa',                          'parser': kaiojuegos,       'pagination': 'page_param', 'output': '../data/kaiojuegos_jdm.csv'},
     {'name': 'manahouse',        'base_url': 'https://manahouse.cl/collections/juegos-de-mesa',                  'parser': manahouse,        'pagination': 'shopify',    'output': '../data/manahouse_jdm.csv'},
@@ -1263,18 +1224,18 @@ sites = [
     {'name': 'thirdimpact_asmodee', 'base_url': 'https://www.thirdimpact.cl/brand/asmodee',                      'parser': thirdimpact,      'pagination': 'page_param', 'output': '../data/thirdimpact_asmodee_jdm.csv'},
     {'name': 'thirdimpact_devir',   'base_url': 'https://www.thirdimpact.cl/brand/devir',                        'parser': thirdimpact,      'pagination': 'page_param', 'output': '../data/thirdimpact_devir_jdm.csv'},
     {'name': 'buho',             'base_url': 'https://buhojuegosdemesa.cl/collections/catalogo',                 'parser': buhojuegosdemesa, 'pagination': 'shopify',    'output': '../data/buho_jdm.csv'},
-    {'name': 'mirzu',            'base_url': 'https://mirzu.cl/tienda',                                          'parser': mirzu,            'pagination': 'woo',        'output': '../data/mirzu_jdm.csv'},
+    {'name': 'mirzu',            'base_url': 'https://mirzu.cl/tienda',                                          'parser': _woo_astra,            'pagination': 'woo',        'output': '../data/mirzu_jdm.csv'},
     {'name': 'peakgames',        'base_url': 'https://www.peakgames.cl/collection/juegos-de-mesa',               'parser': peakgames,        'pagination': 'page_param', 'output': '../data/peakgames_jdm.csv'},
-    {'name': 'laloseta',         'base_url': 'https://laloseta.cl/categoria-producto/juego-de-mesa',             'parser': laloseta,         'pagination': 'woo',        'output': '../data/laloseta_jdm.csv'},
-    {'name': 'lamadriguera',     'base_url': 'https://tiendalamadriguera.cl/product-category/juegos-de-mesa',    'parser': lamadriguera,     'pagination': 'woo',        'output': '../data/tiendalamadriguera_jdm.csv'},
-    {'name': 'lamesadevaras',    'base_url': 'https://lamesadevaras.cl/9-juegos-de-mesa',                        'parser': lamesadevaras,    'pagination': 'page_param', 'output': '../data/lamesadevaras_jdm.csv'},
+    {'name': 'laloseta',         'base_url': 'https://laloseta.cl/categoria-producto/juego-de-mesa',             'parser': _woo,         'pagination': 'woo',        'output': '../data/laloseta_jdm.csv'},
+    {'name': 'lamadriguera',     'base_url': 'https://tiendalamadriguera.cl/product-category/juegos-de-mesa',    'parser': _woo,     'pagination': 'woo',        'output': '../data/tiendalamadriguera_jdm.csv'},
+    {'name': 'lamesadevaras',    'base_url': 'https://lamesadevaras.cl/9-juegos-de-mesa',                        'parser': _presta,    'pagination': 'page_param', 'output': '../data/lamesadevaras_jdm.csv'},
     {'name': 'wargaming',        'base_url': 'https://www.wargaming.cl/collection/juegos-de-mesa',               'parser': wargaming,        'pagination': 'page_param', 'output': '../data/wargaming_jdm.csv'},
     {'name': 'darkhobbies',      'base_url': 'https://www.darkhobbies.cl/collections/all',                       'parser': darkhobbies,      'pagination': 'shopify',    'output': '../data/darkhobbies_jdm.csv'},
     {'name': 'shivano',          'base_url': 'https://shivano.cl/12-juegos-de-mesa',                             'parser': shivano,          'pagination': 'p',          'output': '../data/shivano_jdm.csv'},
     {'name': 'guildreams',       'base_url': 'https://www.guildreams.com/collection/juegos-de-mesa',             'parser': guildreams,       'pagination': 'page_param', 'output': '../data/guildreams_jdm.csv'},
     {'name': 'playkingdom',      'base_url': 'https://playkingdom.cl/juegos-de-mesa',                            'parser': playkingdom,      'pagination': 'page_param', 'output': '../data/playkingdom_jdm.csv'},
     {'name': 'jugones',          'base_url': 'https://www.jugones.cl/juegos-de-mesa',                            'parser': jugones,          'pagination': 'page_param', 'output': '../data/jugones_jdm.csv'},
-    {'name': 'tertulia',         'base_url': 'https://tertulia.cl/categoria-producto/juego-de-mesa',             'parser': tertulia,         'pagination': 'product-page','output': '../data/tertulia_jdm.csv'},
+    {'name': 'tertulia',         'base_url': 'https://tertulia.cl/categoria-producto/juego-de-mesa',             'parser': _woo,         'pagination': 'product-page','output': '../data/tertulia_jdm.csv'},
     {'name': 'lautarojuegos',    'base_url': 'https://www.lautarojuegos.cl/juegos-de-mesa',                      'parser': lautarojuegos,    'pagination': 'page_param', 'output': '../data/lautarojuegos_jdm.csv'},
     {'name': 'araucania',        'base_url': 'https://araucaniagaming.cl/productos/juegosdemesa',                 'parser': araucania,        'pagination': 'woo',        'output': '../data/araucania_jdm.csv'},
     {'name': 'tentami',          'base_url': 'https://tentami.cl/collections/juegos-de-mesa',                      'parser': tentami,          'pagination': 'page_param', 'output': '../data/tentami_jdm.csv'},

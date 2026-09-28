@@ -1,7 +1,7 @@
 """The CSV that scrape_site writes: deduplicated by url, ordered, stdlib-only."""
 import csv
 
-import runner
+from tablero import runner
 
 
 def _site(tmp_path, pages):

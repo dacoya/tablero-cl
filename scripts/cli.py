@@ -10,30 +10,12 @@ This module is a thin shell: parse, call a service, hand the result to render.
 """
 import sys
 
-try:
-    from . import alerts, analytics, basket as basket_mod
-    from . import changes, db as db_mod, export as exporter, history
-    from . import migrate as migrate_mod, parser as parser_mod
-    from . import paths, render, repo, search as search_mod
-    from . import update as update_mod, validation
-    from . import watchlist as watch_mod
-except ImportError:
-    import alerts
-    import analytics
-    import basket as basket_mod
-    import changes
-    import db as db_mod
-    import export as exporter
-    import history
-    import migrate as migrate_mod
-    import parser as parser_mod
-    import paths
-    import render
-    import repo
-    import search as search_mod
-    import update as update_mod
-    import validation
-    import watchlist as watch_mod
+from . import alerts, analytics, basket as basket_mod
+from . import changes, db as db_mod, export as exporter, history
+from . import migrate as migrate_mod, parser as parser_mod
+from . import paths, render, repo, search as search_mod
+from . import update as update_mod, validation
+from . import watchlist as watch_mod
 
 build_parser = parser_mod.build_parser
 
@@ -95,6 +77,8 @@ def cmd_search(args) -> int:
         conn, args.query, limit=args.limit,
         include_accessories=args.all_kinds,
         include_stale=args.include_stale,
+        min_price=args.min_price, max_price=args.max_price,
+        order=args.sort,
     )
     if not hits:
         print(f"Sin resultados para '{args.query}'.")
@@ -114,21 +98,11 @@ def _show_prices(conn, hit, include_stale: bool = False) -> None:
 
 
 def _browse(conn, args, on_sale: bool) -> tuple[list[dict], int]:
-    """
-    Rows for deals/list plus the total matching the SAME filters.
-
-    Returning both together is what keeps the header honest: the count used to
-    be computed with the price filters applied while the rows were fetched
-    without them, so "Catálogo (5 de 13400)" described two different populations.
-    """
+    """Rows for deals/list plus the total matching the same filters."""
     filters = dict(_price_filters(args), store=_resolve_store(conn, args.store))
-    fetch = (analytics.smart_products if args.sort in analytics.SMART_SORT_OPTIONS
-             else repo.products)
-    key = "by" if fetch is analytics.smart_products else "sort"
-
-    rows = fetch(conn, limit=args.limit, on_sale=on_sale,
-                 **{key: args.sort}, **filters)
-    return rows, repo.count_products(conn, on_sale=on_sale, **filters)
+    return analytics.browse(conn, sort=args.sort, limit=args.limit,
+                            offset=getattr(args, "offset", 0),
+                            on_sale=on_sale, **filters)
 
 
 def _export(rows: list[dict], fmt: str) -> None:
@@ -138,7 +112,16 @@ def _export(rows: list[dict], fmt: str) -> None:
     print(f"\n  Exportado: {exporter.export_comparison(rows, fmt)}")
 
 
-def _browse_title(label: str, shown: int, total: int, sort: str) -> str:
+def _browse_title(label: str, shown: int, total: int, sort: str,
+                  offset: int = 0) -> str:
+    """
+    Heading that says which slice of the results is on screen.
+
+    With --offset in play, a bare count is a lie by omission: "Ofertas (20)"
+    looks identical on page one and page five.
+    """
+    if offset:
+        return f"{label} ({offset + 1}–{offset + shown} de {total}) · orden: {sort}"
     more = f" de {total}" if total > shown else ""
     return f"{label} ({shown}{more}) · orden: {sort}"
 
@@ -146,7 +129,9 @@ def _browse_title(label: str, shown: int, total: int, sort: str) -> str:
 def cmd_deals(args) -> int:
     conn = _open_db()
     rows, total = _browse(conn, args, on_sale=True)
-    render.product_rows(rows, title=_browse_title("Ofertas", len(rows), total, args.sort))
+    render.product_rows(rows, urls=getattr(args, "urls", False),
+                        title=_browse_title("Ofertas", len(rows), total, args.sort,
+                                            offset=getattr(args, "offset", 0)))
     _export(rows, args.export)
     return 0
 
@@ -154,7 +139,9 @@ def cmd_deals(args) -> int:
 def cmd_list(args) -> int:
     conn = _open_db()
     rows, total = _browse(conn, args, on_sale=False)
-    render.product_rows(rows, title=_browse_title("Catálogo", len(rows), total, args.sort))
+    render.product_rows(rows, urls=getattr(args, "urls", False),
+                        title=_browse_title("Catálogo", len(rows), total, args.sort,
+                                            offset=getattr(args, "offset", 0)))
     _export(rows, args.export)
     return 0
 
@@ -301,10 +288,7 @@ def cmd_basket(args) -> int:
 
 
 def cmd_update(args) -> int:
-    try:
-        from .scrape import sites
-    except ImportError:
-        from scrape import sites
+    from .scrape import sites
 
     conn = _open_db(read_only=False)
     try:
@@ -379,10 +363,7 @@ def main(argv=None) -> int:
     args = parser.parse_args(argv)
 
     if not getattr(args, "command", None):
-        try:
-            from .tui import run_tui
-        except ImportError:
-            from tui import run_tui
+        from .tui import run_tui
         run_tui()
         return 0
 

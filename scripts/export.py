@@ -11,10 +11,7 @@ import time
 from html import escape
 from pathlib import Path
 
-try:
-    from .paths import DATA_DIR
-except ImportError:
-    from paths import DATA_DIR
+from .paths import DATA_DIR
 
 EXPORT_DIR = DATA_DIR / "exports"
 

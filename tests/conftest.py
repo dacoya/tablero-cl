@@ -1,12 +1,6 @@
 import json
-import sys
-from pathlib import Path
 
 import pytest
-
-SCRIPTS = Path(__file__).resolve().parent.parent / "scripts"
-if str(SCRIPTS) not in sys.path:
-    sys.path.insert(0, str(SCRIPTS))
 
 
 @pytest.fixture
@@ -63,8 +57,7 @@ def db_conn(tmp_path, sample_products, sample_history, monkeypatch):
         encoding="utf-8",
     )
 
-    import db as db_mod
-    import migrate
+    from tablero import db as db_mod, migrate
 
     db_path = tmp_path / "tablero.db"
     migrate.migrate(db_path=db_path, data_dir=data_dir)

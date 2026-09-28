@@ -10,12 +10,8 @@ import time
 
 from tqdm import tqdm
 
-try:
-    from .paths import resolve_output
-    from .scrape import build_url, fetch_html
-except ImportError:
-    from paths import resolve_output
-    from scrape import build_url, fetch_html
+from .paths import resolve_output
+from .scrape import build_url, fetch_html
 
 # Politeness delay between page requests. Jitter avoids a robotic cadence, which
 # is part of what keeps Cloudflare from degrading the IP's reputation.

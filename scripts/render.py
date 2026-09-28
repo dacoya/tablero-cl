@@ -14,10 +14,7 @@ import shutil
 import subprocess
 import sys
 
-try:
-    from .classify import KIND_GAME
-except ImportError:
-    from classify import KIND_GAME
+from .classify import KIND_GAME
 
 FLAG_MARK = {"new": "🆕", "restock": "🔄"}
 KIND_MARK = {"expansion": "+exp", "accessory": "acc", "tcg": "tcg", "puzzle": "puz"}
@@ -29,6 +26,12 @@ GUTTER = 2
 # column. Keeps the table compact and scannable; _widths grows past it only to
 # keep genuinely different rows distinguishable.
 MAX_FLEX_COL = 38
+
+# Third element of a column spec, in place of the flexible flag: render this
+# column whole, never clipped and never shrunk. A truncated title still names
+# its product, but half a URL cannot be opened or pasted, so clipping one
+# destroys the only thing it was there for.
+NO_CLIP = "no-clip"
 
 # Fallback when PAGER is unset. Most systems have less; more is the floor.
 DEFAULT_PAGER = "less"
@@ -106,8 +109,12 @@ def stock_label(in_stock) -> str:
     return "Disponible" if in_stock else "Agotado"
 
 
-def _truncate(text: str, width: int) -> str:
-    text = "" if text is None else str(text)
+def _cell(value) -> str:
+    return "" if value is None else str(value)
+
+
+def _truncate(text, width: int) -> str:
+    text = _cell(text)
     return text if len(text) <= width else text[: max(1, width - 1)] + "…"
 
 
@@ -138,7 +145,8 @@ def _widths(rows: list[dict], columns: list[tuple], available: int) -> list[int]
         max(len(label), *(len(str(r.get(key, "") or "")) for r in rows)) if rows else len(label)
         for key, label, _ in columns
     ]
-    flexible = [i for i, (_, _, flex) in enumerate(columns) if flex]
+    flexible = [i for i, (_, _, flex) in enumerate(columns)
+                if flex and flex is not NO_CLIP]
     widths = [
         min(w, MAX_FLEX_COL) if i in flexible else w
         for i, w in enumerate(natural)
@@ -204,13 +212,14 @@ def table(rows: list[dict], columns: list[tuple], title: str = "",
     # alignment with the data beneath it.
     out.append("  ".join(
         _truncate(label, w).ljust(w) for (_, label, _), w in zip(columns, widths)
-    ))
+    ).rstrip())
     out.append("  ".join("-" * w for w in widths))
 
     for row in shown:
         cells = (
-            _truncate(row.get(key, ""), w).ljust(w)
-            for (key, _, _), w in zip(columns, widths)
+            (_cell(row.get(key, "")) if flex is NO_CLIP
+             else _truncate(row.get(key, ""), w)).ljust(w)
+            for (key, _, flex), w in zip(columns, widths)
         )
         out.append("  ".join(cells).rstrip())
 
@@ -284,30 +293,60 @@ def price_table(offers: list[dict], title: str) -> None:
         ("offer", "Oferta", False),
         ("disc", "Desc.", False),
         ("stock", "Disponibilidad", False),
-        ("url", "URL", True),
+        ("url", "URL", NO_CLIP),
     ], title=f"\n{title}")
 
 
-def product_rows(rows: list[dict], title: str = "", limit: int | None = None) -> None:
+def product_rows(rows: list[dict], title: str = "", limit: int | None = None,
+                 urls: bool = False) -> None:
+    """
+    The catalog/deals table.
+
+    Rows are numbered from one so a caller can ask "which one?" and take a
+    number back, the way the CLI's search list already works.
+
+    `urls` is off by default on purpose. A store URL runs 60-100 characters,
+    and next to the title, store and three money columns it pushes the line
+    past any normal terminal, wrapping every row -- a worse table than one
+    with no link at all. Turn it on deliberately (`--urls`) when the links are
+    the point.
+
+    The three cross-store columns are inferred from the data rather than asked
+    for: only `analytics.smart_products` returns a median, and without them a
+    "mejor valor" ordering is a list in a mysterious order.
+    """
     prepared = [
         {
+            "n": i,
             "title": (FLAG_MARK.get(r.get("flag"), "") + " " + (r.get("title") or "")).strip(),
             "store": r.get("store", ""),
             "price": money(r.get("price_original")),
             "offer": money(r.get("price_current")),
             "disc": pct(r["discount_pct"]) if r.get("discount_pct") else "-",
             "stock": stock_label(r.get("in_stock")),
+            "stores": r.get("n_stores", ""),
+            "median": money(r["median"]) if r.get("median") is not None else "",
+            "score": f"{r['score']:+.2f}" if r.get("score") is not None else "",
+            "url": r.get("url", ""),
         }
-        for r in rows
+        for i, r in enumerate(rows, 1)
     ]
-    table(prepared, [
+    columns = [
+        ("n", "#", False),
         ("title", "Producto", True),
         ("store", "Tienda", False),
         ("price", "Precio", False),
         ("offer", "Oferta", False),
         ("disc", "Desc.", False),
         ("stock", "Estado", False),
-    ], title=title, limit=limit)
+    ]
+    if rows and "median" in rows[0]:
+        columns += [("stores", "Tiendas", False),
+                    ("median", "Mediana", False),
+                    ("score", "Índice", False)]
+    if urls:
+        columns.append(("url", "URL", NO_CLIP))
+    table(prepared, columns, title=title, limit=limit)
 
 
 def leaderboard(rows: list[dict]) -> None:

@@ -17,12 +17,7 @@ import json
 import time
 from pathlib import Path
 
-try:
-    from . import repo, search as search_mod, watchlist as watch_mod
-except ImportError:
-    import repo
-    import search as search_mod
-    import watchlist as watch_mod
+from . import repo, search as search_mod, watchlist as watch_mod
 
 
 def _cheapest(conn, game_id: int, in_stock_only: bool = False):

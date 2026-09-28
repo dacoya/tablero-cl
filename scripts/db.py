@@ -12,10 +12,7 @@ import sqlite3
 from pathlib import Path
 from urllib.parse import quote
 
-try:
-    from .paths import DATA_DIR, PKG_DIR
-except ImportError:
-    from paths import DATA_DIR, PKG_DIR
+from .paths import DATA_DIR, PKG_DIR
 
 DB_PATH = DATA_DIR / "tablero.db"
 SCHEMA_PATH = PKG_DIR / "schema.sql"

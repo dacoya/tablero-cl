@@ -1,7 +1,7 @@
 """Price parsing and title normalization -- the shared primitives everything else builds on."""
 import pytest
 
-from utils import clean_title, normalize, parse_price
+from tablero.utils import clean_title, normalize, parse_price
 
 
 @pytest.mark.parametrize("raw, expected", [

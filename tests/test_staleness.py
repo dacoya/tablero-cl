@@ -3,11 +3,11 @@ import time
 
 import pytest
 
-import analytics
-import derive
-import ingest
-import repo
-import search
+from tablero import analytics
+from tablero import derive
+from tablero import ingest
+from tablero import repo
+from tablero import search
 
 
 def _scrape(conn, store, records, ts):
@@ -185,7 +185,7 @@ def test_limit_still_caps_when_asked(db_conn):
 
 
 def test_parser_default_is_unlimited():
-    import parser as parser_mod
+    from tablero import parser as parser_mod
     args = parser_mod.build_parser().parse_args(["deals"])
     assert args.limit is None
     assert parser_mod.build_parser().parse_args(["list", "--limit", "7"]).limit == 7

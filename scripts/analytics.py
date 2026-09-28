@@ -12,10 +12,7 @@ not redefine what a game "normally" costs.
 
 Pure: connection in, list[dict] out. Nothing prints.
 """
-try:
-    from . import repo
-except ImportError:
-    import repo
+from . import repo
 
 SMART_SORT_OPTIONS = ("value", "scarcity", "volatility")
 
@@ -56,6 +53,7 @@ _SCORE = {
 
 
 def smart_products(conn, by: str = "value", limit: int | None = None,
+                   offset: int = 0,
                    store: str | None = None, in_stock_only: bool = False,
                    kind=None, on_sale: bool = False,
                    min_price=None, max_price=None,
@@ -107,9 +105,31 @@ def smart_products(conn, by: str = "value", limit: int | None = None,
     """
     # limit=None means "everything", the same contract as repo.products.
     if limit is not None:
-        sql += " LIMIT ?"
-        params = [*params, int(limit)]
+        sql += " LIMIT ? OFFSET ?"
+        params = [*params, int(limit), int(offset)]
     return [dict(r) for r in conn.execute(sql, params)]
+
+
+def browse(conn, sort: str = "discount", limit: int | None = None,
+           offset: int = 0, **filters) -> tuple[list[dict], int]:
+    """
+    One page of browse rows plus the total under the same filters.
+
+    Lives here rather than in repo because picking between a plain column sort
+    and a derived one needs the smart sorts, and repo importing analytics would
+    close an import cycle.
+
+    Rows and total come back together deliberately. Counting with one set of
+    filters and listing with another is exactly the bug that made a heading
+    claim 1.284 results above a list that had been filtered down to 40.
+    """
+    if sort in SMART_SORT_OPTIONS:
+        rows = smart_products(conn, by=sort, limit=limit, offset=offset, **filters)
+    else:
+        rows = repo.products(conn, sort=sort, limit=limit, offset=offset, **filters)
+    # The smart sorts additionally drop games with no usable median, so for
+    # those this total is an upper bound rather than an exact count.
+    return rows, repo.count_products(conn, **filters)
 
 
 def store_leaderboard(conn, limit: int | None = None) -> list[dict]:

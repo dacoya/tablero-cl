@@ -10,13 +10,8 @@ Per store, so a partial or failed scrape never touches another store's data.
 """
 import time
 
-try:
-    from . import db as db_mod, validation
-    from .derive import derive
-except ImportError:
-    import db as db_mod
-    import validation
-    from derive import derive
+from . import db as db_mod, validation
+from .derive import derive
 
 
 def _existing(conn, store: str) -> dict:

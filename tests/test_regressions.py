@@ -9,11 +9,11 @@ import sqlite3
 
 import pytest
 
-import db as db_mod
-import ingest
-import migrate
-import search
-import watchlist
+from tablero import db as db_mod
+from tablero import ingest
+from tablero import migrate
+from tablero import search
+from tablero import watchlist
 
 
 def _seed(tmp_path, sample_products, sample_history):

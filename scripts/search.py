@@ -14,14 +14,9 @@ Pure: takes a connection, returns list[dict]. Nothing here prints.
 """
 from rapidfuzz import fuzz, process
 
-try:
-    from . import repo
-    from .classify import KIND_GAME, kind_rank
-    from .utils import normalize
-except ImportError:
-    import repo
-    from classify import KIND_GAME, kind_rank
-    from utils import normalize
+from . import repo
+from .classify import KIND_GAME, kind_rank
+from .utils import normalize
 
 # Below this blended relevance a candidate is noise, not a weak match.
 RELEVANCE_FLOOR = 55.0
@@ -94,9 +89,14 @@ def _merge(primary: list[dict], extra: list[dict]) -> list[dict]:
     return primary + [c for c in extra if c["game_id"] not in seen]
 
 
+ORDER_OPTIONS = ("relevance", "price", "stores")
+
+
 def search(conn, query: str, limit: int = 30, kinds=None,
            include_accessories: bool = False,
-           include_stale: bool = False) -> list[dict]:
+           include_stale: bool = False,
+           min_price=None, max_price=None,
+           order: str = "relevance") -> list[dict]:
     """
     Ranked games matching `query`.
 
@@ -106,7 +106,19 @@ def search(conn, query: str, limit: int = 30, kinds=None,
     `kinds` restricts to an explicit set. Otherwise accessories are hidden
     unless `include_accessories` is set -- searching "catan" should return the
     game, not forty sleeve listings that mention it.
+
+    The price bounds are applied to a game's cheapest offer, which is what
+    someone shopping means by "under 30.000". They filter candidates before
+    scoring rather than in SQL: the candidate pool is already small, and there
+    is no reason to spend fuzzy matching on rows that cannot be shown.
+
+    `order` re-sorts the finished list. Relevance is the default and leaves the
+    ranking exactly as it was; price and stores are for the moment you know
+    what you want and only care where it is cheapest.
     """
+    if order not in ORDER_OPTIONS:
+        raise ValueError(
+            f"Unknown search order '{order}'. Options: {', '.join(ORDER_OPTIONS)}")
     norm_query = normalize(query)
     if not norm_query:
         return []
@@ -123,6 +135,13 @@ def search(conn, query: str, limit: int = 30, kinds=None,
         candidates = [c for c in candidates if c.get("kind") in wanted]
     elif not include_accessories:
         candidates = [c for c in candidates if c.get("kind") != "accessory"]
+
+    if min_price is not None:
+        candidates = [c for c in candidates
+                      if c.get("min_price") is not None and c["min_price"] >= min_price]
+    if max_price is not None:
+        candidates = [c for c in candidates
+                      if c.get("min_price") is not None and c["min_price"] <= max_price]
 
     scored = []
     for c in candidates:
@@ -143,7 +162,16 @@ def search(conn, query: str, limit: int = 30, kinds=None,
         key=lambda r: (r["_rank"], r.get("n_stores") or 0, -len(r.get("title") or "")),
         reverse=True,
     )
-    return [{k: v for k, v in r.items() if k != "_rank"} for r in scored[:limit]]
+    hits = [{k: v for k, v in r.items() if k != "_rank"} for r in scored[:limit]]
+
+    # Re-ordering happens after the cut, so `limit` always yields the most
+    # relevant N -- sorting first would hand back the N cheapest things that
+    # merely cleared the relevance floor.
+    if order == "price":
+        hits.sort(key=lambda h: (h.get("min_price") is None, h.get("min_price") or 0))
+    elif order == "stores":
+        hits.sort(key=lambda h: h.get("n_stores") or 0, reverse=True)
+    return hits
 
 
 def best_match(conn, query: str, **kwargs) -> dict | None:

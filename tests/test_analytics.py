@@ -1,13 +1,13 @@
 """Smart sorts, leaderboard, history trends, alerts, and price validation."""
 import pytest
 
-import alerts
-import changes
-import analytics
-import history
-import search
-import validation
-import watchlist
+from tablero import alerts
+from tablero import changes
+from tablero import analytics
+from tablero import history
+from tablero import search
+from tablero import validation
+from tablero import watchlist
 
 
 # ---------------------------------------------------------------------------
@@ -199,3 +199,41 @@ def test_changes_limit_none_means_unlimited(db_conn):
     changes.set_cursor(db_conn)
     assert isinstance(changes.price_drops(db_conn, min_pct=5.0, limit=None), list)
     assert isinstance(changes.new_arrivals(db_conn, limit=None), list)
+
+
+# ---------------------------------------------------------------------------
+# Paging
+# ---------------------------------------------------------------------------
+
+def test_browse_pages_do_not_overlap(db_conn):
+    """Consecutive pages must be disjoint and agree on the total."""
+    first, total = analytics.browse(db_conn, sort="price", limit=2, offset=0)
+    second, total_again = analytics.browse(db_conn, sort="price", limit=2, offset=2)
+
+    assert total == total_again
+    assert {r["product_id"] for r in first}.isdisjoint(r["product_id"] for r in second)
+
+
+def test_browse_total_counts_the_whole_filtered_set(db_conn):
+    """
+    The heading's total must describe the filters, not the page.
+
+    Counting one population and listing another is what once produced
+    "Catálogo (5 de 13400)" over five rows of a filtered list.
+    """
+    page, total = analytics.browse(db_conn, sort="price", limit=1)
+    everything, _ = analytics.browse(db_conn, sort="price")
+
+    assert len(page) == 1
+    assert total == len(everything)
+
+
+@pytest.mark.parametrize("sort", analytics.SMART_SORT_OPTIONS)
+def test_smart_sorts_honour_offset(db_conn, sort):
+    """Paging has to work for the derived orders too, not just column sorts."""
+    both = analytics.smart_products(db_conn, by=sort, limit=2)
+    second = analytics.smart_products(db_conn, by=sort, limit=1, offset=1)
+
+    if len(both) < 2:
+        pytest.skip("fixture catalog too small to page")
+    assert [r["product_id"] for r in second] == [both[1]["product_id"]]

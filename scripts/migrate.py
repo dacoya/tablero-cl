@@ -20,18 +20,11 @@ import time
 from collections import Counter, defaultdict
 from pathlib import Path
 
-try:
-    from . import db as db_mod
-    from .classify import kind_rank
-    from .derive import derive
-    from .paths import DATA_DIR
-    from . import validation
-except ImportError:
-    import db as db_mod
-    from classify import kind_rank
-    from derive import derive
-    from paths import DATA_DIR
-    import validation
+from . import db as db_mod
+from .classify import kind_rank
+from .derive import derive
+from .paths import DATA_DIR
+from . import validation
 
 
 def _load_json(path, default):
@@ -53,10 +46,7 @@ def _store_timestamps(metadata: dict) -> dict:
 
 
 def _sites():
-    try:
-        from .scrape import sites
-    except ImportError:
-        from scrape import sites
+    from .scrape import sites
     return sites
 
 
@@ -204,11 +194,23 @@ def _restore_personal_state(conn, state: dict) -> dict:
 
 
 def _load_catalog(data_dir) -> tuple[dict, str]:
-    """The {store: [records]} catalog plus which source supplied it."""
-    products = _load_json(data_dir / "products.json", {})
+    """
+    The {store: [records]} catalog plus which source supplied it.
+
+    The CSVs win. They are what every scrape writes, so they are current by
+    construction; products.json was frozen when the database took over and has
+    only drifted further behind since. Preferring the JSON meant a rebuild
+    quietly restored a months-old catalog over fresher data that was sitting
+    right next to it -- 28.926 stale records in place of 30.430 live ones the
+    last time the two were compared.
+
+    It is still read when no CSVs are present, which is the one case it is
+    good for: a checkout old enough to predate them.
+    """
+    products = _load_from_csvs(data_dir)
     if products:
-        return products, "products.json"
-    return _load_from_csvs(data_dir), "csv"
+        return products, "csv"
+    return _load_json(data_dir / "products.json", {}), "products.json"
 
 
 def _insert_stores(conn, products: dict) -> int:
