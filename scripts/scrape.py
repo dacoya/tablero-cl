@@ -1180,6 +1180,7 @@ zonaxgamers = partial(
     base_url='https://zonaxgamers.cl')
 peakgames = _bs_grid('https://www.peakgames.cl')
 wargaming = _bs_grid('https://www.wargaming.cl')
+laguaridadeldragon = _bs_grid('https://www.laguaridadeldragon.cl')
 playkingdom = partial(_parse_product_block_simple, 'https://playkingdom.cl')
 
 
@@ -1230,6 +1231,7 @@ sites = [
     {'name': 'lamadriguera',     'base_url': 'https://tiendalamadriguera.cl/product-category/juegos-de-mesa',    'parser': _woo,     'pagination': 'woo',        'output': '../data/tiendalamadriguera_jdm.csv'},
     {'name': 'lamesadevaras',    'base_url': 'https://lamesadevaras.cl/9-juegos-de-mesa',                        'parser': _presta,    'pagination': 'page_param', 'output': '../data/lamesadevaras_jdm.csv'},
     {'name': 'wargaming',        'base_url': 'https://www.wargaming.cl/collection/juegos-de-mesa',               'parser': wargaming,        'pagination': 'page_param', 'output': '../data/wargaming_jdm.csv'},
+    {'name': 'laguaridadeldragon', 'base_url': 'https://www.laguaridadeldragon.cl/collection/juegos',        'parser': laguaridadeldragon, 'pagination': 'page_param', 'output': '../data/laguaridadeldragon_jdm.csv'},
     {'name': 'darkhobbies',      'base_url': 'https://www.darkhobbies.cl/collections/all',                       'parser': darkhobbies,      'pagination': 'shopify',    'output': '../data/darkhobbies_jdm.csv'},
     {'name': 'shivano',          'base_url': 'https://shivano.cl/12-juegos-de-mesa',                             'parser': shivano,          'pagination': 'p',          'output': '../data/shivano_jdm.csv'},
     {'name': 'guildreams',       'base_url': 'https://www.guildreams.com/collection/juegos-de-mesa',             'parser': guildreams,       'pagination': 'page_param', 'output': '../data/guildreams_jdm.csv'},

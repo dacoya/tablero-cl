@@ -41,7 +41,7 @@ costo de envío.
 
 ## Tiendas cubiertas
 
-46 tiendas activas.
+47 tiendas activas.
 
 | Tienda | URL | Ubicación |
 |---|---|---|
@@ -91,6 +91,7 @@ costo de envío.
 | Araucanía Gaming | araucaniagaming.cl | Temuco |
 | Top 8 | top8.cl | Temuco |
 | Búho Juegos de Mesa | buhojuegosdemesa.cl | Valparaíso |
+| La Guarida del Dragón | laguaridadeldragon.cl | — |
 
 
 
