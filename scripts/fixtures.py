@@ -189,8 +189,8 @@ def _rec(slug, title, original, current=None, stock=None, url=None):
 
 
 # Three scrapes of one store. Each product is there to exercise one rule:
-# a duplicate URL (last wins), rejected prices, a synthetic identity, a
-# truncated title, then every change kind, a delisting, and an empty scrape
+# a duplicate URL (last wins), a title tie within one game, rejected prices,
+# a synthetic identity, a truncated title, then every change kind, a delisting, and an empty scrape
 # that must leave everything alone.
 _SCENARIO = (
     (1_000, [
@@ -201,6 +201,8 @@ _SCENARIO = (
         _rec("azul", "Azul", "$30.000", stock="Agotado"),
         _rec("carcassonne", "Carcassonne", "$25.000"),
         _rec("clank", "Clank Base", "$35.000"),
+        # Same norm, same length: the first title seen names the game.
+        _rec("clank-caps", "CLANK BASE", "$36.000"),
         _rec("tm", "Terraforming Mars", "$45.000"),
         _rec("tm-p2", "Terraforming Mars -...", "$20.000",
              url="https://tienda.cl/p/terraforming-mars-preludio-2"),

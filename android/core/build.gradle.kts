@@ -1,5 +1,8 @@
 plugins {
     alias(libs.plugins.kotlin.jvm)
+    // Parity helpers shared with app's instrumented test, so the same checks
+    // run on the JVM and on a device.
+    `java-test-fixtures`
 }
 
 kotlin {
@@ -8,9 +11,9 @@ kotlin {
 
 dependencies {
     api(libs.sqlite)
+    testFixturesApi(libs.serialization.json)
     testImplementation(kotlin("test"))
     testImplementation(libs.sqlite.bundled)
-    testImplementation(libs.serialization.json)
 }
 
 // The Python checkout this project lives in. It owns the schema and the

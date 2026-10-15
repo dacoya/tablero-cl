@@ -47,6 +47,13 @@
      "url": "https://tienda.cl/p/clank/"
     },
     {
+     "title": "CLANK BASE",
+     "original_price": "$36.000",
+     "current_price": null,
+     "stock_status": null,
+     "url": "https://tienda.cl/p/clank-caps/"
+    },
+    {
      "title": "Terraforming Mars",
      "original_price": "$45.000",
      "current_price": null,
@@ -91,8 +98,8 @@
    ],
    "result": {
     "store": "tienda",
-    "ingested": 8,
-    "new": 8,
+    "ingested": 9,
+    "new": 9,
     "restock": 0,
     "rejected": {
      "nonpositive_original": 1,
@@ -164,6 +171,23 @@
       "price_original": 35000.0,
       "price_current": null,
       "price_eff": 35000.0,
+      "in_stock": 1,
+      "flag": "new",
+      "first_seen": 1000,
+      "last_seen": 1000,
+      "live": 1
+     },
+     {
+      "url_canon": "tienda.cl/p/clank-caps",
+      "url": "https://tienda.cl/p/clank-caps/",
+      "game_norm": "clank",
+      "title_raw": "CLANK BASE",
+      "title": "CLANK BASE",
+      "norm": "clank",
+      "kind": "game",
+      "price_original": 36000.0,
+      "price_current": null,
+      "price_eff": 36000.0,
       "in_stock": 1,
       "flag": "new",
       "first_seen": 1000,
@@ -319,6 +343,13 @@
       "price_original": 35000.0
      },
      {
+      "url_canon": "tienda.cl/p/clank-caps",
+      "ts": 1000,
+      "price": 36000.0,
+      "in_stock": 1,
+      "price_original": 36000.0
+     },
+     {
       "url_canon": "tienda.cl/p/terraforming-mars-preludio-2",
       "ts": 1000,
       "price": 20000.0,
@@ -351,7 +382,7 @@
      {
       "store": "tienda",
       "ts": 1000,
-      "n_products": 8,
+      "n_products": 9,
       "success": 1
      }
     ]
@@ -496,6 +527,23 @@
       "live": 1
      },
      {
+      "url_canon": "tienda.cl/p/clank-caps",
+      "url": "https://tienda.cl/p/clank-caps/",
+      "game_norm": "clank",
+      "title_raw": "CLANK BASE",
+      "title": "CLANK BASE",
+      "norm": "clank",
+      "kind": "game",
+      "price_original": 36000.0,
+      "price_current": null,
+      "price_eff": 36000.0,
+      "in_stock": 1,
+      "flag": null,
+      "first_seen": 1000,
+      "last_seen": 1000,
+      "live": 0
+     },
+     {
       "url_canon": "tienda.cl/p/dixit",
       "url": "https://tienda.cl/p/dixit/",
       "game_norm": "dixit",
@@ -688,6 +736,13 @@
       "price_original": 35000.0
      },
      {
+      "url_canon": "tienda.cl/p/clank-caps",
+      "ts": 1000,
+      "price": 36000.0,
+      "in_stock": 1,
+      "price_original": 36000.0
+     },
+     {
       "url_canon": "tienda.cl/p/dixit",
       "ts": 2000,
       "price": 28000.0,
@@ -748,7 +803,7 @@
      {
       "store": "tienda",
       "ts": 1000,
-      "n_products": 8,
+      "n_products": 9,
       "success": 1
      },
      {
@@ -842,6 +897,23 @@
       "live": 1
      },
      {
+      "url_canon": "tienda.cl/p/clank-caps",
+      "url": "https://tienda.cl/p/clank-caps/",
+      "game_norm": "clank",
+      "title_raw": "CLANK BASE",
+      "title": "CLANK BASE",
+      "norm": "clank",
+      "kind": "game",
+      "price_original": 36000.0,
+      "price_current": null,
+      "price_eff": 36000.0,
+      "in_stock": 1,
+      "flag": null,
+      "first_seen": 1000,
+      "last_seen": 1000,
+      "live": 0
+     },
+     {
       "url_canon": "tienda.cl/p/dixit",
       "url": "https://tienda.cl/p/dixit/",
       "game_norm": "dixit",
@@ -1034,6 +1106,13 @@
       "price_original": 35000.0
      },
      {
+      "url_canon": "tienda.cl/p/clank-caps",
+      "ts": 1000,
+      "price": 36000.0,
+      "in_stock": 1,
+      "price_original": 36000.0
+     },
+     {
       "url_canon": "tienda.cl/p/dixit",
       "ts": 2000,
       "price": 28000.0,
@@ -1094,7 +1173,7 @@
      {
       "store": "tienda",
       "ts": 1000,
-      "n_products": 8,
+      "n_products": 9,
       "success": 1
      },
      {

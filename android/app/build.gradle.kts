@@ -15,7 +15,13 @@ android {
         targetSdk = 37
         versionCode = 1
         versionName = "0.1"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    // The Python checkout's parity corpus, readable by the on-device test.
+    sourceSets["androidTest"].assets.directories.add(
+        rootDir.parentFile.resolve("tests/fixtures").path
+    )
 
     buildFeatures {
         compose = true
@@ -37,4 +43,8 @@ dependencies {
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.material3)
     implementation(libs.activity.compose)
+
+    androidTestImplementation(testFixtures(project(":core")))
+    androidTestImplementation(libs.test.runner)
+    androidTestImplementation(libs.test.ext.junit)
 }
