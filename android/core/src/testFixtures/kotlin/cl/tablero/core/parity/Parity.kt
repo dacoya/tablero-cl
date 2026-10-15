@@ -5,6 +5,7 @@ import cl.tablero.core.data.IngestResult
 import cl.tablero.core.data.ProductRow
 import cl.tablero.core.data.STALE_CLAUSE
 import cl.tablero.core.data.Scraped
+import cl.tablero.core.scrape.Parser
 import cl.tablero.core.scrape.buildUrl
 import cl.tablero.core.data.check
 import cl.tablero.core.data.derive
@@ -12,6 +13,7 @@ import cl.tablero.core.data.ingestStore
 import cl.tablero.core.data.initDb
 import cl.tablero.core.data.query
 import cl.tablero.core.data.sinceLastReview
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
@@ -23,6 +25,9 @@ import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.long
+import org.jsoup.Jsoup
+import java.io.InputStream
+import java.util.zip.GZIPInputStream
 
 /*
  * Comparing Kotlin output against what Python wrote, shared by the JVM tests
@@ -149,4 +154,33 @@ fun ingestMismatches(conn: SQLiteConnection, scenario: JsonElement): List<String
     val rows = sinceLastReview(conn, since = since, limit = null).map { it - "product_id" - "game_id" }
     compare(changes.getValue("rows"), toJson(rows), "changes since $since")
     return out
+}
+
+// ---------------------------------------------------------------------------
+// Page fixtures
+// ---------------------------------------------------------------------------
+
+/** Python's dict keys for a parsed record. Parsers never set `flag`. */
+fun Scraped.toPython(): Map<String, Any?> = mapOf(
+    "title" to title, "original_price" to originalPrice, "current_price" to currentPrice,
+    "stock_status" to stockStatus, "url" to url,
+)
+
+/** A pageN.html.gz fixture, decoded the way fixtures.load reads it. */
+fun readGzipText(input: InputStream): String = GZIPInputStream(input).bufferedReader(Charsets.UTF_8).use { it.readText() }
+
+/**
+ * One saved page through a Kotlin parser against the records Python got out
+ * of the same bytes. Parsed with Jsoup's HTML parser, as Http.fetchHtml does.
+ */
+fun pageMismatches(label: String, parser: Parser, html: String, expectedJson: String): List<String> {
+    val want = Json.parseToJsonElement(expectedJson).jsonArray
+    val got = parser(Jsoup.parse(html)).map { toJson(it.toPython()) }
+    if (got.size != want.size) {
+        val missing = want.filter { w -> got.none { same(it, w) } }.take(3)
+        val extra = got.filter { g -> want.none { same(it, g) } }.take(3)
+        return listOf("$label: ${got.size} records, python ${want.size}\n  missing: $missing\n  extra: $extra")
+    }
+    return want.indices.filterNot { same(want[it], got[it]) }.take(3)
+        .map { "$label #$it\n  python: ${want[it]}\n  kotlin: ${got[it]}" }
 }

@@ -59,6 +59,12 @@ def test_ingest_scenario_is_current():
     assert _committed("ingest_scenario.json") == _fresh(fixtures.ingest_scenario())
 
 
+def test_sites_table_is_current():
+    """The Kotlin side's registry; a stale one points the phone at old URLs."""
+    committed = (fixtures.FIXTURE_DIR / "sites.tsv").read_text(encoding="utf-8")
+    assert committed == fixtures.sites_table()
+
+
 def test_scenario_exercises_every_change_kind():
     """The scenario is only worth porting against if it covers the whole view."""
     kinds = {r["change"] for r in fixtures.ingest_scenario()["changes"]["rows"]}

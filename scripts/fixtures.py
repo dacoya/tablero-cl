@@ -19,6 +19,9 @@ regex and SQL that is just as easy to port wrong, so it gets golden files too:
   url_vectors.json      (base url, pagination style, page) -> url
   ingest_scenario.json  three scrapes of one store -> resulting tables and the
                         changes view
+  sites.tsv             the scrape registry (name, base url, pagination). Not a
+                        vector: the Kotlin side reads it as its registry, so a
+                        store's URL lives in exactly one place, scrape.py.
 
 All three are generated from the Python code, so pytest re-deriving them only
 catches drift nobody regenerated for. That is the point: a deliberate change
@@ -271,12 +274,23 @@ def ingest_scenario() -> dict:
             "changes": {"since": since, "rows": moved}}
 
 
+def sites_table() -> str:
+    """The registry as tab-separated rows. Tabs and newlines never occur in it."""
+    rows = [(s["name"], s["base_url"], s["pagination"]) for s in scrape.sites]
+    assert all("\t" not in v and "\n" not in v for row in rows for v in row)
+    return "".join("\t".join(row) + "\n" for row in rows)
+
+
 def build_vectors(root: Path = None) -> dict:
-    """{file name: content} for every vector file."""
+    """{file name: file text} for every generated file."""
+    def dump(content):
+        return json.dumps(content, ensure_ascii=False, indent=1) + "\n"
+
     return {
-        "derive_vectors.json": derive_vectors(root),
-        "url_vectors.json": url_vectors(),
-        "ingest_scenario.json": ingest_scenario(),
+        "derive_vectors.json": dump(derive_vectors(root)),
+        "url_vectors.json": dump(url_vectors()),
+        "ingest_scenario.json": dump(ingest_scenario()),
+        "sites.tsv": sites_table(),
     }
 
 
@@ -284,9 +298,8 @@ def write_vectors(root: Path = None) -> list[Path]:
     target = root or FIXTURE_DIR
     target.mkdir(parents=True, exist_ok=True)
     written = []
-    for name, content in build_vectors(root).items():
+    for name, text in build_vectors(root).items():
         path = target / name
-        path.write_text(json.dumps(content, ensure_ascii=False, indent=1) + "\n",
-                        encoding="utf-8")
+        path.write_text(text, encoding="utf-8")
         written.append(path)
     return written

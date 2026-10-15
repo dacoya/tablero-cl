@@ -11,17 +11,23 @@ kotlin {
 
 dependencies {
     api(libs.sqlite)
+    api(libs.jsoup)
+    implementation(libs.okhttp)
     testFixturesApi(libs.serialization.json)
     testImplementation(kotlin("test"))
     testImplementation(libs.sqlite.bundled)
+    testImplementation(libs.mockwebserver)
 }
 
 // The Python checkout this project lives in. It owns the schema and the
 // parity corpus; nothing here keeps a copy of either.
 val repo: File = rootDir.parentFile
 
+// Both come from the Python side: the schema, and the scrape registry that
+// `tablero fixtures` writes from scrape.sites.
 tasks.processResources {
     from(repo.resolve("scripts/schema.sql")) { into("cl/tablero/core") }
+    from(repo.resolve("tests/fixtures/sites.tsv")) { into("cl/tablero/core") }
 }
 
 tasks.test {

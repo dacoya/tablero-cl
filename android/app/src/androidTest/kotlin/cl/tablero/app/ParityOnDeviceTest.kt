@@ -5,6 +5,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import cl.tablero.core.parity.deriveMismatches
 import cl.tablero.core.parity.ingestMismatches
+import cl.tablero.core.parity.pageMismatches
+import cl.tablero.core.parity.readGzipText
+import cl.tablero.core.scrape.PARSERS
 import cl.tablero.core.parity.urlMismatches
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
@@ -37,6 +40,23 @@ class ParityOnDeviceTest {
         // An empty or missing asset would otherwise pass with nothing compared.
         assertTrue("corpus looks truncated", vectors.jsonArray.size > 1000)
         assertNone(deriveMismatches(vectors))
+    }
+
+    @Test
+    fun pages() {
+        val assets = instrumentation.context.assets
+        // aapt gunzips .gz assets and drops the extension, so the fixtures
+        // arrive as pageN.html; accept either in case that ever changes.
+        val pages = assets.list("")!!.filter { it in PARSERS }
+            .flatMap { store ->
+                assets.list(store)!!.filter { it.endsWith(".html") || it.endsWith(".html.gz") }.map { "$store/$it" }
+            }
+        assertTrue("only ${pages.size} pages", pages.size >= 25)
+        assertNone(pages.flatMap { path ->
+            val html = assets.open(path).use { if (path.endsWith(".gz")) readGzipText(it) else it.reader().readText() }
+            val expected = assets.open(path.substringBefore(".html") + ".expected.json").bufferedReader().use { it.readText() }
+            pageMismatches(path, PARSERS.getValue(path.substringBefore('/')), html, expected)
+        })
     }
 
     @Test
