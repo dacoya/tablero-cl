@@ -173,6 +173,7 @@ tablero-cl/
 │   ├── changes.py    # bajadas de precio desde la última revisión
 │   ├── alerts.py     # avisos de precio
 │   ├── export.py     # exportar a csv/json/html
+│   ├── fixtures.py   # corpus de paridad: páginas, vectores, escenario de ingesta
 │   │
 │   ├── update.py     # orquestación del scraping (compartida CLI/TUI)
 │   ├── runner.py     # recorrido de páginas de una tienda
@@ -226,6 +227,7 @@ tablero basket             dónde comprar una lista de juegos
 tablero update             scrapear y actualizar la base
 tablero migrate            construir/reconstruir la base SQLite
 tablero doctor             estado de la base + precios atípicos
+tablero fixtures           guardar páginas y vectores de referencia (port Android)
 ```
 
 ### El menú interactivo
@@ -597,6 +599,27 @@ def mi_tienda(html):
     'output':     '../data/mitienda_jdm.csv',
 },
 ```
+
+3. Guardar su fixture: `tablero fixtures --sites mitienda`. Escribe la página
+   y lo que el parser sacó de ella en `tests/fixtures/mitienda/`, y regenera
+   los vectores. Desde ahí `pytest` falla si el parser deja de producir lo
+   mismo, y el port Android se prueba contra esos mismos archivos.
+
+### Fixtures y vectores (paridad con Android)
+
+`tests/fixtures/` es la referencia contra la que se prueban las dos
+implementaciones, Python y Kotlin:
+
+| Archivo | Contiene |
+|---|---|
+| `<tienda>/pageN.html.gz` + `.expected.json` | página real y los registros que produce su parser |
+| `derive_vectors.json` | registro scrapeado → fila de base (limpieza de título, `norm`, tipo, precios, URL canónica) |
+| `url_vectors.json` | URL de cada página según el estilo de paginación |
+| `ingest_scenario.json` | tres scrapes de una tienda → tablas resultantes y vista de cambios |
+
+Los vectores salen del código Python, así que un cambio de comportamiento a
+propósito se regenera (`tablero fixtures --vectors-only`, sin red) y queda en
+el diff. Si no se regenera, `pytest` falla.
 
 ---
 

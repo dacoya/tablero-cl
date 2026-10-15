@@ -1,0 +1,282 @@
+[
+  {
+    "title": "¡A la Playlist!",
+    "original_price": "$19.990",
+    "current_price": "$16.992",
+    "stock_status": "Oferta",
+    "url": "https://gatoarcano.cl/product/a-la-playlist/"
+  },
+  {
+    "title": "¡A prueba de retos!",
+    "original_price": "$29.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://gatoarcano.cl/product/a-prueba-de-retos/"
+  },
+  {
+    "title": "¡Aventureros al Tren! – 1910 Expansión",
+    "original_price": "$18.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://gatoarcano.cl/product/aventureros-al-tren-1910-expansion/"
+  },
+  {
+    "title": "¡Aventureros al Tren! America Refresh",
+    "original_price": "$47.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://gatoarcano.cl/product/aventureros-al-tren-base/"
+  },
+  {
+    "title": "¡Aventureros al Tren! Asia",
+    "original_price": "$37.990",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://gatoarcano.cl/product/aventureros-al-tren-asia/"
+  },
+  {
+    "title": "¡Aventureros al Tren! Aurora Boreal",
+    "original_price": "$44.990",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://gatoarcano.cl/product/aventureros-al-tren-aurora-boreal/"
+  },
+  {
+    "title": "¡Aventureros al Tren! El corazón de África",
+    "original_price": "$26.990",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://gatoarcano.cl/product/aventureros-al-tren-el-corazon-de-africa/"
+  },
+  {
+    "title": "¡Aventureros al Tren! Europa",
+    "original_price": "$47.990",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://gatoarcano.cl/product/aventureros-al-tren-europa/"
+  },
+  {
+    "title": "¡Aventureros al Tren! Europa – 1912 Expansión",
+    "original_price": "$18.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://gatoarcano.cl/product/aventureros-al-tren-europa-1912-expansion/"
+  },
+  {
+    "title": "¡Aventureros al Tren! Europa – Edición 15º Aniversario",
+    "original_price": "$99.990",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://gatoarcano.cl/product/aventureros-al-tren-europa-15-aniversario/"
+  },
+  {
+    "title": "¡Aventureros al Tren! Francia (+ Viejo Oeste)",
+    "original_price": "$42.990",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://gatoarcano.cl/product/__trashed-2/"
+  },
+  {
+    "title": "¡Aventureros al Tren! India",
+    "original_price": "$31.990",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://gatoarcano.cl/product/aventureros-al-tren-india/"
+  },
+  {
+    "title": "¡Aventureros al Tren! Legacy: Leyendas del Oeste",
+    "original_price": "$104.990",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://gatoarcano.cl/product/aventureros-al-tren-legacy-leyendas-del-oeste/"
+  },
+  {
+    "title": "¡Cállate!",
+    "original_price": "$19.990",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://gatoarcano.cl/product/callate/"
+  },
+  {
+    "title": "¡Lenguas Afuera!",
+    "original_price": "$27.990",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://gatoarcano.cl/product/lenguas-afuera/"
+  },
+  {
+    "title": "¡Otra vez sopa!",
+    "original_price": "$14.990",
+    "current_price": "$9.740",
+    "stock_status": "Agotado",
+    "url": "https://gatoarcano.cl/product/otra-vez-sopa/"
+  },
+  {
+    "title": "¡Tiburón!",
+    "original_price": "$19.990",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://gatoarcano.cl/product/tiburon/"
+  },
+  {
+    "title": "¡Todos a Bordo!",
+    "original_price": "$54.990",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://gatoarcano.cl/product/todos-a-bordo/"
+  },
+  {
+    "title": "¡Toma 11!",
+    "original_price": "$12.990",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://gatoarcano.cl/product/toma-11/"
+  },
+  {
+    "title": "¡Toma 6!",
+    "original_price": "$12.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://gatoarcano.cl/product/toma-6/"
+  },
+  {
+    "title": "¡Toma 6! Edición 30 Aniversario",
+    "original_price": "$21.990",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://gatoarcano.cl/product/toma-6-edicion-30-aniversario/"
+  },
+  {
+    "title": "¿Cuánto Cuesta Esto?",
+    "original_price": "$22.990",
+    "current_price": "$14.944",
+    "stock_status": "Oferta",
+    "url": "https://gatoarcano.cl/product/cuanto-cuesta-esto/"
+  },
+  {
+    "title": "¿En serio?",
+    "original_price": "$19.990",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://gatoarcano.cl/product/en-serio/"
+  },
+  {
+    "title": "¿Por qué eres así?",
+    "original_price": "$19.990",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://gatoarcano.cl/product/por-que-eres-asi/"
+  },
+  {
+    "title": "¿Quién fue?",
+    "original_price": "$12.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://gatoarcano.cl/product/quien-fue/"
+  },
+  {
+    "title": "1000 Km",
+    "original_price": "$24.990",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://gatoarcano.cl/product/1000-km/"
+  },
+  {
+    "title": "3 Capitulos",
+    "original_price": "$19.990",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://gatoarcano.cl/product/3-capitulos/"
+  },
+  {
+    "title": "3 Ring Circus",
+    "original_price": "$34.990",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://gatoarcano.cl/product/3-ring-circus/"
+  },
+  {
+    "title": "3 Ring Circus – Solidarity deck",
+    "original_price": "$1.990",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://gatoarcano.cl/product/3-ring-circus-solidarity-deck/"
+  },
+  {
+    "title": "5 minute dungeon",
+    "original_price": "$29.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://gatoarcano.cl/product/5-minute-dungeon/"
+  },
+  {
+    "title": "5 Minute Dungeon – ¡Maldición! ¡Otra vez no!",
+    "original_price": "$22.990",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://gatoarcano.cl/product/5-minute-dungeon-maldicion-otra-vez-no/"
+  },
+  {
+    "title": "5 Minute Mystery",
+    "original_price": "$33.990",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://gatoarcano.cl/product/5-minute-mystery/"
+  },
+  {
+    "title": "5 Minutes One Piece",
+    "original_price": "$31.990",
+    "current_price": "$20.794",
+    "stock_status": "Oferta",
+    "url": "https://gatoarcano.cl/product/5-minutes-one-piece/"
+  },
+  {
+    "title": "69: Un juego para traviesos",
+    "original_price": "$12.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://gatoarcano.cl/product/69-un-juego-para-traviesos/"
+  },
+  {
+    "title": "7 Wonders – Armada",
+    "original_price": "$31.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://gatoarcano.cl/product/7-wonders-armada/"
+  },
+  {
+    "title": "7 Wonders – Cities",
+    "original_price": "$26.990",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://gatoarcano.cl/product/7-wonders-cities/"
+  },
+  {
+    "title": "7 Wonders – Edifice",
+    "original_price": "$26.990",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://gatoarcano.cl/product/7-wonders-edifice/"
+  },
+  {
+    "title": "7 Wonders – Leaders",
+    "original_price": "$26.990",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://gatoarcano.cl/product/7-wonders-leaders/"
+  },
+  {
+    "title": "7 Wonders 2da edición",
+    "original_price": "$47.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://gatoarcano.cl/product/7-wonders-2da-edicion/"
+  },
+  {
+    "title": "7 Wonders dice",
+    "original_price": "$29.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://gatoarcano.cl/product/7-wonders-dice/"
+  }
+]

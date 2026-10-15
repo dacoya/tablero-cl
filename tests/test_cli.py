@@ -246,3 +246,40 @@ def test_update_reports_progress_for_every_store_including_failures(monkeypatch,
     )
     assert [done for done, _ in seen] == [1, 2, 3]
     assert {store for _, store in seen} == {"tiendaA", "tiendaB", "tiendaC"}
+
+
+def test_fixtures_keeps_going_past_a_failing_store(monkeypatch, capsys):
+    """One unreachable store must not abort the corpus refresh for the rest."""
+    from tablero import fixtures
+
+    calls = []
+
+    def fake_capture(site, page=1):
+        calls.append((site["name"], page))
+        if site["name"] == "laloseta":
+            raise ConnectionError("dns")
+        if page == 2:
+            return {"records": 0}
+        return {"records": 3}
+
+    monkeypatch.setattr(cli.time, "sleep", lambda s: None)
+    monkeypatch.setattr(fixtures, "capture", fake_capture)
+    monkeypatch.setattr(fixtures, "write_vectors", lambda: [])
+
+    assert cli.main(["fixtures", "--sites", "laloseta", "boardkingdom",
+                     "--pages", "3"]) == 0
+    # laloseta fails on page 1; boardkingdom stops at its first empty page.
+    assert ("laloseta", 2) not in calls
+    assert ("boardkingdom", 2) in calls and ("boardkingdom", 3) not in calls
+    assert "Sin fixture nuevo: laloseta" in capsys.readouterr().out
+
+
+def test_fixtures_vectors_only_does_not_fetch(monkeypatch):
+    from tablero import fixtures
+
+    def no_network(*a, **k):
+        raise AssertionError("fetched")
+
+    monkeypatch.setattr(fixtures, "capture", no_network)
+    monkeypatch.setattr(fixtures, "write_vectors", lambda: [])
+    assert cli.main(["fixtures", "--vectors-only"]) == 0

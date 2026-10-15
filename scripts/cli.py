@@ -8,7 +8,9 @@ and each command only advertises the options that apply to it.
 
 This module is a thin shell: parse, call a service, hand the result to render.
 """
+import random
 import sys
+import time
 
 from . import alerts, analytics, basket as basket_mod
 from . import changes, db as db_mod, export as exporter, history
@@ -313,6 +315,49 @@ def cmd_migrate(args) -> int:
     return 0
 
 
+def cmd_fixtures(args) -> int:
+    """
+    Refresh the parity corpus the Android port is tested against.
+
+    Sequential and paced like a scrape: this is ~50 requests, and getting a
+    store's Cloudflare to start challenging over a test corpus would cost the
+    real scrapes.
+    """
+    from . import fixtures
+    from .runner import PAGE_DELAY_JITTER, PAGE_DELAY_MIN
+    from .scrape import sites
+
+    if not args.vectors_only:
+        try:
+            targets = update_mod.select_sites(None, sites, args.sites)
+        except update_mod.UnknownSiteError as exc:
+            raise CommandError(str(exc))
+
+        failed = []
+        for site in targets:
+            for page in range(1, args.pages + 1):
+                time.sleep(PAGE_DELAY_MIN + random.uniform(0, PAGE_DELAY_JITTER))
+                try:
+                    got = fixtures.capture(site, page)
+                except Exception as exc:
+                    failed.append(site["name"])
+                    print(f"  [{site['name']}] p{page} falló: {exc}")
+                    break
+                if not got["records"]:
+                    print(f"  [{site['name']}] p{page}: sin productos, "
+                          f"fixture anterior conservado")
+                    if page == 1:
+                        failed.append(site["name"])
+                    break
+                print(f"  [{site['name']}] p{page}: {got['records']} productos")
+        if failed:
+            print(f"Sin fixture nuevo: {', '.join(failed)}")
+
+    for path in fixtures.write_vectors():
+        print(f"  escrito {path.relative_to(paths.REPO_ROOT)}")
+    return 0
+
+
 def cmd_doctor(args) -> int:
     conn = _open_db()
     render.doctor(
@@ -342,6 +387,7 @@ COMMANDS = {
     "basket": cmd_basket,
     "update": cmd_update,
     "migrate": cmd_migrate,
+    "fixtures": cmd_fixtures,
     "doctor": cmd_doctor,
 }
 

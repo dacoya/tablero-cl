@@ -166,6 +166,15 @@ def build_parser() -> argparse.ArgumentParser:
                    help="reemplazar la base existente, conservando seguimiento "
                         "y marcadores (necesario tras un cambio de esquema)")
 
+    p = sub.add_parser("fixtures",
+                       help="guardar páginas y vectores de referencia (paridad con Android)")
+    p.add_argument("--sites", nargs="+", metavar="NAME",
+                   help="solo estas tiendas (default: todas)")
+    p.add_argument("--pages", type=int, default=1, metavar="N",
+                   help="páginas por tienda (default: 1)")
+    p.add_argument("--vectors-only", action="store_true",
+                   help="solo regenerar los vectores, sin descargar nada")
+
     p = sub.add_parser("doctor", help="estado de la base y precios atípicos")
     p.add_argument("--sigma", type=float, default=5.0, metavar="N",
                    help="umbral de desvío para precios atípicos (default: 5)")

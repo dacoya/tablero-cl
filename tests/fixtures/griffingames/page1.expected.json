@@ -1,0 +1,65 @@
+[
+  {
+    "title": "1001 Islas",
+    "original_price": "$18.000",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.griffingames.cl/producto/1001-islas/"
+  },
+  {
+    "title": "3 Ring Circus",
+    "original_price": "$30.000",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.griffingames.cl/producto/3-ring-circus/"
+  },
+  {
+    "title": "3 Ring Circus (Usado)",
+    "original_price": "$16.000",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.griffingames.cl/producto/3-ring-circus-usado/"
+  },
+  {
+    "title": "31 Minutos – Feria de las Pulgas",
+    "original_price": "$17.000",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.griffingames.cl/producto/31-minutos-feria-de-las-pulgas/"
+  },
+  {
+    "title": "31 Minutos Ranking Top",
+    "original_price": "$14.000",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.griffingames.cl/producto/31-minutos-ranking-top/"
+  },
+  {
+    "title": "50 50",
+    "original_price": "$25.000",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.griffingames.cl/producto/50-50/"
+  },
+  {
+    "title": "8Bit Box (Usado)",
+    "original_price": "$20.000",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.griffingames.cl/producto/8bit-box-usado/"
+  },
+  {
+    "title": "Abejorro Tramposo",
+    "original_price": "$15.000",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.griffingames.cl/producto/el-abejorro-tramposo/"
+  },
+  {
+    "title": "Academia Abstracta",
+    "original_price": "$11.000",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.griffingames.cl/producto/academia-abstracta/"
+  }
+]
