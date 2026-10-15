@@ -95,3 +95,36 @@ def test_a_page_of_only_urlless_records_is_an_empty_scrape(monkeypatch, tmp_path
             "parser": lambda html: [{"title": "Banner", "url": None}]}
 
     assert runner.scrape_site(site, dry_run=True) == []
+
+
+def test_bs_grid_reads_the_list_price_behind_a_sale():
+    """The old-price matcher could never match, losing every BS-grid discount."""
+    from bs4 import BeautifulSoup
+    from tablero import scrape
+
+    html = BeautifulSoup("""
+        <section class="grid__item">
+          <h3 class="bs-collection__product-title"><a href="/p/catan">Catan</a></h3>
+          <div class="bs-collection__product-price">
+            <del class="bs-collection__old-price">$40.000</del>
+            <div class="bs-collection__product-final-price">$30.000</div>
+          </div>
+        </section>""", "html.parser")
+    [row] = scrape._bs_grid("https://x.cl")(html)
+    assert (row["original_price"], row["current_price"]) == ("$40.000", "$30.000")
+    assert row["stock_status"] == "Oferta"
+
+
+def test_product_block_without_label_class_ignores_unrelated_text():
+    """label_cls=None used to read the first class-less element as the stock label."""
+    from bs4 import BeautifulSoup
+    from tablero import scrape
+
+    html = BeautifulSoup("""
+        <article class="product-block">
+          <span>Agotado el envío express</span>
+          <a class="product-block__name" href="/p/azul">Azul</a>
+          <div class="product-block__price">$30.000</div>
+        </article>""", "html.parser")
+    [row] = scrape.vudugaming(html)
+    assert row["stock_status"] is None

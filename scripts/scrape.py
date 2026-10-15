@@ -271,7 +271,12 @@ def _parse_bs(html, item_tag='section', item_cls='grid__item', base_url=''):
             orig, curr = None, None
             pc = item.find(['div', 'section'], class_='bs-collection__product-price')
             if pc:
-                del_e = pc.find('del', class_=lambda c: bool(c and any('old-price' in x for x in c)))
+                # BeautifulSoup calls a class_ function once per class token
+                # (and once with the joined string), never with the list. The
+                # previous `any('old-price' in x for x in c)` therefore walked
+                # the characters of one token and could never match, so a sale
+                # here would have been recorded as a full-price product.
+                del_e = pc.find('del', class_=lambda c: bool(c and 'old-price' in c))
                 fin_e = pc.find('div', class_='bs-collection__product-final-price')
                 orig, curr = (_txt(del_e), _txt(fin_e)) if del_e else (_txt(fin_e), None)
             orig, curr = _norm(orig, curr)
@@ -326,7 +331,10 @@ def _parse_product_block(html, item_tag='article', item_cls='product-block',
                     curr_txt = _txt(pc.find(class_=single_cls)) or _txt(pc)
             orig, curr = _norm(orig_txt, curr_txt)
 
-            status_label = _txt(item.find(class_=label_cls))
+            # find(class_=None) does not mean "no filter": it matches the first
+            # element with no class attribute at all, whose text then decided
+            # stock. Harmless only while that element happens to be empty.
+            status_label = _txt(item.find(class_=label_cls)) if label_cls else None
             btn = item.find('button', class_='product-block__button--add-to-cart')
             oos = (
                 _oos(status_label)
