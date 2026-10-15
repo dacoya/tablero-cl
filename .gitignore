@@ -19,8 +19,13 @@ dist/
 # Consequence worth knowing: a fresh clone has no catalog. Run
 # `tablero update` to scrape one, then `tablero migrate` to build the
 # database. Your own data lives on your machine and in your backups.
-data/
+/data/
 
 # pytest
 .pytest_cache/
 
+
+# Android / Gradle
+android/.gradle/
+android/.kotlin/
+android/local.properties
