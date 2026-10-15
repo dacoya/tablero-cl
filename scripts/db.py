@@ -18,7 +18,18 @@ DB_PATH = DATA_DIR / "tablero.db"
 SCHEMA_PATH = PKG_DIR / "schema.sql"
 
 # Bump when schema.sql changes in a way that needs a migration step.
-SCHEMA_VERSION = 3
+SCHEMA_VERSION = 4
+
+# Upgrades that can be applied to a populated database in place, keyed by the
+# version they move it to. Only additive changes belong here -- a column with
+# no default costs nothing and leaves every existing row readable. Anything
+# that rewrites or drops data should stay a rebuild, which is loud.
+_UPGRADES = {
+    4: (
+        "ALTER TABLE price_obs ADD COLUMN in_stock INTEGER",
+        "ALTER TABLE price_obs ADD COLUMN price_original REAL",
+    ),
+}
 
 
 class SchemaVersionError(RuntimeError):
@@ -83,13 +94,41 @@ def init_db(conn: sqlite3.Connection) -> None:
 
     existing = schema_version(conn)
     if existing and existing != SCHEMA_VERSION:
-        raise SchemaVersionError(
-            f"Database at schema v{existing}, code expects v{SCHEMA_VERSION}. "
-            f"Re-run the migration against a fresh file."
-        )
+        upgrade(conn, existing)
 
     conn.executescript(SCHEMA_PATH.read_text(encoding="utf-8"))
     conn.execute(f"PRAGMA user_version = {SCHEMA_VERSION}")
+    conn.commit()
+
+
+def upgrade(conn: sqlite3.Connection, existing: int) -> None:
+    """
+    Walk a populated database forward one version at a time.
+
+    Only the additive steps in `_UPGRADES` are applied; anything else still
+    raises, because a silent rewrite of someone's data is worse than a stop.
+    The point is that a schema bump must not cost the price history: this
+    database holds months of observations that a rebuild from the CSVs cannot
+    reconstruct, since the CSVs only ever hold the latest scrape.
+    """
+    if existing > SCHEMA_VERSION:
+        raise SchemaVersionError(
+            f"Database at schema v{existing}, newer than the v{SCHEMA_VERSION} "
+            f"this code understands. Upgrade tablero-cl."
+        )
+
+    missing = [v for v in range(existing + 1, SCHEMA_VERSION + 1) if v not in _UPGRADES]
+    if missing:
+        raise SchemaVersionError(
+            f"Database at schema v{existing}, code expects v{SCHEMA_VERSION}, and "
+            f"no in-place step exists for v{missing[0]}. Rebuild with "
+            f"`tablero migrate --rebuild`."
+        )
+
+    for version in range(existing + 1, SCHEMA_VERSION + 1):
+        for statement in _UPGRADES[version]:
+            conn.execute(statement)
+        conn.execute(f"PRAGMA user_version = {version}")
     conn.commit()
 
 

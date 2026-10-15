@@ -54,3 +54,44 @@ def test_empty_scrape_returns_empty_and_writes_nothing(tmp_path, monkeypatch):
     monkeypatch.setattr(runner, "fetch_html", lambda url: "<html/>")
     assert runner.scrape_site(_site(tmp_path, [[]]), dry_run=True) == []
     assert not (tmp_path / "fake_jdm.csv").exists()
+
+
+def test_records_without_a_url_are_dropped_not_fatal(monkeypatch, tmp_path):
+    """
+    A newsletter box matching the product selector took out a whole store.
+
+    elpatiogeek's grid holds one card with no product link, so `url` came back
+    None, and sorting the deduplicated rows died with "'<' not supported
+    between instances of 'NoneType' and 'str'" -- losing all 988 products.
+    Product identity is (store, url_canon), so a record without one could
+    never have been stored anyway.
+    """
+    from tablero import runner
+
+    page = [
+        {"title": "Catan", "url": "https://x.cl/p/catan",
+         "original_price": "$1.000", "current_price": None, "stock_status": None},
+        {"title": "Suscríbete al newsletter", "url": None,
+         "original_price": None, "current_price": None, "stock_status": None},
+    ]
+    monkeypatch.setattr(runner, "fetch_html", lambda url: "<html/>")
+    monkeypatch.setattr(runner, "resolve_output", lambda out: tmp_path / "x.csv")
+
+    site = {"name": "x", "base_url": "https://x.cl", "pagination": "page_param",
+            "output": "x.csv", "parser": lambda html: page}
+    rows = runner.scrape_site(site, dry_run=True)
+
+    assert [r["title"] for r in rows] == ["Catan"]
+
+
+def test_a_page_of_only_urlless_records_is_an_empty_scrape(monkeypatch, tmp_path):
+    """Empty rather than a CSV of junk -- ingest treats it as a failed store."""
+    from tablero import runner
+
+    monkeypatch.setattr(runner, "fetch_html", lambda url: "<html/>")
+    monkeypatch.setattr(runner, "resolve_output", lambda out: tmp_path / "x.csv")
+    site = {"name": "x", "base_url": "https://x.cl", "pagination": "page_param",
+            "output": "x.csv",
+            "parser": lambda html: [{"title": "Banner", "url": None}]}
+
+    assert runner.scrape_site(site, dry_run=True) == []

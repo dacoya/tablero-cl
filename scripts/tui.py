@@ -18,14 +18,23 @@ Other properties worth not breaking:
     twice.
   * One consistent widget set. An older drill-down dropped to a raw input()
     loop mid-flow, which broke arrow-key navigation inside the TUI.
-  * Results page through `less` (LESS=FRX), so long tables scroll and stay on
-    screen after quitting.
+  * One screen at a time. The menu runs in the terminal's alternate buffer and
+    each view clears before it draws, so views replace each other instead of
+    stacking; quitting restores the shell exactly as it was. `$PAGER` is
+    blanked for the duration -- `less` inside the alternate buffer leaves its
+    text behind -- so long views page themselves instead.
   * The store picker filters as you type instead of listing 47 flat entries,
     and re-asks on a typo instead of abandoning the flow.
   * The worker prompt falls back to the documented default of 5; an earlier
     fallback silently used 20, which provokes Cloudflare blocks.
 """
+import contextlib
+import io
+import os
+
 import questionary
+from prompt_toolkit.application.current import get_app_session
+from prompt_toolkit.shortcuts import clear as _clear_screen
 
 from . import alerts as alerts_mod
 from . import analytics, basket as basket_mod
@@ -86,10 +95,55 @@ SORT_LABELS = {
 }
 
 
+def _clear() -> None:
+    """
+    Blank the screen before drawing a view.
+
+    Free off a terminal: prompt_toolkit hands back a PlainTextOutput when
+    stdout is not a tty, and its erase/cursor methods are no-ops, so tests and
+    pipes see nothing at all.
+    """
+    _clear_screen()
+
+
+def _pause() -> None:
+    """
+    Hold a finished view until the reader is done with it.
+
+    A flow that renders and returns goes straight back to the menu, whose
+    redraw would wipe the thing you just asked for before you could read it.
+    """
+    _ask(questionary.press_any_key_to_continue("  Pulsa una tecla para volver…"))
+
+
+# Lines the reader must see, held until the next prompt. Printing one where
+# the problem is noticed no longer works: the redraw that follows erases it.
+# The prompt is the one point guaranteed to come after a redraw and before the
+# next input, so that is where they surface.
+_NOTICES: list[str] = []
+
+
+def _notice(msg: str) -> None:
+    _NOTICES.append(msg)
+
+
 def _ask(prompt):
-    """Run a questionary prompt, returning None when cancelled."""
+    """
+    Run a questionary prompt, returning None when cancelled.
+
+    `erase_when_done` leaves nothing behind once answered, so a screen is one
+    view plus one question rather than a transcript of the last six.
+
+    `unsafe_ask` rather than `ask`: questionary's `ask` catches
+    KeyboardInterrupt itself and prints "Cancelled by user" before returning
+    None, which landed a stray English line on an otherwise clean screen every
+    time you pressed Esc. The handler below already does that conversion.
+    """
+    while _NOTICES:
+        print(_NOTICES.pop(0))
+    prompt.application.erase_when_done = True
     try:
-        return prompt.ask()
+        return prompt.unsafe_ask()
     except (KeyboardInterrupt, EOFError):
         return None
 
@@ -120,9 +174,9 @@ def _ask_store(conn):
         if len(matches) == 1:
             return True, matches[0]
         if not matches:
-            print(f"  Tienda '{choice}' no encontrada.")
+            _notice(f"  Tienda '{choice}' no encontrada.")
         else:
-            print(f"  '{choice}' coincide con: {', '.join(matches)}")
+            _notice(f"  '{choice}' coincide con: {', '.join(matches)}")
 
 
 def _ask_sort(default="discount"):
@@ -141,7 +195,7 @@ def _parse_price(raw):
     try:
         return float(raw.replace(".", "").replace(",", "."))
     except ValueError:
-        print(f"  '{raw}' no es un número; se ignora.")
+        _notice(f"  '{raw}' no es un número; se ignora.")
         return None
 
 
@@ -237,6 +291,47 @@ def _filters_menu(conn) -> None:
             BROWSE[action] = not BROWSE[action]
 
 
+def _nav(offset: int, shown: int, total: int) -> list:
+    """
+    Next/previous entries for one page, spliced into a flow's own actions.
+
+    Each appears only when it leads somewhere: an always-visible "siguiente"
+    on the last page is a keystroke that does nothing. The flows differ in
+    renderer, heading and verbs, so this is the only part worth sharing.
+
+    The labels name the `,` and `.` shortcuts that `_page_keys` binds, since a
+    key nobody is told about is a key nobody presses.
+    """
+    return [
+        *([questionary.Choice(
+            f".  Página siguiente  ({offset + shown + 1}–"
+            f"{min(offset + shown + PAGE_SIZE, total)} de {total})", value=NEXT)]
+          if offset + shown < total else []),
+        *([questionary.Choice(",  Página anterior", value=PREV)] if offset else []),
+    ]
+
+
+def _page_keys(prompt, offset: int, shown: int, total: int):
+    """
+    Bind `,` and `.` to the page entries `_nav` just built.
+
+    Paging is the one action taken over and over, and arrowing down to a menu
+    entry for every page is the kind of thing that makes a tool tiring. The
+    keys sit next to each other and carry the `<` `>` of their shifted
+    selves, so the direction needs no learning.
+
+    Bound only in the directions that exist, so `.` on the last page does
+    nothing rather than silently returning an empty page. Returns the prompt
+    so it can be handed straight to `_ask`.
+    """
+    keys = prompt.application.key_bindings
+    if offset:
+        keys.add(",")(lambda event: event.app.exit(result=PREV))
+    if offset + shown < total:
+        keys.add(".")(lambda event: event.app.exit(result=NEXT))
+    return prompt
+
+
 def _pick_row(rows: list[dict], raw) -> dict | None:
     """The row a printed number refers to, or None when it names no row."""
     if raw is None:
@@ -268,6 +363,7 @@ def _search_flow(conn) -> None:
 
     selected = None
     while True:
+        _clear()
         # Re-run rather than cache behind a dirty flag: FTS over 400 candidates
         # plus fuzzy ranking is milliseconds, and no cache is no stale cache.
         hits = search_mod.search(
@@ -328,7 +424,9 @@ def _search_flow(conn) -> None:
                 SEARCH["order"] = order
         else:
             selected = choice
+            _clear()
             render.price_table(repo.game_prices(conn, choice["game_id"]), choice["title"])
+            _pause()
 
 
 def _browse_filters() -> dict:
@@ -349,6 +447,7 @@ def _browse_flow(conn, on_sale: bool) -> None:
     offset = 0
 
     while True:
+        _clear()
         rows, total = analytics.browse(
             conn, sort=BROWSE["sort"], limit=PAGE_SIZE, offset=offset,
             on_sale=on_sale, **_browse_filters())
@@ -357,7 +456,7 @@ def _browse_flow(conn, on_sale: bool) -> None:
         # upper bound for them and a page can come back empty before the count
         # says it should.
         if not rows and offset:
-            print("\n  No hay más resultados.")
+            _notice("  No hay más resultados.")
             offset = max(0, offset - PAGE_SIZE)
             continue
 
@@ -365,17 +464,13 @@ def _browse_flow(conn, on_sale: bool) -> None:
             rows, urls=BROWSE["urls"],
             title=_browse_title(label, total, offset, len(rows), BROWSE["sort"]))
 
-        action = _ask(questionary.select("¿Qué hacemos?", choices=[
+        action = _ask(_page_keys(questionary.select("¿Qué hacemos?", choices=[
             questionary.Choice("Abrir un producto (nº)…", value=OPEN),
-            *([questionary.Choice(
-                f"Página siguiente  ({offset + len(rows) + 1}–"
-                f"{min(offset + 2 * PAGE_SIZE, total)} de {total})", value=NEXT)]
-              if offset + len(rows) < total else []),
-            *([questionary.Choice("Página anterior", value=PREV)] if offset else []),
+            *_nav(offset, len(rows), total),
             questionary.Choice("⚙  Filtros y orden…", value=FILTERS),
             questionary.Choice("Exportar…", value=EXPORT),
             questionary.Choice("← Menú", value=BACK),
-        ]))
+        ]), offset, len(rows), total))
         if action is None or action is BACK:
             return
 
@@ -395,9 +490,11 @@ def _browse_flow(conn, on_sale: bool) -> None:
         else:
             row = _pick_row(rows, _ask(questionary.text("Nº:")))
             if row is None:
-                print("  Ese número no está en la lista.")
+                _notice("  Ese número no está en la lista.")
                 continue
+            _clear()
             render.price_table(repo.game_prices(conn, row["game_id"]), row["title"])
+            _pause()
 
 
 def _browse_title(label, total, offset, n, sort) -> str:
@@ -428,22 +525,42 @@ def _offer_export(rows) -> None:
     ]))
     if fmt is None or fmt is BACK:
         return
-    print(f"  Exportado: {exporter.export_comparison(rows, fmt)}")
+    _notice(f"  Exportado: {exporter.export_comparison(rows, fmt)}")
 
 
 def _leaderboard_flow(conn) -> None:
-    rows = analytics.store_leaderboard(conn, limit=parser_mod.LEADERBOARD_LIMIT)
-    render.leaderboard(rows)
-    _offer_export(rows)
+    # Every store, not LEADERBOARD_LIMIT: that cap is 20, which is one page,
+    # so paging a capped list would offer a "siguiente" that never activates.
+    rows = analytics.store_leaderboard(conn)
+    offset = 0
+    while True:
+        _clear()
+        page = rows[offset:offset + PAGE_SIZE]
+        render.leaderboard(page, title=f"\n🏆  Tiendas — más barata primero "
+                                       f"({offset + 1}–{offset + len(page)} de {len(rows)})")
+        action = _ask(_page_keys(questionary.select("¿Qué hacemos?", choices=[
+            *_nav(offset, len(page), len(rows)),
+            questionary.Choice("Exportar…", value=EXPORT),
+            questionary.Choice("← Menú", value=BACK),
+        ]), offset, len(page), len(rows)))
+        if action is None or action is BACK:
+            return
+        if action is NEXT:
+            offset += PAGE_SIZE
+        elif action is PREV:
+            offset = max(0, offset - PAGE_SIZE)
+        else:
+            _offer_export(rows)
 
 
 def _history_flow(conn) -> None:
+    _clear()
     query = _ask(questionary.text("Juego:"))
     if not query or not query.strip():
         return
     hit = search_mod.best_match(conn, query.strip())
     if not hit:
-        print(f"\n  Sin resultados para '{query.strip()}'.")
+        _notice(f"  Sin resultados para '{query.strip()}'.")
         return
     threshold = parser_mod.DEFAULT_MIN_POINTS
     trends = history.game_trends(conn, hit["game_id"], min_points=threshold)
@@ -455,9 +572,11 @@ def _history_flow(conn) -> None:
             print("\n  (solo una observación por listado; el historial crece "
                   "con cada actualización)")
     render.trends(trends, hit["title"], min_points=threshold)
+    _pause()
 
 
 def _alerts_flow(conn) -> None:
+    _clear()
     source = _ask(questionary.select("¿Qué vigilar?", choices=[
         questionary.Choice("Mi lista de seguimiento", value="watch"),
         questionary.Choice("Consultas puntuales", value="adhoc"),
@@ -467,7 +586,9 @@ def _alerts_flow(conn) -> None:
 
     if source == "watch":
         found = alerts_mod.from_watchlist(conn)
+        _clear()
         render.alerts(found, "lista de seguimiento")
+        _pause()
         return
 
     raw = _ask(questionary.text("Juegos separados por coma:"))
@@ -475,14 +596,17 @@ def _alerts_flow(conn) -> None:
         return
     threshold = _ask_price("Umbral de precio")
     if threshold is None:
-        print("  Se necesita un umbral.")
+        _notice("  Se necesita un umbral.")
         return
     queries = [q.strip() for q in raw.split(",") if q.strip()]
+    _clear()
     render.alerts(alerts_mod.from_queries(conn, queries, threshold),
                   f"{len(queries)} consulta(s)")
+    _pause()
 
 
 def _watch_flow(conn) -> None:
+    _clear()
     action = _ask(questionary.select("Lista de seguimiento:", choices=[
         questionary.Choice("Ver la lista", value="list"),
         questionary.Choice("Agregar un juego", value="add"),
@@ -492,20 +616,22 @@ def _watch_flow(conn) -> None:
         return
 
     if action == "list":
+        _clear()
         render.watchlist(watch_mod.entries(conn))
+        _pause()
         return
 
     if action == "rm":
         entries = watch_mod.entries(conn)
         if not entries:
-            print("\n  La lista está vacía.")
+            _notice("  La lista está vacía.")
             return
         target = _ask(questionary.select("Quitar:", choices=[
             questionary.Choice(e["title"], value=e["game_id"]) for e in entries
         ]))
         if target is not None:
             watch_mod.remove(conn, target)
-            print("  Quitado.")
+            _notice("  Quitado.")
         return
 
     query = _ask(questionary.text("Juego a seguir:"))
@@ -513,16 +639,17 @@ def _watch_flow(conn) -> None:
         return
     hit = search_mod.best_match(conn, query.strip())
     if not hit:
-        print(f"  Sin resultados para '{query.strip()}'.")
+        _notice(f"  Sin resultados para '{query.strip()}'.")
         return
     target = _ask_price(f"Precio objetivo para {hit['title']}")
     if watch_mod.add(conn, hit["game_id"], target=target):
-        print(f"  Siguiendo: {hit['title']}")
+        _notice(f"  Siguiendo: {hit['title']}")
     else:
-        print(f"  No se pudo seguir '{hit['title']}'.")
+        _notice(f"  No se pudo seguir '{hit['title']}'.")
 
 
 def _basket_flow(conn) -> None:
+    _clear()
     use_watch = _ask(questionary.confirm(
         "¿Usar la lista de seguimiento?", default=True))
     if use_watch is None:
@@ -531,7 +658,7 @@ def _basket_flow(conn) -> None:
     if use_watch:
         ids = watch_mod.game_ids(conn)
         if not ids:
-            print("\n  La lista de seguimiento está vacía.")
+            _notice("  La lista de seguimiento está vacía.")
             return
     else:
         raw = _ask(questionary.text("Juegos separados por coma:"))
@@ -540,37 +667,82 @@ def _basket_flow(conn) -> None:
         ids = []
         for part in (p.strip() for p in raw.split(",") if p.strip()):
             hit = search_mod.best_match(conn, part)
-            print(f"  {part:<24} → {hit['title'] if hit else '(sin resultados)'}")
+            _notice(f"  {part:<24} → {hit['title'] if hit else '(sin resultados)'}")
             if hit:
                 ids.append(hit["game_id"])
         if not ids:
             return
 
     shipping = _ask_price("Costo de envío por tienda")
+    _clear()
     render.basket_plans(basket_mod.optimize(
         conn, ids,
         shipping=shipping if shipping is not None else basket_mod.DEFAULT_SHIPPING,
     ))
+    _pause()
 
 
 def _changes_flow(conn) -> None:
+    _clear()
     if changes.get_cursor(conn) is None:
         print("\n  No hay marcador de última revisión.")
         if _ask(questionary.confirm("¿Fijarlo ahora?", default=True)):
             changes.set_cursor(conn)
-            print("  Marcador fijado. Los cambios se listarán desde la próxima actualización.")
+            _notice("  Marcador fijado. Los cambios se listarán desde la próxima actualización.")
         return
 
-    drops = changes.price_drops(conn, min_pct=parser_mod.DEFAULT_MIN_DROP_PCT,
-                               limit=parser_mod.DEFAULT_LIMIT)
-    render.product_rows(
-        [{**d, "price_original": d["old_price"], "price_current": d["new_price"],
-          "discount_pct": d["drop_pct"]} for d in drops],
-        title=f"Bajadas desde tu última revisión ({len(drops)})",
-    )
-    if drops and _ask(questionary.confirm("¿Marcar como revisado?", default=False)):
-        changes.set_cursor(conn)
-        print("  Marcador actualizado.")
+    # Queried unfiltered, narrowed in Python. Re-querying with `kinds` would
+    # make the counts describe the filtered list, so the picker would shrink
+    # to whatever was already chosen and there would be no way back out.
+    everything = changes.since_last_review(
+        conn, min_pct=parser_mod.DEFAULT_MIN_DROP_PCT,
+        limit=parser_mod.DEFAULT_LIMIT)
+    counts = changes.summarise(everything)
+
+    kinds, offset = None, 0
+    while True:
+        _clear()
+        rows = [r for r in everything if kinds is None or r["change"] in kinds]
+        page = rows[offset:offset + PAGE_SIZE]
+        summary = render.changes_summary(changes.summarise(rows))
+        render.changes(
+            page,
+            title=f"Cambios desde tu última revisión "
+                  f"({offset + 1}–{offset + len(page)} de {len(rows)})"
+                  + (f"\n  {summary}" if summary else ""),
+        )
+
+        action = _ask(_page_keys(questionary.select("¿Qué hacemos?", choices=[
+            *_nav(offset, len(page), len(rows)),
+            # Only the kinds actually present: offering a filter that empties
+            # the list teaches nothing.
+            *([questionary.Choice("Filtrar por tipo de cambio…", value="filter")]
+              if len(counts) > 1 else []),
+            *([questionary.Choice("Marcar como revisado", value="mark")] if rows else []),
+            questionary.Choice("← Menú", value=BACK),
+        ]), offset, len(page), len(rows)))
+        if action is None or action is BACK:
+            return
+
+        if action is NEXT:
+            offset += PAGE_SIZE
+            continue
+        if action is PREV:
+            offset = max(0, offset - PAGE_SIZE)
+            continue
+        if action == "mark":
+            changes.set_cursor(conn)
+            _notice("  Marcador actualizado.")
+            return
+
+        picked = _ask(questionary.checkbox(
+            "Mostrar solo:",
+            choices=[questionary.Choice(changes.CHANGE_LABELS[k], value=k,
+                                        checked=kinds is None or k in kinds)
+                     for k in changes.CHANGE_KINDS if counts.get(k)],
+        ))
+        kinds = picked or None
+        offset = 0              # the old page number means nothing now
 
 
 def _stores_flow(conn) -> None:
@@ -580,13 +752,26 @@ def _stores_flow(conn) -> None:
         "stock": s["n_in_stock"] or 0,
         "active": "sí" if s["active"] else "no",
     } for s in repo.stores(conn)]
-    render.table(rows, [
-        ("name", "Tienda", True), ("products", "Productos", False),
-        ("stock", "En stock", False), ("active", "Activa", False),
-    ], title=f"Tiendas ({len(rows)})")
+
+    offset = 0
+    while True:
+        _clear()
+        page = rows[offset:offset + PAGE_SIZE]
+        render.table(page, [
+            ("name", "Tienda", True), ("products", "Productos", False),
+            ("stock", "En stock", False), ("active", "Activa", False),
+        ], title=f"Tiendas ({offset + 1}–{offset + len(page)} de {len(rows)})")
+        action = _ask(_page_keys(questionary.select("¿Qué hacemos?", choices=[
+            *_nav(offset, len(page), len(rows)),
+            questionary.Choice("← Menú", value=BACK),
+        ]), offset, len(page), len(rows)))
+        if action is None or action is BACK:
+            return
+        offset = offset + PAGE_SIZE if action is NEXT else max(0, offset - PAGE_SIZE)
 
 
 def _update_flow(conn) -> None:
+    _clear()
     scope = _ask(questionary.select("¿Qué actualizar?", choices=[
         questionary.Choice("Solo tiendas obsoletas (recomendado)", value="incremental"),
         questionary.Choice("Todas las tiendas", value="all"),
@@ -612,7 +797,7 @@ def _update_flow(conn) -> None:
         # The documented default. The old code fell back to 20 here, four times
         # this, which reliably provokes Cloudflare blocks.
         workers = parser_mod.DEFAULT_WORKERS
-        print(f"  Valor inválido; usando {workers}.")
+        _notice(f"  Valor inválido; usando {workers}.")
 
     dry_run = _ask(questionary.confirm("¿Dry run (solo 1 página)?", default=False))
     if dry_run is None:
@@ -626,14 +811,41 @@ def _update_flow(conn) -> None:
     targets = update_mod.select_sites(
         conn, sites, names, scope == "incremental", 24)
     if not targets:
-        print("  Todo al día. Nada que actualizar.")
+        _notice("  Todo al día. Nada que actualizar.")
         return
 
-    print(f"  Actualizando {render.plural(len(targets), 'tienda')}…")
-    render.update_report(update_mod.update_stores(
-        conn, targets, workers=workers, dry_run=dry_run,
-        on_failure=lambda name, exc: print(f"  [{name}] falló: {exc}"),
-    ))
+    _clear()
+    print(f"  Actualizando {render.plural(len(targets), 'tienda')}…\n")
+
+    # The parsers print roughly thirty kinds of "skip: {e}" straight from
+    # worker threads. They cannot be interleaved with a single-line display,
+    # and they are diagnostics rather than results: collect them and offer
+    # them once. Progress goes to stderr, so it is not captured here.
+    #
+    # ponytail: redirect_stdout is three lines against ~30 edits moving
+    # scrape.py onto logging, and it catches future stray prints too. Move to
+    # logging if these ever need to persist across runs.
+    failures, chatter = [], io.StringIO()
+    with contextlib.redirect_stdout(chatter):
+        totals = update_mod.update_stores(
+            conn, targets, workers=workers, dry_run=dry_run,
+            on_progress=render.progress,
+            on_failure=lambda name, exc: failures.append(f"  [{name}] falló: {exc}"),
+        )
+
+    _clear()
+    render.update_report(totals)
+    for line in failures:
+        print(line)
+
+    noise = chatter.getvalue().strip()
+    if noise:
+        n = len(noise.splitlines())
+        if _ask(questionary.confirm(
+                f"  {n} aviso(s) del scraper. ¿Verlos?", default=False)):
+            _clear()
+            render.page(noise)
+    _pause()
 
 _ACTIONS = {
     "search": _search_flow,
@@ -682,7 +894,8 @@ def _menu_choices() -> list:
 
 
 def run_tui() -> None:
-    print(BANNER)
+    # No banner yet: it is drawn inside the alternate buffer, so nothing from
+    # the session is left in the shell's scrollback afterwards.
     try:
         conn = db_mod.connect()
     except FileNotFoundError:
@@ -695,8 +908,23 @@ def run_tui() -> None:
     BROWSE.update(BROWSE_DEFAULTS)
     SEARCH.update(SEARCH_DEFAULTS)
 
+    # Entered only after the database opened, so the "no hay base de datos"
+    # instructions above stay on the normal screen where they can be read.
+    out = get_app_session().output
+    out.enter_alternate_screen()
+    out.flush()
+
+    # Long views page themselves now. `less` started inside the alternate
+    # buffer paints over the view and, with the -X this project sets, leaves
+    # its text behind on exit. An empty PAGER is the project's existing way of
+    # saying "never page me" (see render._pager_command).
+    pager = os.environ.get("PAGER")
+    os.environ["PAGER"] = ""
+
     try:
         while True:
+            _clear()
+            print(BANNER)
             action = _ask(questionary.select(
                 "¿Qué quieres hacer?", choices=_menu_choices()))
             if action in (None, "quit"):
@@ -707,13 +935,20 @@ def run_tui() -> None:
                 # Ctrl-C outside a prompt -- during a long query, say. It is
                 # not an Exception subclass, so without this it ended the
                 # session instead of the operation.
-                print("\n  Cancelado.")
+                _notice("  Cancelado.")
             except Exception as exc:
                 # One failing flow must not end the session: report it and
                 # return to the menu.
-                print(f"\n  Error en '{action}': {exc}")
+                _notice(f"  Error en '{action}': {exc}")
     finally:
         conn.close()
+        if pager is None:
+            os.environ.pop("PAGER", None)
+        else:
+            os.environ["PAGER"] = pager
+        out.quit_alternate_screen()
+        out.flush()
+        # After the buffer is popped, or the farewell dies with it.
         print("\n¡Hasta luego! 🎲")
 
 

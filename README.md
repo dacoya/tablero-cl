@@ -41,7 +41,7 @@ costo de envío.
 
 ## Tiendas cubiertas
 
-47 tiendas activas.
+49 tiendas activas.
 
 | Tienda | URL | Ubicación |
 |---|---|---|
@@ -92,6 +92,8 @@ costo de envío.
 | Top 8 | top8.cl | Temuco |
 | Búho Juegos de Mesa | buhojuegosdemesa.cl | Valparaíso |
 | La Guarida del Dragón | laguaridadeldragon.cl | — |
+| Chile Board Games | chileboardgames.com | — |
+| Board Kingdom | boardkingdom.cl | — |
 
 
 
@@ -140,9 +142,7 @@ En este orden:
 ```
 requests
 beautifulsoup4
-pandas
 rapidfuzz
-tqdm
 questionary
 ```
 
@@ -249,6 +249,14 @@ inmediato, de a 20 filas, con los filtros que ya tenga la sesión. Desde ahí:
 La búsqueda funciona igual: desde la lista de resultados puedes cambiar la
 consulta, poner un precio máximo, incluir accesorios o reordenar sin volver al
 menú. Los filtros duran lo que dure la sesión.
+
+El menú corre en la **pantalla alternativa** del terminal, como `less` o `vim`:
+cada vista reemplaza a la anterior en vez de apilarse, y al salir tu terminal
+queda exactamente como estaba, sin rastro de la sesión. Las vistas largas
+—cambios, tiendas, ranking— se paginan de a 20 igual que el catálogo.
+
+Si un cierre brusco alguna vez te deja en la pantalla alternativa, `tput rmcup`
+o `reset` la recuperan.
 
 ### Primera vez
 
@@ -385,14 +393,36 @@ para que cron pueda actuar según el resultado.
 ### Qué cambió desde la última vez
 
 ```bash
-tablero new --reset        # fija el marcador "última revisión"
-tablero new                # bajadas de precio + productos nuevos desde entonces
-tablero new --min-pct 10   # solo bajadas de 10% o más
+tablero new --reset               # fija el marcador "última revisión"
+tablero new                       # todo lo que cambió desde entonces
+tablero new --kind restock oferta # solo vueltas a stock y ofertas nuevas
+tablero new --min-pct 10          # solo movimientos de precio de 10% o más
 ```
+
+Cada fila dice **qué** cambió, no solo que algo cambió:
+
+| Cambio | Qué pasó |
+|---|---|
+| `nuevo` | no existía la última vez que miraste |
+| `restock` | estaba agotado y volvió a estar disponible |
+| `agotado` | estaba disponible y se agotó |
+| `oferta` | entró en oferta (el precio de lista no se movió) |
+| `fin_oferta` | terminó la oferta |
+| `baja` / `alza` | el precio bajó o subió |
+
+Un producto puede cumplir varios a la vez —una vuelta a stock que además bajó
+de precio— y se reporta el más notable, con las columnas Antes/Ahora/Dif.
+contando el resto. `--min-pct` solo filtra `baja` y `alza`: una vuelta a stock
+vale la pena verla sin importar lo que hizo el precio.
 
 A diferencia de las marcas nuevo/restock —que se recalculan en cada scrape y
 solo describen la última actualización— esto se mide contra el momento en que
 *tú* miraste por última vez, así que no se pierde nada por no haber estado.
+
+Las transiciones de stock y de oferta se registran desde el esquema v4. Las
+observaciones anteriores no las traen, y se tratan como *desconocidas* en vez
+de como "no": inventar un restock para todo el catálogo la primera vez sería
+peor que esperar un scrape.
 
 ### Lista de seguimiento
 

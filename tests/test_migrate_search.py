@@ -152,15 +152,15 @@ def test_basket_empty_input(db_conn):
 def test_price_drop_since_cursor(db_conn):
     """Catan at tiendaB fell 52,990 -> 45,990 between the two observations."""
     changes.set_cursor(db_conn, ts=1_700_050_000)
-    drops = changes.price_drops(db_conn, min_pct=1.0)
+    drops = changes.since_last_review(db_conn, min_pct=1.0, kinds=["baja"])
     assert len(drops) == 1
     assert drops[0]["old_price"] == 52990.0
     assert drops[0]["new_price"] == 45990.0
     assert drops[0]["drop_pct"] > 13
 
 
-def test_no_drops_without_cursor(db_conn):
-    assert changes.price_drops(db_conn) == []
+def test_no_changes_without_cursor(db_conn):
+    assert changes.since_last_review(db_conn) == []
 
 
 def test_resolve_store_partial_match(db_conn):

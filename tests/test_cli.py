@@ -217,3 +217,32 @@ def test_resolve_output_lands_beside_the_database_when_installed(monkeypatch, tm
 
     assert paths.resolve_output("../data/tienda_jdm.csv") == \
         tmp_path / "userdata" / "tienda_jdm.csv"
+
+
+def test_update_reports_progress_for_every_store_including_failures(monkeypatch, db_conn):
+    """
+    A store that fails still has to advance the counter.
+
+    The report lives in a `finally` precisely so neither of the two `continue`
+    paths in the loop can skip it and leave the line stuck mid-run.
+    """
+    from tablero import runner, update as update_mod
+
+    targets = [{"name": n, "output": f"../data/{n}.csv"}
+               for n in ("tiendaA", "tiendaB", "tiendaC")]
+
+    def fake_scrape(site, dry_run=False):
+        if site["name"] == "tiendaB":
+            raise RuntimeError("boom")
+        return []
+
+    monkeypatch.setattr(runner, "scrape_site", fake_scrape)
+
+    seen = []
+    update_mod.update_stores(
+        db_conn, targets, workers=1,
+        on_failure=lambda name, exc: None,
+        on_progress=lambda done, total, products, store: seen.append((done, store)),
+    )
+    assert [done for done, _ in seen] == [1, 2, 3]
+    assert {store for _, store in seen} == {"tiendaA", "tiendaB", "tiendaC"}

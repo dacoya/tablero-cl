@@ -351,3 +351,42 @@ def test_smart_columns_appear_only_for_smart_rows(capsys):
     render.product_rows([_product(n_stores=9, median=19990.0, score=1.25)])
     out = capsys.readouterr().out
     assert "Mediana" in out and "$19.990" in out and "+1.25" in out
+
+
+# ---------------------------------------------------------------------------
+# Scrape progress
+# ---------------------------------------------------------------------------
+
+def test_progress_writes_one_line_per_store_off_a_terminal(capsys):
+    """
+    Redirected to a file, carriage returns would make a whole run one
+    unreadable line. Each store gets its own instead.
+    """
+    render.progress(1, 2, 100, "flexo")
+    render.progress(2, 2, 250, "updown")
+
+    err = capsys.readouterr().err
+    assert "\r" not in err
+    assert err.splitlines() == ["  [1/2] 100 productos · flexo",
+                                "  [2/2] 250 productos · updown"]
+
+
+def test_progress_rewrites_itself_on_a_terminal(capsys, monkeypatch):
+    """One line that updates, not one line per store scrolling past."""
+    monkeypatch.setattr(render.sys.stderr, "isatty", lambda: True, raising=False)
+    monkeypatch.setattr(render, "term_width", lambda default=100: 40)
+
+    render.progress(1, 2, 100, "flexo")
+    assert capsys.readouterr().err.startswith("\r")
+
+    render.progress(2, 2, 250, "updown")
+    # The last store closes the line so whatever prints next starts clean.
+    assert capsys.readouterr().err.endswith("\n")
+
+
+def test_progress_goes_to_stderr_so_piped_data_stays_clean(capsys):
+    """`tablero update > log` must keep a readable log on stdout."""
+    render.progress(1, 1, 5, "flexo")
+    captured = capsys.readouterr()
+    assert captured.out == ""
+    assert "flexo" in captured.err

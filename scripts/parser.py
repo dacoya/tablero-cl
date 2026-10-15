@@ -13,6 +13,7 @@ any dependency on cli.py; the dispatch table lives there.
 import argparse
 
 from .basket import DEFAULT_SHIPPING
+from .changes import CHANGE_KINDS
 from .classify import KIND_ORDER
 from .search import ORDER_OPTIONS
 
@@ -116,7 +117,11 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--reset", action="store_true",
                    help="marcar todo como revisado a partir de ahora")
     p.add_argument("--min-pct", type=float, default=DEFAULT_MIN_DROP_PCT, metavar="N",
-                   help=f"bajada mínima a reportar (default: {DEFAULT_MIN_DROP_PCT}%%)")
+                   help=f"movimiento mínimo de precio a reportar "
+                        f"(default: {DEFAULT_MIN_DROP_PCT}%%); no afecta stock ni ofertas")
+    p.add_argument("--kind", choices=CHANGE_KINDS, nargs="+", dest="kind",
+                   help="limitar a ciertos tipos de cambio "
+                        f"({'/'.join(CHANGE_KINDS)})")
     p.add_argument("--limit", type=int, default=50, metavar="N",
                    help="máximo de filas (default: 50)")
 

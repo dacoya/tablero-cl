@@ -65,6 +65,10 @@ def page(text: str) -> None:
     Only pages an interactive terminal; a pipe or a redirect gets the raw text
     so `tablero list | head` and `--export` keep working. Falls back to a plain
     print if the pager is missing or the user quits it early.
+
+    The interactive menu blanks PAGER for its own lifetime: `less` started
+    inside the alternate screen buffer paints over the view and, with the -X
+    above, leaves its text behind. Long views page themselves there instead.
     """
     lines = text.count("\n") + 1
     command = _pager_command()
@@ -349,7 +353,7 @@ def product_rows(rows: list[dict], title: str = "", limit: int | None = None,
     table(prepared, columns, title=title, limit=limit)
 
 
-def leaderboard(rows: list[dict]) -> None:
+def leaderboard(rows: list[dict], title: str = "") -> None:
     if not rows:
         print("  (sin datos para el leaderboard)")
         return
@@ -373,9 +377,61 @@ def leaderboard(rows: list[dict]) -> None:
         ("disc", "Desc. prom.", False),
         ("oos", "Agotado", False),
         ("comp", "Más caro", False),
-    ], title="\n🏆  Tiendas — más barata primero",
+    ], title=title or "\n🏆  Tiendas — más barata primero",
        footer='\n  "Más caro" = % de juegos disputados en que la tienda supera '
               'la mediana entre tiendas.')
+
+
+def changes(rows: list[dict], title: str = "", limit: int | None = None) -> None:
+    """
+    What moved since the last review, each row saying what moved.
+
+    This used to render as two price tables -- drops, then arrivals -- which
+    could not express a restock at all and made "went on sale" and "got
+    cheaper" look identical. A single list with a Cambio column says which
+    happened, and keeps one ordering across all of them.
+    """
+    from . import changes as changes_mod
+
+    if not rows:
+        print(f"\n  {title or 'Sin cambios desde tu última revisión.'}")
+        return
+
+    prepared = [
+        {
+            # Text, not an emoji badge: this is a fixed-width column, and
+            # emoji occupy two terminal cells while counting as one character,
+            # which is exactly the misalignment _widths exists to prevent.
+            "change": changes_mod.CHANGE_LABELS.get(r["change"], r["change"]),
+            "title": r.get("title") or "",
+            "store": r.get("store", ""),
+            "before": money(r.get("old_price")),
+            "after": money(r.get("new_price")),
+            # A new product has nothing to compare against, so the percentage
+            # column stays empty rather than claiming a 0% move.
+            "delta": pct(r["drop_pct"]) if r.get("drop_pct") else "-",
+            "stock": stock_label(r.get("in_stock")),
+        }
+        for r in rows
+    ]
+    table(prepared, [
+        ("change", "Cambio", False),
+        ("title", "Producto", True),
+        ("store", "Tienda", False),
+        ("before", "Antes", False),
+        ("after", "Ahora", False),
+        ("delta", "Dif.", False),
+        ("stock", "Estado", False),
+    ], title=title, limit=limit)
+
+
+def changes_summary(counts: dict) -> str:
+    """One line naming what is in the list, in the order the table uses."""
+    from . import changes as changes_mod
+
+    parts = [f"{counts[k]} {changes_mod.CHANGE_LABELS[k]}"
+             for k in changes_mod.CHANGE_KINDS if counts.get(k)]
+    return " · ".join(parts)
 
 
 def trends(rows: list[dict], title: str, min_points: int = 2) -> None:
@@ -451,6 +507,27 @@ def watchlist(entries: list[dict]) -> None:
         ("hit", "Alcanzado", False),
     ], title=f"Lista de seguimiento ({len(entries)})",
        empty="La lista está vacía. Agrega con: tablero watch add \"<juego>\" --target N")
+
+
+def progress(done: int, total: int, products: int, store: str) -> None:
+    """
+    One line of scrape progress, rewritten in place.
+
+    On stderr because stdout is where the data goes: `tablero update > log`
+    stays a readable log, and the menu can capture parser chatter on stdout
+    without swallowing its own progress.
+
+    Only overwrites itself on a terminal. Redirected to a file, carriage
+    returns would make the whole run one unreadable line, so each store gets
+    its own.
+    """
+    line = f"  [{done}/{total}] {plural(products, 'producto')} · {store}"
+    if not sys.stderr.isatty():
+        print(line, file=sys.stderr)
+        return
+    width = max(20, term_width() - 1)
+    print("\r" + line.ljust(width)[:width],
+          end="\n" if done == total else "", file=sys.stderr, flush=True)
 
 
 def update_report(totals: dict) -> None:

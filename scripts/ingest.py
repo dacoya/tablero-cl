@@ -157,22 +157,28 @@ def ingest_store(conn, store: str, records: list, ts: int | None = None) -> dict
 
 def _record_prices(conn, store: str, ts: int) -> None:
     """
-    Append a price observation only where the price actually moved.
+    Append an observation only where something actually moved.
 
     Collapsing repeats keeps the series meaningful and the table small: without
     it every scrape would add ~29k identical rows.
 
+    "Something" is the price, the stock state, or the list price behind an
+    offer. Keying collapse on the effective price alone meant a product going
+    out of stock, or a sale starting at a price that happened to match, left
+    no trace -- and `product.flag` only survives one scrape, so the change was
+    then unrecoverable. Anything missed while away was gone for good.
+
     Done as one INSERT...SELECT taking three bound values, rather than reading
-    every last price into Python and writing back row by row. That also keeps
+    every last row into Python and writing back one by one. That also keeps
     the statement clear of the 999-variable cap on older SQLite builds.
     """
     conn.execute(
         """
-        INSERT OR IGNORE INTO price_obs(product_id, ts, price)
-        SELECT p.id, ?, p.price_eff
+        INSERT OR IGNORE INTO price_obs(product_id, ts, price, in_stock, price_original)
+        SELECT p.id, ?, p.price_eff, p.in_stock, p.price_original
           FROM product p
           LEFT JOIN (
-                SELECT o.product_id, o.price,
+                SELECT o.product_id, o.price, o.in_stock, o.price_original,
                        ROW_NUMBER() OVER (PARTITION BY o.product_id
                                           ORDER BY o.ts DESC) AS rn
                   FROM price_obs o
@@ -181,7 +187,13 @@ def _record_prices(conn, store: str, ts: int) -> None:
           ) last ON last.product_id = p.id AND last.rn = 1
          WHERE p.store = ?
            AND p.price_eff IS NOT NULL
-           AND (last.price IS NULL OR last.price != p.price_eff)
+           AND (last.price IS NULL
+                OR last.price != p.price_eff
+                -- IS NOT, not !=, so a NULL on either side counts as a change
+                -- rather than swallowing one. Rows written before v4 carry
+                -- NULL in both new columns.
+                OR last.in_stock IS NOT p.in_stock
+                OR last.price_original IS NOT p.price_original)
         """,
         (ts, store, store),
     )

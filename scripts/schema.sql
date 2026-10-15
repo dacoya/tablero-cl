@@ -76,9 +76,19 @@ CREATE INDEX IF NOT EXISTS idx_product_flag  ON product(flag) WHERE flag IS NOT 
 -- the old file had duplicate timestamps and meaningless trend lines.
 -- ---------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS price_obs (
-    product_id INTEGER NOT NULL REFERENCES product(id) ON DELETE CASCADE,
-    ts         INTEGER NOT NULL,
-    price      REAL    NOT NULL,
+    product_id     INTEGER NOT NULL REFERENCES product(id) ON DELETE CASCADE,
+    ts             INTEGER NOT NULL,
+    price          REAL    NOT NULL,   -- the effective price: offer if any, else list
+    -- Recorded alongside the price so a change can be told apart from the
+    -- others. Without them an observation says a product got cheaper but not
+    -- whether a sale started, and says nothing at all about a product coming
+    -- back into stock at an unchanged price.
+    --
+    -- `price = price_original` means no offer was running. NULL in either
+    -- column means the observation predates schema v4 and the answer is
+    -- unknown, which is not the same as "no".
+    in_stock       INTEGER,
+    price_original REAL,
     PRIMARY KEY (product_id, ts)
 ) WITHOUT ROWID;
 

@@ -1,5 +1,8 @@
 """The TUI's price filter: a picker for the bound, then the amount."""
+import types
+
 import pytest
+import questionary
 
 from tablero import tui
 
@@ -122,3 +125,101 @@ def test_ask_store_cancel_is_the_only_exit(db_conn, monkeypatch):
 def test_ask_store_blank_means_every_store(db_conn, monkeypatch):
     monkeypatch.setattr(tui, "_ask", _answers("  "))
     assert tui._ask_store(db_conn) == (True, None)
+
+
+# ---------------------------------------------------------------------------
+# Navigable screen: paging entries, prompt erasure, deferred notices
+# ---------------------------------------------------------------------------
+
+@pytest.mark.parametrize("offset, shown, total, expected", [
+    (0, 20, 134, ["NEXT"]),             # first page: only forward
+    (20, 20, 134, ["NEXT", "PREV"]),    # middle: both
+    (120, 14, 134, ["PREV"]),           # last page: only back
+    (0, 5, 5, []),                      # everything fits: neither
+    (0, 0, 0, []),                      # nothing at all
+])
+def test_nav_offers_a_page_only_when_it_leads_somewhere(offset, shown, total, expected):
+    """
+    An always-visible "siguiente" on the last page is a keystroke that does
+    nothing. Asserting on the sentinel identities also pins the contract that
+    questionary.Choice(value=None) would quietly break.
+    """
+    names = {id(tui.NEXT): "NEXT", id(tui.PREV): "PREV"}
+    assert [names[id(c.value)] for c in tui._nav(offset, shown, total)] == expected
+
+
+class _FakePrompt:
+    """The two attributes _ask touches."""
+    def __init__(self, answer="ok"):
+        self.answer = answer
+        self.application = types.SimpleNamespace(erase_when_done=False)
+
+    def unsafe_ask(self):
+        return self.answer
+
+
+def test_ask_erases_the_prompt_when_it_is_answered():
+    """Without this a screen becomes a transcript of the last six questions."""
+    prompt = _FakePrompt()
+    assert tui._ask(prompt) == "ok"
+    assert prompt.application.erase_when_done is True
+
+
+def test_ask_drains_pending_notices_first(capsys):
+    """
+    A line printed where the problem is noticed is wiped by the redraw that
+    follows it. The prompt is the one point guaranteed to come after.
+    """
+    tui._notice("  Tienda 'zzz' no encontrada.")
+    tui._notice("  Segundo aviso.")
+    tui._ask(_FakePrompt())
+
+    out = capsys.readouterr().out
+    assert "no encontrada" in out and "Segundo aviso." in out
+    assert tui._NOTICES == [], "notices must not repeat on the next prompt"
+
+
+def test_ask_still_converts_a_cancel_to_none():
+    class _Cancelled(_FakePrompt):
+        def unsafe_ask(self):
+            raise KeyboardInterrupt
+
+    assert tui._ask(_Cancelled()) is None
+
+
+def _bound_keys(prompt):
+    """The single-character keys bound on a prompt, in binding order."""
+    return [b.keys[0] for b in prompt.application.key_bindings.bindings
+            if len(b.keys) == 1 and isinstance(b.keys[0], str)]
+
+
+@pytest.mark.parametrize("offset, shown, total, expected", [
+    (0, 20, 134, ["."]),            # first page: only forward
+    (20, 20, 134, [",", "."]),      # middle: both
+    (120, 14, 134, [","]),          # last page: only back
+    (0, 5, 5, []),                  # single page: neither
+])
+def test_page_keys_bind_only_the_directions_that_exist(offset, shown, total, expected):
+    """
+    `.` on the last page must do nothing rather than return an empty page.
+
+    Paging is the action taken over and over, so it gets the keys; binding one
+    that leads nowhere would be worse than not binding it.
+    """
+    prompt = tui._page_keys(
+        questionary.select("x", choices=["a", "b"]), offset, shown, total)
+    assert [k for k in _bound_keys(prompt) if k in (",", ".")] == expected
+
+
+def test_page_keys_answer_with_the_same_sentinels_as_the_menu_entries():
+    """The key and the visible entry must be the same action, not two paths."""
+    prompt = tui._page_keys(
+        questionary.select("x", choices=["a", "b"]), offset=20, shown=20, total=134)
+    exits = {}
+    for binding in prompt.application.key_bindings.bindings:
+        if binding.keys in ((",",), (".",)):
+            binding.handler(types.SimpleNamespace(
+                app=types.SimpleNamespace(exit=lambda result: exits.__setitem__(
+                    binding.keys[0], result))))
+    assert exits[","] is tui.PREV
+    assert exits["."] is tui.NEXT

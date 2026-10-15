@@ -221,19 +221,14 @@ def cmd_new(args) -> int:
         )
         return 1
 
-    drops = changes.price_drops(conn, min_pct=args.min_pct, limit=args.limit)
-    render.product_rows(
-        [{**d, "price_current": d["new_price"], "price_original": d["old_price"],
-          "discount_pct": d["drop_pct"]} for d in drops],
-        title=f"Bajadas de precio desde tu última revisión ({len(drops)})",
+    rows = changes.since_last_review(
+        conn, min_pct=args.min_pct, kinds=args.kind, limit=args.limit)
+    summary = render.changes_summary(changes.summarise(rows))
+    render.changes(
+        rows,
+        title=f"Cambios desde tu última revisión ({len(rows)})"
+              + (f"\n  {summary}" if summary else ""),
     )
-
-    arrivals = changes.new_arrivals(conn, limit=args.limit)
-    if arrivals:
-        render.product_rows(
-            [{**a, "price_original": a["price_eff"]} for a in arrivals],
-            title=f"\nNuevos productos ({len(arrivals)})",
-        )
     return 0
 
 
@@ -306,6 +301,7 @@ def cmd_update(args) -> int:
     totals = update_mod.update_stores(
         conn, targets, workers=args.workers, dry_run=args.dry_run,
         on_failure=lambda name, exc: print(f"  [{name}] falló: {exc}"),
+        on_progress=render.progress,
     )
     render.update_report(totals)
     return 0

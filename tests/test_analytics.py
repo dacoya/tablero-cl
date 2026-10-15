@@ -197,8 +197,7 @@ def test_changes_limit_none_means_unlimited(db_conn):
     assert changes._limit(0) == 0
     assert changes._limit(5) == 5
     changes.set_cursor(db_conn)
-    assert isinstance(changes.price_drops(db_conn, min_pct=5.0, limit=None), list)
-    assert isinstance(changes.new_arrivals(db_conn, limit=None), list)
+    assert isinstance(changes.since_last_review(db_conn, min_pct=5.0, limit=None), list)
 
 
 # ---------------------------------------------------------------------------

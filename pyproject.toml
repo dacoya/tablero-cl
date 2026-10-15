@@ -12,7 +12,6 @@ dependencies = [
     "requests",
     "beautifulsoup4",
     "rapidfuzz",
-    "tqdm",
     "questionary",
 ]
 

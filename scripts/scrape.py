@@ -79,6 +79,14 @@ def fetch_html(url):
               f"Use fewer --workers and rerun later.")
         return None
 
+    # A 404 is how most stores say "there is no page N" -- it is the normal
+    # end of pagination, not a fault, and announcing it made a clean full run
+    # look like eleven failures. A 404 on page 1 is a real problem, but it
+    # surfaces anyway: the store ends with no products and is reported as a
+    # failed scrape by name.
+    if r.status_code == 404:
+        return None
+
     try:
         r.raise_for_status()
     except requests.exceptions.RequestException as e:
@@ -341,30 +349,52 @@ def _parse_product_block(html, item_tag='article', item_cls='product-block',
 # Stores that need custom logic get their own function.
 # Stores fully covered by a generic parser are one-liners.
 
-def flexogames(html):
-    """Shopify. Stock/sale encoded as classes on <dl class='price'>."""
+def _parse_shopify_card(html, base_url=''):
+    """
+    Generic Shopify "Debut"-family collection grid.
+
+    Two price layouts ship with this theme family and stores use both. The
+    older one puts the pre-sale price in `div.price__compare`; the newer one
+    puts it in a bare <s class="price-item--regular"> inside `div.price__sale`.
+    Both also render the discounted figure a second time under
+    `div.price__regular`, so reading that first turns a 50% sale into a
+    full-price product with no discount -- chileboardgames showed Pendulum at
+    its $27.500 offer with the $55.000 list price dropped entirely.
+
+    Stock comes only from the `price--sold-out` class on the <dl>.
+    `div.price__availability` looks like the obvious source and is a trap: the
+    theme renders it reading "Agotado" on every card and hides it with CSS
+    unless the product really is sold out, so believing it marked all 333
+    chileboardgames products out of stock.
+    """
     res = []
     for item in (html.find_all('li', class_='grid__item') if html else []):
         try:
             t_elem = item.find('div', class_='grid-view-item__title')
             if not t_elem:
                 continue
-            pc    = item.find('div', class_='price__compare')
-            s_tag = pc.find('s') if pc else None
-            if s_tag and _txt(s_tag):
-                orig, curr = _norm(_txt(s_tag), _txt(item.find('span', class_='price-item--sale')))
+
+            # The struck-through figure is the only unambiguous signal that a
+            # sale is running, so it is checked before anything else.
+            was = item.find('s', class_='price-item--regular')
+            if was and _txt(was):
+                orig, curr = _norm(_txt(was), _txt(item.find('span', class_='price-item--sale')))
             else:
-                reg  = item.find('div', class_='price__regular')
-                orig, curr = _norm(_txt(reg.find('span', class_='price-item--regular') if reg else None), None)
-            dl    = item.find('dl', class_='price')
-            stock = "Agotado" if dl and 'price--sold-out' in dl.get('class', []) else None
+                reg = item.find('div', class_='price__regular')
+                orig, curr = _norm(
+                    _txt(reg.find('span', class_='price-item--regular') if reg else None), None)
+
+            dl = item.find('dl', class_='price')
+            stock = ("Agotado" if dl and 'price--sold-out' in dl.get('class', [])
+                     else None)
+
             res.append({
                 'title': _txt(t_elem), 'original_price': orig, 'current_price': curr,
                 'stock_status': stock,
-                'url': _url(item.find('a', class_='grid-view-item__link'), "https://www.flexogames.cl"),
+                'url': _url(item.find('a', class_='grid-view-item__link'), base_url),
             })
         except Exception as e:
-            print(f"  [flexogames] skipping item: {e}")
+            print(f"  [_parse_shopify_card] skipping item: {e}")
     return res
 
 
@@ -1181,6 +1211,14 @@ zonaxgamers = partial(
 peakgames = _bs_grid('https://www.peakgames.cl')
 wargaming = _bs_grid('https://www.wargaming.cl')
 laguaridadeldragon = _bs_grid('https://www.laguaridadeldragon.cl')
+
+# Shopify Debut-family grids. flexogames had its own copy of this parser until
+# the generic was proven to produce byte-identical rows on its catalogue.
+flexogames = partial(_parse_shopify_card, base_url='https://www.flexogames.cl')
+chileboardgames = partial(_parse_shopify_card, base_url='https://chileboardgames.com')
+
+# Jumpseller product-block grid, same shape as vudugaming and zonaxgamers.
+boardkingdom = partial(_parse_product_block, base_url='https://www.boardkingdom.cl')
 playkingdom = partial(_parse_product_block_simple, 'https://playkingdom.cl')
 
 
@@ -1232,6 +1270,8 @@ sites = [
     {'name': 'lamesadevaras',    'base_url': 'https://lamesadevaras.cl/9-juegos-de-mesa',                        'parser': _presta,    'pagination': 'page_param', 'output': '../data/lamesadevaras_jdm.csv'},
     {'name': 'wargaming',        'base_url': 'https://www.wargaming.cl/collection/juegos-de-mesa',               'parser': wargaming,        'pagination': 'page_param', 'output': '../data/wargaming_jdm.csv'},
     {'name': 'laguaridadeldragon', 'base_url': 'https://www.laguaridadeldragon.cl/collection/juegos',        'parser': laguaridadeldragon, 'pagination': 'page_param', 'output': '../data/laguaridadeldragon_jdm.csv'},
+    {'name': 'chileboardgames',   'base_url': 'https://chileboardgames.com/collections/all',                    'parser': chileboardgames,  'pagination': 'shopify',    'output': '../data/chileboardgames_jdm.csv'},
+    {'name': 'boardkingdom',      'base_url': 'https://www.boardkingdom.cl/juegos-de-mesa',                     'parser': boardkingdom,     'pagination': 'page_param', 'output': '../data/boardkingdom_jdm.csv'},
     {'name': 'darkhobbies',      'base_url': 'https://www.darkhobbies.cl/collections/all',                       'parser': darkhobbies,      'pagination': 'shopify',    'output': '../data/darkhobbies_jdm.csv'},
     {'name': 'shivano',          'base_url': 'https://shivano.cl/12-juegos-de-mesa',                             'parser': shivano,          'pagination': 'p',          'output': '../data/shivano_jdm.csv'},
     {'name': 'guildreams',       'base_url': 'https://www.guildreams.com/collection/juegos-de-mesa',             'parser': guildreams,       'pagination': 'page_param', 'output': '../data/guildreams_jdm.csv'},
