@@ -1,8 +1,10 @@
 package cl.tablero.core
 
 import cl.tablero.core.scrape.Http
+import cl.tablero.core.scrape.MAX_PAGE_BYTES
 import mockwebserver3.MockResponse
 import mockwebserver3.MockWebServer
+import okio.Buffer
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -72,6 +74,21 @@ class HttpTest {
     @Test
     fun largePageMentioningACaptchaIsStillAPage() {
         reply(200, bigPage + "<script src='https://captcha-delivery.com/x.js'></script>")
+        assertNotNull(fetch())
+    }
+
+    @Test
+    fun oversizedPageIsNotReadWhole() {
+        val big = Buffer().write(ByteArray((MAX_PAGE_BYTES + 1).toInt()) { 'x'.code.toByte() })
+        server.enqueue(MockResponse.Builder().code(200).body(big).build())
+        assertNull(fetch())
+        assertTrue("too large" in logged.single())
+    }
+
+    @Test
+    fun pageJustUnderTheCapIsStillAPage() {
+        val body = "<html><body>" + "x".repeat((MAX_PAGE_BYTES - 100).toInt()) + "</body></html>"
+        reply(200, body)
         assertNotNull(fetch())
     }
 

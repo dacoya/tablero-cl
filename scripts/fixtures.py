@@ -17,8 +17,8 @@ regex and SQL that is just as easy to port wrong, so it gets golden files too:
   derive_vectors.json   scraped record -> database row, for every record in the
                         page fixtures plus the edge cases below
   url_vectors.json      (base url, pagination style, page) -> url
-  ingest_scenario.json  three scrapes of one store -> resulting tables and the
-                        changes view
+  ingest_scenario.json  three scrapes of one store -> resulting tables, the
+                        changes view, and the browse/price/store queries
   sites.tsv             the scrape registry (name, base url, pagination). Not a
                         vector: the Kotlin side reads it as its registry, so a
                         store's URL lives in exactly one place, scrape.py.
@@ -34,7 +34,8 @@ from pathlib import Path
 
 from bs4 import BeautifulSoup
 
-from . import changes, db as db_mod, ingest, repo, scrape, validation
+from . import alerts, analytics, changes, db as db_mod, history, ingest, repo, scrape
+from . import validation, watchlist
 from .derive import derive
 from .paths import REPO_ROOT
 
@@ -75,6 +76,23 @@ def capture(site: dict, page: int = 1, out_dir: Path = None) -> dict:
         json.dumps(records, ensure_ascii=False, indent=2), encoding="utf-8"
     )
     return summary
+
+
+def reparse(html_path: Path) -> int:
+    """
+    Rewrite a fixture's expected records from its saved page, offline.
+
+    For a deliberate parser change such as a new field: the saved bytes stay
+    exactly as captured, only what the parser is expected to get out of them
+    moves. Returns the record count.
+    """
+    with gzip.open(html_path, "rt", encoding="utf-8") as f:
+        html = f.read()
+    records = parse(html, site_by_name(html_path.parent.name))
+    html_path.with_name(html_path.name.replace(".html.gz", ".expected.json")).write_text(
+        json.dumps(records, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    return len(records)
 
 
 def load(html_path: Path) -> tuple[str, list]:
@@ -142,6 +160,10 @@ _EDGE_SLUGS = (
 )
 
 _EDGE_STOCK = ("Agotado", " agotado ", "AGOTADO", "Disponible", "", None)
+_EDGE_IMAGES = ("https://x.cl/a.jpg", "  https://x.cl/b.jpg  ", "HTTP://X.CL/C.JPG",
+                "http://x.cl/d.jpg", "HTTPS://X.CL/E.JPG",
+                "//cdn.x.cl/d.jpg", "/e.jpg", "data:image/gif;base64,R0lGOD",
+                "javascript:alert(1)", "", None)
 _EDGE_FLAGS = ("new", "restock", "bogus", None)
 
 
@@ -155,6 +177,7 @@ def _edge_records() -> list:
     out += [{**base, "title": t, "url": u} for t, u in _EDGE_SLUGS]
     out += [{**base, "title": "Stock", "stock_status": s} for s in _EDGE_STOCK]
     out += [{**base, "title": "Flag", "flag": f} for f in _EDGE_FLAGS]
+    out += [{**base, "title": "Imagen", "image": i} for i in _EDGE_IMAGES]
     out += [{**base, "title": t} for t in (None, "", "   ", 123)]
     out += [{**base, "title": "URL", "url": u} for u in (
         "HTTPS://WWW.Edge.cl/P/Catan/?utm=1#top", "http://edge.cl/p/catan/",
@@ -185,10 +208,11 @@ def url_vectors() -> list:
 _SCENARIO_STORE = "tienda"
 
 
-def _rec(slug, title, original, current=None, stock=None, url=None):
+def _rec(slug, title, original, current=None, stock=None, url=None, image=None):
     return {"title": title, "original_price": original, "current_price": current,
             "stock_status": stock,
-            "url": url if url is not None else f"https://tienda.cl/p/{slug}/"}
+            "url": url if url is not None else f"https://tienda.cl/p/{slug}/",
+            "image": image}
 
 
 # Three scrapes of one store. Each product is there to exercise one rule:
@@ -199,8 +223,8 @@ _SCENARIO = (
     (1_000, [
         _rec("catan", "Catan - Juego de Mesa", "$45.000",
              url="https://www.tienda.cl/p/catan/?ref=home"),
-        _rec("catan", "Catan - Juego de Mesa", "$40.000"),
-        _rec("wingspan", "Wingspan", "$60.000", "$50.000"),
+        _rec("catan", "Catan - Juego de Mesa", "$40.000", image="https://tienda.cl/img/catan.jpg"),
+        _rec("wingspan", "Wingspan", "$60.000", "$50.000", image="https://tienda.cl/img/wingspan-1.jpg"),
         _rec("azul", "Azul", "$30.000", stock="Agotado"),
         _rec("carcassonne", "Carcassonne", "$25.000"),
         _rec("clank", "Clank Base", "$35.000"),
@@ -215,8 +239,10 @@ _SCENARIO = (
         _rec("", "Sin URL", "$5.000", url=""),
     ]),
     (2_000, [
-        _rec("catan", "Catan - Juego de Mesa", "$35.000"),           # baja
-        _rec("wingspan", "Wingspan", "$60.000"),                      # fin_oferta
+        # baja; this scrape found no photo, so the known one must be kept
+        _rec("catan", "Catan - Juego de Mesa", "$35.000"),
+        # fin_oferta; a new photo replaces the old one
+        _rec("wingspan", "Wingspan", "$60.000", image="https://tienda.cl/img/wingspan-2.jpg"),
         _rec("azul", "Azul", "$30.000"),                              # restock
         _rec("clank", "Clank Base", "$35.000", "$30.000"),            # oferta
         _rec("tm", "Terraforming Mars", "$45.000", stock="Agotado"),  # agotado
@@ -238,7 +264,7 @@ def _snapshot(conn) -> dict:
         "products": rows(f"""
             SELECT p.url_canon, p.url, g.norm AS game_norm, p.title_raw, p.title,
                    p.norm, p.kind, p.price_original, p.price_current, p.price_eff,
-                   p.in_stock, p.flag, p.first_seen, p.last_seen,
+                   p.in_stock, p.flag, p.first_seen, p.last_seen, p.image_url,
                    CASE WHEN {repo.STALE_CLAUSE} THEN 1 ELSE 0 END AS live
               FROM product p LEFT JOIN game g ON g.id = p.game_id
              ORDER BY p.url_canon"""),
@@ -249,6 +275,67 @@ def _snapshot(conn) -> dict:
              ORDER BY p.url_canon, o.ts"""),
         "scrape_runs": rows(
             "SELECT store, ts, n_products, success FROM scrape_run ORDER BY ts"),
+    }
+
+
+# Browse filter sets replayed against the scenario's final database. Names are
+# labels only; the dicts are repo.filter_clause keyword arguments.
+_QUERY_FILTERS = {
+    "all": {},
+    "on_sale": {"on_sale": True},
+    "in_stock": {"in_stock_only": True},
+    "price_band": {"min_price": 25000, "max_price": 40000},
+    "with_stale": {"include_stale": True},
+    "games_only": {"kind": ["game"]},
+    "store": {"store": _SCENARIO_STORE},
+    "flag_new": {"flag": "new"},
+    "stores_list": {"store": [_SCENARIO_STORE, "otra"]},
+    "min_discount": {"min_discount": 10},
+    "combined": {"store": [_SCENARIO_STORE], "kind": ["game"], "in_stock_only": True,
+                 "min_price": 20000, "max_price": 60000},
+}
+
+
+def _without_ids(rows) -> list:
+    """ids are an implementation detail; rows are compared on what they say."""
+    return [{k: v for k, v in r.items() if k not in ("product_id", "game_id")} for r in rows]
+
+
+# Watched games and targets for the scenario: one hit, one miss, and one whose
+# only cheap offer was delisted -- that one must not hit.
+_SCENARIO_WATCH = (("catan", 36000.0, 10), ("wingspan", 50000.0, 20), ("carcassonne", 30000.0, 30))
+
+
+def _queries(conn) -> dict:
+    games = conn.execute("SELECT id, norm FROM game ORDER BY norm").fetchall()
+    ids = {norm: gid for gid, norm in games}
+    # Fixed added_at: watchlist.add stamps the wall clock, which would make
+    # this file different on every run.
+    conn.executemany(
+        "INSERT INTO watchlist(game_id, target, note, added_at) VALUES (?,?,NULL,?)",
+        [(ids[norm], target, at) for norm, target, at in _SCENARIO_WATCH],
+    )
+    conn.commit()
+    return {
+        "watch_setup": [list(w) for w in _SCENARIO_WATCH],
+        "watchlist": _without_ids(watchlist.entries(conn)),
+        "alerts": [{k: v for k, v in a.items() if k not in ("game_id", "timestamp")}
+                   for a in alerts.from_watchlist(conn)],
+        "trends": {norm: history.game_trends(conn, gid) for gid, norm in games},
+        "browse": {
+            name: {
+                "filters": filters,
+                "count": repo.count_products(conn, **filters),
+                "sorts": {sort: _without_ids(repo.products(conn, sort=sort, **filters))
+                          for sort in repo._ORDER_BY},
+            }
+            for name, filters in _QUERY_FILTERS.items()
+        },
+        "page": _without_ids(repo.products(conn, sort="price", limit=3, offset=3)),
+        "smart": {by: _without_ids(analytics.smart_products(conn, by=by))
+                  for by in analytics.SMART_SORT_OPTIONS},
+        "game_prices": {norm: _without_ids(repo.game_prices(conn, gid)) for gid, norm in games},
+        "stores": repo.stores(conn),
     }
 
 
@@ -264,14 +351,12 @@ def ingest_scenario() -> dict:
                 steps.append({"ts": ts, "records": records, "result": result,
                               "state": _snapshot(conn)})
             since = _SCENARIO[1][0]
-            moved = [
-                {k: v for k, v in r.items() if k not in ("product_id", "game_id")}
-                for r in changes.since_last_review(conn, since=since, limit=None)
-            ]
+            moved = _without_ids(changes.since_last_review(conn, since=since, limit=None))
+            queries = _queries(conn)
         finally:
             conn.close()
     return {"store": _SCENARIO_STORE, "steps": steps,
-            "changes": {"since": since, "rows": moved}}
+            "changes": {"since": since, "rows": moved}, "queries": queries}
 
 
 def sites_table() -> str:

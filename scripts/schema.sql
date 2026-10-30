@@ -23,16 +23,54 @@ CREATE TABLE IF NOT EXISTS store (
 
 -- ---------------------------------------------------------------------------
 -- Games: one row per distinct title cluster, shared across stores.
+--
+-- bgg_id is the matched BoardGameGeek entry, NULL when unmatched. Not a
+-- foreign key: re-importing the bgg table replaces every row and re-matches.
 -- ---------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS game (
     id         INTEGER PRIMARY KEY,
     norm       TEXT    NOT NULL UNIQUE,
     title      TEXT    NOT NULL,
     kind       TEXT    NOT NULL DEFAULT 'game',
-    created_at INTEGER NOT NULL
+    created_at INTEGER NOT NULL,
+    bgg_id     INTEGER
 );
 
 CREATE INDEX IF NOT EXISTS idx_game_kind ON game(kind);
+
+-- ---------------------------------------------------------------------------
+-- BoardGameGeek ranks, from BGG's free boardgames_ranks.csv export. Columns
+-- keep the CSV's names. Only entries with enough votes to be worth matching
+-- are kept (see bgg.MIN_VOTES); `norm` is the same match key as game.norm.
+-- ---------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS bgg (
+    id                  INTEGER PRIMARY KEY,
+    name                TEXT    NOT NULL,
+    norm                TEXT    NOT NULL,
+    yearpublished       INTEGER,
+    rank                INTEGER,
+    bayesaverage        REAL,
+    average             REAL,
+    usersrated          INTEGER NOT NULL,
+    is_expansion        INTEGER NOT NULL,
+    abstracts_rank      INTEGER,
+    cgs_rank            INTEGER,
+    childrensgames_rank INTEGER,
+    familygames_rank    INTEGER,
+    partygames_rank     INTEGER,
+    strategygames_rank  INTEGER,
+    thematic_rank       INTEGER,
+    wargames_rank       INTEGER
+);
+
+CREATE INDEX IF NOT EXISTS idx_bgg_norm ON bgg(norm);
+
+-- Spanish names BGG's CSV does not carry ("Polilla Tramposa" -> Cheating
+-- Moth), from scripts/bgg_names_es.csv. Checked before bgg.norm.
+CREATE TABLE IF NOT EXISTS bgg_alias (
+    norm   TEXT    PRIMARY KEY,
+    bgg_id INTEGER NOT NULL
+);
 
 -- ---------------------------------------------------------------------------
 -- Products: one row per (store, canonical URL).
@@ -58,6 +96,10 @@ CREATE TABLE IF NOT EXISTS product (
     flag           TEXT CHECK (flag IN ('new', 'restock') OR flag IS NULL),
     first_seen     INTEGER NOT NULL,
     last_seen      INTEGER NOT NULL,
+    -- The store's own photo URL, never the image itself (schema v5). Last in
+    -- the table so a fresh database and an upgraded one have the same columns
+    -- in the same order.
+    image_url      TEXT,
     UNIQUE (store, url_canon)
 );
 
@@ -67,6 +109,9 @@ CREATE INDEX IF NOT EXISTS idx_product_price ON product(price_eff);
 CREATE INDEX IF NOT EXISTS idx_product_norm  ON product(norm);
 CREATE INDEX IF NOT EXISTS idx_product_kind  ON product(kind);
 CREATE INDEX IF NOT EXISTS idx_product_flag  ON product(flag) WHERE flag IS NOT NULL;
+-- Each game's prices in order, with the store: the phone computes per-game
+-- median and spread for the smart sorts in one pass over this index.
+CREATE INDEX IF NOT EXISTS idx_product_game_price ON product(game_id, price_eff, store);
 
 -- ---------------------------------------------------------------------------
 -- Price observations, keyed on the stable product id.
@@ -113,6 +158,23 @@ CREATE TABLE IF NOT EXISTS watchlist (
     target   REAL,
     note     TEXT,
     added_at INTEGER NOT NULL
+);
+
+-- ---------------------------------------------------------------------------
+-- Games the user owns. Personal state, like the watchlist.
+-- ---------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS owned (
+    game_id  INTEGER PRIMARY KEY REFERENCES game(id) ON DELETE CASCADE,
+    added_at INTEGER NOT NULL
+);
+
+-- ---------------------------------------------------------------------------
+-- What shipping from a store costs the user, as they entered it; 0 is free
+-- pickup. Stores publish nothing usable, so nothing here is scraped.
+-- ---------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS store_shipping (
+    store TEXT PRIMARY KEY,
+    cost  REAL NOT NULL
 );
 
 -- ---------------------------------------------------------------------------

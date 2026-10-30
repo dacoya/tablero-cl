@@ -1,8 +1,7 @@
 """
 CLI dispatch and path configuration.
 
-These carry real logic (store resolution, incremental site selection, the data
-root override) and were the largest untested surface after the restructure.
+These carry real logic (incremental site selection, the data root override) and were the largest untested surface after the restructure.
 """
 import importlib
 
@@ -10,34 +9,6 @@ import pytest
 
 from tablero import cli
 from tablero import update
-
-
-# ---------------------------------------------------------------------------
-# Store resolution
-# ---------------------------------------------------------------------------
-
-def test_resolve_store_exact(db_conn):
-    assert cli._resolve_store(db_conn, "tiendaA") == "tiendaA"
-
-
-def test_resolve_store_is_case_insensitive(db_conn):
-    assert cli._resolve_store(db_conn, "TIENDAA") == "tiendaA"
-
-
-def test_resolve_store_none_passes_through(db_conn):
-    assert cli._resolve_store(db_conn, None) is None
-
-
-def test_resolve_store_unknown_explains(db_conn):
-    """The old CLI errored without telling you what the valid names were."""
-    with pytest.raises(cli.CommandError, match="tablero stores"):
-        cli._resolve_store(db_conn, "no-existe")
-
-
-def test_resolve_store_ambiguous_lists_candidates(db_conn):
-    with pytest.raises(cli.CommandError) as exc:
-        cli._resolve_store(db_conn, "tienda")
-    assert "tiendaA" in str(exc.value) and "tiendaB" in str(exc.value)
 
 
 # ---------------------------------------------------------------------------
@@ -91,40 +62,6 @@ def test_incremental_reselects_stale_and_failed(db_conn):
     db_conn.commit()
     chosen = [s["name"] for s in update.select_sites(db_conn, SITES, None, True, 24)]
     assert {"alpha", "beta"} <= set(chosen)
-
-
-# ---------------------------------------------------------------------------
-# Argument parsing
-# ---------------------------------------------------------------------------
-
-def test_modes_are_mutually_exclusive():
-    """
-    The old flat-flag CLI silently mis-dispatched: `tablero -u --name x` ran a
-    search and never scraped. Subcommands make that unrepresentable.
-    """
-    with pytest.raises(SystemExit):
-        cli.build_parser().parse_args(["update", "--name", "catan"])
-
-
-def test_smart_sorts_are_accepted():
-    for sort in ("value", "scarcity", "volatility"):
-        assert cli.build_parser().parse_args(["deals", "--sort", sort]).sort == sort
-
-
-def test_invalid_sort_rejected():
-    with pytest.raises(SystemExit):
-        cli.build_parser().parse_args(["deals", "--sort", "nonsense"])
-
-
-def test_alerts_watch_requires_threshold():
-    """--watch without --threshold would otherwise fire on every price."""
-    with pytest.raises(SystemExit):
-        cli.main(["alerts", "--watch", "catan"])
-
-
-def test_watch_add_requires_a_game():
-    with pytest.raises(SystemExit):
-        cli.main(["watch", "add"])
 
 
 # ---------------------------------------------------------------------------
@@ -283,3 +220,31 @@ def test_fixtures_vectors_only_does_not_fetch(monkeypatch):
     monkeypatch.setattr(fixtures, "capture", no_network)
     monkeypatch.setattr(fixtures, "write_vectors", lambda: [])
     assert cli.main(["fixtures", "--vectors-only"]) == 0
+
+
+def test_snapshot_is_a_complete_single_file_copy(db_conn, tmp_path, monkeypatch):
+    """The phone imports this file, so it must hold writes still in the WAL."""
+    from tablero import db as db_mod
+
+    db_conn.execute("INSERT INTO cursor(name, ts) VALUES ('wal_only', 42)")
+    db_conn.commit()  # committed to the WAL, not yet checkpointed into the file
+    out = db_mod.snapshot(db_conn, tmp_path / "copy.db")
+
+    copy = db_mod.connect(out, read_only=True)
+    try:
+        assert copy.execute("SELECT ts FROM cursor WHERE name = 'wal_only'").fetchone()[0] == 42
+        assert db_mod.table_counts(copy) == db_mod.table_counts(db_conn)
+        assert db_mod.schema_version(copy) == db_mod.SCHEMA_VERSION
+    finally:
+        copy.close()
+    assert not (tmp_path / "copy.db-wal").exists()
+
+
+def test_snapshot_refuses_to_overwrite(db_conn, tmp_path):
+    from tablero import db as db_mod
+
+    target = tmp_path / "copy.db"
+    target.write_bytes(b"keep me")
+    with pytest.raises(FileExistsError):
+        db_mod.snapshot(db_conn, target)
+    assert target.read_bytes() == b"keep me"

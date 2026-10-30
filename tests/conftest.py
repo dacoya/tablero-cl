@@ -64,3 +64,10 @@ def db_conn(tmp_path, sample_products, sample_history, monkeypatch):
     conn = db_mod.connect(db_path)
     yield conn
     conn.close()
+
+
+@pytest.fixture(autouse=True)
+def _no_real_bgg_csv(tmp_path, monkeypatch):
+    """Keep every test off the 180k-row BGG CSV a real data directory may hold."""
+    from tablero import bgg
+    monkeypatch.setattr(bgg, "CSV_PATH", tmp_path / "no-bgg.csv")

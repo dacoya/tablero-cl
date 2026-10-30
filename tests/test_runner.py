@@ -128,3 +128,80 @@ def test_product_block_without_label_class_ignores_unrelated_text():
         </article>""", "html.parser")
     [row] = scrape.vudugaming(html)
     assert row["stock_status"] is None
+
+
+def test_tentami_reads_the_list_price_behind_a_sale():
+    """Only span.price was read, so a sale was stored as a full-price product."""
+    from bs4 import BeautifulSoup
+    from tablero import bespoke
+
+    html = BeautifulSoup("""
+        <product-card><h3 class="h4">Azul</h3><a href="/products/azul">x</a>
+          <product-price><div>
+            <span class="price-item__group price"><span class="visually-hidden">Precio de oferta</span>$17,990 CLP</span>
+            <span class="price-item__group price-item--regular compare-at-price"><span class="visually-hidden">Precio habitual</span>$19,990 CLP</span>
+          </div></product-price>
+        </product-card>
+        <product-card><h3 class="h4">Dixit</h3><a href="/products/dixit">x</a>
+          <product-price><div><span class="price">$29,990 CLP</span></div></product-price>
+        </product-card>""", "html.parser")
+    sale, plain = bespoke.tentami(html)
+    assert (sale["original_price"], sale["current_price"]) == ("$19,990 CLP", "$17,990 CLP")
+    assert (plain["original_price"], plain["current_price"]) == ("$29,990 CLP", None)
+
+
+class _Response:
+    def __init__(self, body: bytes, status: int = 200):
+        self.status_code, self.content, self.headers = status, body, {}
+        self.text = body.decode("utf-8")
+
+    def raise_for_status(self):
+        pass
+
+
+def test_fetch_html_refuses_an_oversized_page(monkeypatch, capsys):
+    """The phone applies the same cap; both sides must agree on what a page is."""
+    from tablero import scrape
+
+    big = b"<html>" + b"x" * scrape._MAX_PAGE_BYTES + b"</html>"
+    monkeypatch.setattr(scrape._SESSION, "get", lambda *a, **k: _Response(big))
+    assert scrape.fetch_html("https://s.cl/c") is None
+    assert "too large" in capsys.readouterr().out
+
+    page = b"<html><body>" + b"<p>x</p>" * 5000 + b"</body></html>"
+    monkeypatch.setattr(scrape._SESSION, "get", lambda *a, **k: _Response(page))
+    assert scrape.fetch_html("https://s.cl/c") is not None
+
+
+def test_every_registered_parser_runs():
+    """
+    Each binding called the way runner.scrape_site calls it.
+
+    Fixtures only exercise stores that are online when captured. playkingdom's
+    binding passed its base URL into the `html` slot and crashed on every call,
+    and nothing noticed because the store had been down since.
+    """
+    from bs4 import BeautifulSoup
+    from tablero import scrape
+
+    empty = BeautifulSoup("<html><body></body></html>", "html.parser")
+    broken = {}
+    for site in scrape.sites:
+        try:
+            assert site["parser"](empty) == []
+        except Exception as exc:  # noqa: BLE001 -- the point is to name every failure
+            broken[site["name"]] = repr(exc)
+    assert broken == {}
+
+
+def test_playkingdom_parses_a_product_block():
+    from bs4 import BeautifulSoup
+    from tablero import scrape
+
+    html = BeautifulSoup("""
+        <article class="product-block">
+          <a class="product-block__name" href="/catan">Catan</a>
+          <div class="product-block__pricing"><div class="product-block__price">$40.000</div></div>
+        </article>""", "html.parser")
+    [row] = next(s for s in scrape.sites if s["name"] == "playkingdom")["parser"](html)
+    assert (row["title"], row["original_price"], row["url"]) == ("Catan", "$40.000", "https://playkingdom.cl/catan")

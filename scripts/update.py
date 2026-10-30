@@ -92,6 +92,6 @@ def update_stores(conn, targets, workers: int = 5, dry_run: bool = False,
                 if on_progress:
                     on_progress(done, len(targets), totals["ingested"], site["name"])
 
-    ingest_mod.refresh_indexes(conn)
+    totals["regroup"] = ingest_mod.refresh_indexes(conn)
     totals["rejected"] = rejected
     return totals

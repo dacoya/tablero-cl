@@ -1,25 +1,20 @@
 """
-Command-line interface.
+Command-line interface for the laptop side of the Android app.
 
-Subcommands rather than the previous flat flag ladder, where modes were checked
-in precedence order and combining them failed silently -- `tablero -u --name x`
-ran a search and never scraped. With subparsers argparse rejects that outright,
-and each command only advertises the options that apply to it.
-
-This module is a thin shell: parse, call a service, hand the result to render.
+Everything a person reads lives in the app now. What is left here feeds it:
+scraping the stores the phone cannot reach, the BGG ranks, the single-file
+copy the phone imports, and the parity corpus the port is tested against.
 """
+import argparse
 import random
+import shutil
 import sys
 import time
 
-from . import alerts, analytics, basket as basket_mod
-from . import changes, db as db_mod, export as exporter, history
-from . import migrate as migrate_mod, parser as parser_mod
-from . import paths, render, repo, search as search_mod
-from . import update as update_mod, validation
-from . import watchlist as watch_mod
+from . import bgg as bgg_mod, db as db_mod, paths
+from . import update as update_mod
 
-build_parser = parser_mod.build_parser
+DEFAULT_WORKERS = 5
 
 
 class CommandError(RuntimeError):
@@ -32,262 +27,64 @@ def _open_db(read_only: bool = True):
     except FileNotFoundError:
         raise CommandError(
             f"No hay base de datos en {db_mod.DB_PATH}.\n"
-            f"  Ejecuta:  tablero migrate\n"
+            f"  Ejecuta:  tablero update\n"
             f"  (el directorio de datos se puede cambiar con TABLERO_DATA_DIR)"
         )
 
 
-def _resolve_store(conn, text):
-    """Turn user input into exactly one store name, or explain the options."""
-    if not text:
-        return None
-    matches = repo.resolve_store(conn, text)
-    if not matches:
-        raise CommandError(
-            f"Tienda '{text}' no encontrada. Usa 'tablero stores' para verlas."
-        )
-    if len(matches) > 1:
-        raise CommandError(
-            f"'{text}' coincide con varias tiendas: {', '.join(matches)}"
-        )
-    return matches[0]
+def plural(n: int, singular: str, plural_form: str | None = None) -> str:
+    """'1 tienda' / '2 tiendas' -- the count and its correctly-inflected noun."""
+    word = singular if abs(n) == 1 else (plural_form or singular + "s")
+    return f"{n} {word}"
 
 
-def _price_filters(args) -> dict:
+def progress(done: int, total: int, products: int, store: str) -> None:
     """
-    Shared filters for browsing commands.
+    One line of scrape progress, rewritten in place.
 
-    One dict feeds both `repo.products` and `analytics.smart_products`, so a
-    flag cannot apply to one sort and be silently dropped by another.
+    On stderr because stdout is where the data goes: `tablero update > log`
+    stays a readable log.
+
+    Only overwrites itself on a terminal. Redirected to a file, carriage
+    returns would make the whole run one unreadable line, so each store gets
+    its own.
     """
-    return {
-        "in_stock_only": getattr(args, "in_stock", False),
-        "min_price": getattr(args, "min_price", None),
-        "max_price": getattr(args, "max_price", None),
-        "kind": getattr(args, "kind", None),
-        "include_stale": getattr(args, "include_stale", False),
-    }
-
-
-# ---------------------------------------------------------------------------
-# Commands
-# ---------------------------------------------------------------------------
-
-def cmd_search(args) -> int:
-    conn = _open_db()
-    hits = search_mod.search(
-        conn, args.query, limit=args.limit,
-        include_accessories=args.all_kinds,
-        include_stale=args.include_stale,
-        min_price=args.min_price, max_price=args.max_price,
-        order=args.sort,
-    )
-    if not hits:
-        print(f"Sin resultados para '{args.query}'.")
-        return 1
-
-    render.search_results(hits, args.query)
-    if args.first:
-        _show_prices(conn, hits[0], include_stale=args.include_stale)
-    return 0
-
-
-def _show_prices(conn, hit, include_stale: bool = False) -> None:
-    render.price_table(
-        repo.game_prices(conn, hit["game_id"], include_stale=include_stale),
-        hit["title"],
-    )
-
-
-def _browse(conn, args, on_sale: bool) -> tuple[list[dict], int]:
-    """Rows for deals/list plus the total matching the same filters."""
-    filters = dict(_price_filters(args), store=_resolve_store(conn, args.store))
-    return analytics.browse(conn, sort=args.sort, limit=args.limit,
-                            offset=getattr(args, "offset", 0),
-                            on_sale=on_sale, **filters)
-
-
-def _export(rows: list[dict], fmt: str) -> None:
-    """Write rows to data/exports/ in the requested format."""
-    if not fmt or not rows:
+    line = f"  [{done}/{total}] {plural(products, 'producto')} · {store}"
+    if not sys.stderr.isatty():
+        print(line, file=sys.stderr)
         return
-    print(f"\n  Exportado: {exporter.export_comparison(rows, fmt)}")
+    width = max(20, shutil.get_terminal_size((100, 24)).columns - 1)
+    print("\r" + line.ljust(width)[:width],
+          end="\n" if done == total else "", file=sys.stderr, flush=True)
 
 
-def _browse_title(label: str, shown: int, total: int, sort: str,
-                  offset: int = 0) -> str:
-    """
-    Heading that says which slice of the results is on screen.
-
-    With --offset in play, a bare count is a lie by omission: "Ofertas (20)"
-    looks identical on page one and page five.
-    """
-    if offset:
-        return f"{label} ({offset + 1}–{offset + shown} de {total}) · orden: {sort}"
-    more = f" de {total}" if total > shown else ""
-    return f"{label} ({shown}{more}) · orden: {sort}"
-
-
-def cmd_deals(args) -> int:
-    conn = _open_db()
-    rows, total = _browse(conn, args, on_sale=True)
-    render.product_rows(rows, urls=getattr(args, "urls", False),
-                        title=_browse_title("Ofertas", len(rows), total, args.sort,
-                                            offset=getattr(args, "offset", 0)))
-    _export(rows, args.export)
-    return 0
-
-
-def cmd_list(args) -> int:
-    conn = _open_db()
-    rows, total = _browse(conn, args, on_sale=False)
-    render.product_rows(rows, urls=getattr(args, "urls", False),
-                        title=_browse_title("Catálogo", len(rows), total, args.sort,
-                                            offset=getattr(args, "offset", 0)))
-    _export(rows, args.export)
-    return 0
-
-
-def cmd_leaderboard(args) -> int:
-    conn = _open_db()
-    rows = analytics.store_leaderboard(conn, limit=args.limit)
-    render.leaderboard(rows)
-    _export(rows, args.export)
-    return 0
-
-
-def cmd_history(args) -> int:
-    conn = _open_db()
-    hit = search_mod.best_match(conn, args.query)
-    if not hit:
-        raise CommandError(f"Sin resultados para '{args.query}'.")
-
-    trends = history.game_trends(conn, hit["game_id"], min_points=args.min_points)
-    render.trends(trends, hit["title"], min_points=args.min_points)
-    _export(
-        [{k: v for k, v in t.items() if k != "points"} for t in trends], args.export
-    )
-    return 0
-
-
-def cmd_alerts(args) -> int:
-    conn = _open_db()
-    if args.watch:
-        alerts_found = alerts.from_queries(
-            conn, args.watch, args.threshold, in_stock_only=args.in_stock)
-        source = f"{len(args.watch)} consulta(s)"
-    else:
-        alerts_found = alerts.from_watchlist(conn, in_stock_only=args.in_stock)
-        source = "lista de seguimiento"
-
-    render.alerts(alerts_found, source)
-    if args.out:
-        print(f"\n  Escrito: {alerts.write(alerts_found, args.out)}")
-    # Non-zero when nothing fired, so cron can act on the exit code.
-    return 0 if alerts_found else 1
-
-
-def cmd_stores(args) -> int:
-    conn = _open_db()
-    rows = [
-        {
-            "name": s["name"],
-            "city": s["city"] or "-",
-            "products": s["n_products"],
-            "stock": s["n_in_stock"] or 0,
-            "active": "sí" if s["active"] else "no",
-        }
-        for s in repo.stores(conn, active_only=args.active)
+def update_report(totals: dict) -> None:
+    parts = [
+        f"\n{plural(totals['ingested'], 'producto')}",
+        f"{totals['new']} nuevos",
+        f"{totals['restock']} restock",
     ]
-    render.table(rows, [
-        ("name", "Tienda", True),
-        ("city", "Ciudad", False),
-        ("products", "Productos", False),
-        ("stock", "En stock", False),
-        ("active", "Activa", False),
-    ], title=f"Tiendas ({len(rows)})")
-    return 0
+    if totals.get("failed"):
+        parts.append(f"{plural(totals['failed'], 'tienda')} con error")
+    print("Listo: " + " · ".join(parts))
 
+    regroup = totals.get("regroup") or {}
+    if regroup.get("moved"):
+        print(f"Agrupación: {plural(regroup['moved'], 'producto')} movidos, "
+              f"{regroup['games']} juegos en total")
 
-def cmd_new(args) -> int:
-    conn = _open_db(read_only=False)
-    if args.reset:
-        ts = changes.set_cursor(conn)
-        print(f"Marcador actualizado. Los próximos cambios se miden desde ahora ({ts}).")
-        return 0
-
-    if changes.get_cursor(conn) is None:
-        print(
-            "No hay marcador de 'última revisión'. Ejecuta 'tablero new --reset' "
-            "para fijarlo; los cambios se listarán a partir de la próxima actualización."
-        )
-        return 1
-
-    rows = changes.since_last_review(
-        conn, min_pct=args.min_pct, kinds=args.kind, limit=args.limit)
-    summary = render.changes_summary(changes.summarise(rows))
-    render.changes(
-        rows,
-        title=f"Cambios desde tu última revisión ({len(rows)})"
-              + (f"\n  {summary}" if summary else ""),
-    )
-    return 0
-
-
-def cmd_watch(args) -> int:
-    conn = _open_db(read_only=False)
-
-    if args.action == "list":
-        render.watchlist(watch_mod.entries(conn))
-        return 0
-
-    hit = search_mod.best_match(conn, args.query)
-    if not hit:
-        raise CommandError(f"Sin resultados para '{args.query}'.")
-
-    if args.action == "add":
-        if not watch_mod.add(conn, hit["game_id"], target=args.target):
-            raise CommandError(f"No se pudo seguir '{hit['title']}'.")
-        target = f" (objetivo {render.money(args.target)})" if args.target else ""
-        print(f"Siguiendo: {hit['title']}{target}")
-    else:
-        removed = watch_mod.remove(conn, hit["game_id"])
-        print(f"{'Quitado' if removed else 'No estaba en la lista'}: {hit['title']}")
-    return 0
-
-
-def cmd_basket(args) -> int:
-    conn = _open_db()
-
-    if args.from_watchlist:
-        ids = watch_mod.game_ids(conn)
-        if not ids:
-            raise CommandError("La lista de seguimiento está vacía.")
-    else:
-        if not args.games:
-            raise CommandError("Indica juegos o usa --from-watchlist.")
-        ids = []
-        for query in args.games:
-            hit = search_mod.best_match(conn, query)
-            if hit:
-                ids.append(hit["game_id"])
-                print(f"  {query:<24} → {hit['title']}")
-            else:
-                print(f"  {query:<24} → (sin resultados)")
-        if not ids:
-            raise CommandError("Ningún juego encontrado.")
-
-    render.basket_plans(
-        basket_mod.optimize(conn, ids, shipping=args.shipping,
-                            in_stock_only=not args.include_oos)
-    )
-    return 0
+    rejected = totals.get("rejected") or {}
+    if rejected:
+        detail = ", ".join(f"{n} {reason}" for reason, n in sorted(rejected.items()))
+        print(f"Precios rechazados: {detail}")
 
 
 def cmd_update(args) -> int:
     from .scrape import sites
 
-    conn = _open_db(read_only=False)
+    # The first update builds the database; nothing else has to run before it.
+    conn = db_mod.connect(create=True)
+    db_mod.init_db(conn)
     try:
         targets = update_mod.select_sites(
             conn, sites, args.sites, args.incremental, args.max_age)
@@ -298,20 +95,49 @@ def cmd_update(args) -> int:
         print("Todo al día. Nada que actualizar.")
         return 0
 
-    print(f"Actualizando {render.plural(len(targets), 'tienda')} "
-          f"con {render.plural(args.workers, 'worker')}…")
+    print(f"Actualizando {plural(len(targets), 'tienda')} "
+          f"con {plural(args.workers, 'worker')}…")
     totals = update_mod.update_stores(
         conn, targets, workers=args.workers, dry_run=args.dry_run,
         on_failure=lambda name, exc: print(f"  [{name}] falló: {exc}"),
-        on_progress=render.progress,
+        on_progress=progress,
     )
-    render.update_report(totals)
+    update_report(totals)
     return 0
 
 
-def cmd_migrate(args) -> int:
-    report = migrate_mod.migrate(rebuild=args.rebuild)
-    render.migration_report(report, db_mod.DB_PATH, paths.DATA_DIR)
+def cmd_bgg(args) -> int:
+    from pathlib import Path
+
+    path = Path(args.path) if args.path else bgg_mod.CSV_PATH
+    if not path.exists():
+        raise CommandError(f"No existe {path}. Descárgalo desde boardgamegeek.com/data_dumps/bg_ranks.")
+    conn = _open_db(read_only=False)
+    try:
+        kept = bgg_mod.import_csv(conn, path)
+    except ValueError as exc:
+        raise CommandError(str(exc))
+    if bgg_mod.ALIASES_PATH.exists():
+        bgg_mod.load_aliases(conn)
+    matched = bgg_mod.match_games(conn)
+    total = conn.execute(
+        f"SELECT count(*) FROM game WHERE kind IN ({','.join('?' * len(bgg_mod.MATCHED_KINDS))})",
+        bgg_mod.MATCHED_KINDS).fetchone()[0]
+    print(f"BGG: {kept} entradas importadas · {matched} de {total} juegos asociados")
+    return 0
+
+
+def cmd_snapshot(args) -> int:
+    target = args.path or (paths.DATA_DIR / "exports" / time.strftime("tablero-%Y%m%d-%H%M.db"))
+    conn = _open_db()
+    try:
+        written = db_mod.snapshot(conn, target)
+    except FileExistsError as exc:
+        raise CommandError(str(exc))
+    finally:
+        conn.close()
+    size = written.stat().st_size / 1_000_000
+    print(f"Copia escrita en {written} ({size:.1f} MB). Impórtala desde la app en Ajustes.")
     return 0
 
 
@@ -327,7 +153,13 @@ def cmd_fixtures(args) -> int:
     from .runner import PAGE_DELAY_JITTER, PAGE_DELAY_MIN
     from .scrape import sites
 
-    if not args.vectors_only:
+    if args.reparse:
+        wanted = {n.lower() for n in args.sites or ()}
+        for page in fixtures.all_fixtures():
+            if not wanted or page.parent.name.lower() in wanted:
+                n = fixtures.reparse(page)
+                print(f"  [{page.parent.name}] {page.name}: {n} productos")
+    elif not args.vectors_only:
         try:
             targets = update_mod.select_sites(None, sites, args.sites)
         except update_mod.UnknownSiteError as exc:
@@ -358,73 +190,65 @@ def cmd_fixtures(args) -> int:
     return 0
 
 
-def cmd_doctor(args) -> int:
-    conn = _open_db()
-    render.doctor(
-        data_dir=paths.DATA_DIR,
-        db_path=db_mod.DB_PATH,
-        version=db_mod.schema_version(conn),
-        counts=db_mod.table_counts(conn),
-        without_price=repo.products_without_price(conn),
-        stale=repo.stale_count(conn),
-        cursor=changes.get_cursor(conn),
-        outliers=validation.price_outliers(conn, sigma=args.sigma, limit=args.limit),
-        sigma=args.sigma,
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        prog="tablero",
+        description="Datos para la app tablero: scraping, BGG y la copia que importa el teléfono.",
     )
-    return 0
+    sub = parser.add_subparsers(dest="command", metavar="COMANDO", required=True)
+    p = sub.add_parser("update", help="scrapear tiendas y actualizar la base")
+    p.add_argument("--sites", nargs="+", metavar="NAME", help="solo estas tiendas")
+    p.add_argument("-w", "--workers", type=int, default=DEFAULT_WORKERS, metavar="N",
+                   help=f"hilos concurrentes (default: {DEFAULT_WORKERS}; "
+                        f"subirlo agrava los bloqueos de Cloudflare)")
+    p.add_argument("--dry-run", action="store_true",
+                   help="solo la primera página por tienda, para probar")
+    p.add_argument("--incremental", action="store_true",
+                   help="solo tiendas sin scrape reciente (ver --max-age)")
+    p.add_argument("--max-age", type=float, default=24, metavar="H",
+                   help="antigüedad máxima en horas para --incremental (default: 24)")
+
+    p = sub.add_parser("bgg",
+                       help="importar el CSV de rankings de BoardGameGeek y asociar juegos")
+    p.add_argument("path", nargs="?", metavar="CSV",
+                   help="boardgames_ranks.csv (default: data/boardgames_ranks.csv)")
+
+    p = sub.add_parser("snapshot",
+                       help="copia de la base en un solo archivo, para importar en el teléfono")
+    p.add_argument("path", nargs="?", metavar="ARCHIVO",
+                   help="destino (default: data/exports/tablero-AAAAMMDD-HHMM.db)")
+
+    p = sub.add_parser("fixtures",
+                       help="guardar páginas y vectores de referencia (paridad con Android)")
+    p.add_argument("--sites", nargs="+", metavar="NAME",
+                   help="solo estas tiendas (default: todas)")
+    p.add_argument("--pages", type=int, default=1, metavar="N",
+                   help="páginas por tienda (default: 1)")
+    p.add_argument("--vectors-only", action="store_true",
+                   help="solo regenerar los vectores, sin descargar nada")
+    p.add_argument("--reparse", action="store_true",
+                   help="reprocesar las páginas ya guardadas con el parser actual, sin red")
+
+    return parser
 
 
 COMMANDS = {
-    "search": cmd_search,
-    "deals": cmd_deals,
-    "list": cmd_list,
-    "stores": cmd_stores,
-    "leaderboard": cmd_leaderboard,
-    "history": cmd_history,
-    "new": cmd_new,
-    "watch": cmd_watch,
-    "alerts": cmd_alerts,
-    "basket": cmd_basket,
     "update": cmd_update,
-    "migrate": cmd_migrate,
+    "bgg": cmd_bgg,
+    "snapshot": cmd_snapshot,
     "fixtures": cmd_fixtures,
-    "doctor": cmd_doctor,
 }
 
 
-def _validate(parser, args) -> None:
-    """Cross-flag rules argparse cannot express on its own."""
-    if args.command == "watch" and args.action in ("add", "rm") and not args.query:
-        parser.error(f"'watch {args.action}' necesita un juego")
-    if args.command == "alerts" and args.watch and args.threshold is None:
-        parser.error("--watch necesita --threshold")
-
-
 def main(argv=None) -> int:
-    parser = build_parser()
-    args = parser.parse_args(argv)
-
-    if not getattr(args, "command", None):
-        from .tui import run_tui
-        run_tui()
-        return 0
-
-    _validate(parser, args)
-
+    args = build_parser().parse_args(argv)
     try:
         return COMMANDS[args.command](args)
     except CommandError as exc:
         print(f"Error: {exc}", file=sys.stderr)
         return 1
     except db_mod.SchemaVersionError as exc:
-        print(f"Error: la base de datos es de otra versión del esquema.\n"
-              f"  {exc}\n"
-              f"  Ejecuta:  tablero migrate --rebuild", file=sys.stderr)
-        return 1
-    except ValueError as exc:
-        # repo/analytics/export raise ValueError for bad arguments; without this
-        # the user got a raw traceback for what is really a usage mistake.
-        print(f"Error: {exc}", file=sys.stderr)
+        print(f"Error: la base de datos es de otra versión del esquema.\n  {exc}", file=sys.stderr)
         return 1
     except KeyboardInterrupt:
         print()

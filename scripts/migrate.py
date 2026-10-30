@@ -20,7 +20,7 @@ import time
 from collections import Counter, defaultdict
 from pathlib import Path
 
-from . import db as db_mod
+from . import db as db_mod, ingest as ingest_mod
 from .classify import kind_rank
 from .derive import derive
 from .paths import DATA_DIR
@@ -153,7 +153,8 @@ def _save_personal_state(path) -> dict:
     if path is None or not Path(path).exists():
         return {}
 
-    conn = db_mod.connect(path, read_only=True)
+    # As it is on disk: a rebuild is for schemas that cannot be upgraded.
+    conn = db_mod.connect(path, read_only=True, upgrade_schema=False)
     try:
         return {
             "watchlist": _read_optional(
@@ -162,6 +163,11 @@ def _save_personal_state(path) -> dict:
                 "JOIN game g ON g.id = w.game_id",
             ),
             "cursors": _read_optional(conn, "SELECT name, ts FROM cursor"),
+            "owned": _read_optional(
+                conn,
+                "SELECT g.norm, o.added_at FROM owned o JOIN game g ON g.id = o.game_id",
+            ),
+            "shipping": _read_optional(conn, "SELECT store, cost FROM store_shipping"),
         }
     finally:
         conn.close()
@@ -184,6 +190,14 @@ def _restore_personal_state(conn, state: dict) -> dict:
     conn.executemany(
         "INSERT OR REPLACE INTO cursor(name, ts) VALUES (?,?)",
         [(c["name"], c["ts"]) for c in state.get("cursors", [])],
+    )
+    conn.executemany(
+        "INSERT OR REPLACE INTO owned(game_id, added_at) VALUES (?,?)",
+        [(ids[o["norm"]], o["added_at"]) for o in state.get("owned", []) if o["norm"] in ids],
+    )
+    conn.executemany(
+        "INSERT OR REPLACE INTO store_shipping(store, cost) VALUES (?,?)",
+        [(s["store"], s["cost"]) for s in state.get("shipping", [])],
     )
     conn.commit()
     found = len(state.get("watchlist", []))
@@ -240,8 +254,8 @@ def _insert_products(conn, rows: list, game_ids: dict, stamps: dict, now: int) -
         """INSERT OR IGNORE INTO product
            (store, url_canon, url, game_id, title_raw, title, norm, kind,
             price_original, price_current, price_eff, in_stock, flag,
-            first_seen, last_seen)
-           VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+            first_seen, last_seen, image_url)
+           VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
         [
             (
                 r["store"], r["url_canon"], r["url"], game_ids[r["norm"]],
@@ -249,6 +263,7 @@ def _insert_products(conn, rows: list, game_ids: dict, stamps: dict, now: int) -
                 r["price_original"], r["price_current"], r["price_eff"],
                 r["in_stock"], r["flag"],
                 stamps.get(r["store"], now), stamps.get(r["store"], now),
+                r["image_url"],
             )
             for r in rows
         ],
@@ -267,6 +282,27 @@ def _insert_scrape_runs(conn, metadata: dict) -> None:
     )
 
 
+def _clear_for_rebuild(target: Path) -> dict:
+    """Save the personal state out of `target`, then delete it and its sidecars."""
+    if not target.exists():
+        return {}
+    preserved = _save_personal_state(target)
+    for suffix in ("", "-wal", "-shm"):
+        Path(str(target) + suffix).unlink(missing_ok=True)
+    return preserved
+
+
+def _derived_rows(products: dict) -> tuple[list, dict]:
+    """Every catalog record through derive and validation: (rows, rejected)."""
+    rows = [
+        derived
+        for store, records in products.items()
+        for record in records
+        if (derived := derive(store, record)) is not None
+    ]
+    return validation.partition(rows)
+
+
 def migrate(db_path=None, data_dir=None, rebuild: bool = False) -> dict:
     """
     Import the catalog into SQLite. Returns a report.
@@ -279,23 +315,12 @@ def migrate(db_path=None, data_dir=None, rebuild: bool = False) -> dict:
     now = int(time.time())
 
     target = Path(db_path) if db_path is not None else db_mod.DB_PATH
-    preserved = {}
-    if rebuild and target.exists():
-        preserved = _save_personal_state(target)
-        for suffix in ("", "-wal", "-shm"):
-            Path(str(target) + suffix).unlink(missing_ok=True)
+    preserved = _clear_for_rebuild(target) if rebuild else {}
 
     products, source = _load_catalog(data_dir)
     history = _load_json(data_dir / "history.json", {})
     metadata = _load_json(data_dir / "metadata.json", {})
-
-    rows = [
-        derived
-        for store, records in products.items()
-        for record in records
-        if (derived := derive(store, record)) is not None
-    ]
-    rows, rejected = validation.partition(rows)
+    rows, rejected = _derived_rows(products)
 
     conn = db_mod.connect(db_path, create=True)
     try:
@@ -317,8 +342,8 @@ def migrate(db_path=None, data_dir=None, rebuild: bool = False) -> dict:
 
         _insert_scrape_runs(conn, metadata)
         conn.commit()
-        db_mod.rebuild_fts(conn)
         report.update(_restore_personal_state(conn, preserved))
+        ingest_mod.refresh_indexes(conn)
         report["tables"] = db_mod.table_counts(conn)
         return report
     finally:

@@ -7,7 +7,6 @@ from tablero import analytics
 from tablero import derive
 from tablero import ingest
 from tablero import repo
-from tablero import search
 
 
 def _scrape(conn, store, records, ts):
@@ -36,7 +35,7 @@ def test_delisted_product_stops_counting_as_an_offer(db_conn):
         _record("Azul", "https://tiendaa.cl/p/azul", "$40.000"),
     ], ts=now)
 
-    gid = search.best_match(db_conn, "splendor")["game_id"]
+    gid = db_conn.execute("SELECT id FROM game WHERE norm = ?", ("splendor",)).fetchone()[0]
     assert repo.game_prices(db_conn, gid), "should be visible while it is listed"
 
     # Next scrape no longer carries Splendor.
@@ -62,7 +61,6 @@ def test_stale_rows_are_kept_not_deleted(db_conn):
         "SELECT COUNT(*) FROM product WHERE url_canon='tiendaa.cl/p/splendor'"
     ).fetchone()[0]
     assert row == 1
-    assert repo.stale_count(db_conn) >= 1
 
 
 def test_a_failed_scrape_does_not_make_everything_stale(db_conn):
@@ -72,20 +70,6 @@ def test_a_failed_scrape_does_not_make_everything_stale(db_conn):
     before = repo.count_products(db_conn, store="tiendaA")
     ingest.record_failure(db_conn, "tiendaA", ts=now + 3600)
     assert repo.count_products(db_conn, store="tiendaA") == before
-
-
-def test_search_hides_stale_offers(db_conn):
-    now = int(time.time())
-    _scrape(db_conn, "tiendaA", [
-        _record("Gloomhaven", "https://tiendaa.cl/p/gloom-viejo", "$1.000"),
-        _record("Gloomhaven", "https://tiendaa.cl/p/gloom", "$90.000"),
-    ], ts=now)
-    _scrape(db_conn, "tiendaA", [
-        _record("Gloomhaven", "https://tiendaa.cl/p/gloom", "$90.000"),
-    ], ts=now + 3600)
-
-    hit = search.best_match(db_conn, "gloomhaven")
-    assert hit["min_price"] == 90000.0, "the delisted $1.000 row must not set 'desde'"
 
 
 # ---------------------------------------------------------------------------
@@ -184,8 +168,19 @@ def test_limit_still_caps_when_asked(db_conn):
     assert len(analytics.smart_products(db_conn, by="value", limit=2)) == 2
 
 
-def test_parser_default_is_unlimited():
-    from tablero import parser as parser_mod
-    args = parser_mod.build_parser().parse_args(["deals"])
-    assert args.limit is None
-    assert parser_mod.build_parser().parse_args(["list", "--limit", "7"]).limit == 7
+def test_watchlist_ignores_a_delisted_offer(tmp_path):
+    """A dropped product's old price must not count as a hit on the target."""
+    from tablero import db as db_mod, ingest, watchlist
+
+    conn = db_mod.connect(tmp_path / "w.db", create=True)
+    db_mod.init_db(conn)
+    cheap = {"title": "Catan", "original_price": "$20.000", "url": "https://a.cl/catan"}
+    dear = {"title": "Catan", "original_price": "$45.000", "url": "https://a.cl/catan-2"}
+    ingest.ingest_store(conn, "a", [cheap, dear], ts=1)
+    ingest.ingest_store(conn, "a", [dear], ts=2)  # the $20.000 listing is gone
+    gid = conn.execute("SELECT id FROM game WHERE norm = 'catan'").fetchone()[0]
+    watchlist.add(conn, gid, target=25000)
+    [entry] = watchlist.entries(conn)
+    assert entry["min_price"] == 45000
+    assert entry["hit"] is False
+    conn.close()

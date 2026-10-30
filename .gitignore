@@ -29,3 +29,6 @@ dist/
 android/.gradle/
 android/.kotlin/
 android/local.properties
+# Release signing: the keystore and its passwords never enter version control.
+android/release.jks
+android/keystore.properties

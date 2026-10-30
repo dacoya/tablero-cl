@@ -37,6 +37,9 @@ private const val CHALLENGE_MAX_LEN = 30_000
 
 private const val TIMEOUT_SECONDS = 20L
 
+/** scrape._MAX_PAGE_BYTES: real pages run 30-400 KB; past this it is not one. */
+const val MAX_PAGE_BYTES = 10L * 1024 * 1024
+
 /**
  * urllib3's `Retry(total=3, backoff_factor=1, status_forcelist=[429, 500, 502,
  * 503, 504], raise_on_status=False)`: up to three retries on those statuses
@@ -111,7 +114,16 @@ class Http(
         .addInterceptor(Retry(sleep))
         .build()
 
-    private class Page(val code: Int, val cloudflare: Boolean, val text: String)
+    /** `text` is null when the body ran past MAX_PAGE_BYTES; it was never read whole. */
+    private class Page(val code: Int, val cloudflare: Boolean, val text: String?)
+
+    private fun read(r: Response): Page {
+        // peekBody buffers at most the limit, so an endless or hostile body
+        // costs MAX_PAGE_BYTES + 1 of memory at worst, never the whole stream.
+        val body = r.peekBody(MAX_PAGE_BYTES + 1)
+        val cloudflare = r.header("cf-ray") != null || "cloudflare" in (r.header("server") ?: "").lowercase()
+        return Page(r.code, cloudflare, if (body.contentLength() > MAX_PAGE_BYTES) null else body.string())
+    }
 
     /**
      * `fetch_html`: the parsed page, or null for anything that is not one --
@@ -125,10 +137,7 @@ class Http(
     fun fetchHtml(url: String): Document? {
         val page = try {
             val request = Request.Builder().url(url).headers(HEADERS).build()
-            client.newCall(request).execute().use { r ->
-                Page(r.code, r.header("cf-ray") != null ||
-                    "cloudflare" in (r.header("server") ?: "").lowercase(), r.body.string())
-            }
+            client.newCall(request).execute().use(::read)
         } catch (e: IOException) {
             log("Network error on $url: $e")
             return null
@@ -146,13 +155,17 @@ class Http(
             log("Network error on $url: HTTP ${page.code}")
             return null
         }
-        if (page.text.length < CHALLENGE_MAX_LEN) {
-            val low = page.text.lowercase()
+        val text = page.text ?: run {
+            log("  Page too large on $url — skipping")
+            return null
+        }
+        if (text.length < CHALLENGE_MAX_LEN) {
+            val low = text.lowercase()
             if (CHALLENGE_MARKERS.any { it in low }) {
                 log("  Anti-bot challenge detected on $url — skipping page (data left intact)")
                 return null
             }
         }
-        return Jsoup.parse(page.text, url)
+        return Jsoup.parse(text, url)
     }
 }

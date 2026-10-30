@@ -12,7 +12,6 @@ import pytest
 from tablero import db as db_mod
 from tablero import ingest
 from tablero import migrate
-from tablero import search
 from tablero import watchlist
 
 
@@ -41,7 +40,7 @@ def test_rebuild_aborts_when_state_unreadable(tmp_path, sample_products, sample_
     data_dir, db_path = _seed(tmp_path, sample_products, sample_history)
 
     conn = db_mod.connect(db_path)
-    watchlist.add(conn, search.best_match(conn, "catan")["game_id"], target=40000)
+    watchlist.add(conn, conn.execute("SELECT id FROM game WHERE norm = ?", ("catan",)).fetchone()[0], target=40000)
     conn.close()
 
     # Make the preservation query fail for a reason other than a missing table.
@@ -70,7 +69,7 @@ def test_rebuild_tolerates_a_genuinely_missing_table(tmp_path, sample_products,
     data_dir, db_path = _seed(tmp_path, sample_products, sample_history)
 
     conn = db_mod.connect(db_path)
-    watchlist.add(conn, search.best_match(conn, "catan")["game_id"], target=40000)
+    watchlist.add(conn, conn.execute("SELECT id FROM game WHERE norm = ?", ("catan",)).fetchone()[0], target=40000)
     conn.execute("DROP TABLE cursor")
     conn.commit()
     conn.close()

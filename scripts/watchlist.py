@@ -9,6 +9,8 @@ currently at or below their target.
 """
 import time
 
+from . import repo
+
 
 def add(conn, game_id: int, target: float | None = None, note: str | None = None) -> bool:
     """Add or update a watch. True when the game exists and was stored."""
@@ -34,18 +36,25 @@ def game_ids(conn) -> list[int]:
 
 
 def entries(conn) -> list[dict]:
-    """Watched games enriched with current cheapest price and stock."""
-    sql = """
+    """
+    Watched games enriched with current cheapest price and stock.
+
+    Delisted products are joined out, as everywhere else. Without that a
+    product a store had dropped kept its last price, which could sit under the
+    target and report a hit for an offer that no longer exists.
+    """
+    sql = f"""
         SELECT w.game_id, w.target, w.note, w.added_at,
                g.title, g.kind,
                MIN(NULLIF(p.price_eff, 0)) AS min_price,
                COUNT(DISTINCT p.store)     AS n_stores,
-               MAX(p.in_stock)             AS in_stock
+               MAX(p.in_stock)             AS in_stock,
+               MIN(p.image_url)            AS image_url
           FROM watchlist w
           JOIN game g    ON g.id = w.game_id
-          LEFT JOIN product p ON p.game_id = g.id
+          LEFT JOIN product p ON p.game_id = g.id AND {repo.STALE_CLAUSE}
          GROUP BY w.game_id
-         ORDER BY w.added_at
+         ORDER BY w.added_at, w.game_id
     """
     rows = []
     for r in conn.execute(sql):

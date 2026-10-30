@@ -1,68 +1,139 @@
 # 🎲 tablero-cl
 
-> Precio comparador de juegos de mesa en Chile. Scraping + búsqueda fuzzy desde la terminal.
+> Comparador de precios de juegos de mesa en Chile, como app Android.
 
 ---
 
 ## ¿Qué hace?
 
-Recorre los catálogos de **46 tiendas chilenas** de juegos de mesa, guarda todo en
-una base SQLite local, y te deja buscar, comparar y filtrar ofertas directamente
-desde la terminal — sin abrir el navegador.
+La app recorre los catálogos de las tiendas chilenas de juegos de mesa desde
+el teléfono, guarda todo en una base SQLite local y te deja buscar, comparar,
+seguir juegos con precio objetivo y ver qué cambió desde la última vez.
 
-Corre `tablero` sin argumentos para abrir el **menú interactivo**, o usa los
-subcomandos directamente:
+El código Python de `scripts/` ya no es para consultar: es la referencia contra
+la que se prueba la app, y el lado PC que la alimenta (tiendas que el teléfono
+no puede scrapear, rankings de BoardGameGeek y la copia que importa la app).
 
+## App Android
+
+`android/` es una app personal que scrapea directamente desde el teléfono, sin
+el PC de por medio. Reutiliza `scripts/schema.sql` y el registro de tiendas, y
+se prueba contra los mismos fixtures que la versión Python.
+
+- **Inicio**: buscador (tolera errores de tipeo), categorías y vitrinas
+  (mayores descuentos, novedades, mejor valor); cada una abre el catálogo ya filtrado.
+- **Catálogo**: grilla con fotos y orden. "Por juego" deja solo la oferta más barata de cada
+  uno. "Filtros" junta tipo, categoría y top de BGG, rango de precio,
+  descuento mínimo, stock, ofertas y novedad a la vez; el botón
+  dice cuántos productos quedan antes de aplicarlos.
+- **Ficha**: mejor precio, oferta por tienda con su antigüedad, botón a la tienda,
+  expansiones del juego y "Ya lo tengo". Si anotas tu costo de despacho de una
+  tienda, las ofertas se ordenan por el total.
+- **Mi radar**: cambios en lo que sigues, juegos seguidos con precio objetivo, tu
+  colección y lo que cambió en el resto del mercado desde tu última revisión.
+- **Ajustes**: **Tiendas** (actualizar una o todas; las que fallaron se marcan en
+  rojo), actualización diaria (4:00, con WiFi y cargando, por defecto),
+  avisos, valores por defecto de las listas, importar/exportar la base.
+
+Scrapea 48 de las 50 tiendas. `calabozotienda` y `araucania` quedan "solo PC":
+desde esta red no se pudo guardar ninguna página suya para probar el parser.
+
+### Instalar
+
+```bash
+cd android
+./gradlew :app:assembleRelease          # app/build/outputs/apk/release/app-release.apk
 ```
-tablero search "clank"
-```
-```
-Resultados para 'clank' (4 encontrados):
 
-    1. Clank                             desde    $47.990 · 14 tiendas
-    2. Clank Catacumbas                  desde    $58.990 · 12 tiendas +exp
-    3. Clank Legacy                      desde   $109.990 ·  2 tiendas · agotado
-    ...
+El APK queda también en `dist/`. Cópialo al teléfono y ábrelo (Android pide
+permitir "instalar apps desconocidas" la primera vez). Requiere Android 11+.
 
-Clank Catacumbas
-Tienda      Precio   Oferta   Desc.  Disponibilidad  URL
-----------  -------  -------  -----  --------------  ---------------------------
-drjuegos    $49.990  $35.990  -28%   Disponible      https://…
-cartonazo   $49.990  $39.990  -20%   Disponible      https://…
-aldeajuegos $49.990  -        -      Disponible      https://…
+La firma usa `android/release.jks` con las claves en
+`android/keystore.properties`; ninguno de los dos entra a git. **Respáldalos**:
+sin ese keystore no se puede actualizar la app instalada, solo desinstalarla
+(y perder su base) para poner una versión nueva.
+
+### Pruebas
+
+```bash
+cd android
+./gradlew :core:test                      # paridad con Python, en el PC
+./gradlew :app:connectedDebugAndroidTest  # la misma paridad en un teléfono/emulador
 ```
 
-Además de comparar precios, sabe **qué cambió desde la última vez que miraste**,
-mantiene una **lista de seguimiento** con precios objetivo, y calcula **en qué
-combinación de tiendas conviene comprar** una lista de juegos considerando el
-costo de envío.
+### Empezar con el historial del PC
+
+```bash
+tablero snapshot                        # data/exports/tablero-AAAAMMDD-HHMM.db
+```
+
+Copia ese archivo al teléfono y elige **Ajustes → Importar**. Reemplaza la base
+del teléfono; desde ahí cada una sigue por su cuenta. **Exportar** hace el
+camino inverso. No copies `tablero.db` directamente: en modo WAL los últimos
+cambios pueden estar todavía en `tablero.db-wal`.
 
 ---
 
+---
+
+## Lado PC
+
+```bash
+pip install -e .            # instala las dependencias y el comando `tablero`
+python -m pytest            # tests (requiere pytest)
+```
+
+```
+tablero update             scrapear tiendas y actualizar la base (la crea si no existe)
+tablero bgg [CSV]          importar el CSV de rankings de BoardGameGeek y asociar juegos
+tablero snapshot           copia de la base en un archivo, para importar en la app
+tablero fixtures           guardar páginas y vectores de referencia (paridad con Android)
+```
+
+```bash
+tablero update                          # todas las tiendas, 5 workers
+tablero update --incremental            # solo las obsoletas (> 24 h)
+tablero update --sites tertulia top8    # tiendas específicas
+tablero update --dry-run                # solo la primera página (pruebas)
+tablero update -w 3                     # más suave si Cloudflare bloquea
+```
+
+Cada tienda se escribe por separado, así que un scrape fallido nunca borra los
+datos de otra. Un scrape vacío se trata como fallo: una caída de red no debe
+parecerse a una tienda que vació su catálogo.
+
+Los datos viven en `data/` (fuera de git), o en `TABLERO_DATA_DIR` si está
+definida. Dependencias: `requests`, `beautifulsoup4`, `rapidfuzz`.
+
 ## Tiendas cubiertas
 
-49 tiendas activas.
+56 tiendas activas.
 
 | Tienda | URL | Ubicación |
 |---|---|---|
 | Aldea Juegos | aldeajuegos.cl | Santiago |
+| Area 52 | area52.cl | Santiago |
 | Café 2d6 | cafe2d6.cl | Santiago |
 | Cartonazo | cartonazo.com | Santiago |
 | Cartones Pesados | cartonespesados.cl | Santiago |
 | DarkHobbies | darkhobbies.cl | Santiago |
 | Demente Games | dementegames.cl | Santiago |
 | Devir | devir.cl | Santiago |
+| Diverti | diverti.cl | Santiago |
 | DR Juegos | drjuegos.cl | Santiago |
 | El Patio Geek | elpatiogeek.cl | Santiago |
+| Geekz | geekz.cl | Santiago |
 | Griffin Games | griffingames.cl | Santiago |
 | Guildreams | guildreams.com | Santiago |
 | Juegos Enroque | juegosenroque.cl | Santiago |
 | Jugones | jugones.cl | Santiago |
+| Ludoteka | ludoteka.cl | Santiago |
 | Kaio Juegos | kaiojuegos.cl | Santiago |
 | La Madriguera | tiendalamadriguera.cl | Santiago |
 | Magic Sur | magicsur.cl | Santiago |
 | Mana House | manahouse.cl | Santiago |
 | Mangai Games | mangaigames.cl | Santiago |
+| Ovniplay | ovniplay.cl | Santiago |
 | Piedra Bruja | piedrabruja.cl | Santiago |
 | Play Center | playcenter.cl | Santiago |
 | PlayKingdom | playkingdom.cl | Santiago |
@@ -87,7 +158,9 @@ costo de envío.
 | Lautaro Juegos | lautarojuegos.cl | Villa Alemana |
 | Lamesadevaras | lamesadevaras.cl | Puerto Varas |
 | La Fortaleza PUQ | lafortalezapuq.cl | Punta Arenas |
+| Winterland | winterland.cl | Puerto Montt |
 | Ludi Puerto | ludipuerto.cl | Talcahuano |
+| Juegos Gori | juegosgori.cl | — |
 | Araucanía Gaming | araucaniagaming.cl | Temuco |
 | Top 8 | top8.cl | Temuco |
 | Búho Juegos de Mesa | buhojuegosdemesa.cl | Valparaíso |
@@ -99,381 +172,13 @@ costo de envío.
 
 ---
 
-## Instalación
-
-```bash
-git clone https://github.com/tu-usuario/tablero-cl
-cd tablero-cl
-pip install -e .            # instala las dependencias y el comando `tablero`
-```
-
-Tras la instalación, el comando `tablero` queda disponible desde cualquier directorio.
-Para desarrollo también puedes correr el módulo directamente: `python -m tablero.cli <args>`.
-
-> **Si `tablero` falla con `ModuleNotFoundError`**, el script instalado quedó
-> apuntando a un punto de entrada viejo. Vuelve a instalar para regenerarlo:
->
-> ```bash
-> pip install -e .
-> ```
->
-> `pip install -e .` no regenera el script en cada cambio del código —solo cuando
-> cambia `pyproject.toml`—, así que hay que repetirlo tras mover el entry point.
-
-Los tests corren con `python -m pytest` (requiere `pip install pytest`).
-
-### ¿Dónde se guardan los datos?
-
-En este orden:
-
-1. `TABLERO_DATA_DIR`, si está definida.
-2. `<repo>/data` cuando corres desde un clon del proyecto (instalación editable
-   o `python -m tablero.cli`), para que sigas usando los datos que ya scrapeaste
-   y no una segunda copia en otro lado.
-3. Un directorio de usuario en cualquier otro caso —en macOS
-   `~/Library/Application Support/tablero-cl`—. Una instalación normal deja el
-   paquete en `site-packages`, y escribir ahí una base de 15 MB estaría mal: no
-   son datos del paquete, y una reinstalación los borraría.
-
-`tablero doctor` muestra cuál se está usando.
-
-**Dependencias:**
-
-```
-requests
-beautifulsoup4
-rapidfuzz
-questionary
-```
-
-**Estructura del proyecto:**
-
-```
-tablero-cl/
-├── pyproject.toml    # empaquetado + comando `tablero`
-├── scripts/          # paquete `tablero`
-│   ├── cli.py        # cuerpo de cada subcomando + dispatch
-│   ├── parser.py     # declaración de argumentos (solo argparse)
-│   ├── tui.py        # menú interactivo (questionary)
-│   ├── render.py     # todo lo que se imprime: tablas, paginación, formato
-│   │
-│   ├── db.py         # conexión SQLite + esquema
-│   ├── schema.sql    # DDL canónico
-│   ├── migrate.py    # construcción/reconstrucción de la base
-│   ├── ingest.py     # escritura de scrapes en la base
-│   ├── derive.py     # registro scrapeado → fila de base de datos
-│   ├── repo.py       # capa de consultas (todo el SQL vive aquí)
-│   │
-│   ├── search.py     # búsqueda FTS + ranking difuso
-│   ├── classify.py   # tipo de producto (juego/expansión/accesorio/tcg/puzzle)
-│   ├── analytics.py  # órdenes derivados + leaderboard
-│   ├── history.py    # evolución de precios + sparklines
-│   ├── basket.py     # optimizador de carrito multi-tienda
-│   ├── watchlist.py  # lista de seguimiento persistente
-│   ├── changes.py    # bajadas de precio desde la última revisión
-│   ├── alerts.py     # avisos de precio
-│   ├── export.py     # exportar a csv/json/html
-│   ├── fixtures.py   # corpus de paridad: páginas, vectores, escenario de ingesta
-│   │
-│   ├── update.py     # orquestación del scraping (compartida CLI/TUI)
-│   ├── runner.py     # recorrido de páginas de una tienda
-│   ├── scrape.py     # parsers por tienda + registro de sitios
-│   ├── validation.py # rechazo de precios imposibles + atípicos
-│   ├── utils.py      # normalización de títulos y precios
-│   └── paths.py      # rutas (respeta TABLERO_DATA_DIR)
-├── tests/            # pytest
-├── data/             # nada de esto está versionado (ver .gitignore)
-│   ├── tablero.db    # base de datos canónica (SQLite)
-│   └── *.csv         # respaldo por tienda de cada scrape
-└── README.md
-```
-
-### La base de datos
-
-Desde esta versión el almacén canónico es **`data/tablero.db`** (SQLite), no
-`products.json`. Eso cambia tres cosas que importan:
-
-- **Los precios se guardan como números**, ya parseados. Ningún consumidor
-  necesita reimplementar el parseo de precios chilenos.
-- **La clave de comparación (`norm`) se persiste**, en vez de recalcularse en
-  memoria en cada arranque.
-- **La identidad de un producto es estable** (`tienda` + URL canónica), que es
-  lo que hace que el historial de precios y las marcas nuevo/restock signifiquen
-  algo entre ejecuciones.
-
-Como efecto secundario, el archivo se puede leer tal cual desde cualquier
-cliente SQLite — incluida una app Android vía Room — sin capa de traducción.
-
-`TABLERO_DATA_DIR` permite mover el directorio de datos sin tocar el código.
-
----
-
-## Uso
-
-El comando usa **subcomandos**. Corre `tablero` sin argumentos para el menú
-interactivo, o `tablero <comando> --help` para las opciones de cada uno.
-
-```
-tablero search <juego>     buscar y comparar precios
-tablero deals              productos en oferta
-tablero list               listar el catálogo
-tablero stores             tiendas cubiertas y su estado
-tablero leaderboard        ranking de tiendas (más barata primero)
-tablero history <juego>    evolución de precios con sparklines
-tablero new                qué cambió desde tu última revisión
-tablero watch              lista de seguimiento
-tablero alerts             avisos de precio (para cron)
-tablero basket             dónde comprar una lista de juegos
-tablero update             scrapear y actualizar la base
-tablero migrate            construir/reconstruir la base SQLite
-tablero doctor             estado de la base + precios atípicos
-tablero fixtures           guardar páginas y vectores de referencia (port Android)
-```
-
-### El menú interactivo
-
-`tablero` sin argumentos abre el menú, agrupado en **Explorar**, **Mis juegos**
-y **Tiendas y datos**.
-
-Entrar a una vista no pregunta nada: las ofertas y el catálogo aparecen de
-inmediato, de a 20 filas, con los filtros que ya tenga la sesión. Desde ahí:
-
-- `Abrir un producto (nº)` toma el número impreso a la izquierda y muestra la
-  tabla de precios por tienda, con las URL completas. Al volver sigues en la
-  misma página.
-- `Página siguiente` / `Página anterior` recorren el resto.
-- `Filtros y orden…` edita tienda, stock, precio, orden y URL de a uno, con el
-  valor actual a la vista. Antes había que responder las cuatro preguntas
-  antes de ver una sola fila, y cambiar una implicaba responderlas todas otra
-  vez.
-- `Exportar…` escribe el conjunto filtrado completo, no solo la página.
-
-La búsqueda funciona igual: desde la lista de resultados puedes cambiar la
-consulta, poner un precio máximo, incluir accesorios o reordenar sin volver al
-menú. Los filtros duran lo que dure la sesión.
-
-El menú corre en la **pantalla alternativa** del terminal, como `less` o `vim`:
-cada vista reemplaza a la anterior en vez de apilarse, y al salir tu terminal
-queda exactamente como estaba, sin rastro de la sesión. Las vistas largas
-—cambios, tiendas, ranking— se paginan de a 20 igual que el catálogo.
-
-Si un cierre brusco alguna vez te deja en la pantalla alternativa, `tput rmcup`
-o `reset` la recuperan.
-
-### Primera vez
-
-```bash
-tablero update             # scrapea las tiendas y escribe data/*.csv
-tablero migrate            # construye data/tablero.db desde esos CSV
-```
-
-El repositorio trae **solo código**: `data/` está en `.gitignore` completo, así
-que un clon nuevo no tiene catálogo hasta que scrapees uno. Un scrape completo
-mueve ~150 MB y demora; `tablero update --sites <tienda>` sirve para probar con
-una sola.
-
-### Buscar un juego
-
-```bash
-tablero search "catan"
-tablero search "pandemic" --first        # muestra directo la tabla de precios
-tablero search "fundas" --all-kinds      # incluye accesorios (ocultos por defecto)
-tablero search "catan" --max-price 25000 # sobre la oferta más barata del juego
-tablero search "catan" --sort price      # relevance (default) | price | stores
-```
-
-Los resultados se ordenan por relevancia y toleran errores de tipeo
-(`pandemc` → `Pandemic`, `terraformin` → `Terraforming Mars`). Cada resultado
-muestra el precio más bajo, en cuántas tiendas está, y si hay stock.
-
-Los accesorios se ocultan por defecto: buscar `catan` devuelve el juego, no
-cuarenta fundas que lo mencionan en el título.
-
-### Ver ofertas y catálogo
-
-```bash
-tablero deals --in-stock --sort discount
-tablero deals --store cartonazo --max-price 30000
-tablero list --store updown --sort price
-tablero list --kind expansion             # juego | expansion | tcg | puzzle | accessory
-```
-
-`--store` acepta coincidencias parciales: `--store carton` te dirá cuáles
-coinciden en vez de fallar con un error sin salida.
-
-`deals` y `list` muestran **todos** los resultados, no una muestra: el
-paginador se encarga del largo. Un tope silencioso de 50 filas escondía la
-mayor parte de una búsqueda filtrada sin avisar. `--limit N` acota cuando
-quieras menos, y `--offset N` salta filas para paginar:
-
-```bash
-tablero deals --limit 20 --offset 20      # el segundo bloque de 20
-tablero deals --urls                      # agrega la URL de cada producto
-```
-
-`--urls` está apagado por defecto a propósito: una URL de tienda ocupa 60-100
-caracteres y, junto al título y las tres columnas de precio, hace que cada fila
-se corte en un terminal normal. Enciéndelo cuando el link sea lo que buscas.
-
-Con `--sort value`, `scarcity` o `volatility` la tabla agrega tres columnas
-—tiendas, mediana e índice— para que el orden se pueda leer y no haya que
-confiar en él a ciegas.
-
-Los listados largos se abren en el paginador (`less`, o lo que indique `PAGER`).
-Al redirigir la salida —`tablero list | head`, `--export`— se escribe directo,
-sin paginar. `PAGER=""` desactiva la paginación.
-
-### Productos obsoletos
-
-Cuando una tienda deja de listar un producto, su fila queda con el último precio
-conocido. Esas filas se **ocultan por defecto**: si no, un producto descatalogado
-sigue apareciendo como la oferta más barata (152 juegos tenían su "desde" fijado
-por una de ellas). No se borran —el historial de precios se conserva— y
-`--include-stale` las muestra. `tablero doctor` informa cuántas hay.
-
-### Órdenes derivados
-
-Además de `discount/price/price_desc/store/title`, `deals` y `list` aceptan tres
-órdenes que se calculan comparando entre tiendas, no leyendo una sola columna:
-
-```bash
-tablero deals --sort value        # más barato respecto a su propia mediana
-tablero deals --sort scarcity     # disponible en pocas tiendas
-tablero deals --sort volatility   # mayor diferencia de precio entre tiendas
-```
-
-`value` es el más útil en la práctica: encuentra el juego que una tienda vende
-muy por debajo de lo que cobran las demás, que no es lo mismo que el mayor
-descuento nominal.
-
-### Exportar
-
-Cualquier listado se puede escribir a `data/exports/`:
-
-```bash
-tablero deals --in-stock --export csv
-tablero list --store updown --export html
-tablero leaderboard --export json
-```
-
-### Leaderboard de tiendas
-
-```bash
-tablero leaderboard --limit 20
-```
-
-Ordena las tiendas por **competitividad**: el porcentaje de juegos *disputados*
-(los que comparte con al menos otra tienda) en que esa tienda cobra más que la
-mediana. Comparar solo lo disputado es lo que evita que una tienda parezca
-barata por vender productos distintos y más baratos.
-
-### Historial de precios
-
-```bash
-tablero history "catan"
-tablero history "catan" --min-points 1   # incluir tiendas con una sola observación
-```
-
-Muestra un sparkline (`▁▂▃▅▇`) por tienda con el precio inicial, el final y el
-rango. Por defecto oculta las tiendas con una sola observación: un punto es un
-precio, no una tendencia, y dibujarlo como línea plana sugiere una estabilidad
-que nunca se midió. El historial se acumula con cada `tablero update`.
-
-### Avisos de precio (para cron)
-
-```bash
-tablero alerts                                        # usa la lista de seguimiento
-tablero alerts --watch "wingspan" "root" --threshold 30000
-tablero alerts --out alertas.json --in-stock
-```
-
-Sin argumentos usa los precios objetivo que ya guardaste con `tablero watch`, así
-que una tarea programada no necesita repetir nada ni puede quedar desincronizada
-de lo que realmente querías. Devuelve código de salida `1` cuando no hay avisos,
-para que cron pueda actuar según el resultado.
-
-### Qué cambió desde la última vez
-
-```bash
-tablero new --reset               # fija el marcador "última revisión"
-tablero new                       # todo lo que cambió desde entonces
-tablero new --kind restock oferta # solo vueltas a stock y ofertas nuevas
-tablero new --min-pct 10          # solo movimientos de precio de 10% o más
-```
-
-Cada fila dice **qué** cambió, no solo que algo cambió:
-
-| Cambio | Qué pasó |
-|---|---|
-| `nuevo` | no existía la última vez que miraste |
-| `restock` | estaba agotado y volvió a estar disponible |
-| `agotado` | estaba disponible y se agotó |
-| `oferta` | entró en oferta (el precio de lista no se movió) |
-| `fin_oferta` | terminó la oferta |
-| `baja` / `alza` | el precio bajó o subió |
-
-Un producto puede cumplir varios a la vez —una vuelta a stock que además bajó
-de precio— y se reporta el más notable, con las columnas Antes/Ahora/Dif.
-contando el resto. `--min-pct` solo filtra `baja` y `alza`: una vuelta a stock
-vale la pena verla sin importar lo que hizo el precio.
-
-A diferencia de las marcas nuevo/restock —que se recalculan en cada scrape y
-solo describen la última actualización— esto se mide contra el momento en que
-*tú* miraste por última vez, así que no se pierde nada por no haber estado.
-
-Las transiciones de stock y de oferta se registran desde el esquema v4. Las
-observaciones anteriores no las traen, y se tratan como *desconocidas* en vez
-de como "no": inventar un restock para todo el catálogo la primera vez sería
-peor que esperar un scrape.
-
-### Lista de seguimiento
-
-```bash
-tablero watch add "wingspan" --target 55000
-tablero watch list                       # marca los que alcanzaron su objetivo
-tablero watch rm "wingspan"
-```
-
-### Dónde comprar (optimizador de carrito)
-
-Comprar cada juego donde está más barato suele *no* ser lo más barato: cada
-tienda extra agrega un envío. Este comando compara las tres estrategias:
-
-```bash
-tablero basket "catan" "wingspan" "azul"
-tablero basket --from-watchlist --shipping 5000
-```
-
-```
-  Cada juego en su tienda más barata   5 tienda(s)  $174.960 + envío $20.000 = $194.960
-  Todo en una sola tienda              1 tienda(s)  $178.960 + envío  $4.000 = $182.960 · faltan 1
-  Combinación óptima                   3 tienda(s)  $177.960 + envío $12.000 = $189.960 ←  MEJOR
-```
-
-Un pedido completo gana sobre uno más barato pero incompleto.
-
-### Actualizar precios
-
-```bash
-tablero update                          # todas las tiendas, 5 workers
-tablero update --incremental            # solo las obsoletas (> 24 h)
-tablero update --sites tertulia top8    # tiendas específicas
-tablero update --dry-run                # solo la primera página (pruebas)
-tablero update -w 3                     # más suave si Cloudflare bloquea
-```
-
-Cada tienda se escribe por separado, así que un scrape fallido nunca borra los
-datos de otra. Un scrape vacío se trata como fallo: una caída de red no debe
-parecerse a una tienda que vació su catálogo.
-
----
-
-
 ## Cómo funciona
 
-### Scraping (`scrape.py`)
+### Scraping (`scrape.py`, `parsers.py`, `bespoke.py`)
 
-Cada tienda tiene su parser. Cuatro plataformas cubren la mayoría:
+Cada tienda tiene su parser. Cuatro plataformas cubren la mayoría, y las
+tiendas que las usan son solo un *binding* de un parser genérico de
+`parsers.py` en `scrape.py`; el resto tiene el suyo en `bespoke.py`:
 
 ```
 WooCommerce   → <del>/<ins> para precios, clases CSS para stock
@@ -490,11 +195,12 @@ _url(el, base)        # extrae href, prepende base si es relativo
 _norm(orig, curr)     # anula current_price si es igual al original
 _woo_prices(pc)       # extrae del/ins/bdi de un contenedor WooCommerce
 _presta_prices(item)  # extrae regular-price/price de PrestaShop
+_img(el, base)        # URL de la foto (data-src/srcset antes que src)
 ```
 
 El loop de paginación detecta páginas duplicadas (cuando el sitio repite la última página en vez de 404) y se detiene solo.
 
-### Búsqueda fuzzy (`utils.py`)
+### Normalización de títulos (`utils.py`)
 
 ```python
 normalize("Clank!: En las Catacumbas (En Español)")
@@ -529,27 +235,7 @@ Algunas tiendas además truncan los títulos ("Terraforming Mars -..."). En esos
 casos el nombre se completa desde el slug de la URL para poder distinguirlos,
 conservando el título tal como lo escribió la tienda para mostrarlo.
 
-El matching (`search.py`) tiene dos etapas, deliberadamente separadas:
-
-1. **Candidatos** — el índice FTS5 de SQLite decide qué es *plausible*. Es
-   indexado y barato, y reemplaza el escaneo completo que antes corría rapidfuzz
-   sobre cada título único en cada búsqueda.
-2. **Ranking** — rapidfuzz decide qué es *relevante*: score compuesto
-   `0.3·token_set + 0.4·token_sort + 0.3·partial`, más bonos por coincidencia
-   exacta / prefijo, una penalización por tipo de producto, y desempate por
-   popularidad (nº de tiendas) y longitud del título.
-
-FTS solo hace coincidencia por prefijo, así que no puede salvar un error de
-tipeo — `pandemc` no es prefijo de `pandemic`. Cuando devuelve pocos candidatos
-se cae a un escaneo difuso sobre los ~11 mil juegos (no los ~29 mil productos),
-que es lo que mantiene la tolerancia a typos sin pagar el costo en cada consulta.
-
-La penalización por tipo es lo que evita que los accesorios tapen al juego:
-buscar `catan` devuelve Catan, no las fundas que lo nombran en el título.
-
-Las variantes del mismo juego entre tiendas ya vienen agrupadas por la tabla
-`game`, y cada resultado se enriquece con el precio más bajo, el nº de tiendas y
-disponibilidad.
+Las variantes del mismo juego entre tiendas quedan agrupadas en la tabla `game`.
 
 ### Precios chilenos
 
@@ -565,7 +251,9 @@ Detecta formato por posición del último separador: si la última coma viene de
 
 ## Agregar una tienda
 
-1. Escribir el parser en `scrape.py`:
+1. Si la tienda usa una plataforma conocida, basta un binding en `scrape.py`
+   (p. ej. `partial(_parse_woo_li, link_cls=...)`). Si no, escribir su parser en
+   `bespoke.py`:
 
 ```python
 def mi_tienda(html):
@@ -582,6 +270,7 @@ def mi_tienda(html):
                 'current_price':  curr,
                 'stock_status':   "Agotado" if 'outofstock' in item.get('class', []) else None,
                 'url':            _url(t_elem.find('a', href=True)),
+                'image':          _img(item),
             })
         except Exception as e:
             print(f"  [mi_tienda] skipping item: {e}")
@@ -595,7 +284,7 @@ def mi_tienda(html):
     'name':       'mitienda',
     'base_url':   'https://www.mitienda.cl/juegos-de-mesa',
     'parser':     mi_tienda,
-    'pagination': 'woo',        # 'shopify' | 'woo' | 'page_param' | 'gatoarcano' | 'calabozo' | 'devir'
+    'pagination': 'woo',        # 'shopify' | 'woo' | 'page_param' | 'p' | 'product-page' | 'gatoarcano' | 'calabozo'
     'output':     '../data/mitienda_jdm.csv',
 },
 ```
@@ -604,6 +293,11 @@ def mi_tienda(html):
    y lo que el parser sacó de ella en `tests/fixtures/mitienda/`, y regenera
    los vectores. Desde ahí `pytest` falla si el parser deja de producir lo
    mismo, y el port Android se prueba contra esos mismos archivos.
+
+4. Para que el teléfono la scrapee, portar el parser a
+   `android/core/src/main/kotlin/cl/tablero/core/scrape/` y agregarlo a
+   `PARSERS` en `Stores.kt`. `./gradlew :core:test` lo compara con el fixture;
+   sin ese paso la tienda aparece en la app como "solo PC".
 
 ### Fixtures y vectores (paridad con Android)
 
@@ -630,5 +324,5 @@ el diff. Si no se regenera, `pytest` falla.
 - **Cloudflare:** varias tiendas usan bot-management de Cloudflare, que es sensible a la
   reputación de tu IP: el scraping agresivo (mucha concurrencia) la degrada y provoca más
   bloqueos `403`/`429`. El default ya es conservador (5 workers); si aún ves "Cloudflare
-  block", baja más (`tablero --update -w 3`) y reintenta más tarde. Los bloqueos se registran y **no borran**
+  block", baja más (`tablero update -w 3`) y reintenta más tarde. Los bloqueos se registran y **no borran**
   los datos previos. El scraper **no** intenta evadir Cloudflare.

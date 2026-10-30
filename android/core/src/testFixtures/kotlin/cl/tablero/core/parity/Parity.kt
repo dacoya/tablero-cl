@@ -3,7 +3,17 @@ package cl.tablero.core.parity
 import androidx.sqlite.SQLiteConnection
 import cl.tablero.core.data.IngestResult
 import cl.tablero.core.data.ProductRow
+import cl.tablero.core.data.Filters
 import cl.tablero.core.data.STALE_CLAUSE
+import cl.tablero.core.data.exec
+import cl.tablero.core.data.gamePrices
+import cl.tablero.core.data.gameTrends
+import cl.tablero.core.data.watchAlerts
+import cl.tablero.core.data.watchEntries
+import cl.tablero.core.data.products
+import cl.tablero.core.data.countProducts
+import cl.tablero.core.data.smartProducts
+import cl.tablero.core.data.stores
 import cl.tablero.core.data.Scraped
 import cl.tablero.core.scrape.Parser
 import cl.tablero.core.scrape.buildUrl
@@ -50,6 +60,7 @@ fun scraped(json: JsonElement): Scraped = json.jsonObject.let {
         currentPrice = it.str("current_price"),
         stockStatus = it.str("stock_status"),
         flag = it.str("flag"),
+        image = it.str("image"),
     )
 }
 
@@ -69,7 +80,7 @@ fun ProductRow.toPython(): Map<String, Any?> = mapOf(
     "store" to store, "url_canon" to urlCanon, "url" to url, "title_raw" to titleRaw,
     "title" to title, "norm" to norm, "kind" to kind, "price_original" to priceOriginal,
     "price_current" to priceCurrent, "price_eff" to priceEff, "in_stock" to if (inStock) 1 else 0,
-    "flag" to flag,
+    "flag" to flag, "image_url" to imageUrl,
 )
 
 fun IngestResult.toPython(): Map<String, Any?> = mapOf(
@@ -116,7 +127,7 @@ private fun snapshot(conn: SQLiteConnection) = toJson(mapOf(
     "products" to conn.query("""
         SELECT p.url_canon, p.url, g.norm AS game_norm, p.title_raw, p.title,
                p.norm, p.kind, p.price_original, p.price_current, p.price_eff,
-               p.in_stock, p.flag, p.first_seen, p.last_seen,
+               p.in_stock, p.flag, p.first_seen, p.last_seen, p.image_url,
                CASE WHEN $STALE_CLAUSE THEN 1 ELSE 0 END AS live
           FROM product p LEFT JOIN game g ON g.id = p.game_id
          ORDER BY p.url_canon"""),
@@ -153,6 +164,61 @@ fun ingestMismatches(conn: SQLiteConnection, scenario: JsonElement): List<String
     val since = changes.getValue("since").jsonPrimitive.long
     val rows = sinceLastReview(conn, since = since, limit = null).map { it - "product_id" - "game_id" }
     compare(changes.getValue("rows"), toJson(rows), "changes since $since")
+
+    queryMismatches(conn, sc.getValue("queries").jsonObject).forEach { out += it }
+    return out
+}
+
+private fun List<Map<String, Any?>>.withoutIds() = map { it - "product_id" - "game_id" }
+
+/** The fixtures._QUERY_FILTERS keyword arguments as Kotlin [Filters]. */
+private fun filtersOf(json: JsonObject) = Filters(
+    stores = json["store"]?.let { if (it is JsonArray) it.map { s -> s.jsonPrimitive.content } else listOf(it.jsonPrimitive.content) },
+    inStockOnly = json["in_stock_only"]?.jsonPrimitive?.content == "true",
+    minPrice = json["min_price"]?.jsonPrimitive?.content?.toDouble(),
+    maxPrice = json["max_price"]?.jsonPrimitive?.content?.toDouble(),
+    onSale = json["on_sale"]?.jsonPrimitive?.content == "true",
+    flag = json.str("flag"),
+    kinds = json["kind"]?.jsonArray?.map { it.jsonPrimitive.content },
+    includeStale = json["include_stale"]?.jsonPrimitive?.content == "true",
+    minDiscount = json["min_discount"]?.jsonPrimitive?.content?.toDouble(),
+)
+
+/** The scenario's "queries" section: browse, paging, smart sorts, prices, stores. */
+private fun queryMismatches(conn: SQLiteConnection, q: JsonObject): List<String> {
+    val out = mutableListOf<String>()
+    fun compare(want: JsonElement, got: Any?, what: String) {
+        val g = toJson(got)
+        if (!same(want, g)) out += "$what differs\n  python: $want\n  kotlin: $g"
+    }
+    for ((name, spec) in q.getValue("browse").jsonObject) {
+        val filters = filtersOf(spec.jsonObject.getValue("filters").jsonObject)
+        compare(spec.jsonObject.getValue("count"), countProducts(conn, filters), "count[$name]")
+        for ((sort, rows) in spec.jsonObject.getValue("sorts").jsonObject) {
+            compare(rows, products(conn, sort, filters).withoutIds(), "products[$name, $sort]")
+        }
+    }
+    compare(q.getValue("page"), products(conn, "price", limit = 3, offset = 3).withoutIds(), "page")
+    for ((by, rows) in q.getValue("smart").jsonObject) {
+        compare(rows, smartProducts(conn, by).withoutIds(), "smart[$by]")
+    }
+    val ids = conn.query("SELECT id, norm FROM game").associate { it["norm"] as String to it["id"] as Long }
+    for ((norm, rows) in q.getValue("game_prices").jsonObject) {
+        compare(rows, gamePrices(conn, ids.getValue(norm)).withoutIds(), "game_prices[$norm]")
+    }
+    compare(q.getValue("stores"), stores(conn), "stores")
+
+    // Same rows the Python side inserted, at the same fixed times.
+    for (w in q.getValue("watch_setup").jsonArray) {
+        val (norm, target, at) = w.jsonArray.map { it.jsonPrimitive.content }
+        conn.exec("INSERT INTO watchlist(game_id, target, note, added_at) VALUES (?,?,NULL,?)",
+            ids.getValue(norm), target.toDouble(), at.toLong())
+    }
+    compare(q.getValue("watchlist"), watchEntries(conn).withoutIds(), "watchlist")
+    compare(q.getValue("alerts"), watchAlerts(conn).map { it - "game_id" }, "alerts")
+    for ((norm, trends) in q.getValue("trends").jsonObject) {
+        compare(trends, gameTrends(conn, ids.getValue(norm)), "trends[$norm]")
+    }
     return out
 }
 
@@ -163,7 +229,7 @@ fun ingestMismatches(conn: SQLiteConnection, scenario: JsonElement): List<String
 /** Python's dict keys for a parsed record. Parsers never set `flag`. */
 fun Scraped.toPython(): Map<String, Any?> = mapOf(
     "title" to title, "original_price" to originalPrice, "current_price" to currentPrice,
-    "stock_status" to stockStatus, "url" to url,
+    "stock_status" to stockStatus, "url" to url, "image" to image,
 )
 
 /** A pageN.html.gz fixture, decoded the way fixtures.load reads it. */

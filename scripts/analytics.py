@@ -41,10 +41,34 @@ _MEDIAN_CTE = """
     )
 """
 
+# Deal index ("value"): how attractive a sale is, in pesos.
+#
+#   ref = the list price; for a game sold in 2+ stores, capped at the market
+#         median (but never below this price), so an inflated "antes" price
+#         does not make a deal.
+#   S   = ref - price                       the saving, in pesos
+#   d   = S / ref                           the saving, as a fraction
+#   index = S * d / (d + DEAL_D0) * ref / (ref + DEAL_P0)
+#
+# Pesos saved carry the score: 20k off is worth more than 13.5k off. d/(d+D0)
+# drops off only for token discounts (5% on 300k), and ref/(ref+P0) damps
+# cheap games, where a 90% cut is more likely clearance than a find:
+#   15k -> 1.5k: 5.5k   40k -> 20k: 12.1k   80k -> 60k: 13.3k   300k -5%: 7.0k
+# (exact: 5,481 / 12,121 / 13,333 / 7,031)
+DEAL_D0 = 0.05
+DEAL_P0 = 20000
+_DEAL_REF = """(CASE WHEN s.n_stores >= 2
+                     THEN MIN(COALESCE(p.price_original, p.price_eff), MAX(m.median, p.price_eff))
+                     ELSE COALESCE(p.price_original, p.price_eff) END)"""
+_DEAL_SAVING = f"({_DEAL_REF} - p.price_eff)"
+DEAL_INDEX_SQL = f"""(CASE WHEN {_DEAL_SAVING} > 0
+     THEN {_DEAL_SAVING} * {_DEAL_SAVING} / ({_DEAL_SAVING} + {DEAL_D0} * {_DEAL_REF})
+          * {_DEAL_REF} / ({_DEAL_REF} + {DEAL_P0})
+     ELSE 0 END)"""
+
 # Each smart sort scores a row; all are ordered descending by that score.
 _SCORE = {
-    # Cheap relative to the game's own median, with a bonus for being buyable.
-    "value": "((m.median - p.price_eff) / m.median) + (CASE WHEN p.in_stock THEN 0.5 ELSE 0 END)",
+    "value": DEAL_INDEX_SQL,
     # Carried by few stores: concentrated availability.
     "scarcity": "-s.n_stores",
     # Wide cross-store spread: the same game costs very different amounts.
@@ -57,7 +81,8 @@ def smart_products(conn, by: str = "value", limit: int | None = None,
                    store: str | None = None, in_stock_only: bool = False,
                    kind=None, on_sale: bool = False,
                    min_price=None, max_price=None,
-                   include_stale: bool = False) -> list[dict]:
+                   include_stale: bool = False, min_discount=None,
+                   flag=None) -> list[dict]:
     """
     Products ranked by a derived metric rather than a single column.
 
@@ -69,39 +94,23 @@ def smart_products(conn, by: str = "value", limit: int | None = None,
         raise ValueError(
             f"Unknown smart sort '{by}'. Options: {', '.join(SMART_SORT_OPTIONS)}")
 
-    clauses, params = ["m.median > 0"], []
-    if not include_stale:
-        clauses.append(repo.STALE_CLAUSE)
-    if store:
-        clauses.append("p.store = ?")
-        params.append(store)
-    if in_stock_only:
-        clauses.append("p.in_stock = 1")
-    if min_price is not None:
-        clauses.append("p.price_eff >= ?")
-        params.append(float(min_price))
-    if max_price is not None:
-        clauses.append("p.price_eff <= ?")
-        params.append(float(max_price))
-    if on_sale:
-        clauses.append("p.price_current IS NOT NULL AND p.price_original > p.price_current")
-    if kind:
-        kinds = [kind] if isinstance(kind, str) else list(kind)
-        clauses.append(f"p.kind IN ({','.join('?' * len(kinds))})")
-        params.extend(kinds)
+    where, params = repo.filter_clause(
+        store=store, in_stock_only=in_stock_only, min_price=min_price,
+        max_price=max_price, on_sale=on_sale, kind=kind, include_stale=include_stale,
+        min_discount=min_discount, flag=flag)
 
     sql = f"""
         {_MEDIAN_CTE}
         SELECT p.id AS product_id, p.store, p.title, p.url, p.game_id, p.kind,
                p.price_original, p.price_current, p.price_eff, p.in_stock, p.flag,
-               s.n_stores, m.median,
+               p.image_url, s.n_stores, m.median,
                {repo.DISCOUNT_PCT_SQL} AS discount_pct,
                ROUND({_SCORE[by]}, 4) AS score
           FROM product p
           JOIN med    m ON m.game_id = p.game_id
           JOIN spread s ON s.game_id = p.game_id
-         WHERE {' AND '.join(clauses)}
-         ORDER BY score DESC
+         WHERE m.median > 0 AND {where}
+         ORDER BY score DESC, p.id
     """
     # limit=None means "everything", the same contract as repo.products.
     if limit is not None:
@@ -132,59 +141,3 @@ def browse(conn, sort: str = "discount", limit: int | None = None,
     return rows, repo.count_products(conn, **filters)
 
 
-def store_leaderboard(conn, limit: int | None = None) -> list[dict]:
-    """
-    Stores ranked cheapest-first.
-
-    `competitiveness` is the share of contested games (those a store shares with
-    at least one other) where this store is priced above the cross-store median.
-    Lower is cheaper. Comparing only contested games is what stops a store
-    looking cheap merely by stocking different, cheaper products.
-    """
-    sql = f"""
-        {_MEDIAN_CTE},
-        contested AS (
-            SELECT p.store, p.price_eff, m.median
-              FROM priced p
-              JOIN med    m ON m.game_id = p.game_id
-              JOIN spread s ON s.game_id = p.game_id
-             WHERE s.n_stores > 1
-        ),
-        comp AS (
-            SELECT store,
-                   COUNT(*) AS n_contested,
-                   AVG(CASE WHEN price_eff > median THEN 1.0 ELSE 0.0 END) AS competitiveness
-              FROM contested
-             GROUP BY store
-        ),
-        totals AS (
-            SELECT store,
-                   COUNT(*) AS n,
-                   AVG(CASE WHEN in_stock = 0 THEN 1.0 ELSE 0.0 END) AS oos_ratio,
-                   AVG(CASE WHEN price_current IS NOT NULL AND price_original > 0
-                                 AND price_original > price_current
-                            THEN (price_original - price_current) / price_original
-                            ELSE 0.0 END) AS mean_discount
-              FROM product
-             GROUP BY store
-        ),
-        medians AS (
-            SELECT store, AVG(price_eff) AS median_price FROM (
-                SELECT store, price_eff,
-                       ROW_NUMBER() OVER (PARTITION BY store ORDER BY price_eff) rn,
-                       COUNT(*)     OVER (PARTITION BY store)                   cnt
-                  FROM product
-                 WHERE price_eff IS NOT NULL AND price_eff > 0
-            ) WHERE rn IN ((cnt + 1) / 2, (cnt + 2) / 2)
-            GROUP BY store
-        )
-        SELECT t.store, t.n, t.oos_ratio, t.mean_discount,
-               md.median_price, c.competitiveness, c.n_contested
-          FROM totals t
-          LEFT JOIN comp    c  ON c.store  = t.store
-          LEFT JOIN medians md ON md.store = t.store
-         WHERE t.n > 0
-         ORDER BY (c.competitiveness IS NULL), c.competitiveness, md.median_price
-    """
-    rows = [dict(r) for r in conn.execute(sql)]
-    return rows[:limit] if limit else rows

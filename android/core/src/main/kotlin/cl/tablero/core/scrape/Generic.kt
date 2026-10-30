@@ -5,7 +5,7 @@ import cl.tablero.core.data.pyStrip
 import org.jsoup.nodes.Element
 
 /*
- * Port of the shared helpers and the six generic parsers in scrape.py.
+ * Port of the shared helpers and the six generic parsers in parsers.py.
  * Each mirrors its Python counterpart line for line; the store-specific
  * reasons behind them are documented there.
  */
@@ -87,6 +87,7 @@ fun parseWooLi(
     Scraped(
         title = txt(title), url = url(link), originalPrice = orig, currentPrice = curr,
         stockStatus = if (isOos) AGOTADO else stockCls(cls, curr, extraSale = sale),
+        image = img(item),
     )
 }
 
@@ -97,13 +98,15 @@ fun parsePresta(
     titleCls: String = "product-title",
     itemCls: String = "product-miniature",
     oosFlag: String = "out_of_stock",
+    extraOos: ((Element) -> Boolean)? = null,
 ): List<Scraped> = cards(html.findAll("article", cls = itemCls)) { item ->
     val title = item.find(titleTag, cls = titleCls) ?: return@cards null
     val (orig, curr) = prestaPrices(item)
     Scraped(
         title = txt(title), url = url(title.find("a", where = hasHref)),
         originalPrice = orig, currentPrice = curr,
-        stockStatus = stockFlags(item, oosCls = oosFlag, curr = curr),
+        stockStatus = if (extraOos?.invoke(item) == true) AGOTADO else stockFlags(item, oosCls = oosFlag, curr = curr),
+        image = img(item),
     )
 }
 
@@ -142,6 +145,7 @@ fun parseBs(html: Element, itemTag: String = "section", itemCls: String = "grid_
             curr.orNullIfEmpty() != null || "has-discount" in cls -> OFERTA
             else -> null
         },
+        image = img(item, baseUrl),
     )
 }
 
@@ -182,6 +186,7 @@ fun parseProductBlock(
     Scraped(
         title = txt(title), url = url(title, baseUrl), originalPrice = orig, currentPrice = curr,
         stockStatus = if (isOos) AGOTADO else if (curr.orNullIfEmpty() != null) OFERTA else null,
+        image = img(item, baseUrl),
     )
 }
 
@@ -204,6 +209,29 @@ fun parseShopifyCard(html: Element, baseUrl: String = ""): List<Scraped> =
             title = txt(title), url = url(item.find("a", cls = "grid-view-item__link"), baseUrl),
             originalPrice = orig, currentPrice = curr,
             stockStatus = if (dl != null && "price--sold-out" in dl.classes()) AGOTADO else null,
+            image = img(item, baseUrl),
+        )
+    }
+
+/** `_parse_dawn`: Shopify Dawn grid. The <s> is on every card; equal pairs mean no sale. */
+fun parseDawn(html: Element, baseUrl: String = ""): List<Scraped> =
+    cards(html.findAll("li", cls = "grid__item")) { item ->
+        val title = item.find("h3", cls = "card__heading") ?: return@cards null
+
+        val was = item.find("s", cls = "price-item--regular")
+        val (orig, curr) = if (was != null && txt(was).orNullIfEmpty() != null) {
+            norm(txt(was), txt(item.find("span", cls = "price-item--sale")))
+        } else {
+            val regular = item.find("div", cls = "price__regular")
+            norm(txt(regular?.find("span", cls = "price-item--regular")), null)
+        }
+
+        val price = item.find("div", cls = "price")
+        Scraped(
+            title = txt(title), url = url(title.find("a"), baseUrl),
+            originalPrice = orig, currentPrice = curr,
+            stockStatus = if (price != null && "price--sold-out" in price.classes()) AGOTADO else null,
+            image = img(item, baseUrl),
         )
     }
 
@@ -230,5 +258,6 @@ fun parseProductBlockSimple(html: Element, baseUrl: String): List<Scraped> =
         Scraped(
             title = txt(title), url = url(title, baseUrl), originalPrice = orig, currentPrice = curr,
             stockStatus = if (oos(label)) AGOTADO else if (curr.orNullIfEmpty() != null) OFERTA else null,
+            image = img(item, baseUrl),
         )
     }

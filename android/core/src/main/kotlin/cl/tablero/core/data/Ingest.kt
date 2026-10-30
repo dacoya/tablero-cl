@@ -42,8 +42,8 @@ private fun ensureGames(conn: SQLiteConnection, rows: List<ProductRow>, ts: Long
         if (cur == null || r.title.pyLen < cur.title.pyLen) best[r.norm] = r
     }
     conn.execMany(
-        "INSERT OR IGNORE INTO game(norm, title, kind, created_at) VALUES (?,?,?,?)",
-        best.map { (norm, r) -> listOf(norm, r.title, r.kind, ts) },
+        "INSERT OR IGNORE INTO game(norm, title, kind, created_at, bgg_id) VALUES (?,?,?,?,?)",
+        best.map { (norm, r) -> listOf(norm, r.title, r.kind, ts, if (r.kind in BGG_KINDS) bggLookup(conn, norm) else null) },
     )
     return conn.prepare("SELECT id FROM game WHERE norm = ?").use { st ->
         best.keys.associateWith { norm ->
@@ -61,6 +61,51 @@ private fun flagFor(prev: Existing?, row: ProductRow): String? = when {
     else -> null
 }
 
+private const val INSERT_PRODUCT = """
+    INSERT INTO product
+      (store, url_canon, url, game_id, title_raw, title, norm, kind,
+       price_original, price_current, price_eff, in_stock, flag,
+       last_seen, image_url, first_seen)
+    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+"""
+
+// A scrape that found no photo keeps the last one known: lazy-loading
+// markup changes more often than products do.
+private const val UPDATE_PRODUCT = """
+    UPDATE product SET
+      game_id=?, title_raw=?, title=?, norm=?, kind=?,
+      price_original=?, price_current=?, price_eff=?,
+      in_stock=?, flag=?, last_seen=?,
+      image_url=COALESCE(?, image_url)
+    WHERE id=?
+"""
+
+// Position of `flag` in an update row, as `u[9]` in ingest.ingest_store.
+private const val FLAG_COLUMN = 9
+
+/** ingest._clean_rows: rows worth writing (last per URL wins) and the rejection counts. */
+private fun cleanRows(store: String, records: List<Scraped>): Pair<List<ProductRow>, Map<String, Int>> {
+    val (clean, rejected) = partition(records.mapNotNull { derive(store, it) })
+    return clean.associateBy { it.urlCanon }.values.toList() to rejected
+}
+
+/** ingest._split_writes: (inserts, updates) with their bound values. */
+private fun splitWrites(
+    rows: List<ProductRow>, known: Map<String, Existing>, games: Map<String, Long>, store: String, ts: Long,
+): Pair<List<List<Any?>>, List<List<Any?>>> {
+    val inserts = mutableListOf<List<Any?>>()
+    val updates = mutableListOf<List<Any?>>()
+    for (r in rows) {
+        val prev = known[r.urlCanon]
+        val payload = listOf(
+            games[r.norm], r.titleRaw, r.title, r.norm, r.kind,
+            r.priceOriginal, r.priceCurrent, r.priceEff, r.inStock, flagFor(prev, r), ts, r.imageUrl,
+        )
+        if (prev == null) inserts += listOf(store, r.urlCanon, r.url) + payload + ts else updates += payload + prev.id
+    }
+    return inserts to updates
+}
+
 /**
  * Upsert one store's scraped records.
  *
@@ -68,14 +113,12 @@ private fun flagFor(prev: Existing?, row: ProductRow): String? = when {
  * is a failed scrape and leaves existing data alone.
  */
 fun ingestStore(conn: SQLiteConnection, store: String, records: List<Scraped>, ts: Long = now()): IngestResult {
-    val (clean, rejected) = partition(records.mapNotNull { derive(store, it) })
-    if (clean.isEmpty()) return IngestResult(store, 0, 0, 0, rejected, skipped = true)
-
-    // Last row wins if a store lists the same URL twice in one scrape.
-    val rows = clean.associateBy { it.urlCanon }.values.toList()
+    val (cleaned, rejected) = cleanRows(store, records)
+    if (cleaned.isEmpty()) return IngestResult(store, 0, 0, 0, rejected, skipped = true)
 
     return conn.transaction {
         conn.exec("INSERT OR IGNORE INTO store(name, active) VALUES (?, 1)", store)
+        val rows = mergeSimilarNorms(conn, cleaned)
         val games = ensureGames(conn, rows, ts)
         val known = existing(conn, store)
 
@@ -83,46 +126,16 @@ fun ingestStore(conn: SQLiteConnection, store: String, records: List<Scraped>, t
         // stays NULL is exactly what was not seen.
         conn.exec("UPDATE product SET flag = NULL WHERE store = ?", store)
 
-        val inserts = mutableListOf<List<Any?>>()
-        val updates = mutableListOf<List<Any?>>()
-        var restock = 0
-        for (r in rows) {
-            val prev = known[r.urlCanon]
-            val flag = flagFor(prev, r)
-            val payload = listOf(
-                games[r.norm], r.titleRaw, r.title, r.norm, r.kind,
-                r.priceOriginal, r.priceCurrent, r.priceEff, r.inStock, flag, ts,
-            )
-            if (prev == null) {
-                inserts += listOf(store, r.urlCanon, r.url) + payload + ts
-            } else {
-                updates += payload + prev.id
-                if (flag == "restock") restock++
-            }
-        }
-
-        conn.execMany(
-            """INSERT INTO product
-               (store, url_canon, url, game_id, title_raw, title, norm, kind,
-                price_original, price_current, price_eff, in_stock, flag,
-                last_seen, first_seen)
-               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
-            inserts,
-        )
-        conn.execMany(
-            """UPDATE product SET
-                 game_id=?, title_raw=?, title=?, norm=?, kind=?,
-                 price_original=?, price_current=?, price_eff=?,
-                 in_stock=?, flag=?, last_seen=?
-               WHERE id=?""",
-            updates,
-        )
+        val (inserts, updates) = splitWrites(rows, known, games, store, ts)
+        conn.execMany(INSERT_PRODUCT, inserts)
+        conn.execMany(UPDATE_PRODUCT, updates)
 
         recordPrices(conn, store, ts)
         conn.exec(
             "INSERT OR REPLACE INTO scrape_run(store, ts, n_products, success) VALUES (?,?,?,1)",
             store, ts, rows.size,
         )
+        val restock = updates.count { it[FLAG_COLUMN] == "restock" }
         IngestResult(store, rows.size, inserts.size, restock, rejected, skipped = false)
     }
 }

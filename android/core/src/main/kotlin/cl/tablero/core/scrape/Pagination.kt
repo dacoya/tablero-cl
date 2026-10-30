@@ -14,8 +14,9 @@ fun buildUrl(baseUrl: String, style: String, page: Int): String {
         style == "gatoarcano" -> "$baseUrl/?jsf=epro-archive-products&pagenum=$page"
         style == "calabozo" -> "$baseUrl/$page"
         page == 1 -> baseUrl
-        style == "shopify" || style == "page_param" -> "$baseUrl?page=$page"
+        style == "shopify" || style == "page_param" -> "$baseUrl${sep}page=$page"
         style == "p" -> "$baseUrl?p=$page"
+        style == "pagina" -> "$baseUrl?pagina=$page"
         style == "woo" -> "$baseUrl/page/$page/"
         style == "product-page" -> "$baseUrl${sep}product-page=$page"
         else -> throw IllegalArgumentException("Unknown pagination style: $style")

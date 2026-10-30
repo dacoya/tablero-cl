@@ -193,7 +193,6 @@ def test_watchlist_survives_rebuild(tmp_path, sample_products, sample_history):
 
     from tablero import db as db_mod
     from tablero import migrate
-    from tablero import search
     from tablero import watchlist
 
     data_dir = tmp_path / "data"
@@ -205,7 +204,7 @@ def test_watchlist_survives_rebuild(tmp_path, sample_products, sample_history):
     migrate.migrate(db_path=db_path, data_dir=data_dir)
 
     conn = db_mod.connect(db_path)
-    watchlist.add(conn, search.best_match(conn, "catan")["game_id"], target=40000)
+    watchlist.add(conn, conn.execute("SELECT id FROM game WHERE norm = ?", ("catan",)).fetchone()[0], target=40000)
     from tablero import changes
     changes.set_cursor(conn, ts=1_700_500_000)
     conn.close()
@@ -229,3 +228,4 @@ def test_failure_recorded_without_touching_products(db_conn):
         "SELECT success, n_products FROM scrape_run WHERE store='tiendaA' AND ts=1700400000"
     ).fetchone()
     assert row["success"] == 0 and row["n_products"] is None
+

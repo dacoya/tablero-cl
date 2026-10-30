@@ -9,91 +9,104 @@
      "original_price": "$45.000",
      "current_price": null,
      "stock_status": null,
-     "url": "https://www.tienda.cl/p/catan/?ref=home"
+     "url": "https://www.tienda.cl/p/catan/?ref=home",
+     "image": null
     },
     {
      "title": "Catan - Juego de Mesa",
      "original_price": "$40.000",
      "current_price": null,
      "stock_status": null,
-     "url": "https://tienda.cl/p/catan/"
+     "url": "https://tienda.cl/p/catan/",
+     "image": "https://tienda.cl/img/catan.jpg"
     },
     {
      "title": "Wingspan",
      "original_price": "$60.000",
      "current_price": "$50.000",
      "stock_status": null,
-     "url": "https://tienda.cl/p/wingspan/"
+     "url": "https://tienda.cl/p/wingspan/",
+     "image": "https://tienda.cl/img/wingspan-1.jpg"
     },
     {
      "title": "Azul",
      "original_price": "$30.000",
      "current_price": null,
      "stock_status": "Agotado",
-     "url": "https://tienda.cl/p/azul/"
+     "url": "https://tienda.cl/p/azul/",
+     "image": null
     },
     {
      "title": "Carcassonne",
      "original_price": "$25.000",
      "current_price": null,
      "stock_status": null,
-     "url": "https://tienda.cl/p/carcassonne/"
+     "url": "https://tienda.cl/p/carcassonne/",
+     "image": null
     },
     {
      "title": "Clank Base",
      "original_price": "$35.000",
      "current_price": null,
      "stock_status": null,
-     "url": "https://tienda.cl/p/clank/"
+     "url": "https://tienda.cl/p/clank/",
+     "image": null
     },
     {
      "title": "CLANK BASE",
      "original_price": "$36.000",
      "current_price": null,
      "stock_status": null,
-     "url": "https://tienda.cl/p/clank-caps/"
+     "url": "https://tienda.cl/p/clank-caps/",
+     "image": null
     },
     {
      "title": "Terraforming Mars",
      "original_price": "$45.000",
      "current_price": null,
      "stock_status": null,
-     "url": "https://tienda.cl/p/tm/"
+     "url": "https://tienda.cl/p/tm/",
+     "image": null
     },
     {
      "title": "Terraforming Mars -...",
      "original_price": "$20.000",
      "current_price": null,
      "stock_status": null,
-     "url": "https://tienda.cl/p/terraforming-mars-preludio-2"
+     "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+     "image": null
     },
     {
      "title": "Gratis",
      "original_price": "$0",
      "current_price": null,
      "stock_status": null,
-     "url": "https://tienda.cl/p/gratis/"
+     "url": "https://tienda.cl/p/gratis/",
+     "image": null
     },
     {
      "title": "Sobreprecio",
      "original_price": "$10.000",
      "current_price": "$20.000",
      "stock_status": null,
-     "url": "https://tienda.cl/p/caro/"
+     "url": "https://tienda.cl/p/caro/",
+     "image": null
     },
     {
      "title": null,
      "original_price": "$10.000",
      "current_price": null,
      "stock_status": null,
-     "url": "https://tienda.cl/p/sin-titulo/"
+     "url": "https://tienda.cl/p/sin-titulo/",
+     "image": null
     },
     {
      "title": "Sin URL",
      "original_price": "$5.000",
      "current_price": null,
      "stock_status": null,
-     "url": ""
+     "url": "",
+     "image": null
     }
    ],
    "result": {
@@ -124,6 +137,7 @@
       "flag": "new",
       "first_seen": 1000,
       "last_seen": 1000,
+      "image_url": null,
       "live": 1
      },
      {
@@ -141,6 +155,7 @@
       "flag": "new",
       "first_seen": 1000,
       "last_seen": 1000,
+      "image_url": null,
       "live": 1
      },
      {
@@ -158,6 +173,7 @@
       "flag": "new",
       "first_seen": 1000,
       "last_seen": 1000,
+      "image_url": "https://tienda.cl/img/catan.jpg",
       "live": 1
      },
      {
@@ -175,6 +191,7 @@
       "flag": "new",
       "first_seen": 1000,
       "last_seen": 1000,
+      "image_url": null,
       "live": 1
      },
      {
@@ -192,6 +209,7 @@
       "flag": "new",
       "first_seen": 1000,
       "last_seen": 1000,
+      "image_url": null,
       "live": 1
      },
      {
@@ -209,6 +227,7 @@
       "flag": "new",
       "first_seen": 1000,
       "last_seen": 1000,
+      "image_url": null,
       "live": 1
      },
      {
@@ -226,6 +245,7 @@
       "flag": "new",
       "first_seen": 1000,
       "last_seen": 1000,
+      "image_url": null,
       "live": 1
      },
      {
@@ -243,6 +263,7 @@
       "flag": "new",
       "first_seen": 1000,
       "last_seen": 1000,
+      "image_url": "https://tienda.cl/img/wingspan-1.jpg",
       "live": 1
      },
      {
@@ -260,6 +281,7 @@
       "flag": "new",
       "first_seen": 1000,
       "last_seen": 1000,
+      "image_url": null,
       "live": 1
      }
     ],
@@ -396,56 +418,64 @@
      "original_price": "$35.000",
      "current_price": null,
      "stock_status": null,
-     "url": "https://tienda.cl/p/catan/"
+     "url": "https://tienda.cl/p/catan/",
+     "image": null
     },
     {
      "title": "Wingspan",
      "original_price": "$60.000",
      "current_price": null,
      "stock_status": null,
-     "url": "https://tienda.cl/p/wingspan/"
+     "url": "https://tienda.cl/p/wingspan/",
+     "image": "https://tienda.cl/img/wingspan-2.jpg"
     },
     {
      "title": "Azul",
      "original_price": "$30.000",
      "current_price": null,
      "stock_status": null,
-     "url": "https://tienda.cl/p/azul/"
+     "url": "https://tienda.cl/p/azul/",
+     "image": null
     },
     {
      "title": "Clank Base",
      "original_price": "$35.000",
      "current_price": "$30.000",
      "stock_status": null,
-     "url": "https://tienda.cl/p/clank/"
+     "url": "https://tienda.cl/p/clank/",
+     "image": null
     },
     {
      "title": "Terraforming Mars",
      "original_price": "$45.000",
      "current_price": null,
      "stock_status": "Agotado",
-     "url": "https://tienda.cl/p/tm/"
+     "url": "https://tienda.cl/p/tm/",
+     "image": null
     },
     {
      "title": "Terraforming Mars -...",
      "original_price": "$22.000",
      "current_price": null,
      "stock_status": null,
-     "url": "https://tienda.cl/p/terraforming-mars-preludio-2"
+     "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+     "image": null
     },
     {
      "title": "Dixit",
      "original_price": "$28.000",
      "current_price": null,
      "stock_status": null,
-     "url": "https://tienda.cl/p/dixit/"
+     "url": "https://tienda.cl/p/dixit/",
+     "image": null
     },
     {
      "title": "Sin URL",
      "original_price": "$5.000",
      "current_price": null,
      "stock_status": null,
-     "url": ""
+     "url": "",
+     "image": null
     }
    ],
    "result": {
@@ -473,6 +503,7 @@
       "flag": "restock",
       "first_seen": 1000,
       "last_seen": 2000,
+      "image_url": null,
       "live": 1
      },
      {
@@ -490,6 +521,7 @@
       "flag": null,
       "first_seen": 1000,
       "last_seen": 1000,
+      "image_url": null,
       "live": 0
      },
      {
@@ -507,6 +539,7 @@
       "flag": null,
       "first_seen": 1000,
       "last_seen": 2000,
+      "image_url": "https://tienda.cl/img/catan.jpg",
       "live": 1
      },
      {
@@ -524,6 +557,7 @@
       "flag": null,
       "first_seen": 1000,
       "last_seen": 2000,
+      "image_url": null,
       "live": 1
      },
      {
@@ -541,6 +575,7 @@
       "flag": null,
       "first_seen": 1000,
       "last_seen": 1000,
+      "image_url": null,
       "live": 0
      },
      {
@@ -558,6 +593,7 @@
       "flag": "new",
       "first_seen": 2000,
       "last_seen": 2000,
+      "image_url": null,
       "live": 1
      },
      {
@@ -575,6 +611,7 @@
       "flag": null,
       "first_seen": 1000,
       "last_seen": 2000,
+      "image_url": null,
       "live": 1
      },
      {
@@ -592,6 +629,7 @@
       "flag": null,
       "first_seen": 1000,
       "last_seen": 2000,
+      "image_url": null,
       "live": 1
      },
      {
@@ -609,6 +647,7 @@
       "flag": null,
       "first_seen": 1000,
       "last_seen": 2000,
+      "image_url": "https://tienda.cl/img/wingspan-2.jpg",
       "live": 1
      },
      {
@@ -626,6 +665,7 @@
       "flag": null,
       "first_seen": 1000,
       "last_seen": 2000,
+      "image_url": null,
       "live": 1
      }
     ],
@@ -843,6 +883,7 @@
       "flag": "restock",
       "first_seen": 1000,
       "last_seen": 2000,
+      "image_url": null,
       "live": 1
      },
      {
@@ -860,6 +901,7 @@
       "flag": null,
       "first_seen": 1000,
       "last_seen": 1000,
+      "image_url": null,
       "live": 0
      },
      {
@@ -877,6 +919,7 @@
       "flag": null,
       "first_seen": 1000,
       "last_seen": 2000,
+      "image_url": "https://tienda.cl/img/catan.jpg",
       "live": 1
      },
      {
@@ -894,6 +937,7 @@
       "flag": null,
       "first_seen": 1000,
       "last_seen": 2000,
+      "image_url": null,
       "live": 1
      },
      {
@@ -911,6 +955,7 @@
       "flag": null,
       "first_seen": 1000,
       "last_seen": 1000,
+      "image_url": null,
       "live": 0
      },
      {
@@ -928,6 +973,7 @@
       "flag": "new",
       "first_seen": 2000,
       "last_seen": 2000,
+      "image_url": null,
       "live": 1
      },
      {
@@ -945,6 +991,7 @@
       "flag": null,
       "first_seen": 1000,
       "last_seen": 2000,
+      "image_url": null,
       "live": 1
      },
      {
@@ -962,6 +1009,7 @@
       "flag": null,
       "first_seen": 1000,
       "last_seen": 2000,
+      "image_url": null,
       "live": 1
      },
      {
@@ -979,6 +1027,7 @@
       "flag": null,
       "first_seen": 1000,
       "last_seen": 2000,
+      "image_url": "https://tienda.cl/img/wingspan-2.jpg",
       "live": 1
      },
      {
@@ -996,6 +1045,7 @@
       "flag": null,
       "first_seen": 1000,
       "last_seen": 2000,
+      "image_url": null,
       "live": 1
      }
     ],
@@ -1196,6 +1246,7 @@
     "kind": "game",
     "in_stock": 1,
     "price_eff": 28000.0,
+    "image_url": null,
     "old_price": null,
     "new_price": 28000.0,
     "seen_at": 2000,
@@ -1209,6 +1260,7 @@
     "kind": "game",
     "in_stock": 1,
     "price_eff": 30000.0,
+    "image_url": null,
     "old_price": 30000.0,
     "new_price": 30000.0,
     "seen_at": 2000,
@@ -1222,6 +1274,7 @@
     "kind": "game",
     "in_stock": 0,
     "price_eff": 45000.0,
+    "image_url": null,
     "old_price": 45000.0,
     "new_price": 45000.0,
     "seen_at": 2000,
@@ -1235,6 +1288,7 @@
     "kind": "game",
     "in_stock": 1,
     "price_eff": 30000.0,
+    "image_url": null,
     "old_price": 35000.0,
     "new_price": 30000.0,
     "seen_at": 2000,
@@ -1248,6 +1302,7 @@
     "kind": "game",
     "in_stock": 1,
     "price_eff": 60000.0,
+    "image_url": "https://tienda.cl/img/wingspan-2.jpg",
     "old_price": 50000.0,
     "new_price": 60000.0,
     "seen_at": 2000,
@@ -1261,6 +1316,7 @@
     "kind": "game",
     "in_stock": 1,
     "price_eff": 35000.0,
+    "image_url": "https://tienda.cl/img/catan.jpg",
     "old_price": 40000.0,
     "new_price": 35000.0,
     "seen_at": 2000,
@@ -1274,11 +1330,6760 @@
     "kind": "game",
     "in_stock": 1,
     "price_eff": 22000.0,
+    "image_url": null,
     "old_price": 20000.0,
     "new_price": 22000.0,
     "seen_at": 2000,
     "drop_pct": -10.0,
     "change": "alza"
+   }
+  ]
+ },
+ "queries": {
+  "watch_setup": [
+   [
+    "catan",
+    36000.0,
+    10
+   ],
+   [
+    "wingspan",
+    50000.0,
+    20
+   ],
+   [
+    "carcassonne",
+    30000.0,
+    30
+   ]
+  ],
+  "watchlist": [
+   {
+    "target": 36000.0,
+    "note": null,
+    "added_at": 10,
+    "title": "Catan",
+    "kind": "game",
+    "min_price": 35000.0,
+    "n_stores": 1,
+    "in_stock": 1,
+    "image_url": "https://tienda.cl/img/catan.jpg",
+    "hit": true
+   },
+   {
+    "target": 50000.0,
+    "note": null,
+    "added_at": 20,
+    "title": "Wingspan",
+    "kind": "game",
+    "min_price": 60000.0,
+    "n_stores": 1,
+    "in_stock": 1,
+    "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+    "hit": false
+   },
+   {
+    "target": 30000.0,
+    "note": null,
+    "added_at": 30,
+    "title": "Carcassonne",
+    "kind": "game",
+    "min_price": null,
+    "n_stores": 0,
+    "in_stock": null,
+    "image_url": null,
+    "hit": false
+   }
+  ],
+  "alerts": [
+   {
+    "query": "Catan",
+    "matched_title": "Catan",
+    "store": "tienda",
+    "price": 35000.0,
+    "threshold": 36000.0,
+    "url": "https://tienda.cl/p/catan/",
+    "in_stock": true
+   }
+  ],
+  "trends": {
+   "azul": [
+    {
+     "store": "tienda",
+     "label": "tienda",
+     "first": 30000.0,
+     "last": 30000.0,
+     "min": 30000.0,
+     "max": 30000.0,
+     "change_pct": 0.0,
+     "n": 2,
+     "spark": "▁▁",
+     "points": [
+      {
+       "ts": 1000,
+       "price": 30000.0
+      },
+      {
+       "ts": 2000,
+       "price": 30000.0
+      }
+     ]
+    }
+   ],
+   "carcassonne": [
+    {
+     "store": "tienda",
+     "label": "tienda",
+     "first": 25000.0,
+     "last": 25000.0,
+     "min": 25000.0,
+     "max": 25000.0,
+     "change_pct": 0.0,
+     "n": 1,
+     "spark": "▁",
+     "points": [
+      {
+       "ts": 1000,
+       "price": 25000.0
+      }
+     ]
+    }
+   ],
+   "catan": [
+    {
+     "store": "tienda",
+     "label": "tienda",
+     "first": 40000.0,
+     "last": 35000.0,
+     "min": 35000.0,
+     "max": 40000.0,
+     "change_pct": -12.5,
+     "n": 2,
+     "spark": "█▁",
+     "points": [
+      {
+       "ts": 1000,
+       "price": 40000.0
+      },
+      {
+       "ts": 2000,
+       "price": 35000.0
+      }
+     ]
+    }
+   ],
+   "clank": [
+    {
+     "store": "tienda",
+     "label": "tienda · Clank Base",
+     "first": 35000.0,
+     "last": 30000.0,
+     "min": 30000.0,
+     "max": 35000.0,
+     "change_pct": -14.285714285714285,
+     "n": 2,
+     "spark": "█▁",
+     "points": [
+      {
+       "ts": 1000,
+       "price": 35000.0
+      },
+      {
+       "ts": 2000,
+       "price": 30000.0
+      }
+     ]
+    },
+    {
+     "store": "tienda",
+     "label": "tienda · CLANK BASE",
+     "first": 36000.0,
+     "last": 36000.0,
+     "min": 36000.0,
+     "max": 36000.0,
+     "change_pct": 0.0,
+     "n": 1,
+     "spark": "▁",
+     "points": [
+      {
+       "ts": 1000,
+       "price": 36000.0
+      }
+     ]
+    }
+   ],
+   "dixit": [
+    {
+     "store": "tienda",
+     "label": "tienda",
+     "first": 28000.0,
+     "last": 28000.0,
+     "min": 28000.0,
+     "max": 28000.0,
+     "change_pct": 0.0,
+     "n": 1,
+     "spark": "▁",
+     "points": [
+      {
+       "ts": 2000,
+       "price": 28000.0
+      }
+     ]
+    }
+   ],
+   "sin url": [
+    {
+     "store": "tienda",
+     "label": "tienda",
+     "first": 5000.0,
+     "last": 5000.0,
+     "min": 5000.0,
+     "max": 5000.0,
+     "change_pct": 0.0,
+     "n": 1,
+     "spark": "▁",
+     "points": [
+      {
+       "ts": 1000,
+       "price": 5000.0
+      }
+     ]
+    }
+   ],
+   "terraforming mars": [
+    {
+     "store": "tienda",
+     "label": "tienda",
+     "first": 45000.0,
+     "last": 45000.0,
+     "min": 45000.0,
+     "max": 45000.0,
+     "change_pct": 0.0,
+     "n": 2,
+     "spark": "▁▁",
+     "points": [
+      {
+       "ts": 1000,
+       "price": 45000.0
+      },
+      {
+       "ts": 2000,
+       "price": 45000.0
+      }
+     ]
+    }
+   ],
+   "terraforming mars preludio": [
+    {
+     "store": "tienda",
+     "label": "tienda",
+     "first": 20000.0,
+     "last": 22000.0,
+     "min": 20000.0,
+     "max": 22000.0,
+     "change_pct": 10.0,
+     "n": 2,
+     "spark": "▁█",
+     "points": [
+      {
+       "ts": 1000,
+       "price": 20000.0
+      },
+      {
+       "ts": 2000,
+       "price": 22000.0
+      }
+     ]
+    }
+   ],
+   "wingspan": [
+    {
+     "store": "tienda",
+     "label": "tienda",
+     "first": 50000.0,
+     "last": 60000.0,
+     "min": 50000.0,
+     "max": 60000.0,
+     "change_pct": 20.0,
+     "n": 2,
+     "spark": "▁█",
+     "points": [
+      {
+       "ts": 1000,
+       "price": 50000.0
+      },
+      {
+       "ts": 2000,
+       "price": 60000.0
+      }
+     ]
+    }
+   ]
+  },
+  "browse": {
+   "all": {
+    "filters": {},
+    "count": 8,
+    "sorts": {
+     "discount": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      }
+     ],
+     "price": [
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      }
+     ],
+     "price_desc": [
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      }
+     ],
+     "sale_desc": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      }
+     ],
+     "savings": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      }
+     ],
+     "store": [
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      }
+     ],
+     "title": [
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      }
+     ]
+    }
+   },
+   "on_sale": {
+    "filters": {
+     "on_sale": true
+    },
+    "count": 1,
+    "sorts": {
+     "discount": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      }
+     ],
+     "price": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      }
+     ],
+     "price_desc": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      }
+     ],
+     "sale_desc": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      }
+     ],
+     "savings": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      }
+     ],
+     "store": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      }
+     ],
+     "title": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      }
+     ]
+    }
+   },
+   "in_stock": {
+    "filters": {
+     "in_stock_only": true
+    },
+    "count": 7,
+    "sorts": {
+     "discount": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      }
+     ],
+     "price": [
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      }
+     ],
+     "price_desc": [
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      }
+     ],
+     "sale_desc": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      }
+     ],
+     "savings": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      }
+     ],
+     "store": [
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      }
+     ],
+     "title": [
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      }
+     ]
+    }
+   },
+   "price_band": {
+    "filters": {
+     "min_price": 25000,
+     "max_price": 40000
+    },
+    "count": 4,
+    "sorts": {
+     "discount": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      }
+     ],
+     "price": [
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      }
+     ],
+     "price_desc": [
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      }
+     ],
+     "sale_desc": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      }
+     ],
+     "savings": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      }
+     ],
+     "store": [
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      }
+     ],
+     "title": [
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      }
+     ]
+    }
+   },
+   "with_stale": {
+    "filters": {
+     "include_stale": true
+    },
+    "count": 10,
+    "sorts": {
+     "discount": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Carcassonne",
+       "url": "https://tienda.cl/p/carcassonne/",
+       "kind": "game",
+       "price_original": 25000.0,
+       "price_current": null,
+       "price_eff": 25000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "CLANK BASE",
+       "url": "https://tienda.cl/p/clank-caps/",
+       "kind": "game",
+       "price_original": 36000.0,
+       "price_current": null,
+       "price_eff": 36000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      }
+     ],
+     "price": [
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Carcassonne",
+       "url": "https://tienda.cl/p/carcassonne/",
+       "kind": "game",
+       "price_original": 25000.0,
+       "price_current": null,
+       "price_eff": 25000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "CLANK BASE",
+       "url": "https://tienda.cl/p/clank-caps/",
+       "kind": "game",
+       "price_original": 36000.0,
+       "price_current": null,
+       "price_eff": 36000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      }
+     ],
+     "price_desc": [
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "CLANK BASE",
+       "url": "https://tienda.cl/p/clank-caps/",
+       "kind": "game",
+       "price_original": 36000.0,
+       "price_current": null,
+       "price_eff": 36000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Carcassonne",
+       "url": "https://tienda.cl/p/carcassonne/",
+       "kind": "game",
+       "price_original": 25000.0,
+       "price_current": null,
+       "price_eff": 25000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      }
+     ],
+     "sale_desc": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "CLANK BASE",
+       "url": "https://tienda.cl/p/clank-caps/",
+       "kind": "game",
+       "price_original": 36000.0,
+       "price_current": null,
+       "price_eff": 36000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Carcassonne",
+       "url": "https://tienda.cl/p/carcassonne/",
+       "kind": "game",
+       "price_original": 25000.0,
+       "price_current": null,
+       "price_eff": 25000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      }
+     ],
+     "savings": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Carcassonne",
+       "url": "https://tienda.cl/p/carcassonne/",
+       "kind": "game",
+       "price_original": 25000.0,
+       "price_current": null,
+       "price_eff": 25000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "CLANK BASE",
+       "url": "https://tienda.cl/p/clank-caps/",
+       "kind": "game",
+       "price_original": 36000.0,
+       "price_current": null,
+       "price_eff": 36000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      }
+     ],
+     "store": [
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "CLANK BASE",
+       "url": "https://tienda.cl/p/clank-caps/",
+       "kind": "game",
+       "price_original": 36000.0,
+       "price_current": null,
+       "price_eff": 36000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Carcassonne",
+       "url": "https://tienda.cl/p/carcassonne/",
+       "kind": "game",
+       "price_original": 25000.0,
+       "price_current": null,
+       "price_eff": 25000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      }
+     ],
+     "title": [
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "CLANK BASE",
+       "url": "https://tienda.cl/p/clank-caps/",
+       "kind": "game",
+       "price_original": 36000.0,
+       "price_current": null,
+       "price_eff": 36000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Carcassonne",
+       "url": "https://tienda.cl/p/carcassonne/",
+       "kind": "game",
+       "price_original": 25000.0,
+       "price_current": null,
+       "price_eff": 25000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      }
+     ]
+    }
+   },
+   "games_only": {
+    "filters": {
+     "kind": [
+      "game"
+     ]
+    },
+    "count": 8,
+    "sorts": {
+     "discount": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      }
+     ],
+     "price": [
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      }
+     ],
+     "price_desc": [
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      }
+     ],
+     "sale_desc": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      }
+     ],
+     "savings": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      }
+     ],
+     "store": [
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      }
+     ],
+     "title": [
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      }
+     ]
+    }
+   },
+   "store": {
+    "filters": {
+     "store": "tienda"
+    },
+    "count": 8,
+    "sorts": {
+     "discount": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      }
+     ],
+     "price": [
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      }
+     ],
+     "price_desc": [
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      }
+     ],
+     "sale_desc": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      }
+     ],
+     "savings": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      }
+     ],
+     "store": [
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      }
+     ],
+     "title": [
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      }
+     ]
+    }
+   },
+   "flag_new": {
+    "filters": {
+     "flag": "new"
+    },
+    "count": 1,
+    "sorts": {
+     "discount": [
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      }
+     ],
+     "price": [
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      }
+     ],
+     "price_desc": [
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      }
+     ],
+     "sale_desc": [
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      }
+     ],
+     "savings": [
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      }
+     ],
+     "store": [
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      }
+     ],
+     "title": [
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      }
+     ]
+    }
+   },
+   "stores_list": {
+    "filters": {
+     "store": [
+      "tienda",
+      "otra"
+     ]
+    },
+    "count": 8,
+    "sorts": {
+     "discount": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      }
+     ],
+     "price": [
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      }
+     ],
+     "price_desc": [
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      }
+     ],
+     "sale_desc": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      }
+     ],
+     "savings": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      }
+     ],
+     "store": [
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      }
+     ],
+     "title": [
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Sin URL",
+       "url": "",
+       "kind": "game",
+       "price_original": 5000.0,
+       "price_current": null,
+       "price_eff": 5000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars",
+       "url": "https://tienda.cl/p/tm/",
+       "kind": "game",
+       "price_original": 45000.0,
+       "price_current": null,
+       "price_eff": 45000.0,
+       "in_stock": 0,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      }
+     ]
+    }
+   },
+   "min_discount": {
+    "filters": {
+     "min_discount": 10
+    },
+    "count": 1,
+    "sorts": {
+     "discount": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      }
+     ],
+     "price": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      }
+     ],
+     "price_desc": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      }
+     ],
+     "sale_desc": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      }
+     ],
+     "savings": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      }
+     ],
+     "store": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      }
+     ],
+     "title": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      }
+     ]
+    }
+   },
+   "combined": {
+    "filters": {
+     "store": [
+      "tienda"
+     ],
+     "kind": [
+      "game"
+     ],
+     "in_stock_only": true,
+     "min_price": 20000,
+     "max_price": 60000
+    },
+    "count": 6,
+    "sorts": {
+     "discount": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      }
+     ],
+     "price": [
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      }
+     ],
+     "price_desc": [
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      }
+     ],
+     "sale_desc": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      }
+     ],
+     "savings": [
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      }
+     ],
+     "store": [
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      }
+     ],
+     "title": [
+      {
+       "store": "tienda",
+       "title": "Azul",
+       "url": "https://tienda.cl/p/azul/",
+       "kind": "game",
+       "price_original": 30000.0,
+       "price_current": null,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": "restock",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Catan",
+       "url": "https://tienda.cl/p/catan/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": null,
+       "price_eff": 35000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/catan.jpg",
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Clank Base",
+       "url": "https://tienda.cl/p/clank/",
+       "kind": "game",
+       "price_original": 35000.0,
+       "price_current": 30000.0,
+       "price_eff": 30000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": 14.3
+      },
+      {
+       "store": "tienda",
+       "title": "Dixit",
+       "url": "https://tienda.cl/p/dixit/",
+       "kind": "game",
+       "price_original": 28000.0,
+       "price_current": null,
+       "price_eff": 28000.0,
+       "in_stock": 1,
+       "flag": "new",
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Terraforming Mars -...",
+       "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+       "kind": "game",
+       "price_original": 22000.0,
+       "price_current": null,
+       "price_eff": 22000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": null,
+       "discount_pct": null
+      },
+      {
+       "store": "tienda",
+       "title": "Wingspan",
+       "url": "https://tienda.cl/p/wingspan/",
+       "kind": "game",
+       "price_original": 60000.0,
+       "price_current": null,
+       "price_eff": 60000.0,
+       "in_stock": 1,
+       "flag": null,
+       "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+       "discount_pct": null
+      }
+     ]
+    }
+   }
+  },
+  "page": [
+   {
+    "store": "tienda",
+    "title": "Azul",
+    "url": "https://tienda.cl/p/azul/",
+    "kind": "game",
+    "price_original": 30000.0,
+    "price_current": null,
+    "price_eff": 30000.0,
+    "in_stock": 1,
+    "flag": "restock",
+    "image_url": null,
+    "discount_pct": null
+   },
+   {
+    "store": "tienda",
+    "title": "Clank Base",
+    "url": "https://tienda.cl/p/clank/",
+    "kind": "game",
+    "price_original": 35000.0,
+    "price_current": 30000.0,
+    "price_eff": 30000.0,
+    "in_stock": 1,
+    "flag": null,
+    "image_url": null,
+    "discount_pct": 14.3
+   },
+   {
+    "store": "tienda",
+    "title": "Catan",
+    "url": "https://tienda.cl/p/catan/",
+    "kind": "game",
+    "price_original": 35000.0,
+    "price_current": null,
+    "price_eff": 35000.0,
+    "in_stock": 1,
+    "flag": null,
+    "image_url": "https://tienda.cl/img/catan.jpg",
+    "discount_pct": null
+   }
+  ],
+  "smart": {
+   "value": [
+    {
+     "store": "tienda",
+     "title": "Clank Base",
+     "url": "https://tienda.cl/p/clank/",
+     "kind": "game",
+     "price_original": 35000.0,
+     "price_current": 30000.0,
+     "price_eff": 30000.0,
+     "in_stock": 1,
+     "flag": null,
+     "image_url": null,
+     "n_stores": 1,
+     "median": 33000.0,
+     "discount_pct": 14.3,
+     "score": 2356.9024
+    },
+    {
+     "store": "tienda",
+     "title": "Catan",
+     "url": "https://tienda.cl/p/catan/",
+     "kind": "game",
+     "price_original": 35000.0,
+     "price_current": null,
+     "price_eff": 35000.0,
+     "in_stock": 1,
+     "flag": null,
+     "image_url": "https://tienda.cl/img/catan.jpg",
+     "n_stores": 1,
+     "median": 35000.0,
+     "discount_pct": null,
+     "score": 0.0
+    },
+    {
+     "store": "tienda",
+     "title": "Wingspan",
+     "url": "https://tienda.cl/p/wingspan/",
+     "kind": "game",
+     "price_original": 60000.0,
+     "price_current": null,
+     "price_eff": 60000.0,
+     "in_stock": 1,
+     "flag": null,
+     "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+     "n_stores": 1,
+     "median": 60000.0,
+     "discount_pct": null,
+     "score": 0.0
+    },
+    {
+     "store": "tienda",
+     "title": "Azul",
+     "url": "https://tienda.cl/p/azul/",
+     "kind": "game",
+     "price_original": 30000.0,
+     "price_current": null,
+     "price_eff": 30000.0,
+     "in_stock": 1,
+     "flag": "restock",
+     "image_url": null,
+     "n_stores": 1,
+     "median": 30000.0,
+     "discount_pct": null,
+     "score": 0.0
+    },
+    {
+     "store": "tienda",
+     "title": "Terraforming Mars",
+     "url": "https://tienda.cl/p/tm/",
+     "kind": "game",
+     "price_original": 45000.0,
+     "price_current": null,
+     "price_eff": 45000.0,
+     "in_stock": 0,
+     "flag": null,
+     "image_url": null,
+     "n_stores": 1,
+     "median": 45000.0,
+     "discount_pct": null,
+     "score": 0.0
+    },
+    {
+     "store": "tienda",
+     "title": "Terraforming Mars -...",
+     "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+     "kind": "game",
+     "price_original": 22000.0,
+     "price_current": null,
+     "price_eff": 22000.0,
+     "in_stock": 1,
+     "flag": null,
+     "image_url": null,
+     "n_stores": 1,
+     "median": 22000.0,
+     "discount_pct": null,
+     "score": 0.0
+    },
+    {
+     "store": "tienda",
+     "title": "Sin URL",
+     "url": "",
+     "kind": "game",
+     "price_original": 5000.0,
+     "price_current": null,
+     "price_eff": 5000.0,
+     "in_stock": 1,
+     "flag": null,
+     "image_url": null,
+     "n_stores": 1,
+     "median": 5000.0,
+     "discount_pct": null,
+     "score": 0.0
+    },
+    {
+     "store": "tienda",
+     "title": "Dixit",
+     "url": "https://tienda.cl/p/dixit/",
+     "kind": "game",
+     "price_original": 28000.0,
+     "price_current": null,
+     "price_eff": 28000.0,
+     "in_stock": 1,
+     "flag": "new",
+     "image_url": null,
+     "n_stores": 1,
+     "median": 28000.0,
+     "discount_pct": null,
+     "score": 0.0
+    }
+   ],
+   "scarcity": [
+    {
+     "store": "tienda",
+     "title": "Catan",
+     "url": "https://tienda.cl/p/catan/",
+     "kind": "game",
+     "price_original": 35000.0,
+     "price_current": null,
+     "price_eff": 35000.0,
+     "in_stock": 1,
+     "flag": null,
+     "image_url": "https://tienda.cl/img/catan.jpg",
+     "n_stores": 1,
+     "median": 35000.0,
+     "discount_pct": null,
+     "score": -1.0
+    },
+    {
+     "store": "tienda",
+     "title": "Wingspan",
+     "url": "https://tienda.cl/p/wingspan/",
+     "kind": "game",
+     "price_original": 60000.0,
+     "price_current": null,
+     "price_eff": 60000.0,
+     "in_stock": 1,
+     "flag": null,
+     "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+     "n_stores": 1,
+     "median": 60000.0,
+     "discount_pct": null,
+     "score": -1.0
+    },
+    {
+     "store": "tienda",
+     "title": "Azul",
+     "url": "https://tienda.cl/p/azul/",
+     "kind": "game",
+     "price_original": 30000.0,
+     "price_current": null,
+     "price_eff": 30000.0,
+     "in_stock": 1,
+     "flag": "restock",
+     "image_url": null,
+     "n_stores": 1,
+     "median": 30000.0,
+     "discount_pct": null,
+     "score": -1.0
+    },
+    {
+     "store": "tienda",
+     "title": "Clank Base",
+     "url": "https://tienda.cl/p/clank/",
+     "kind": "game",
+     "price_original": 35000.0,
+     "price_current": 30000.0,
+     "price_eff": 30000.0,
+     "in_stock": 1,
+     "flag": null,
+     "image_url": null,
+     "n_stores": 1,
+     "median": 33000.0,
+     "discount_pct": 14.3,
+     "score": -1.0
+    },
+    {
+     "store": "tienda",
+     "title": "Terraforming Mars",
+     "url": "https://tienda.cl/p/tm/",
+     "kind": "game",
+     "price_original": 45000.0,
+     "price_current": null,
+     "price_eff": 45000.0,
+     "in_stock": 0,
+     "flag": null,
+     "image_url": null,
+     "n_stores": 1,
+     "median": 45000.0,
+     "discount_pct": null,
+     "score": -1.0
+    },
+    {
+     "store": "tienda",
+     "title": "Terraforming Mars -...",
+     "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+     "kind": "game",
+     "price_original": 22000.0,
+     "price_current": null,
+     "price_eff": 22000.0,
+     "in_stock": 1,
+     "flag": null,
+     "image_url": null,
+     "n_stores": 1,
+     "median": 22000.0,
+     "discount_pct": null,
+     "score": -1.0
+    },
+    {
+     "store": "tienda",
+     "title": "Sin URL",
+     "url": "",
+     "kind": "game",
+     "price_original": 5000.0,
+     "price_current": null,
+     "price_eff": 5000.0,
+     "in_stock": 1,
+     "flag": null,
+     "image_url": null,
+     "n_stores": 1,
+     "median": 5000.0,
+     "discount_pct": null,
+     "score": -1.0
+    },
+    {
+     "store": "tienda",
+     "title": "Dixit",
+     "url": "https://tienda.cl/p/dixit/",
+     "kind": "game",
+     "price_original": 28000.0,
+     "price_current": null,
+     "price_eff": 28000.0,
+     "in_stock": 1,
+     "flag": "new",
+     "image_url": null,
+     "n_stores": 1,
+     "median": 28000.0,
+     "discount_pct": null,
+     "score": -1.0
+    }
+   ],
+   "volatility": [
+    {
+     "store": "tienda",
+     "title": "Clank Base",
+     "url": "https://tienda.cl/p/clank/",
+     "kind": "game",
+     "price_original": 35000.0,
+     "price_current": 30000.0,
+     "price_eff": 30000.0,
+     "in_stock": 1,
+     "flag": null,
+     "image_url": null,
+     "n_stores": 1,
+     "median": 33000.0,
+     "discount_pct": 14.3,
+     "score": 0.1818
+    },
+    {
+     "store": "tienda",
+     "title": "Catan",
+     "url": "https://tienda.cl/p/catan/",
+     "kind": "game",
+     "price_original": 35000.0,
+     "price_current": null,
+     "price_eff": 35000.0,
+     "in_stock": 1,
+     "flag": null,
+     "image_url": "https://tienda.cl/img/catan.jpg",
+     "n_stores": 1,
+     "median": 35000.0,
+     "discount_pct": null,
+     "score": 0.0
+    },
+    {
+     "store": "tienda",
+     "title": "Wingspan",
+     "url": "https://tienda.cl/p/wingspan/",
+     "kind": "game",
+     "price_original": 60000.0,
+     "price_current": null,
+     "price_eff": 60000.0,
+     "in_stock": 1,
+     "flag": null,
+     "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+     "n_stores": 1,
+     "median": 60000.0,
+     "discount_pct": null,
+     "score": 0.0
+    },
+    {
+     "store": "tienda",
+     "title": "Azul",
+     "url": "https://tienda.cl/p/azul/",
+     "kind": "game",
+     "price_original": 30000.0,
+     "price_current": null,
+     "price_eff": 30000.0,
+     "in_stock": 1,
+     "flag": "restock",
+     "image_url": null,
+     "n_stores": 1,
+     "median": 30000.0,
+     "discount_pct": null,
+     "score": 0.0
+    },
+    {
+     "store": "tienda",
+     "title": "Terraforming Mars",
+     "url": "https://tienda.cl/p/tm/",
+     "kind": "game",
+     "price_original": 45000.0,
+     "price_current": null,
+     "price_eff": 45000.0,
+     "in_stock": 0,
+     "flag": null,
+     "image_url": null,
+     "n_stores": 1,
+     "median": 45000.0,
+     "discount_pct": null,
+     "score": 0.0
+    },
+    {
+     "store": "tienda",
+     "title": "Terraforming Mars -...",
+     "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+     "kind": "game",
+     "price_original": 22000.0,
+     "price_current": null,
+     "price_eff": 22000.0,
+     "in_stock": 1,
+     "flag": null,
+     "image_url": null,
+     "n_stores": 1,
+     "median": 22000.0,
+     "discount_pct": null,
+     "score": 0.0
+    },
+    {
+     "store": "tienda",
+     "title": "Sin URL",
+     "url": "",
+     "kind": "game",
+     "price_original": 5000.0,
+     "price_current": null,
+     "price_eff": 5000.0,
+     "in_stock": 1,
+     "flag": null,
+     "image_url": null,
+     "n_stores": 1,
+     "median": 5000.0,
+     "discount_pct": null,
+     "score": 0.0
+    },
+    {
+     "store": "tienda",
+     "title": "Dixit",
+     "url": "https://tienda.cl/p/dixit/",
+     "kind": "game",
+     "price_original": 28000.0,
+     "price_current": null,
+     "price_eff": 28000.0,
+     "in_stock": 1,
+     "flag": "new",
+     "image_url": null,
+     "n_stores": 1,
+     "median": 28000.0,
+     "discount_pct": null,
+     "score": 0.0
+    }
+   ]
+  },
+  "game_prices": {
+   "azul": [
+    {
+     "store": "tienda",
+     "title": "Azul",
+     "url": "https://tienda.cl/p/azul/",
+     "kind": "game",
+     "price_original": 30000.0,
+     "price_current": null,
+     "price_eff": 30000.0,
+     "in_stock": 1,
+     "flag": "restock",
+     "image_url": null,
+     "discount_pct": null
+    }
+   ],
+   "carcassonne": [],
+   "catan": [
+    {
+     "store": "tienda",
+     "title": "Catan",
+     "url": "https://tienda.cl/p/catan/",
+     "kind": "game",
+     "price_original": 35000.0,
+     "price_current": null,
+     "price_eff": 35000.0,
+     "in_stock": 1,
+     "flag": null,
+     "image_url": "https://tienda.cl/img/catan.jpg",
+     "discount_pct": null
+    }
+   ],
+   "clank": [
+    {
+     "store": "tienda",
+     "title": "Clank Base",
+     "url": "https://tienda.cl/p/clank/",
+     "kind": "game",
+     "price_original": 35000.0,
+     "price_current": 30000.0,
+     "price_eff": 30000.0,
+     "in_stock": 1,
+     "flag": null,
+     "image_url": null,
+     "discount_pct": 14.3
+    }
+   ],
+   "dixit": [
+    {
+     "store": "tienda",
+     "title": "Dixit",
+     "url": "https://tienda.cl/p/dixit/",
+     "kind": "game",
+     "price_original": 28000.0,
+     "price_current": null,
+     "price_eff": 28000.0,
+     "in_stock": 1,
+     "flag": "new",
+     "image_url": null,
+     "discount_pct": null
+    }
+   ],
+   "sin url": [
+    {
+     "store": "tienda",
+     "title": "Sin URL",
+     "url": "",
+     "kind": "game",
+     "price_original": 5000.0,
+     "price_current": null,
+     "price_eff": 5000.0,
+     "in_stock": 1,
+     "flag": null,
+     "image_url": null,
+     "discount_pct": null
+    }
+   ],
+   "terraforming mars": [
+    {
+     "store": "tienda",
+     "title": "Terraforming Mars",
+     "url": "https://tienda.cl/p/tm/",
+     "kind": "game",
+     "price_original": 45000.0,
+     "price_current": null,
+     "price_eff": 45000.0,
+     "in_stock": 0,
+     "flag": null,
+     "image_url": null,
+     "discount_pct": null
+    }
+   ],
+   "terraforming mars preludio": [
+    {
+     "store": "tienda",
+     "title": "Terraforming Mars -...",
+     "url": "https://tienda.cl/p/terraforming-mars-preludio-2",
+     "kind": "game",
+     "price_original": 22000.0,
+     "price_current": null,
+     "price_eff": 22000.0,
+     "in_stock": 1,
+     "flag": null,
+     "image_url": null,
+     "discount_pct": null
+    }
+   ],
+   "wingspan": [
+    {
+     "store": "tienda",
+     "title": "Wingspan",
+     "url": "https://tienda.cl/p/wingspan/",
+     "kind": "game",
+     "price_original": 60000.0,
+     "price_current": null,
+     "price_eff": 60000.0,
+     "in_stock": 1,
+     "flag": null,
+     "image_url": "https://tienda.cl/img/wingspan-2.jpg",
+     "discount_pct": null
+    }
+   ]
+  },
+  "stores": [
+   {
+    "name": "tienda",
+    "base_url": null,
+    "city": null,
+    "active": 1,
+    "n_products": 10,
+    "n_in_stock": 9,
+    "last_scrape": 2000,
+    "last_success": 1
    }
   ]
  }

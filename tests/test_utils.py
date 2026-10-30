@@ -99,7 +99,7 @@ def test_generic_category_noise_is_still_stripped(raw):
 
 
 @pytest.mark.parametrize("raw, expected", [
-    ("Clank!: En las Catacumbas (En Español)", "clank en las catacumbas"),
+    ("Clank!: En las Catacumbas (En Español)", "clank catacumbas"),
     ("Terraforming Mars Edición Kickstarter", "terraforming mars kickstarter"),
     ("ÁÉÍÓÚ ñ", "aeiou n"),
 ])

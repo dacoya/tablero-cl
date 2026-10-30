@@ -898,5 +898,239 @@
   "pagination": "page_param",
   "page": 3,
   "url": "https://tentami.cl/collections/juegos-de-mesa?page=3"
+ },
+ {
+  "base_url": "https://area52.cl/collections/all",
+  "pagination": "shopify",
+  "page": 1,
+  "url": "https://area52.cl/collections/all"
+ },
+ {
+  "base_url": "https://area52.cl/collections/all",
+  "pagination": "shopify",
+  "page": 2,
+  "url": "https://area52.cl/collections/all?page=2"
+ },
+ {
+  "base_url": "https://area52.cl/collections/all",
+  "pagination": "shopify",
+  "page": 3,
+  "url": "https://area52.cl/collections/all?page=3"
+ },
+ {
+  "base_url": "https://ovniplay.cl/collections/%F0%9F%93%A6-catalogo-completo",
+  "pagination": "shopify",
+  "page": 1,
+  "url": "https://ovniplay.cl/collections/%F0%9F%93%A6-catalogo-completo"
+ },
+ {
+  "base_url": "https://ovniplay.cl/collections/%F0%9F%93%A6-catalogo-completo",
+  "pagination": "shopify",
+  "page": 2,
+  "url": "https://ovniplay.cl/collections/%F0%9F%93%A6-catalogo-completo?page=2"
+ },
+ {
+  "base_url": "https://ovniplay.cl/collections/%F0%9F%93%A6-catalogo-completo",
+  "pagination": "shopify",
+  "page": 3,
+  "url": "https://ovniplay.cl/collections/%F0%9F%93%A6-catalogo-completo?page=3"
+ },
+ {
+  "base_url": "https://juegosgori.cl/collections/juegos-de-mesa-1",
+  "pagination": "shopify",
+  "page": 1,
+  "url": "https://juegosgori.cl/collections/juegos-de-mesa-1"
+ },
+ {
+  "base_url": "https://juegosgori.cl/collections/juegos-de-mesa-1",
+  "pagination": "shopify",
+  "page": 2,
+  "url": "https://juegosgori.cl/collections/juegos-de-mesa-1?page=2"
+ },
+ {
+  "base_url": "https://juegosgori.cl/collections/juegos-de-mesa-1",
+  "pagination": "shopify",
+  "page": 3,
+  "url": "https://juegosgori.cl/collections/juegos-de-mesa-1?page=3"
+ },
+ {
+  "base_url": "https://geekz.cl/shop/category/juegos-de-mesa-34",
+  "pagination": "woo",
+  "page": 1,
+  "url": "https://geekz.cl/shop/category/juegos-de-mesa-34"
+ },
+ {
+  "base_url": "https://geekz.cl/shop/category/juegos-de-mesa-34",
+  "pagination": "woo",
+  "page": 2,
+  "url": "https://geekz.cl/shop/category/juegos-de-mesa-34/page/2/"
+ },
+ {
+  "base_url": "https://geekz.cl/shop/category/juegos-de-mesa-34",
+  "pagination": "woo",
+  "page": 3,
+  "url": "https://geekz.cl/shop/category/juegos-de-mesa-34/page/3/"
+ },
+ {
+  "base_url": "https://www.ludoteka.cl/juegos-de-mesa",
+  "pagination": "pagina",
+  "page": 1,
+  "url": "https://www.ludoteka.cl/juegos-de-mesa"
+ },
+ {
+  "base_url": "https://www.ludoteka.cl/juegos-de-mesa",
+  "pagination": "pagina",
+  "page": 2,
+  "url": "https://www.ludoteka.cl/juegos-de-mesa?pagina=2"
+ },
+ {
+  "base_url": "https://www.ludoteka.cl/juegos-de-mesa",
+  "pagination": "pagina",
+  "page": 3,
+  "url": "https://www.ludoteka.cl/juegos-de-mesa?pagina=3"
+ },
+ {
+  "base_url": "https://www.winterland.cl/collection/todos",
+  "pagination": "page_param",
+  "page": 1,
+  "url": "https://www.winterland.cl/collection/todos"
+ },
+ {
+  "base_url": "https://www.winterland.cl/collection/todos",
+  "pagination": "page_param",
+  "page": 2,
+  "url": "https://www.winterland.cl/collection/todos?page=2"
+ },
+ {
+  "base_url": "https://www.winterland.cl/collection/todos",
+  "pagination": "page_param",
+  "page": 3,
+  "url": "https://www.winterland.cl/collection/todos?page=3"
+ },
+ {
+  "base_url": "https://www.diverti.cl/juegos-de-mesa-16",
+  "pagination": "page_param",
+  "page": 1,
+  "url": "https://www.diverti.cl/juegos-de-mesa-16"
+ },
+ {
+  "base_url": "https://www.diverti.cl/juegos-de-mesa-16",
+  "pagination": "page_param",
+  "page": 2,
+  "url": "https://www.diverti.cl/juegos-de-mesa-16?page=2"
+ },
+ {
+  "base_url": "https://www.diverti.cl/juegos-de-mesa-16",
+  "pagination": "page_param",
+  "page": 3,
+  "url": "https://www.diverti.cl/juegos-de-mesa-16?page=3"
+ },
+ {
+  "base_url": "https://fillerplace.cl/tienda",
+  "pagination": "woo",
+  "page": 1,
+  "url": "https://fillerplace.cl/tienda"
+ },
+ {
+  "base_url": "https://fillerplace.cl/tienda",
+  "pagination": "woo",
+  "page": 2,
+  "url": "https://fillerplace.cl/tienda/page/2/"
+ },
+ {
+  "base_url": "https://fillerplace.cl/tienda",
+  "pagination": "woo",
+  "page": 3,
+  "url": "https://fillerplace.cl/tienda/page/3/"
+ },
+ {
+  "base_url": "https://spells.cl/categoria-producto/juegos-de-mesa",
+  "pagination": "woo",
+  "page": 1,
+  "url": "https://spells.cl/categoria-producto/juegos-de-mesa"
+ },
+ {
+  "base_url": "https://spells.cl/categoria-producto/juegos-de-mesa",
+  "pagination": "woo",
+  "page": 2,
+  "url": "https://spells.cl/categoria-producto/juegos-de-mesa/page/2/"
+ },
+ {
+  "base_url": "https://spells.cl/categoria-producto/juegos-de-mesa",
+  "pagination": "woo",
+  "page": 3,
+  "url": "https://spells.cl/categoria-producto/juegos-de-mesa/page/3/"
+ },
+ {
+  "base_url": "https://ludipacha.cl/tienda",
+  "pagination": "woo",
+  "page": 1,
+  "url": "https://ludipacha.cl/tienda"
+ },
+ {
+  "base_url": "https://ludipacha.cl/tienda",
+  "pagination": "woo",
+  "page": 2,
+  "url": "https://ludipacha.cl/tienda/page/2/"
+ },
+ {
+  "base_url": "https://ludipacha.cl/tienda",
+  "pagination": "woo",
+  "page": 3,
+  "url": "https://ludipacha.cl/tienda/page/3/"
+ },
+ {
+  "base_url": "https://mundoimaginario.cl/product-category/juegos-de-mesa",
+  "pagination": "woo",
+  "page": 1,
+  "url": "https://mundoimaginario.cl/product-category/juegos-de-mesa"
+ },
+ {
+  "base_url": "https://mundoimaginario.cl/product-category/juegos-de-mesa",
+  "pagination": "woo",
+  "page": 2,
+  "url": "https://mundoimaginario.cl/product-category/juegos-de-mesa/page/2/"
+ },
+ {
+  "base_url": "https://mundoimaginario.cl/product-category/juegos-de-mesa",
+  "pagination": "woo",
+  "page": 3,
+  "url": "https://mundoimaginario.cl/product-category/juegos-de-mesa/page/3/"
+ },
+ {
+  "base_url": "https://www.ruta12club.cl/juegos-de-mesa",
+  "pagination": "page_param",
+  "page": 1,
+  "url": "https://www.ruta12club.cl/juegos-de-mesa"
+ },
+ {
+  "base_url": "https://www.ruta12club.cl/juegos-de-mesa",
+  "pagination": "page_param",
+  "page": 2,
+  "url": "https://www.ruta12club.cl/juegos-de-mesa?page=2"
+ },
+ {
+  "base_url": "https://www.ruta12club.cl/juegos-de-mesa",
+  "pagination": "page_param",
+  "page": 3,
+  "url": "https://www.ruta12club.cl/juegos-de-mesa?page=3"
+ },
+ {
+  "base_url": "https://www.ludopia.cl/search?q=",
+  "pagination": "page_param",
+  "page": 1,
+  "url": "https://www.ludopia.cl/search?q="
+ },
+ {
+  "base_url": "https://www.ludopia.cl/search?q=",
+  "pagination": "page_param",
+  "page": 2,
+  "url": "https://www.ludopia.cl/search?q=&page=2"
+ },
+ {
+  "base_url": "https://www.ludopia.cl/search?q=",
+  "pagination": "page_param",
+  "page": 3,
+  "url": "https://www.ludopia.cl/search?q=&page=3"
  }
 ]

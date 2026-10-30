@@ -5,14 +5,13 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "tablero-cl"
 version = "0.1.0"
-description = "Comparador de precios de juegos de mesa en Chile — scraping + búsqueda fuzzy desde la terminal."
+description = "Comparador de precios de juegos de mesa en Chile — datos para la app Android."
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "requests",
     "beautifulsoup4",
     "rapidfuzz",
-    "questionary",
 ]
 
 [project.scripts]
@@ -26,7 +25,7 @@ tablero = "scripts"
 
 # schema.sql is read at runtime by db.init_db, so it must ship with the package.
 [tool.setuptools.package-data]
-tablero = ["schema.sql"]
+tablero = ["schema.sql", "bgg_names_es.csv"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

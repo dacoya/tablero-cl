@@ -13,11 +13,9 @@ actually told the tool you wanted.
 Emits the same alert shape the previous JSON-file version did, so anything
 already consuming that output keeps working.
 """
-import json
 import time
-from pathlib import Path
 
-from . import repo, search as search_mod, watchlist as watch_mod
+from . import repo, watchlist as watch_mod
 
 
 def _cheapest(conn, game_id: int, in_stock_only: bool = False):
@@ -60,31 +58,3 @@ def from_watchlist(conn, in_stock_only: bool = False) -> list[dict]:
                 offer, target, entry["title"],
             ))
     return alerts
-
-
-def from_queries(conn, queries, threshold: float,
-                 in_stock_only: bool = False) -> list[dict]:
-    """Alerts for ad-hoc queries sharing one threshold."""
-    if threshold is None:
-        raise ValueError("A threshold is required when alerting on queries.")
-
-    alerts = []
-    for query in queries:
-        game = search_mod.best_match(conn, query)
-        if not game:
-            continue
-        offer = _cheapest(conn, game["game_id"], in_stock_only=in_stock_only)
-        if offer and offer["price_eff"] <= threshold:
-            alerts.append(_alert(game, offer, threshold, query))
-    return alerts
-
-
-def write(alerts: list, path) -> str:
-    """Write alerts as JSON. Returns the path."""
-    # Create the directory: `--out reports/hoy.json` otherwise raised an
-    # uncaught FileNotFoundError, unlike export which already handles this.
-    target = Path(path)
-    target.parent.mkdir(parents=True, exist_ok=True)
-    with open(target, "w", encoding="utf-8") as f:
-        json.dump(alerts, f, ensure_ascii=False, indent=2)
-    return str(target)

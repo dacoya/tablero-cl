@@ -46,6 +46,9 @@ val PARSERS: Map<String, Parser> = mapOf(
     "lamesadevaras" to presta,
     "planetaloz" to { parsePresta(it, titleTag = "h1", titleCls = "product-title") },
     "dementegames" to { parsePresta(it, oosFlag = "out-of-stock") },
+    "diverti" to { html ->
+        parsePresta(html, titleTag = "h3", extraOos = { oos(txt(it.find("div", cls = "ago"))) })
+    },
 
     // bs-collection grids
     "top8" to bsGrid("https://www.top8.cl"),
@@ -53,6 +56,7 @@ val PARSERS: Map<String, Parser> = mapOf(
     "peakgames" to bsGrid("https://www.peakgames.cl"),
     "wargaming" to bsGrid("https://www.wargaming.cl"),
     "laguaridadeldragon" to bsGrid("https://www.laguaridadeldragon.cl"),
+    "winterland" to bsGrid("https://www.winterland.cl"),
 
     // product-block cards
     "vudugaming" to {
@@ -70,6 +74,45 @@ val PARSERS: Map<String, Parser> = mapOf(
     // Shopify Debut-family grids
     "flexo" to { parseShopifyCard(it, baseUrl = "https://www.flexogames.cl") },
     "chileboardgames" to { parseShopifyCard(it, baseUrl = "https://chileboardgames.com") },
+
+    // Shopify Dawn grids
+    "area52" to { parseDawn(it, baseUrl = "https://area52.cl") },
+    "ovniplay" to { parseDawn(it, baseUrl = "https://ovniplay.cl") },
+    "juegosgori" to { parseDawn(it, baseUrl = "https://juegosgori.cl") },
+
+    // Store-specific parsers (Bespoke.kt)
+    "updown" to ::updown,
+    "drjuegos" to ::drjuegos,
+    "enroque" to ::enroque,
+    "cartonespesados" to ::cartonespesados,
+    "lafortalezapuq" to ::lafortalezapuq,
+    "shivano" to ::shivano,
+
+    // The long tail (LongTail.kt)
+    "elpatiogeek" to ::elpatiogeek,
+    "devir" to ::devir,
+    "darkhobbies" to ::darkhobbies,
+    "piedrabruja" to ::piedrabruja,
+    "lautarojuegos" to ::lautarojuegos,
+    "manahouse" to ::manahouse,
+    "tentami" to ::tentami,
+    "kaiojuegos" to ::kaiojuegos,
+    "magicsur" to ::magicsur,
+    "guildreams" to ::guildreams,
+    "ludipuerto" to ::ludipuerto,
+    "jugones" to ::jugones,
+    "cafe2d6" to ::cafe2d6,
+    "buho" to ::buho,
+    "thirdimpact_asmodee" to ::thirdimpact,
+    "thirdimpact_devir" to ::thirdimpact,
+    "geekz" to ::geekz,
+    "ludoteka" to ::ludoteka,
+    "fillerplace" to ::fillerplace,
+    "spells" to woo,
+    "ludipacha" to woo,
+    "mundoimaginario" to woo,
+    "ruta12club" to ::ruta12club,
+    "ludopia" to ::ludopia,
 )
 
 /** Every row of sites.tsv, in registry order: (name, base url, pagination). */

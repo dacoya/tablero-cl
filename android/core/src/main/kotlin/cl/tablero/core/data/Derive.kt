@@ -13,6 +13,7 @@ data class Scraped(
     val currentPrice: String? = null,
     val stockStatus: String? = null,
     val flag: String? = null,
+    val image: String? = null,
 )
 
 /** A product row as ingest writes it. */
@@ -29,6 +30,7 @@ data class ProductRow(
     val priceEff: Double?,
     val inStock: Boolean,
     val flag: String?,
+    val imageUrl: String? = null,
 )
 
 private const val OUT_OF_STOCK = "agotado"
@@ -64,6 +66,19 @@ fun slugName(url: String?): String {
     return tail.replace('-', ' ').replace('_', ' ').pyStrip()
 }
 
+/**
+ * derive.image_url: kept only when absolute http(s); parsers already resolved
+ * the rest. http:// becomes https://, since the app refuses cleartext.
+ */
+fun imageUrl(value: String?): String? {
+    val url = text(value) ?: return null
+    return when {
+        url.lowercase().startsWith("http://") -> "https://" + url.substring("http://".length)
+        url.lowercase().startsWith("https://") -> url
+        else -> null
+    }
+}
+
 /** One scraped record as a row, or null when it has no usable title. See derive.derive. */
 fun derive(store: String, record: Scraped): ProductRow? {
     val titleRaw = text(record.title) ?: return null
@@ -94,6 +109,7 @@ fun derive(store: String, record: Scraped): ProductRow? {
         priceEff = current ?: original,
         inStock = inStock(record.stockStatus),
         flag = record.flag?.takeIf { it in VALID_FLAGS },
+        imageUrl = imageUrl(record.image),
     )
 }
 

@@ -8,6 +8,9 @@ serialization = "1.11.0"
 compose-bom = "2026.09.00"
 activity-compose = "1.13.0"
 test-runner = "1.7.0"
+work = "2.12.0"
+coroutines = "1.11.0"
+coil = "3.6.3"
 test-ext-junit = "1.3.0"
 
 [libraries]
@@ -20,7 +23,12 @@ sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sql
 serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
+compose-icons = { module = "androidx.compose.material:material-icons-core" }
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
+work-runtime = { module = "androidx.work:work-runtime", version.ref = "work" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-network = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
+coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 test-runner = { module = "androidx.test:runner", version.ref = "test-runner" }
 test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "test-ext-junit" }
 

@@ -15,12 +15,43 @@ import java.text.Normalizer
 // ---------------------------------------------------------------------------
 
 private val LANG_TAG = pyRegex(
-    """[\(\[]?\b(en\s+)?(espa[nñ]ol|ingl[eé]s|ingles|english|castellano)\b[\)\]]?""",
+    """[\(\[]?\b(en\s+)?(espa[nñ]ol|ingl[eé]s|ingles|english|castellano""" +
+        """|multi-?lengua(je)?|multi-?language|multil[ií]ng[uü]e|tril[ií]ng[uü]e|bil[ií]ng[uü]e)\b[\)\]]?""" +
+        """|[\(\[]\s*(eng|esp|ing)\s*[\)\]]""",
     ignoreCase = true,
 )
 
 private val EDITION_TAG = pyRegex(
-    """\b\d+[aª]?\s*(edici[oó]n|edition)\b|\b(edici[oó]n|edition)\b""",
+    """\b(\d+[aª]?|primera|segunda|tercera|cuarta|second|third)\s*(edici[oó]n|edition)\b""" +
+        """|\b(edici[oó]n|edition)\b""",
+    ignoreCase = true,
+)
+
+private val EDITION_ORDINAL = pyRegex(
+    """\b\d+\s*(da|ra|era|ta|va|na|ed|ª|º)\b(?!\s*(aniversario|anniversary|a[nñ]os))|\bed\b\.?""",
+    ignoreCase = true,
+)
+
+private val REVISION_TAG = pyRegex(
+    """\bnuev[ao](\s+versi[oó]n)?\b(?=[\s\)\]]*$)|\brevisad[ao]\b|\breedici[oó]n\b""",
+    ignoreCase = true,
+)
+
+private val PUBLISHER_TAG = pyRegex(
+    """[\(\[]\s*(devir|fractal(\s+juegos)?|eggertspiele|next\s+move|asmodee|maldito(\s+games)?""" +
+        """|ludonova|zacatrus|sd\s+games|gen\s?x(\s+games)?|arrakis(\s+games)?|tranjis(\s+games)?""" +
+        """|haba|kosmos|ravensburger|mercurio|2\s?tomatoes|gdm(\s+games)?|cmon|bgl""" +
+        """|edge(\s+entertainment)?|hasbro|mattel)\s*[\)\]]""",
+    ignoreCase = true,
+)
+
+private val PLAIN_GAME = pyRegex("""\bb[aá]sico\b|\bjuego\b(?!\s+de\b)""", ignoreCase = true)
+
+private val STOPWORDS = setOf("el", "la", "los", "las", "lo", "de", "del", "y", "e", "en", "the", "of")
+private val TRAILING_EXPANSION = setOf("expansion", "expansiones")
+
+private val PREORDER_TAG = pyRegex(
+    """\bpre[\s\-]?(venta|order|orden)\b|\breservas?\b""",
     ignoreCase = true,
 )
 
@@ -57,11 +88,23 @@ fun normalize(text: String?): String {
     var t = text.lowercase()
     t = LANG_TAG.replace(t, " ")
     t = EDITION_TAG.replace(t, " ")
+    t = EDITION_ORDINAL.replace(t, " ")
+    t = REVISION_TAG.replace(t, " ")
+    t = PREORDER_TAG.replace(t, " ")
+    t = PUBLISHER_TAG.replace(t, " ")
     t = EXPANSION_QUALIFIER.replace(t, " ")
     t = BASE_QUALIFIER.replace(t.pyStrip(), " ")
+    t = PLAIN_GAME.replace(t, " ")
     t = stripMarks(Normalizer.normalize(t, Normalizer.Form.NFKD))
-    t = NOT_WORD_OR_SPACE.replace(t, " ")
-    return SPACES.replace(t, " ").pyStrip()
+    t = SPACES.replace(NOT_WORD_OR_SPACE.replace(t, " "), " ").pyStrip()
+    return dropFiller(if (t.isEmpty()) emptyList() else t.split(" "))
+}
+
+/** utils._drop_filler: no stopwords or trailing "expansión", unless that empties it. */
+private fun dropFiller(tokens: List<String>): String {
+    var kept = tokens.filter { it !in STOPWORDS }.ifEmpty { tokens }
+    if (kept.size >= 3 && kept.last() in TRAILING_EXPANSION) kept = kept.dropLast(1)
+    return kept.joinToString(" ")
 }
 
 // ---------------------------------------------------------------------------
@@ -108,10 +151,31 @@ private fun stripUnlessSubtitle(m: MatchResult, input: String): String {
     return if (articleInPhrase || articleBefore) phrase else " "
 }
 
+private val GLUE = pyRegex("""(?<=[a-záéíóúñ)])(?=[A-ZÁÉÍÓÚÑ])""")
+private val GLUED_TAG = pyRegex("""(?<=[a-záéíóúñ])(?=(Expansi[oó]n|Producto)\b)""")
+private val PRODUCT_LANG = pyRegex("""\s*\bproducto\s+en\s+\w+""", ignoreCase = true)
+private val WORDS = pyRegex("""\w+""")
+
+private fun words(text: String): List<String> = WORDS.findAll(text.lowercase()).map { it.value }.toList()
+
+/** Glued titles: tag split off, "Producto en X" dropped, repeated name cut. See utils._unglue. */
+private fun unglue(text: String): String {
+    val t = PRODUCT_LANG.replace(GLUED_TAG.replace(text, " "), "")
+    for (m in GLUE.findAll(t)) {
+        val at = m.range.first
+        val head = words(t.substring(0, at))
+        val tail = words(t.substring(at))
+        if (head.size < 2 || tail.isEmpty() || tail[0].pyLen < 4) continue
+        if (tail[0] == head[0] || head.takeLast(tail.size) == tail) return t.substring(0, at)
+    }
+    return t
+}
+
 /** Store title with category noise removed, casing kept. See utils.clean_title. */
 fun cleanTitle(text: String?): String? {
     if (text == null) return null
-    val pass1 = TITLE_NOISE.replace(text) { stripUnlessSubtitle(it, text) }
+    val unglued = unglue(text)
+    val pass1 = TITLE_NOISE.replace(unglued) { stripUnlessSubtitle(it, unglued) }
     val pass2 = TITLE_NOISE_CONCAT.replace(pass1, "")
     val pass3 = TRAILING_NOISE.replace(pass2) { m ->
         if (SUBTITLE_TAIL.containsMatchIn(pass2.substring(0, m.range.first))) m.value else ""

@@ -27,8 +27,11 @@ private val CLASS_TOKEN = pyRegex("""[^\s]+""")
 /** The class attribute as BeautifulSoup splits it. */
 fun Element.classes(): List<String> = CLASS_TOKEN.findAll(attr("class")).map { it.value }.toList()
 
-/** BeautifulSoup's `class_=name`: one token equal, or the whole attribute equal. */
-fun Element.hasCls(name: String): Boolean = name in classes() || attr("class") == name
+/**
+ * BeautifulSoup's `class_=name`: one token equal, or all tokens re-joined with
+ * single spaces equal -- which is how drjuegos's "price product-price" matches.
+ */
+fun Element.hasCls(name: String): Boolean = classes().let { name in it || it.joinToString(" ") == name }
 
 private fun Element.matches(tags: Array<out String>, cls: String?, where: (Element) -> Boolean) =
     (tags.isEmpty() || normalName() in tags) && (cls == null || hasCls(cls)) && where(this)
@@ -65,6 +68,33 @@ fun txt(el: Element?): String? {
 fun url(el: Element?, base: String = ""): String? {
     val href = el?.attr("href")?.takeIf { it.isNotEmpty() } ?: return null
     return if (href.startsWith("http")) href else base + href
+}
+
+// Lazy-loading themes put the real image in a data-* attribute and a
+// placeholder in src, so src is read last. See parsers._img.
+private val IMG_ATTRS = listOf("data-src", "data-lazy-src", "data-original", "data-srcset", "srcset", "src")
+
+// Filled into Shopify's "{width}" URL templates: a phone-sized thumbnail.
+private const val IMG_WIDTH = "360"
+
+/** `_img`: URL of the first real image inside a card, or null. Only the URL, never the bytes. */
+fun img(el: Element?, base: String = ""): String? {
+    if (el == null) return null
+    for (tag in el.findAll("img", "source")) {
+        for (attr in IMG_ATTRS) {
+            val raw = tag.attr(attr).takeIf { it.isNotEmpty() } ?: continue
+            val url = raw.split(',')[0].pyStrip().split(' ')[0]
+            if (url.isEmpty() || url.startsWith("data:")) continue
+            val u = url.replace("{width}", IMG_WIDTH)
+            return when {
+                u.startsWith("//") -> "https:$u"
+                u.startsWith("http") -> u
+                base.isNotEmpty() -> base.trimEnd('/') + "/" + u.trimStart('/')
+                else -> null
+            }
+        }
+    }
+    return null
 }
 
 /** Python truthiness for an optional string: null and "" are both false. */

@@ -71,6 +71,37 @@ def slug_name(url: str) -> str:
     return tail.replace("-", " ").replace("_", " ").strip()
 
 
+def image_url(value) -> str | None:
+    """
+    A scraped image URL, kept only when it is an absolute http(s) URL.
+
+    Parsers already resolve relative paths; anything still not absolute here
+    is a placeholder or a script URL, and the app would only fail to load it.
+
+    http:// is upgraded to https://. The app refuses cleartext traffic, so an
+    http image could never load there, and every store CDN seen serves https.
+    """
+    url = text(value)
+    if not url:
+        return None
+    if url.lower().startswith("http://"):
+        return "https://" + url[len("http://"):]
+    return url if url.lower().startswith("https://") else None
+
+
+def match_key(title_raw: str, url: str) -> tuple[str, str]:
+    """(display title, norm) for a raw store title. norm is "" when unusable."""
+    title = clean_title(title_raw)
+    norm = normalize(title)
+    # A truncated title is not a reliable identity: match on the slug instead,
+    # while still displaying what the store actually wrote.
+    if norm and _is_truncated(title_raw):
+        from_slug = normalize(clean_title(slug_name(url)))
+        if from_slug and from_slug.startswith(norm) and from_slug != norm:
+            norm = from_slug
+    return title, norm
+
+
 def derive(store: str, record: dict) -> dict | None:
     """
     Build a product row from one scraped record. None when unusable.
@@ -83,19 +114,10 @@ def derive(store: str, record: dict) -> dict | None:
     if not title_raw:
         return None
 
-    title = clean_title(title_raw)
-    norm = normalize(title)
+    url = text(record.get("url")) or ""
+    title, norm = match_key(title_raw, url)
     if not norm:
         return None
-
-    url = text(record.get("url")) or ""
-
-    # A truncated title is not a reliable identity: match on the slug instead,
-    # while still displaying what the store actually wrote.
-    if _is_truncated(title_raw):
-        from_slug = normalize(clean_title(slug_name(url)))
-        if from_slug and from_slug.startswith(norm) and from_slug != norm:
-            norm = from_slug
 
     url_canon = canonical_url(url) or f"urn:tablero:{store}:{norm}"
 
@@ -115,4 +137,5 @@ def derive(store: str, record: dict) -> dict | None:
         "price_eff": price_current if price_current is not None else price_original,
         "in_stock": in_stock(record.get("stock_status")),
         "flag": flag_value(record.get("flag")),
+        "image_url": image_url(record.get("image")),
     }

@@ -10,7 +10,7 @@ Per store, so a partial or failed scrape never touches another store's data.
 """
 import time
 
-from . import db as db_mod, validation
+from . import bgg, db as db_mod, grouping, validation
 from .derive import derive
 
 
@@ -34,9 +34,11 @@ def _ensure_games(conn, rows: list, now: int) -> dict:
         if cur is None or len(r["title"]) < len(cur[0]):
             best[r["norm"]] = (r["title"], r["kind"])
 
+    known = {n for (n,) in conn.execute("SELECT norm FROM game")} if best else set()
     conn.executemany(
-        "INSERT OR IGNORE INTO game(norm, title, kind, created_at) VALUES (?,?,?,?)",
-        [(norm, title, kind, now) for norm, (title, kind) in best.items()],
+        "INSERT INTO game(norm, title, kind, created_at, bgg_id) VALUES (?,?,?,?,?)",
+        [(norm, title, kind, now, bgg.lookup(conn, norm) if kind in bgg.MATCHED_KINDS else None)
+         for norm, (title, kind) in best.items() if norm not in known],
     )
 
     # Joined through a temp table rather than IN (?,?,...): a large store has
@@ -78,7 +80,7 @@ def _split_writes(rows: list, existing: dict, games: dict, store: str, ts: int):
         payload = (
             games.get(r["norm"]), r["title_raw"], r["title"], r["norm"], r["kind"],
             r["price_original"], r["price_current"], r["price_eff"],
-            r["in_stock"], _flag_for(prev, r), ts,
+            r["in_stock"], _flag_for(prev, r), ts, r["image_url"],
         )
         if prev is None:
             inserts.append((store, r["url_canon"], r["url"], *payload, ts))
@@ -87,27 +89,55 @@ def _split_writes(rows: list, existing: dict, games: dict, store: str, ts: int):
     return inserts, updates
 
 
+_INSERT_PRODUCT = """
+    INSERT INTO product
+      (store, url_canon, url, game_id, title_raw, title, norm, kind,
+       price_original, price_current, price_eff, in_stock, flag,
+       last_seen, image_url, first_seen)
+    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+"""
+
+_UPDATE_PRODUCT = """
+    UPDATE product SET
+      game_id=?, title_raw=?, title=?, norm=?, kind=?,
+      price_original=?, price_current=?, price_eff=?,
+      in_stock=?, flag=?, last_seen=?,
+      -- A scrape that found no photo keeps the last one known:
+      -- lazy-loading markup changes more often than products do.
+      image_url=COALESCE(?, image_url)
+    WHERE id=?
+"""
+
+
+def _clean_rows(store: str, records: list) -> tuple[list, dict]:
+    """
+    Derived rows worth writing, plus the rejection counts.
+
+    Impossible prices are rejected before they reach the database: a bad row
+    would otherwise skew the cross-store median every ranking depends on. The
+    last row wins if a store lists the same URL twice in one scrape.
+    """
+    rows = [d for rec in records if (d := derive(store, rec)) is not None]
+    rows, rejected = validation.partition(rows)
+    return list({r["url_canon"]: r for r in rows}.values()), rejected
+
+
 def ingest_store(conn, store: str, records: list, ts: int | None = None) -> dict:
     """
     Upsert one store's scraped records.
 
-    An empty `records` is treated as a failed scrape and leaves existing data
-    alone -- a network failure should never look like a store dropping its
-    entire catalog.
+    An empty `records` -- or one where nothing survives derive and validation
+    -- is treated as a failed scrape and leaves existing data alone: a network
+    failure should never look like a store dropping its entire catalog.
     """
     ts = int(ts if ts is not None else time.time())
-    rows = [d for rec in records if (d := derive(store, rec)) is not None]
-    # Reject impossible prices before they reach the database: a bad row would
-    # otherwise skew the cross-store median that every ranking depends on.
-    rows, rejected = validation.partition(rows)
+    rows, rejected = _clean_rows(store, records)
     if not rows:
         return {"store": store, "ingested": 0, "new": 0, "restock": 0,
                 "rejected": rejected, "skipped": True}
 
-    # Last row wins if a store lists the same URL twice in one scrape.
-    rows = list({r["url_canon"]: r for r in rows}.values())
-
     conn.execute("INSERT OR IGNORE INTO store(name, active) VALUES (?, 1)", (store,))
+    rows = grouping.merge_similar_norms(conn, rows)
     games = _ensure_games(conn, rows, ts)
     existing = _existing(conn, store)
 
@@ -118,25 +148,8 @@ def ingest_store(conn, store: str, records: list, ts: int | None = None) -> dict
     conn.execute("UPDATE product SET flag = NULL WHERE store = ?", (store,))
 
     inserts, updates = _split_writes(rows, existing, games, store, ts)
-
-    if inserts:
-        conn.executemany(
-            """INSERT INTO product
-               (store, url_canon, url, game_id, title_raw, title, norm, kind,
-                price_original, price_current, price_eff, in_stock, flag,
-                last_seen, first_seen)
-               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
-            inserts,
-        )
-    if updates:
-        conn.executemany(
-            """UPDATE product SET
-                 game_id=?, title_raw=?, title=?, norm=?, kind=?,
-                 price_original=?, price_current=?, price_eff=?,
-                 in_stock=?, flag=?, last_seen=?
-               WHERE id=?""",
-            updates,
-        )
+    conn.executemany(_INSERT_PRODUCT, inserts)
+    conn.executemany(_UPDATE_PRODUCT, updates)
 
     _record_prices(conn, store, ts)
     conn.execute(
@@ -209,6 +222,13 @@ def record_failure(conn, store: str, ts: int | None = None) -> None:
     conn.commit()
 
 
-def refresh_indexes(conn) -> None:
-    """Resync FTS after a batch of stores has been ingested."""
+def refresh_indexes(conn) -> dict:
+    """
+    Regroup the catalogue with the current matching rules, match games to
+    BoardGameGeek (importing a newer CSV first), then resync FTS.
+    Runs once after a batch of stores has been ingested.
+    """
+    report = grouping.regroup(conn, int(time.time()))
+    report["bgg"] = bgg.refresh(conn)
     db_mod.rebuild_fts(conn)
+    return report
