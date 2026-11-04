@@ -29,6 +29,7 @@ bgg_id,bgg_name,name_es,variants,min_players,max_players,play_time,min_age,compl
 1115,Poker,póquer,,,,,,,,,,1810,1427,wikidata
 1294,Clue,Cluedo,Clue,,,,,,,,,1949,11195,wikidata
 1403,Turn the Tide,Marea Alta,,,,,,,,,,,,web
+1419,Pylos,Pylos Mini,,,,,,,,,,,,web
 1500,Zocken,Trictrac,,,,,,,,,,1998,26189,wikidata
 1602,The Royal Game of Ur,Juego real de Ur,Aasha|Game of Twenty Squares|Game of Ur,,,,,,,,,-2600,6710,wikidata
 1768,Fireball Island,La Isla de Fuego,,,,,,,,,,1986,4610,wikidata
@@ -111,6 +112,7 @@ bgg_id,bgg_name,name_es,variants,min_players,max_players,play_time,min_age,compl
 14447,Trice's Chess,Ajedrez gótico,Gothic chess,,,,,,,,,2000,,wikidata
 14996,Ticket to Ride: Europe,¡Aventureros al Tren! Europa,,,,,,,,,,2005,181,manual
 15045,Risk: Star Wars – Clone Wars Edition,Risk Star Wars,,,,,,,,,,2005,7362,wikidata
+15818,Pick-omino,Piko Piko,,,,,,,,,,,,web
 15832,Cheat,businessman,Desconfio|I Doubt It,,,,,,,,,,31086,wikidata
 15889,Scopa,Escoba (juego de naipes),,,,,,,,,,1600,4027,wikidata
 16267,Trans Europa,Trans Europa,,,,,,,,,,2005,2350,wikidata
@@ -177,7 +179,9 @@ bgg_id,bgg_name,name_es,variants,min_players,max_players,play_time,min_age,compl
 43712,Los Alamos Chess,Ajedrez Los Álamos,anti-clerical chess,,,,,,,,,1956,,wikidata
 46213,Telestrations,Interferencias,,,,,,,,,,2009,355,wikidata
 50381,Cards Against Humanity,Tarjetas contra la humanidad,CAH,,,,,,,,,2009,18609,wikidata
+53383,Ticket to Ride: Europa 1912,¡Aventureros al Tren! Europa – 1912 Expansión,,,,,,,,,,,,web
 56933,Penguin Party,Dino Fiesta,,,,,,,,,,,,web
+59959,Letters from Whitechapel,Sombras sobre Londres (Edición Revisada),,,,,,,,,,,,web
 63268,Spot it!,Dobble,Dobble Clásico Blister Eco,,,,,,,,,2009,1723,manual
 63706,11 nimmt!,Toma 11,,,,,,,,,,,,web
 65244,Forbidden Island,La Isla Prohibida,,,,,,,,,,2010,1048,manual
@@ -206,6 +210,7 @@ bgg_id,bgg_name,name_es,variants,min_players,max_players,play_time,min_age,compl
 118705,Ghost Blitz 2,Fantasma Blitz 2.0,,,,,,,,,,2012,3018,manual
 119890,Agricola: All Creatures Big and Small,Agricola Animales en la Granja,,,,,,,,,,,,web
 121921,Robinson Crusoe: Adventures on the Cursed Island,Robinson Crusoe: Aventuras en la isla maldita,,,,,,,,,,2012,121,wikidata
+123885,Pick-a-Dog,Pick-a-Perro,,,,,,,,,,,,web
 126443,The Lord of the Rings: The Battle for Middle-Earth,El Señor de los Anillos: Batalla por la Tierra Media,,,,,,,,,,,,web
 127398,Legends of Andor,Las Leyendas de Andor,Andor,,,,,,,,,2012,690,manual
 128882,The Resistance: Avalon,La Resistencia: Avalon,,,,,,,,,,2012,240,manual
@@ -248,6 +253,7 @@ bgg_id,bgg_name,name_es,variants,min_players,max_players,play_time,min_age,compl
 177736,A Feast for Odin,El Banquete De Odín,,,,,,,,,,,,web
 178900,Codenames,Código Secreto,,,,,,,,,,2015,162,manual
 179275,One Deck Dungeon,One Deck Dungeon – Mazomorra,mazomorra one deck dungeon,,,,,,,,,,,web
+179404,War of the Ring: Warriors of Middle-earth,La Guerra del Anillo - Expansión Guerreros de la Tierra Media,,,,,,,,,,,,web
 180565,Die geheimnisvolle Drachenhöhle,La mysterosa Caverna del Drago,,,,,,,,,,2015,23262,wikidata
 180899,Ponzi Scheme,Ponzi Scheme,,,,,,,,,,2015,1435,wikidata
 181158,Colt Express: Horses & Stagecoach,Colt Express: Caballos y Diligencias (Expansión),,,,,,,,,,,,web
@@ -268,6 +274,7 @@ bgg_id,bgg_name,name_es,variants,min_players,max_players,play_time,min_age,compl
 198773,Codenames: Pictures,Código Secreto Imágenes,,,,,,,,,,2016,517,manual
 201808,Clank!: A Deck-Building Adventure,Clank!,,,,,,,,,,2016,105,manual
 202100,Hero Realms: The Ruin of Thandar Campaign Deck,Hero Realms La Perdición de Thandar,,,,,,,,,,,,web
+202174,Viticulture: Tuscany Essential Edition,Viticulture: Tuscany — Edición Esencial,,,,,,,,,,,,web
 202453,Targi: The Expansion,Tuareg - Expansion Dunas y Agua,,,,,,,,,,,,web
 202670,Ticket to Ride: Rails & Sails,¡Aventureros al Tren! La Vuelta al Mundo,,,,,,,,,,2016,825,manual
 202977,Cytosis: A Cell Biology Board Game,Cytosis,,,,,,,,,,,,web
@@ -283,6 +290,8 @@ bgg_id,bgg_name,name_es,variants,min_players,max_players,play_time,min_age,compl
 205637,Arkham Horror: The Card Game,Arkham Horror: El Juego de Cartas,,,,,,,,,,2016,33,wikidata
 206939,Do De Li Do,Dodelido (Español),,,,,,,,,,,,web
 209418,Dominion: Second Edition,Dominion - Segunda Edición,,,,,,,,,,,,web
+209685,Century: Spice Road,Century La Ruta de las Especias,,,,,,,,,,,,web
+210674,Mansions of Madness: Second Edition – Beyond the Threshold: Expansion,Las Mansiones de la Locura 2da Edición - Expansión Más Allá del Umbral,,,,,,,,,,,,web
 213360,Roll Player: Monsters & Minions,Roll Player: Monstruos y Esbirros,,,,,,,,,,2018,,wikidata
 214293,Mountains of Madness,Las Montañas de la Locura,,,,,,,,,,2017,2851,wikidata
 214396,Campy Creatures,Criaturas de serie B,,,,,,,,,,,,web
@@ -300,12 +309,15 @@ bgg_id,bgg_name,name_es,variants,min_players,max_players,play_time,min_age,compl
 226519,EXIT: The Game – The House of Riddles,Exit El Juego - La casa de los enigmas,,,,,,,,,,,,web
 226520,EXIT: The Game – The Sinister Mansion,Exit: La Mansión Siniestra,,,,,,,,,,2018,1527,manual
 226522,EXIT: The Game – Dead Man on the Orient Express,Exit: Muerte en el Orient Express,,,,,,,,,,2017,621,manual
+228411,Iron Curtain,Telón de Acero,,,,,,,,,,,,web
 229987,Mansions of Madness: Second Edition – Streets of Arkham: Expansion,Las Mansiones de la Locura 2Ed: Calles de Arkham,,,,,,,,,,,,web
 230359,Magic Maze: Maximum Security,MAGIC MAZE - Expansión Maxima Seguridad,,,,,,,,,,,,web
+230498,Deckscape: The Fate of London,Escapa - El destino de Londres,,,,,,,,,,,,web
 230505,BANG! Armed & Dangerous,BANG! Armados y Peligrosos,,,,,,,,,,2017,,wikidata
 231027,Bye-Bye Black Sheep,Bye Bye Oveja Negra,,,,,,,,,,,,web
 231733,Obsession,Obsesión,,,,,,,,,,,,web
 232045,Shaky Manor,Panic Mansion,,,,,,,,,,,,web
+232666,Robin Hood and the Merry Men,Robin Hood y sus alegres compañeros,,,,,,,,,,,,web
 233312,Stuffed Fables,Fabulas de Peluche,,,,,,,,,,,,web
 233371,Clank! In! Space!: A Deck-Building Adventure,Clank!: En el espacio,,,,,,,,,,2017,165,manual
 233867,Welcome To...,Welcome... Hacia el Perfecto Hogar (2da Edición),,,,,,,,,,,,web
@@ -322,6 +334,7 @@ bgg_id,bgg_name,name_es,variants,min_players,max_players,play_time,min_age,compl
 243566,Unstable Unicorns: Rainbow Apocalypse Expansion Pack,Unstable Unicorns: Apocalipsis Irisado,,,,,,,,,,2018,,manual
 243567,Unstable Unicorns: Dragons Expansion Pack,Unstable Unicorns: Dragones,,,,,,,,,,2018,,manual
 244262,Sagrada: 5-6 Player Expansion,Sagrada - Expansión 5-6 Jugadores,,,,,,,,,,,,web
+244521,Quacks,Pocimas y Brebajes,,,,,,,,,,,,web
 244522,That's Pretty Clever!,Optimus,,,,,,,,,,,,web
 244536,Tiny Epic Zombies,Pequeños Grandes Zombis,,,,,,,,,,,,web
 244918,EXIT: The Game – The Mysterious Museum,Exit: El Museo Misterioso,,,,,,,,,,2018,1733,manual
@@ -335,20 +348,25 @@ bgg_id,bgg_name,name_es,variants,min_players,max_players,play_time,min_age,compl
 247315,7 Wonders: Armada,7 Wonders: Armada,,,,,,,,,,2018,,manual
 247436,Sherlock: The Tomb of the Archaeologist,Sherlock: La Tumba del Arqueologo,,,,,,,,,,,,web
 248005,Ganymede,Ganímedes (2da Edición),,,,,,,,,,,,web
+248562,Mage Knight: Ultimate Edition,Mage Knight Edición Definitiva,,,,,,,,,,,,web
 249821,Codenames: Harry Potter,Código Secreto: Regreso a Hogwarts,,,,,,,,,,2018,4446,manual
 250337,Gloomhaven: Forgotten Circles,Gloomhaven: Círculos Olvidados,,,,,,,,,,2019,,manual
 250881,Dominations: Road to Civilization,Dominations,,,,,,,,,,,,web
 251481,Braintopia Beyond,Cortex Challenge 2,,,,,,,,,,,,web
+252526,Pictomania (Second Edition),Pictomania 2da Edición,,,,,,,,,,,,web
 252776,Muse: Awakenings,Musa: Despertares,,,,,,,,,,,,web
 252929,Planet,Planeta,,,,,,,,,,2018,1958,wikidata
 253170,5-Minute Dungeon: Curses! Foiled Again!,5 Minute Dungeon: ¡Maldición! ¡Otra vez no!,,,,,,,,,,2018,,manual
 253284,Ticket to Ride: New York,¡Aventureros al Tren! New York,,,,,,,,,,2018,1294,manual
 253664,Taco Cat Goat Cheese Pizza,Taco Gato Cabra Queso Pizza,,,,,,,,,,2018,2431,manual
+254708,Roll Player Adventures,Aventuras - Roll Player,roll player aventuras,,,,,,,,,,,web
 255681,Terraforming Mars: Colonies,Terraforming Mars: Colonias,,,,,,,,,,,,web
 255823,Mansions of Madness: Second Edition – Horrific Journeys: Expansion,Las Mansiones de la Locura 2Ed: Viajes Escalofriantes,,,,,,,,,,,,web
+256226,Azul: Stained Glass of Sintra,Azul: Vitrales de Sintra,,,,,,,,,,,,web
 256980,The Color Monster,El Monstruo de Colores,El Mostruo de los colores – El juego de viaje|El Monstruo de Colores - Edición de Viaje|El Monstruo de los Colores - El juego de viaje,,,,,,,,,2018,8150,manual
 257283,Tiny Epic Mechs,Pequeños Grandes Mechs,,,,,,,,,,,,web
 257499,Arkham Horror (Third Edition),Arkham Horror 3ra Edición,,,,,,,,,,2018,356,manual
+257729,Potion Explosion: The 6th Student,Potion Explosion: Expansión El Sexto Estudiante,,,,,,,,,,,,web
 260407,Soviet Kitchen Unleashed,Soviet Kitchen,,,,,,,,,,2018,3191,manual
 260605,Camel Up (Second Edition),Preventa - Camel Up 2.0,,,,,,,,,,,,web
 262201,Sword & Sorcery: Ancient Chronicles,Sword & Sorcery: Crónicas Antiguas,,,,,,,,,,,,web
@@ -362,6 +380,8 @@ bgg_id,bgg_name,name_es,variants,min_players,max_players,play_time,min_age,compl
 265270,Hero Realms: The Lost Village Campaign Deck,Hero Realms: Expansión La Aldea Perdida,,,,,,,,,,,,web
 265272,Hero Realms: Ancestry,Hero Realms – Linaje,,,,,,,,,,,,web
 266083,L.L.A.M.A.,Llama,,,,,,,,,,2019,1990,manual
+266444,Sherlock: 13 Hostages,Sherlock 13 Rehenes,,,,,,,,,,,,web
+266445,Sherlock: Propagation,Sherlock: Propagación,,,,,,,,,,,,web
 266446,The Sherlock Files: Demo Deck – Whereabouts Unknown,Sherlock: Paradero Desconocido,,,,,,,,,,,,web
 266722,Rumble Nation,Tiempo de Tumulto,,,,,,,,,,,,web
 266810,Paladins of the West Kingdom,Paladines Del Reino del Oeste,,,,,,,,,,,,web
@@ -370,6 +390,7 @@ bgg_id,bgg_name,name_es,variants,min_players,max_players,play_time,min_age,compl
 269210,Twice as Clever!,Optimus 2 (Multilanguage),,,,,,,,,,,,web
 269385,The Lord of the Rings: Journeys in Middle-Earth,Señor de los Anillos Viajes por la Tierra Media,VIAJES POR LA TIERRA MEDIA BASE,,,,,,,,,,,web
 269968,EXIT: The Game – The Haunted Roller Coaster,Exit: La Feria Terrorífica,,,,,,,,,,2019,2096,manual
+270715,Qwixx: Connected,Qwixx - Conectado (Expansión),,,,,,,,,,,,web
 270970,Century: A New World,Century: Un Nuevo Mundo,,,,,,,,,,2019,896,manual
 271896,Star Wars: Outer Rim,Star Wars: El Borde Exterior,,,,,,,,,,,,web
 272638,Root: The Exiles and Partisans Deck,Root: Pack de Cartas de Exhiliados y Partisanos,root pack cartas exiliados partisanos,,,,,,,,,,,web
@@ -377,6 +398,7 @@ bgg_id,bgg_name,name_es,variants,min_players,max_players,play_time,min_age,compl
 273473,Terraforming Mars: Turmoil,Terraforming Mars: Expansión Conflictos,,,,,,,,,,,,web
 274637,"Unmatched: Battle of Legends, Volume One",Unmatched: Battle of Legends Volumen 1,,,,,,,,,,,,web
 274960,Point Salad,Ensalada de Puntos,,,,,,,,,,2019,614,manual
+275467,Letter Jam,Macedonia de Letras,,,,,,,,,,,,web
 276894,Ticket to Ride: London,¡Aventureros al Tren! Londres,,,,,,,,,,2019,1181,manual
 279014,Teenage Mutant Ninja Turtles: Turtle Power Card Game,Super Cats,,,,,,,,,,,,web
 279537,The Search for Planet X,La Búsqueda del Planeta X,,,,,,,,,,2020,118,manual
@@ -389,14 +411,17 @@ bgg_id,bgg_name,name_es,variants,min_players,max_players,play_time,min_age,compl
 282291,Escape Tales: Low Memory,Escape Tales: Sin Memoria - (Español),,,,,,,,,,,,web
 283094,Mansions of Madness: Second Edition – Path of the Serpent: Expansion,Las Mansiones de la Locura - Expansión La Senda de la Serpiente,,,,,,,,,,,,web
 283595,Ticket to Ride Map Collection 6½: Poland,¡Aventureros al Tren! Polonia,,,,,,,,,,2019,,manual
+283766,Sleeping Gods: Tides of Ruin,Mareas Malditas - Sleeping Gods,sleeping gods mareas malditas,,,,,,,,,,,web
 283797,EXIT: The Game – The Stormy Flight,Exit - Vuelo hacia lo desconocido,,,,,,,,,,,,web
 283924,Merchants of Dunhuang,Mercaderes de Dunhuang,,,,,,,,,,,,web
 283934,EXIT: The Game – Theft on the Mississippi,Exit: Robo en el Misisipi,,,,,,,,,,2019,2433,manual
 284083,The Crew: The Quest for Planet Nine,La Tripulación,La Tripulación: En Busca del Noveno Planeta,,,,,,,,,2019,97,manual
 284444,War Chest: Nobility,War Chest – Nobleza,,,,,,,,,,,,web
 285183,Secret Operation,Misión Secreta,,,,,,,,,,,,web
-285774,Marvel Champions: The Card Game,Marvel Champions: El juego de cartas,,,,,,,,,,,,web
+285774,Marvel Champions: The Card Game,Marvel Champions: El juego de cartas,Marvel Champions,,,,,,,,,,,web
+285967,Ankh: Gods of Egypt,Ankh: Dioses de Egipto,,,,,,,,,,,,web
 287222,Juices,Zumos,,,,,,,,,,,,web
+287670,Sleeping Gods: Dungeons,Mazmorras - Sleeping Gods,sleeping gods mazmorras,,,,,,,,,,,web
 287952,Unstable Unicorns: NSFW Base Game,Unstable Unicorns NSFW,,,,,,,,,,2019,6439,manual
 287954,Azul: Summer Pavilion,Azul - Pabellón de Verano,,,,,,,,,,,,web
 288274,Tori-Tori: Endangered Species,TORI-TORI: Especies en peligro.,,,,,,,,,,,,web
@@ -408,7 +433,9 @@ bgg_id,bgg_name,name_es,variants,min_players,max_players,play_time,min_age,compl
 291508,Tiny Epic Dinosaurs,Pequeños Grandes Dinosaurios,,,,,,,,,,,,web
 291572,Oath,Oath: Crónicas del Imperio y el Exilio,,,,,,,,,,2021,339,wikidata
 291962,Paper Dungeons: A Dungeon Scrawler Game,Paper Dungeons,,,,,,,,,,,,web
+292126,Excavation Earth,Excavación Tierra,,,,,,,,,,,,web
 294345,Azul: Crystal Mosaic,Azul: Mosaico de cristal - Expansión,,,,,,,,,,,,web
+295488,Andor: The Family Fantasy Game,Las Leyendas de Andor Junior,,,,,,,,,,,,web
 295490,Dodo,Dodo,,,,,,,,,,,,web
 295607,Canopy,Amazonía,,,,,,,,,,,,web
 295944,EXIT: The Game – The Enchanted Forest,Exit: El Juego - El Bosque Encantado,,,,,,,,,,,,web
@@ -417,6 +444,7 @@ bgg_id,bgg_name,name_es,variants,min_players,max_players,play_time,min_age,compl
 296108,Terraforming Mars: The Dice Game,Terraforming Mars – el Juego de Dados,,,,,,,,,,,,web
 296151,Viscounts of the West Kingdom,Vizcondes del Reino del Oeste,,,,,,,,,,,,web
 298164,Volle Weide,Corrales a Tope,,,,,,,,,,,,web
+299490,War of the Ring: Kings of Middle-earth,La Guerra del Anillo Expansión Reyes de la Tierra Media,,,,,,,,,,,,web
 299597,The Lord of the Rings: Journeys in Middle-earth – Shadowed Paths Expansion,Viajes por la Tierra Media – Sendas Sombrías,,,,,,,,,,,,web
 299800,Escape Tales: Children of Wyrmwoods,Escape Tales Vástagos De Wyrmwood,,,,,,,,,,,,web
 299939,Doodle Dungeon,Garabatos y Mazmorras,,,,,,,,,,2020,10509,wikidata
@@ -427,15 +455,18 @@ bgg_id,bgg_name,name_es,variants,min_players,max_players,play_time,min_age,compl
 301030,The Ming Voyages,Las Expediciones Ming,,,,,,,,,,,,web
 301561,Sagrada: The Great Facades – Life,Sagrada - Vida (Expansión),,,,,,,,,,,,web
 302260,Abandon All Artichokes,Alcachofas ¡No gracias!,,,,,,,,,,2020,2026,manual
+302668,Marvel United: Tales of Asgard,Marvel United: Relatos de Asgard,,,,,,,,,,,,web
 302669,Marvel United: Rise of the Black Panther,Marvel United: El ascenso de Black Panther,,,,,,,,,,,,web
 302670,Marvel United: Guardians of the Galaxy Remix,Marvel United: Guardianes de la Galaxia el Remix,,,,,,,,,,,,web
 302725,Rory's Story Cubes: Star Wars,Story Cubes - Star Wars,,,,,,,,,,,,web
+304286,Arkham Horror (Third Edition): Under Dark Waves,Arkham Horror Expansión Mareas Tenebrosas,,,,,,,,,,,,web
 304297,Harry Potter: Hogwarts Battle – The Charms and Potions Expansion,Harry Potter Hogwarts Battle - Expansión: Encantamientos y Pociones,,,,,,,,,,,,web
 304783,Hadrian's Wall,El Muro de Adriano,,,,,,,,,,,,web
 305420,My Little Scythe: Pie in the Sky,Mi pequeño Scythe: Castillos en el Aire,,,,,,,,,,2020,,wikidata
 306142,Shitty Friends,Amigos de Mierda,,,,,,,,,,,,web
 306735,Under Falling Skies,Cielos de metal,,,,,,,,,,2020,270,wikidata
 307170,The Secret Valley,El Valle Secreto,,,,,,,,,,2021,5071,wikidata
+308762,Mystic Vale: Essential Edition,Mystic Vale: Edición Esencial,,,,,,,,,,,,web
 309113,Ticket to Ride: Amsterdam,¡Aventureros al Tren! Amsterdam,,,,,,,,,,2020,2668,manual
 310789,Catapult Feud,Castillos y Catapultas,,,,,,,,,,2021,2426,wikidata
 311080,Unstable Unicorns: Adventures,Unstable Unicorns : Aventuras,,,,,,,,,,,,web
@@ -471,9 +502,12 @@ bgg_id,bgg_name,name_es,variants,min_players,max_players,play_time,min_age,compl
 322562,Dice Throne: Season One ReRolled – Monk v. Paladin,Dice Throne Monje vs Paladín,,,,,,,,,,,,web
 322708,Descent: Legends of the Dark,Descent Leyendas de las Tinieblas,,,,,,,,,,,,web
 322785,Suspects: Claire Harper Takes the Stage,Suspects: Claire Harper Entra En Escena,,,,,,,,,,,,web
+324513,Batman: The Dark Knight Returns – The Game,Batman: El Regreso del Caballero Oscuro Edición Deluxe,,,,,,,,,,,,web
+324656,War Chest: Siege,War Chest – Asedio,,,,,,,,,,,,web
 324853,EXIT: The Game – Kidnapped in Fortune City,Exit: Secuestro en Fortune City,,,,,,,,,,2021,2428,manual
 324856,The Crew: Mission Deep Sea,La Tripulación: Misión Mar Profundo,,,,,,,,,,2021,45,manual
 325635,Unmatched: Little Red Riding Hood vs. Beowulf,Unmatched: Caperucita Roja VS Beowulf,,,,,,,,,,,,web
+326199,"Stuffed Fables: Oh, Brother!","Fábulas de Peluche: ¡Oh, hermanito!",,,,,,,,,,,,web
 326494,The Adventures of Robin Hood,Las Aventuras de Robin Hood,,,,,,,,,,2021,804,manual
 326908,The Curse of the Maldita Diamond,La Morada Maldita,,,,,,,,,,,,web
 328536,Fish & Katz,Fish and Katz,,,,,,,,,,,,web
@@ -485,6 +519,7 @@ bgg_id,bgg_name,name_es,variants,min_players,max_players,play_time,min_age,compl
 330149,Root: The Marauder Expansion,Root: Expansión Los Merodeadores (Español),,,,,,,,,,,,web
 330995,Dogs Alone,Doggy Style,,,,,,,,,,,,web
 331059,Last Message,Mensaje final,,,,,,,,,,2021,4125,wikidata
+331106,The Witcher: Old World,The Witcher: El Viejo Mundo,,,,,,,,,,,,web
 331787,Tiny Epic Dungeons,Pequeñas Grandes Mazmorras,,,,,,,,,,,,web
 331965,Arkham Horror (Third Edition): Secrets of the Order,Arkham Horror 3ra edición: Secretos de la Orden,,,,,,,,,,,,web
 332181,IQ Files: Escape Room – Sins,IQ Files - Pecados,,,,,,,,,,,,web
@@ -492,19 +527,23 @@ bgg_id,bgg_name,name_es,variants,min_players,max_players,play_time,min_age,compl
 334338,Paleo: The Initiation Rite,Paleo: Ritos De Iniciación,,,,,,,,,,,,web
 334483,Root: The Clockwork Expansion 2,Root - Expansión Los Cachivaches 2,,,,,,,,,,,,web
 334485,Root: Riverfolk Hirelings Pack,Root: Expansión Secuaces Ribereños (Español),,,,,,,,,,,,web
+334931,Robinson Crusoe: Adventures on the Cursed Island – Collector's Edition (Gamefound Edition),Robinson Crusoe: Edición coleccionista,,,,,,,,,,,,web
 335427,Wild: Serengeti,Vida Salvaje: Serengueti,vida salvaje serengeti,,,,,,,,,,,web
 335764,"Unmatched: Battle of Legends, Volume Two",Unmatched Battle of the Legends Volumen 2,,,,,,,,,,,,web
 338093,Ancient Knowledge,Saber Ancestral,,,,,,,,,,,,web
 338460,The Isle of Cats: Explore & Draw,La Isla de los Gatos – Explora y dibuja,,,,,,,,,,,,web
 338678,Taco Hat Cake Gift Pizza,Taco Gorro Torta Caja Pizza,,,,,,,,,,2021,8903,manual
 339686,IQ Files: Escape Room – Amnesia,IQ Files - Amnesia,,,,,,,,,,,,web
+339906,The Hunger,El Ansia,,,,,,,,,,,,web
 340233,ISS Vanguard: The Lost Fleet,Iss Vanguard - Expansión: La Flota Perdida,,,,,,,,,,,,web
 340235,ISS Vanguard: Deadly Frontier,Iss Vanguard - Expansión: Frontera Letal,,,,,,,,,,,,web
 340466,Unfathomable,Insondable,,,,,,,,,,2021,611,wikidata
+340526,The Witcher: Old World – Legendary Hunt,The Witcher: El Viejo Mundo – Legendary Hunt (Expansión),legendary hunt witcher viejo mundo,,,,,,,,,,,web
 340638,Happy Little Dinosaurs: Perils of Puberty Expansion Pack,Happy Little Dinosaurs Los Peligros de la Pubertad,,,,,,,,,,2021,,manual
 341165,Dune: A Game of Conquest and Diplomacy,Dune: Un Juego de Conquista y Diplomacia,,,,,,,,,,,,web
 341169,Great Western Trail: Second Edition,Great Western Trail (Segunda Edición),,,,,,,,,,,,web
 341254,Lost Ruins of Arnak: Expedition Leaders,Las ruinas perdidas de Arnak: Líderes De La Expedición,,,,,,,,,,,,web
+341496,Caesar's Empire,El imperio del César,,,,,,,,,,,,web
 341573,EXIT: The Game – The Lord of the Rings: Shadows over Middle-earth,Exit - El Señor de los Anillos,,,,,,,,,,,,web
 341583,EXIT: The Game – The Return to the Abandoned Cabin,Exit: Regreso a la Cabaña Abandonada,,,,,,,,,,2021,3168,manual
 342031,Dune: Imperium – Rise of Ix,Dune: Imperium – El Auge de Ix,,,,,,,,,,2022,,wikidata
@@ -518,17 +557,21 @@ bgg_id,bgg_name,name_es,variants,min_players,max_players,play_time,min_age,compl
 346199,A Game of Thrones: B'Twixt,Juego de Tronos: Tierra de Nadie,,,,,,,,,,,,web
 346773,The Stifling Dark,La Oscuridad Asfixiante,,,,,,,,,,,,web
 346965,Azul: Queen's Garden,Azul: Jardín de la Reina,,,,,,,,,,2021,688,manual
+347102,Star Wars: Outer Rim – Unfinished Business,Star Wars El Borde Exterior: Asuntos Pendientes,,,,,,,,,,,,web
 347305,Inventions: Evolution of Ideas,Inventions: La Evolución de las ideas,,,,,,,,,,,,web
 348096,Kites,Cometas,Cometas - Hora de volar,,,,,,,,,,,web
 349606,Pagan: Beyond the Palisades,Pagan: Más allá de las empalizadas (Español),,,,,,,,,,,,web
 350753,The Lord of the Rings: The Card Game – The Dark of Mirkwood,El Señor de los Anillos LCG: Las Penumbras del Bosque Negro,,,,,,,,,,,,web
+351038,Yak,YAK,,,,,,,,,,,,web
 351040,Ready Set Bet,Un Día en las Carreras,,,,,,,,,,,,web
+351863,The Adventures of Robin Hood: Friar Tuck in Danger,Las Aventuras de Robin Hood - Expansión El Fraile Tuck en Peligro,,,,,,,,,,,,web
 352574,Fit to Print,Listo Para Imprenta,,,,,,,,,,,,web
 352697,Resist!,¡Resistid!,,,,,,,,,,,,web
 352710,Ouch!,Ouch! (Lata),,,,,,,,,,,,web
 353942,Santa's Workshop (Second Edition),El Taller de Papá Noel,,,,,,,,,,,,web
 354254,Voices in my Head,Voces en mi Cabeza (juego base),,,,,,,,,,,,web
 354544,Unmatched: Houdini vs. The Genie,Unmatched Houdini VS The Genie (Ingles),unmatched houdini vs genio,,,,,,,,,,,web
+354824,Final Girl: Terror from the Grave,Final Girl – Historieta: Terror From the Grave,,,,,,,,,,,,web
 354934,Legacy of Yu,El Legado de Yu,,,,,,,,,,,,web
 355481,Marvel Zombies: A Zombicide Game – Fantastic 4: Under Siege,Marvel Zombies: Fantastic 4 Under Siege,,,,,,,,,,,,web
 355957,Meadow: Downstream,Expansión Pradera - Río Abajo,,,,,,,,,,,,web
@@ -555,10 +598,12 @@ bgg_id,bgg_name,name_es,variants,min_players,max_players,play_time,min_age,compl
 363091,Mazescape XP: Cryo-C,Mazescape - Cryo – C,,,,,,,,,,,,web
 364008,Maudit Mot Dit,Maldita Palabrita,,,,,,,,,,,,web
 364073,Splendor Duel,Splendor Duel,,,,,,,,,,2022,110,wikidata
+365107,Pagan: Mindgames,Pagan: Juegos mentales (Español),,,,,,,,,,,,web
 365717,Clank!: Catacombs,Clank! Catacumbas,,,,,,,,,,2022,46,manual
 366278,The Lord of the Rings: Adventure to Mount Doom,El Señor de los Anillos Aventura Hacia El Monte Del Destino,,,,,,,,,,,,web
 366316,EXIT: The Game – Kids: Jungle of Riddles,Exit Kids: Acertijos en la Jungla,,,,,,,,,,,,web
 366318,EXIT: The Game – The Disappearance of Sherlock Holmes,Exit: La Desaparición de Sherlock Holmes,,,,,,,,,,2022,4442,manual
+366327,Nacho Pile,Come Nachos,,,,,,,,,,,,web
 366488,Ticket to Ride: Ghost Train,¡Aventureros al Tren! El tren fantasma,,,,,,,,,,2022,6580,wikidata
 366752,The Great Split,La Gran División,,,,,,,,,,,,web
 367041,Scholars of the South Tigris,Eruditos de las Tierras del Sur,,,,,,,,,,,,web
@@ -583,6 +628,7 @@ bgg_id,bgg_name,name_es,variants,min_players,max_players,play_time,min_age,compl
 372559,Spots,Manchas,,,,,,,,,,,,web
 372720,Arkham Horror: The Card Game – Fortune and Folly: Scenario Pack,Arkham Horror LCG: fortuna e insensatez pack de escenario,,,,,,,,,,,,web
 373467,Mójate el Potito,Mójate el Potito ... Ese huevito quiere sal,mojate potito este huevito quiere sal,,,,,,,,,,,web
+373667,House of Fado,Casa de Fado,,,,,,,,,,,,web
 373778,Burger ASAP!,Burger ¡Ya!,,,,,,,,,,,,web
 374039,Tiny Epic Crimes,Pequeños Grandes Crímenes,,,,,,,,,,,,web
 374173,Star Wars: The Deckbuilding Game,STAR WARS - The Deck Building Game,,,,,,,,,,,,web
@@ -603,7 +649,9 @@ bgg_id,bgg_name,name_es,variants,min_players,max_players,play_time,min_age,compl
 381248,Nemesis: Retaliation,Nemesis: Represalia,,,,,,,,,,,,web
 381297,Unmatched Adventures: Tales to Amaze,Unmatched Adventures Relatos Asombrosos,,,,,,,,,,,,web
 381435,General Orders: World War II,General Orders Segunda Guerra Mundial,,,,,,,,,,,,web
+382350,Lost Ruins of Arnak: The Missing Expedition,Las Ruinas Perdidas de Arnak: La Expedición Perdida,,,,,,,,,,,,web
 382410,Coup X,Coup X,,,,,,,,,,2023,,wikidata
+382927,Descent: Legends of the Dark – The Betrayer's War,Descent Leyendas De Las Tinieblas - La Guerra Del Traidor,,,,,,,,,,,,web
 383158,Nunatak: Temple of Ice,Nunatak El templo de Hielo,,,,,,,,,,,,web
 383179,Age of Innovation,Preventa - La Era de la Innovación,,,,,,,,,,,,web
 383242,Marvel D.A.G.G.E.R.,Marvel DAGGER,,,,,,,,,,,,web
@@ -612,19 +660,22 @@ bgg_id,bgg_name,name_es,variants,min_players,max_players,play_time,min_age,compl
 383818,Marvel Champions: The Card Game – NeXt Evolution,Marvel Champions: La Proxima Evolución,,,,,,,,,,,,web
 384213,Fromage,Fromage (juego de mesa),,,,,,,,,,2024,366,wikidata
 385529,The Vale of Eternity,El Valle de la Eternidad,,,,,,,,,,2023,344,wikidata
+385685,Revive: Call of the Abyss,Revive: La Llamada del Abismo,,,,,,,,,,,,web
 386405,Come Sail Away!,¡Todos a Bordo!,,,,,,,,,,,,web
 387276,Reforest,Reforest: Plantas de la costa noroeste del Pacífico,,,,,,,,,,,,web
 387780,Rats of Wistar,Ratas de Wistar,,,,,,,,,,,,web
 390092,Ticket to Ride Legacy: Legends of the West,¡Aventureros al Tren! Legacy Leyendas del Oeste,,,,,,,,,,,,web
+390173,Mindbug: Beyond Evolution,MindBug : Más allá – Evolución,,,,,,,,,,,,web
 390422,Command of Nature,Dominio de los Elementos,,,,,,,,,,,,web
 391137,Galactic Cruise,Crucero Galáctico,,,,,,,,,,2025,103,wikidata
 391675,Marvel Champions: The Card Game – X-23 Hero Pack,Marvel Champions X-23,,,,,,,,,,,,web
 391834,SpellBook,Libro de Hechizos,,,,,,,,,,,,web
 391995,Unlock!: Short Adventures – Red Mask,Unlock! Miniaventuras: La Máscara Roja,,,,,,,,,,,,web
 392491,Taco Kitten Pizza,Taco Gatito Pizza,,,,,,,,,,2023,19440,manual
-392513,Mindbug: Beyond Eternity,Mind Bug - Expansion Más Allá: Eternidad,,,,,,,,,,,,web
+392513,Mindbug: Beyond Eternity,Mind Bug - Expansion Más Allá: Eternidad,Mindbug : Más Allá – Eternidad,,,,,,,,,,,web
 392611,Sushi Go!: Spin Some for Dim Sum,Sushi Go! Gira y Come Dim Sum,,,,,,,,,,2023,7583,manual
 393307,Tower Up,Tower up,,,,,,,,,,2024,1431,wikidata
+393531,Fields of Arle: Big Box,Campos de Arle Big Box,,,,,,,,,,,,web
 393672,Gloomhaven: Buttons & Bugs,Gloomhaven Botones y Bichos,,,,,,,,,,2024,880,manual
 394134,Without Fail,¡A Prueba de Retos!,,,,,,,,,,,,web
 395698,Mindbug: First Contact – Promo Pack 2022,Mindbug – Pack promocional 2022,,,,,,,,,,,,web
@@ -637,24 +688,35 @@ bgg_id,bgg_name,name_es,variants,min_players,max_players,play_time,min_age,compl
 397736,Hitster: Guilty Pleasures,Hitster: Temazos,,,,,,,,,,,,web
 399088,UNO: Show 'Em No Mercy,UNO - No Mercy,,,,,,,,,,,,web
 399941,River of Gold,Río de Oro,,,,,,,,,,,,web
+400314,Apiary,Apiario (Español),,,,,,,,,,,,web
 400366,Wondrous Creatures,Criaturas Maravillosas,,,,,,,,,,,,web
+400602,Civolution,Civolución (esp),,,,,,,,,,,,web
+400905,Pagan: Ancestors,Pagan - Ancestros (Expansión),,,,,,,,,,,,web
+401114,Terraforming Mars: Milestones & Awards,Hitos y recompensas - Terraforming Mars,terraforming mars hitos recompensas,,,,,,,,,,,web
 402676,Cities,Cities,,,,,,,,,,,,web
+403441,Windmill Valley,El Valle de los Molinos,,,,,,,,,,,,web
 404893,Tiny Epic Cthulhu,Pequeño Gran Cthulhu,,,,,,,,,,,,web
 406312,EXIT: The Game – The Venice Conspiracy,Exit El Juego - Conspiración en Venecia,,,,,,,,,,,,web
 406320,L.A.M.A. Kadabra,Llama Kadabra,,,,,,,,,,,,web
 406321,Take 5: 30th Anniversary Edition,Toma 6! Edición 30 Aniversario,,,,,,,,,,,,web
 406322,Saboteur: 20th Anniversary Edition,SABOTEUR: EDICIÓN 20 ANIVERSARIO,,,,,,,,,,,,web
+406652,Compile: Main 1,Compile: Unidad Principal 1,,,,,,,,,,,,web
 408727,Catan: New Energies,Catan Energías,,,,,,,,,,2024,7152,manual
 409588,Claw Machine,Grúa de Peluches,,,,,,,,,,,,web
 409925,Star Wars: Timeline Twist,Timeline Twist Star Wars,,,,,,,,,,,,web
 410291,Heat: Heavy Rain,HEAT – Lluvia Torrencial,,,,,,,,,,,,web
+410625,Rajas of the Ganges: Cards & Karma,Ganges Cartas y Karma,,,,,,,,,,,,web
+411435,Coffee Rush: Piece of Cake,Coffee Rush – Tartas deliciosas (Expansión),,,,,,,,,,,,web
 411860,Unmatched: The Witcher – Steel and Silver,Unmatched - The Witcher Steel & Silver - ¡EN INGLÉS!,,,,,,,,,,,,web
 411981,Ranking Top,Ranking Top 31 Minutos,,,,,,,,,,,,web
 412013,Warp & Weft,Trama,,,,,,,,,,,,web
 412576,Forest Shuffle: Alpine,Forest Shuffle : Cumbres Alpinas (Expansión),,,,,,,,,,,,web
 413246,Bomb Busters,Caza Bombas,,,,,,,,,,2024,82,manual
 414268,Ticket to Ride Map Collection 8: Iberia & South Korea,Aventureros al Tren: Expansión Iberia y Corea del Sur,,,,,,,,,,,,web
+415036,Medical Mysteries: NYC Emergency Room,Medical Mysteries Nueva York,,,,,,,,,,,,web
+415776,Kingdom Legacy: Feudal Kingdom,Kingdom Legacy: Reino Feudal,,,,,,,,,,,,web
 415945,Unmatched: Slings and Arrows,Unmatched : Slings & Arrows,,,,,,,,,,,,web
+416266,Mass Effect: The Board Game – Priority: Hagalaz,PREVENTA: MASS EFFECT EL JUEGO DE TABLERO,,,,,,,,,,,,web
 418059,SETI: Search for Extraterrestrial Intelligence,SETI: En busca de vida extraterrestre,,,,,,,,,,2024,14,wikidata
 419293,Medical Mysteries: Miami Flatline,Medical Mysteries Miami,,,,,,,,,,,,web
 420805,Black Forest,Selva Negra,,,,,,,,,,,,web
@@ -676,6 +738,7 @@ bgg_id,bgg_name,name_es,variants,min_players,max_players,play_time,min_age,compl
 426482,One Piece Nakama: Friends & Enemies,One Piece Nakama – Amigos y Enemigos,,,,,,,,,,,,web
 427593,Hive Ultimate,Hive Pocket Ultimate,,,,,,,,,,,,web
 427607,Wondrous Creatures: Gargantuan Beasts,Criaturas Maravillosas – Gargantúas,,,,,,,,,,,,web
+428431,Traitor Tots,Papas Traidoras,,,,,,,,,,,,web
 428581,Splendor: The Silk Road,Splendor - Expansión La Ruta de la Seda,,,,,,,,,,,,web
 428776,Pirate King!,Pirate King,,,,,,,,,,,,web
 429293,The Lord of the Rings: The Fellowship of the Ring – Trick-Taking Game,La Comunidad del Anillo – El juego de bazas,,,,,,,,,,2024,126,manual
@@ -690,12 +753,15 @@ bgg_id,bgg_name,name_es,variants,min_players,max_players,play_time,min_age,compl
 436217,The Lord of the Rings: Fate of the Fellowship,El Señor de los Anillos: El Destino de la Comunidad,,,,,,,,,,2025,52,manual
 436751,Under the Leaves,Bajo las Hojas,,,,,,,,,,,,web
 436851,Name it,Perritos,,,,,,,,,,,,web
+436904,Heat: Tunnel Vision,HEAT : Visión de Túnel (Expansión),,,,,,,,,,,,web
 437172,Salsacia vs Conservia,Salsacia vs Conservia (31 Minutos),,,,,,,,,,,,web
 437214,EXIT: The Game – Adventures on Catan,Exit: Aventuras en Catan,,,,,,,,,,2025,5847,manual
 437384,Bohemians,Bohemios (Español),,,,,,,,,,,,web
 438231,Forest Shuffle: Exploration,Forest Shuffle: Exploración,,,,,,,,,,2025,,wikidata
 438442,Feya's Swamp,El Pantano de Feya,,,,,,,,,,,,web
+439816,Lost Ruins of Arnak: Twisted Paths,Las Ruinas perdidas de Arnak: Cofre de Aventuras,,,,,,,,,,,,web
 444481,Star Wars: Battle of Hoth,Star Wars La Batalla de Hoth,,,,,,,,,,2025,661,manual
+445044,Wispwood,El Bosque de los Espíritus,,,,,,,,,,,,web
 447243,Duel for Cardia,Duelo por Cardia,,,,,,,,,,,,web
 447244,Exploding Kittens: The Board Game,Exploding Kittens - El juego de tablero,,,,,,,,,,,,web
 448271,The Lord of the Rings: The Two Towers – Trick-Taking Game,Las Dos Torres - El juego de bazas,,,,,,,,,,2025,864,manual
@@ -703,6 +769,7 @@ bgg_id,bgg_name,name_es,variants,min_players,max_players,play_time,min_age,compl
 448741,MARVEL: Skirmish! In New York,MARVEL ¡ESCARAMUZA! EN NEW YORK,,,,,,,,,,,,web
 448778,Spot it! Catan,Dobble Catan,,,,,,,,,,2025,18186,manual
 449018,Gunsen: The Battle for Toshi Ranbo,Gunsen: La Batalla por Toshi Ranbo,,,,,,,,,,,,web
+450429,The Lord of the Rings: Duel for Middle-Earth – Allies,El Señor de los Anillos: Duelo por la Tierra Media - Expansión Aliados,,,,,,,,,,,,web
 452411,Giants Moving Tiny Furniture,Gigantes moviendo mueblecitos,,,,,,,,,,,,web
 453128,Marvel Champions: The Card Game – Synthezoid Smackdown Scenario Pack,Marvel Champions - Synthezoid Smackdown Scenario Pack,,,,,,,,,,,,web
 454103,Magical Athlete,Magical Athlete,,,,,,,,,,2025,274,manual
@@ -714,5 +781,5 @@ bgg_id,bgg_name,name_es,variants,min_players,max_players,play_time,min_age,compl
 463073,Marvel Champions: The Card Game – Wonder Man Hero Pack,Marvel Champions - Wonder Man Hero Pack,Marvel Champions – Wonder Man,,,,,,,,,,,web
 463405,Heat: Legends,Heat: Leyendas,,,,,,,,,,2026,,manual
 470179,Throwing Paws,Garras en Juego,,,,,,,,,,,,web
-473916,Marvel Champions: The Card Game – Jessica Jones Hero Pack,Marvel champions pack de héroe jessica jones,marvel champions jessica jones hero pack,,,,,,,,,,,web
+473916,Marvel Champions: The Card Game – Jessica Jones Hero Pack,Marvel champions pack de héroe jessica jones,marvel champions jessica jones hero pack|Marvel Champions - Jessica Jones,,,,,,,,,,,web
 473963,Marvel Champions: The Card Game – Luke Cage Hero Pack,Marvel Champions - Luke Cage,,,,,,,,,,,,web
