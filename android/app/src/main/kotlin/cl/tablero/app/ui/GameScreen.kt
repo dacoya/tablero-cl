@@ -326,9 +326,14 @@ private val BGG_CATEGORIES = listOf(
 
 private fun score(v: Any?): String = (v as? Number)?.let { "%.2f".format(java.util.Locale.ROOT, it.toDouble()) } ?: UNKNOWN
 private fun rank(v: Any?): String = (v as? Number)?.let { "#${count(it)}" } ?: UNKNOWN
+private fun players(min: Any?, max: Any?): String = when {
+    min == null && max == null -> UNKNOWN
+    min == null || max == null || min == max -> "${min ?: max}"
+    else -> "$min–$max"
+}
 
 /**
- * BGG's ranks CSV for the matched entry: what the badges above do not already
+ * BGG's ranks CSV and bgg_names_es.csv for the matched entry: what the badges above do not already
  * say first, every other field behind "Ver más".
  */
 @Composable
@@ -346,6 +351,10 @@ private fun BggCard(bgg: SqlRow?, notify: (String) -> Unit) {
                 "Año" to (bgg["yearpublished"]?.toString() ?: UNKNOWN),
                 "Tipo" to when (bgg["is_expansion"]) { 1L -> "Expansión"; 0L -> "Juego base"; else -> UNKNOWN },
                 "Votos" to ((bgg["usersrated"] as? Number)?.let { count(it) } ?: UNKNOWN),
+                "Jugadores" to players(bgg["min_players"], bgg["max_players"]),
+                "Duración" to (bgg["play_time"]?.let { "$it min" } ?: UNKNOWN),
+                "Edad" to (bgg["min_age"]?.let { "$it+" } ?: UNKNOWN),
+                "Peso" to score(bgg["complexity"]),
             )
             val rest = listOf(
                 "Nombre" to (bgg["name"] as String? ?: UNKNOWN),
@@ -353,6 +362,7 @@ private fun BggCard(bgg: SqlRow?, notify: (String) -> Unit) {
                 "Nota geek" to score(bgg["bayesaverage"]),
                 "Nota promedio" to score(bgg["average"]),
                 "Por categoría" to (categories.joinToString(" · ").ifEmpty { UNKNOWN }),
+                "Mecánicas" to (bgg["mechanics"] as String? ?: UNKNOWN),
             )
             (if (more) main + rest else main).forEach { (label, value) ->
                 Row {
@@ -363,6 +373,7 @@ private fun BggCard(bgg: SqlRow?, notify: (String) -> Unit) {
                         color = if (value == UNKNOWN) MaterialTheme.colorScheme.onSurfaceVariant else Color.Unspecified)
                 }
             }
+            if (bgg["facts_id"] != null) Facts("Ficha: BGG")
             TextButton(onClick = { more = !more }) { Text(if (more) "Ver menos" else "Ver más") }
             bgg["id"]?.let { id ->
                 TextButton(onClick = {

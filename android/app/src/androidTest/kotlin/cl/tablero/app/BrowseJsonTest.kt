@@ -18,6 +18,7 @@ class BrowseJsonTest {
         val full = Browse("price", Filters(kinds = listOf("game"),
             inStockOnly = true, onSale = true, minPrice = 1000.0, maxPrice = 50000.0, minDiscount = 20.0,
             flag = "new", preorder = true, bggCategory = "partygames_rank", bggTop = 500,
+            players = 4, maxPlayTime = 60, mechanic = "Trading",
             hideOwned = true, ownedExpansions = true, onePerGame = true))
         assertEquals(full, browseFromJson(full.toJson()))
         assertEquals(Browse(), browseFromJson(Browse().toJson()))

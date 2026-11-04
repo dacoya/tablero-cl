@@ -20,6 +20,7 @@ class TableroApp : Application() {
             NotificationChannel(ALERT_CHANNEL, "Avisos de precio y cambios", NotificationManager.IMPORTANCE_DEFAULT),
         ))
         Schedule.apply(this, prefs)
+        Schedule.applyBgg(this, prefs)
     }
 
     companion object {

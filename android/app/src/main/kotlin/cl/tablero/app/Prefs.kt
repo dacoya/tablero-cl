@@ -26,6 +26,13 @@ class Prefs(context: Context) {
     /** Update every store once a day in the background. */
     val autoUpdate = Flag("auto_update", true)
 
+    /** How often the daily run also refreshes BoardGameGeek's ranks. */
+    var bggFrequency: BggFrequency
+        get() = BggFrequency.entries.firstOrNull { it.name == sp.getString("bgg_frequency", null) } ?: BggFrequency.WEEKLY
+        set(v) = sp.edit { putString("bgg_frequency", v.name) }.also { bggFrequencyFlow.value = v }
+
+    val bggFrequencyFlow = MutableStateFlow(bggFrequency)
+
     /** Never use mobile data for scraping: a full run moves ~150 MB. */
     val wifiOnly = Flag("wifi_only", true)
 
@@ -57,4 +64,9 @@ class Prefs(context: Context) {
     var notifiedChanges: Int
         get() = sp.getInt("notified_changes", 0)
         set(v) = sp.edit { putInt("notified_changes", v) }
+}
+
+/** How often BGG's ranks are refreshed; BGG itself publishes one ranking a day. */
+enum class BggFrequency(val days: Long, val label: String) {
+    DAILY(1, "Cada día"), WEEKLY(7, "Cada semana"), MONTHLY(30, "Cada mes"),
 }

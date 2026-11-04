@@ -5,6 +5,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -13,6 +14,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ListItem
@@ -33,6 +36,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import android.net.Uri
+import cl.tablero.app.BggFrequency
+import cl.tablero.app.BggWorker
 import cl.tablero.app.BuildConfig
 import cl.tablero.app.Db
 import cl.tablero.app.Prefs
@@ -48,7 +53,7 @@ import kotlinx.coroutines.launch
 fun SettingsScreen(app: TableroApp, notify: (String) -> Unit, onStores: () -> Unit, modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val prefs = app.prefs
-    val reschedule = { Schedule.apply(context, prefs) }
+    val reschedule = { Schedule.apply(context, prefs); Schedule.applyBgg(context, prefs) }
 
     Column(modifier.verticalScroll(rememberScrollState())) {
         Text("Ajustes", style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(16.dp))
@@ -62,6 +67,7 @@ fun SettingsScreen(app: TableroApp, notify: (String) -> Unit, onStores: () -> Un
 
         Section("Actualización")
         Toggle("Actualizar cada día", "En segundo plano, de madrugada (4:00).", prefs.autoUpdate, reschedule)
+        BggFrequencyRow(prefs, notify)
         Toggle("Solo con WiFi", "Una actualización completa usa ~150 MB.", prefs.wifiOnly, reschedule)
         Toggle("Solo cargando", "La actualización diaria espera al cargador.", prefs.chargingOnly, reschedule)
 
@@ -152,6 +158,36 @@ private fun About(db: Db) {
         }
     }
     Hint(about)
+}
+
+/** How often the daily run also refreshes BGG's ranks. */
+@Composable
+private fun BggFrequencyRow(prefs: Prefs, notify: (String) -> Unit) {
+    val context = LocalContext.current
+    val current by prefs.bggFrequencyFlow.collectAsState()
+    var open by remember { mutableStateOf(false) }
+    ListItem(
+        headlineContent = { Text("Ranking de BoardGameGeek") },
+        supportingContent = {
+            Column {
+                Text("Baja el último ranking publicado (~7 MB), ${current.label.lowercase()}.")
+                TextButton(onClick = {
+                    BggWorker.now(context, !prefs.wifiOnly.value)
+                    notify("Descargando el ranking de BGG…")
+                }) { Text("Descargar ahora") }
+            }
+        },
+        trailingContent = {
+            Box {
+                TextButton(onClick = { open = true }) { Text(current.label) }
+                DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
+                    BggFrequency.entries.forEach { f ->
+                        DropdownMenuItem(text = { Text(f.label) }, onClick = { prefs.bggFrequency = f; Schedule.applyBgg(context, prefs); open = false })
+                    }
+                }
+            }
+        },
+    )
 }
 
 @Composable

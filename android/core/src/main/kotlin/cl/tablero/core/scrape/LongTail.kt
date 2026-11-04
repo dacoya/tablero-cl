@@ -21,7 +21,7 @@ private fun clsContains(needle: String): (Element) -> Boolean = { el -> el.class
 
 private fun attrIs(name: String, value: String): (Element) -> Boolean = { it.attr(name) == value && it.hasAttr(name) }
 
-private fun saleOr(isOos: Boolean, curr: String?, extraSale: Boolean = false) = when {
+fun saleOr(isOos: Boolean, curr: String?, extraSale: Boolean = false) = when {
     isOos -> AGOTADO
     curr.orNullIfEmpty() != null || extraSale -> OFERTA
     else -> null

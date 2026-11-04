@@ -142,6 +142,19 @@ private val ORPHAN_ARTICLE = pyRegex("""\s+\b(?:el|la|los|las)\b\s*$""", ignoreC
 
 private const val EDGE_PUNCT = " –—-|,:;"
 
+/** Marketing blurb after a spaced dash, cut to the end. See utils._DESCRIPTION_TAIL. */
+private val DESCRIPTION_TAIL = pyRegex(
+    """\s+[–—-]\s+(?:""" +
+        """(?-i:de)\s+\w+""" +
+        """|deducci[oó]n\b""" +
+        """|(?:el|un|una)\s+\w+\s+juego\s+de\b""" +
+        """|juegos?\s+de\s+(?:cartas|dados|tablero|mesa)\s+(?:""" +
+        """de\s+(?:deducci[oó]n|faroleo|rapidez|habilidad|intriga|humor|cultura|historia|combate|aventura|estrategia|roles|palabras)""" +
+        """|infantil|familiar|cooperativo|r[aá]pido|estrat[eé]gico)\b""" +
+        """).*$""",
+    ignoreCase = true,
+)
+
 /** Pass-1 callback. See utils._strip_unless_subtitle. */
 private fun stripUnlessSubtitle(m: MatchResult, input: String): String {
     val phrase = m.value
@@ -175,7 +188,7 @@ private fun unglue(text: String): String {
 fun cleanTitle(text: String?): String? {
     if (text == null) return null
     val unglued = unglue(text)
-    val pass1 = TITLE_NOISE.replace(unglued) { stripUnlessSubtitle(it, unglued) }
+    val pass1 = DESCRIPTION_TAIL.replace(TITLE_NOISE.replace(unglued) { stripUnlessSubtitle(it, unglued) }, "")
     val pass2 = TITLE_NOISE_CONCAT.replace(pass1, "")
     val pass3 = TRAILING_NOISE.replace(pass2) { m ->
         if (SUBTITLE_TAIL.containsMatchIn(pass2.substring(0, m.range.first))) m.value else ""

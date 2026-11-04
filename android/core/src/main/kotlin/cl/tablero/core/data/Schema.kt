@@ -4,7 +4,7 @@ import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.execSQL
 
 /** Must equal `SCHEMA_VERSION` in scripts/db.py; a test holds them together. */
-const val SCHEMA_VERSION = 8
+const val SCHEMA_VERSION = 9
 
 /** db._UPGRADES: in-place steps keyed by the version they move a database to. */
 val UPGRADES: Map<Int, List<String>> = mapOf(
@@ -22,6 +22,11 @@ val UPGRADES: Map<Int, List<String>> = mapOf(
     8 to listOf(
         "CREATE TABLE IF NOT EXISTS owned ( game_id INTEGER PRIMARY KEY REFERENCES game(id) ON DELETE CASCADE, added_at INTEGER NOT NULL )",
         "CREATE TABLE IF NOT EXISTS store_shipping ( store TEXT PRIMARY KEY, cost REAL NOT NULL )",
+    ),
+    9 to listOf(
+        "CREATE TABLE IF NOT EXISTS bgg_facts ( bgg_id INTEGER PRIMARY KEY, min_players INTEGER, max_players INTEGER, play_time INTEGER, min_age INTEGER, complexity REAL )",
+        "CREATE TABLE IF NOT EXISTS bgg_mechanic ( bgg_id INTEGER NOT NULL, mechanic TEXT NOT NULL, PRIMARY KEY (bgg_id, mechanic) )",
+        "CREATE INDEX IF NOT EXISTS idx_bgg_mechanic ON bgg_mechanic(mechanic)",
     ),
 )
 

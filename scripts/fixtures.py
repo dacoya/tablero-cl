@@ -138,6 +138,12 @@ _EDGE_TITLES = (
     "Smart 10 Ampliación", "Not Alone - Sanctuary (EXPANSIÓN)",
     "Magic The Gathering Play Booster", "Pokemon Booster Display",
     "Puzzle 1000 piezas", "Booknook Tonecheer 3D Puzzle",
+    "La Corte del Zar – de cartas, intriga y deducción",
+    "La Corte del Zar – Juego de mesa de cartas, intriga y deducción",
+    "Love Letter Eco Box – Juego de Cartas de Deducción y Faroleo (Z-Man Games)",
+    "Taco Gatito Pizza - Juego de Cartas Infantil (Desde 4 años)",
+    "Scout – Un brillante juego de cartas donde nunca podrás ordenar tu mano",
+    "Catan - El Juego de Cartas", "Catan - Juego de Cartas 2da Edición",
     "Война и мир", "東京 Tokyo", "  Espacios   dobles  ", "Catan\u00a0Plus",
 )
 

@@ -125,6 +125,16 @@ class Http(
         return Page(r.code, cloudflare, if (body.contentLength() > MAX_PAGE_BYTES) null else body.string())
     }
 
+    /** A plain text file (a CSV), or null on any failure or a body past MAX_PAGE_BYTES. */
+    fun fetchText(url: String): String? = try {
+        val request = Request.Builder().url(url).headers(HEADERS).build()
+        client.newCall(request).execute().use(::read).takeIf { it.code < 400 }?.text
+    } catch (e: IOException) {
+        log("Network error on $url: $e"); null
+    } catch (e: IllegalArgumentException) {
+        log("Network error on $url: $e"); null
+    }
+
     /**
      * `fetch_html`: the parsed page, or null for anything that is not one --
      * a network failure, a Cloudflare block, an error status, a challenge

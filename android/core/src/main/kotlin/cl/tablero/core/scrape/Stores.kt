@@ -87,6 +87,8 @@ val PARSERS: Map<String, Parser> = mapOf(
     "cartonespesados" to ::cartonespesados,
     "lafortalezapuq" to ::lafortalezapuq,
     "shivano" to ::shivano,
+    "calabozotienda" to ::calabozotienda,
+    "araucania" to ::araucania,
 
     // The long tail (LongTail.kt)
     "elpatiogeek" to ::elpatiogeek,

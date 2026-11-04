@@ -14,11 +14,16 @@ export layer later without touching this module.
 #
 # They are excluded from queries rather than deleted, so their price history
 # survives and a store that merely served a bad page recovers on the next run.
+# A store whose latest scrape failed is hidden whole (likely in maintenance).
 STALE_CLAUSE = """
     p.last_seen >= COALESCE(
         (SELECT MAX(r.ts) FROM scrape_run r WHERE r.store = p.store AND r.success = 1),
         p.last_seen
     )
+    AND COALESCE(
+        (SELECT r.success FROM scrape_run r WHERE r.store = p.store ORDER BY r.ts DESC LIMIT 1),
+        1
+    ) = 1
 """
 
 

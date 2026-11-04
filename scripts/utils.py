@@ -236,6 +236,27 @@ _ARTICLE_PREFIX = re.compile(r'\b(?:el|la|los|las)\s*$', re.IGNORECASE)
 _SUBTITLE_TAIL  = re.compile(r'\b(?:el|la|los|las)\s+juego\s+de\s*$', re.IGNORECASE)
 
 
+# Marketing blurb after a spaced dash ("La Corte del Zar – de cartas, intriga y
+# deducción"). Cut it with everything after it, publisher parens included.
+#
+# Narrow on purpose, for the same reason "juego de cartas" is not noise above:
+# a bare "- Juego de Cartas", "- El Juego de Cartas" or "- Juego de Cartas 2da
+# Edición" names a different product and must survive. Only tails that read as
+# a description match: lowercase "de <word>", a leading "deducción", "un/el
+# <adj> juego de ...", or "Juego de <Cartas|Dados|..>" followed by a qualifier.
+_DESCRIPTION_TAIL = re.compile(
+    r'\s+[–—-]\s+(?:'
+    r'(?-i:de)\s+\w+'
+    r'|deducci[oó]n\b'
+    r'|(?:el|un|una)\s+\w+\s+juego\s+de\b'
+    r'|juegos?\s+de\s+(?:cartas|dados|tablero|mesa)\s+(?:'
+    r'de\s+(?:deducci[oó]n|faroleo|rapidez|habilidad|intriga|humor|cultura|historia|combate|aventura|estrategia|roles|palabras)'
+    r'|infantil|familiar|cooperativo|r[aá]pido|estrat[eé]gico)\b'
+    r').*$',
+    re.IGNORECASE,
+)
+
+
 def _strip_unless_subtitle(m: re.Match) -> str:
     """Pass-1 callback: keep the noise phrase when introduced by a definite article,
     UNLESS the phrase is 'Juego de Mesa'/'Board Game' — those are always redundant
@@ -304,6 +325,9 @@ def clean_title(text: str) -> str:
     if not isinstance(text, str):
         return text
     cleaned = _TITLE_NOISE.sub(_strip_unless_subtitle, _unglue(text))
+    # After pass 1: "X – Juego de mesa de cartas, intriga" only exposes its blurb once
+    # "Juego de mesa" is gone.
+    cleaned = _DESCRIPTION_TAIL.sub('', cleaned)
     cleaned = _TITLE_NOISE_CONCAT.sub('', cleaned)
     cleaned = _TRAILING_NOISE.sub(_keep_if_subtitle_tail, cleaned)
     cleaned = re.sub(r'\s{2,}', ' ', cleaned)

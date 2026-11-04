@@ -12,14 +12,24 @@ has CLEAR_WINNER times the votes of the next; otherwise the game stays
 unmatched. A wrong rating is worse than none.
 """
 import csv
+import json
+import os
+import urllib.parse
+import urllib.request
 from pathlib import Path
 
 from .paths import DATA_DIR, PKG_DIR
 from .utils import clean_title, normalize
 
 CSV_PATH = DATA_DIR / "boardgames_ranks.csv"
-# Spanish titles -> BGG ids, curated for the most-listed unmatched games.
+# One row per BGG id: its Spanish names, for matching, and its game facts.
 ALIASES_PATH = PKG_DIR / "bgg_names_es.csv"
+# `source` says where name_es came from. Categories, designers, year and rank
+# are for people reading the file; nothing loads them into the database.
+ALIAS_COLUMNS = ("bgg_id", "bgg_name", "name_es", "variants", "min_players", "max_players", "play_time",
+                 "min_age", "complexity", "mechanics", "categories", "designers", "year", "rank", "source")
+# Between the values of variants, mechanics, categories and designers.
+LIST_SEP = "|"
 CURSOR = "bgg_csv"
 
 # Entries with fewer votes are mostly obscure homonyms: keeping them added
@@ -36,6 +46,14 @@ _INT_COLUMNS = (
     "familygames_rank", "partygames_rank", "strategygames_rank", "thematic_rank",
     "wargames_rank",
 )
+
+WIKIDATA_URL = "https://query.wikidata.org/sparql"
+WIKIDATA_USER_AGENT = "tablero-cl/0.1 (personal price tracker)"
+WIKIDATA_TIMEOUT = 60
+_WIKIDATA_QUERY = """SELECT ?bgg ?label WHERE {
+  ?item wdt:P2339 ?bgg; rdfs:label ?label . FILTER(LANG(?label) = "es")
+}"""
+
 _COLUMNS = ("id", "name", "norm", *_INT_COLUMNS, "bayesaverage", "average",
             "usersrated", "is_expansion")
 
@@ -86,20 +104,111 @@ def import_csv(conn, path: Path) -> int:
     return len(rows)
 
 
+def _read_aliases(path: Path) -> list[dict]:
+    with open(path, encoding="utf-8", newline="") as fh:
+        return list(csv.DictReader(fh))
+
+
+def _write_aliases(path: Path, rows: list[dict]) -> None:
+    """Rewrite the alias file sorted by id, whole or not at all."""
+    tmp = path.with_suffix(".tmp")
+    with open(tmp, "w", encoding="utf-8", newline="") as fh:
+        writer = csv.DictWriter(fh, ALIAS_COLUMNS, lineterminator="\n")
+        writer.writeheader()
+        writer.writerows(sorted(rows, key=lambda r: int(r["bgg_id"])))
+    os.replace(tmp, path)
+
+
+def _split(value: str | None) -> list[str]:
+    return [v.strip() for v in (value or "").split(LIST_SEP) if v.strip()]
+
+
+def _alias_names(row: dict) -> list[str]:
+    """Every name of an alias row, name_es first."""
+    return _split(row.get("name_es")) + _split(row.get("variants"))
+
+
 def load_aliases(conn, path: Path = ALIASES_PATH) -> int:
     """
     Replace bgg_alias with `path`'s Spanish names. An alias whose BGG entry is
-    not in the bgg table (too few votes, or no CSV imported yet) is skipped.
+    not in the bgg table (too few votes, or no CSV imported yet) is skipped, and
+    so is one two entries claim, since it cannot say which game it means.
     Returns aliases kept.
     """
     known = {i for (i,) in conn.execute("SELECT id FROM bgg")}
-    with open(path, encoding="utf-8", newline="") as fh:
-        pairs = {normalize(clean_title(r["name_es"])): int(r["bgg_id"]) for r in csv.DictReader(fh)}
-    rows = [(norm, bid) for norm, bid in pairs.items() if norm and bid in known]
+    claims: dict[str, set[int]] = {}
+    for r in _read_aliases(path):
+        for name in _alias_names(r):
+            claims.setdefault(normalize(clean_title(name)), set()).add(int(r["bgg_id"]))
+    rows = [(norm, next(iter(ids))) for norm, ids in claims.items()
+            if norm and len(ids) == 1 and next(iter(ids)) in known]
     conn.execute("DELETE FROM bgg_alias")
     conn.executemany("INSERT INTO bgg_alias(norm, bgg_id) VALUES (?, ?)", rows)
     conn.commit()
     return len(rows)
+
+
+def load_facts(conn, path: Path = ALIASES_PATH) -> int:
+    """
+    Replace bgg_facts and bgg_mechanic with `path`'s facts. A row with no facts
+    gets no bgg_facts row. Returns rows kept.
+    """
+    facts = []
+    mechanics = []
+    for r in _read_aliases(path):
+        bgg_id = int(r["bgg_id"])
+        values = (_int(r.get("min_players")), _int(r.get("max_players")), _int(r.get("play_time")),
+                  _int(r.get("min_age")), _float(r.get("complexity")))
+        if any(v is not None for v in values):
+            facts.append((bgg_id, *values))
+        mechanics.extend((bgg_id, m) for m in _split(r.get("mechanics")))
+    with conn:
+        conn.execute("DELETE FROM bgg_facts")
+        conn.execute("DELETE FROM bgg_mechanic")
+        conn.executemany("INSERT INTO bgg_facts VALUES (?, ?, ?, ?, ?, ?)", facts)
+        conn.executemany("INSERT OR IGNORE INTO bgg_mechanic VALUES (?, ?)", mechanics)
+    return len(facts)
+
+
+def fetch_wikidata_names() -> list[tuple[str, str]]:
+    """(BGG id, Spanish label) for every Wikidata item with a BGG id (P2339)."""
+    url = f"{WIKIDATA_URL}?{urllib.parse.urlencode({'query': _WIKIDATA_QUERY, 'format': 'json'})}"
+    request = urllib.request.Request(url, headers={"User-Agent": WIKIDATA_USER_AGENT})
+    with urllib.request.urlopen(request, timeout=WIKIDATA_TIMEOUT) as response:
+        bindings = json.load(response)["results"]["bindings"]
+    return [(b["bgg"]["value"], b["label"]["value"]) for b in bindings]
+
+
+def merge_wikidata_names(conn, pairs, path: Path = ALIASES_PATH) -> int:
+    """
+    Add Wikidata's Spanish names to the alias file. Returns names added.
+
+    An alias beats every other match, so only clear ones get in: the norm is
+    new to the file and to BGG's own names, one entry claims it, and that entry
+    is in the bgg table. A name for an id already in the file becomes a variant,
+    so existing names, the manual ones above all, are untouched.
+    """
+    existing = _read_aliases(path)
+    taken = {normalize(clean_title(n)) for r in existing for n in _alias_names(r)}
+    taken |= {n for (n,) in conn.execute("SELECT norm FROM bgg")}
+    known = dict(conn.execute("SELECT id, name FROM bgg"))
+    claims: dict[str, tuple[set[int], str]] = {}
+    for raw_id, label in pairs:
+        bgg_id = _int(raw_id)
+        norm = normalize(clean_title(label))
+        if norm and bgg_id in known and norm not in taken:
+            claims.setdefault(norm, (set(), label))[0].add(bgg_id)
+    added: dict[int, list[str]] = {}
+    for ids, label in claims.values():
+        if len(ids) == 1:
+            added.setdefault(next(iter(ids)), []).append(label)
+    merged = [{**r, "variants": LIST_SEP.join(_split(r.get("variants")) + added.get(int(r["bgg_id"]), []))}
+              for r in existing]
+    present = {int(r["bgg_id"]) for r in existing}
+    merged += [{"bgg_id": i, "bgg_name": known[i], "name_es": labels[0], "variants": LIST_SEP.join(labels[1:]),
+                "source": "wikidata"} for i, labels in added.items() if i not in present]
+    _write_aliases(path, merged)
+    return sum(map(len, added.values()))
 
 
 def lookup(conn, norm: str) -> int | None:
@@ -158,5 +267,8 @@ def refresh(conn, path: Path | None = None) -> dict:
             imported = import_csv(conn, path)
             conn.execute("INSERT OR REPLACE INTO cursor(name, ts) VALUES (?, ?)", (CURSOR, mtime))
             conn.commit()
-    aliases = load_aliases(conn) if ALIASES_PATH.exists() else 0
+    aliases = 0
+    if ALIASES_PATH.exists():
+        aliases = load_aliases(conn, ALIASES_PATH)
+        load_facts(conn, ALIASES_PATH)
     return {"imported": imported, "aliases": aliases, "matched": match_games(conn)}

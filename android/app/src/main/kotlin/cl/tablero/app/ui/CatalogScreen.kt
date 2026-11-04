@@ -70,7 +70,8 @@ val BrowseSaver = listSaver<Browse, Any?>(
     save = { b ->
         with(b.filters) {
             listOf(b.sort, stores?.let { ArrayList(it) }, kinds?.let { ArrayList(it) }, inStockOnly, onSale,
-                minPrice, maxPrice, minDiscount, flag, preorder, bggCategory, bggTop, hideOwned, ownedExpansions, onePerGame)
+                minPrice, maxPrice, minDiscount, flag, preorder, bggCategory, bggTop, hideOwned, ownedExpansions, onePerGame,
+                players, maxPlayTime, mechanic)
         }
     },
     restore = {
@@ -80,6 +81,7 @@ val BrowseSaver = listSaver<Browse, Any?>(
             minDiscount = it[7] as Double?, flag = it[8] as String?, preorder = it[9] as Boolean,
             bggCategory = it[10] as String?, bggTop = it[11] as Int?, hideOwned = it[12] as Boolean,
             ownedExpansions = it[13] as Boolean, onePerGame = it[14] as Boolean,
+            players = it[15] as Int?, maxPlayTime = it[16] as Int?, mechanic = it[17] as String?,
         ))
     },
 )
@@ -90,7 +92,8 @@ fun Browse.toJson(): String = with(filters) {
         .put("inStockOnly", inStockOnly).put("onSale", onSale).put("minPrice", minPrice).put("maxPrice", maxPrice)
         .put("minDiscount", minDiscount).put("flag", flag).put("preorder", preorder)
         .put("bggCategory", bggCategory).put("bggTop", bggTop).put("hideOwned", hideOwned)
-        .put("ownedExpansions", ownedExpansions).put("onePerGame", onePerGame).toString()
+        .put("ownedExpansions", ownedExpansions).put("onePerGame", onePerGame)
+        .put("players", players).put("maxPlayTime", maxPlayTime).put("mechanic", mechanic).toString()
 }
 
 /**
@@ -112,6 +115,9 @@ fun browseFromJson(json: String): Browse? = try {
         bggTop = if (o.isNull("bggTop")) null else o.getInt("bggTop"),
         hideOwned = o.optBoolean("hideOwned"), ownedExpansions = o.optBoolean("ownedExpansions"),
         onePerGame = o.optBoolean("onePerGame"),
+        players = if (o.isNull("players")) null else o.getInt("players"),
+        maxPlayTime = if (o.isNull("maxPlayTime")) null else o.getInt("maxPlayTime"),
+        mechanic = if (o.isNull("mechanic")) null else o.getString("mechanic"),
     ))
 } catch (e: JSONException) {
     null
@@ -121,6 +127,7 @@ fun browseFromJson(json: String): Browse? = try {
 private fun Filters.extra(): Int = listOf(
     !kinds.isNullOrEmpty(), minPrice != null || maxPrice != null,
     minDiscount != null, flag != null, preorder, bggCategory != null, bggTop != null, hideOwned, ownedExpansions,
+    players != null, maxPlayTime != null, mechanic != null,
 ).count { it }
 
 /**

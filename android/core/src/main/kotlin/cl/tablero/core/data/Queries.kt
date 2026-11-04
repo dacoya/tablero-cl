@@ -13,15 +13,21 @@ import androidx.sqlite.execSQL
  */
 
 /**
- * A product is stale when its store was scraped successfully more recently
- * than the product was last seen: delisted, or its URL changed. Hidden, never
- * deleted, so its history survives.
+ * A product is hidden, never deleted (its history survives), when
+ *  - its store was scraped successfully more recently than the product was
+ *    last seen: delisted, or its URL changed; or
+ *  - the store's latest attempt failed: most likely down for maintenance, and
+ *    prices from before are not worth showing. A later good scrape brings it back.
  */
 const val STALE_CLAUSE = """
     p.last_seen >= COALESCE(
         (SELECT MAX(r.ts) FROM scrape_run r WHERE r.store = p.store AND r.success = 1),
         p.last_seen
     )
+    AND COALESCE(
+        (SELECT r.success FROM scrape_run r WHERE r.store = p.store ORDER BY r.ts DESC LIMIT 1),
+        1
+    ) = 1
 """
 
 private const val DISCOUNT_PCT_SQL = """
@@ -74,6 +80,9 @@ data class Filters(
     val preorder: Boolean = false,
     val bggCategory: String? = null,
     val bggTop: Int? = null,
+    val players: Int? = null,
+    val maxPlayTime: Int? = null,
+    val mechanic: String? = null,
     val hideOwned: Boolean = false,
     val ownedExpansions: Boolean = false,
     val onePerGame: Boolean = false,
@@ -110,6 +119,19 @@ private fun Filters.where(): Pair<String, List<Any?>> {
     if (bggTop != null) {
         clauses += "p.game_id IN (SELECT g.id FROM game g JOIN bgg b ON b.id = g.bgg_id WHERE b.rank <= ?)"
         params += bggTop
+    }
+    if (players != null) {
+        clauses += "p.game_id IN (SELECT g.id FROM game g JOIN bgg_facts f ON f.bgg_id = g.bgg_id WHERE f.min_players <= ? AND f.max_players >= ?)"
+        params += players
+        params += players
+    }
+    if (maxPlayTime != null) {
+        clauses += "p.game_id IN (SELECT g.id FROM game g JOIN bgg_facts f ON f.bgg_id = g.bgg_id WHERE f.play_time <= ?)"
+        params += maxPlayTime
+    }
+    if (mechanic != null) {
+        clauses += "p.game_id IN (SELECT g.id FROM game g JOIN bgg_mechanic m ON m.bgg_id = g.bgg_id WHERE m.mechanic = ?)"
+        params += mechanic
     }
     if (hideOwned) clauses += "(p.game_id IS NULL OR p.game_id NOT IN (SELECT game_id FROM owned))"
     if (ownedExpansions) {

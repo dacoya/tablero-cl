@@ -4,10 +4,12 @@ import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import cl.tablero.core.data.Filters
 import cl.tablero.core.data.Scraped
+import cl.tablero.core.data.bggMechanics
 import cl.tablero.core.data.browse
 import cl.tablero.core.data.countProducts
 import cl.tablero.core.data.exec
 import cl.tablero.core.data.gameBase
+import cl.tablero.core.data.gameBgg
 import cl.tablero.core.data.gameExpansions
 import cl.tablero.core.data.ingestStore
 import cl.tablero.core.data.initDb
@@ -20,6 +22,8 @@ import cl.tablero.core.data.products
 import cl.tablero.core.data.query
 import cl.tablero.core.data.shippingCosts
 import cl.tablero.core.data.shippingSet
+import cl.tablero.core.data.recordFailure
+import cl.tablero.core.data.refreshBggRanks
 import cl.tablero.core.data.storeFreshness
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -46,6 +50,16 @@ class CollectionTest {
         query("SELECT id FROM game WHERE title = ?", title).single()["id"] as Long
 
     @Test
+    fun aStoreWhoseLatestScrapeFailedIsHiddenUntilItRecovers() = db { conn ->
+        val before = countProducts(conn, Filters(stores = listOf("b")))
+        recordFailure(conn, "b", ts = 200)
+        assertEquals(0L, countProducts(conn, Filters(stores = listOf("b"))))
+        assertEquals(1L, conn.query("SELECT COUNT(*) AS n FROM product WHERE store = 'b'").single()["n"]) // kept
+        ingestStore(conn, "b", listOf(Scraped("Catan", "https://b.cl/catan", "$35.000")), ts = 300)
+        assertEquals(before, countProducts(conn, Filters(stores = listOf("b"))))
+    }
+
+    @Test
     fun anExpansionBelongsToItsLongestBaseGame() = db { conn ->
         assertEquals(listOf("Catan: Navegantes Expansión"), gameExpansions(conn, conn.id("Catan")).map { it["title"] })
         // Skull King is the longer match, so its expansion is not listed under Skull.
@@ -69,7 +83,7 @@ class CollectionTest {
 
         // An expansion already owned is not suggested again.
         ownedAdd(conn, conn.id("Catan: Navegantes Expansión"), now = 6)
-        assertEquals(0, countProducts(conn, Filters(ownedExpansions = true)))
+        assertEquals(0L, countProducts(conn, Filters(ownedExpansions = true)))
 
         ownedRemove(conn, catan)
         assertFalse(isOwned(conn, catan))
@@ -102,9 +116,40 @@ class CollectionTest {
         assertEquals(2, countProducts(conn, Filters(bggCategory = "familygames_rank")))
         assertEquals(2, countProducts(conn, Filters(bggTop = 500)))
         assertEquals(3, countProducts(conn, Filters(bggTop = 1000)))
-        assertEquals(0, countProducts(conn, Filters(bggCategory = "partygames_rank")))
+        assertEquals(0L, countProducts(conn, Filters(bggCategory = "partygames_rank")))
         // The column name goes into the SQL, so only known ones are accepted.
         assertFailsWith<IllegalArgumentException> { countProducts(conn, Filters(bggCategory = "rank; DROP TABLE game")) }
+    }
+
+    @Test
+    fun factFiltersMatchOnlyGamesWithFacts() = db { conn ->
+        conn.exec("""INSERT INTO bgg(id, name, norm, usersrated, is_expansion)
+                     VALUES (1, 'Catan', 'catan', 1000, 0), (2, 'Skull', 'skull', 1000, 0)""")
+        conn.exec("INSERT INTO bgg_facts(bgg_id, min_players, max_players, play_time) VALUES (1, 3, 4, 120)")
+        conn.exec("INSERT INTO bgg_mechanic(bgg_id, mechanic) VALUES (1, 'Trading'), (1, 'Dice Rolling')")
+        conn.exec("UPDATE game SET bgg_id = 1 WHERE id = ?", conn.id("Catan"))
+        conn.exec("UPDATE game SET bgg_id = 2 WHERE id = ?", conn.id("Skull")) // matched, no facts
+        val catan = countProducts(conn, Filters(players = 4))
+        assertTrue(catan > 0)
+        assertEquals(catan, countProducts(conn, Filters(players = 3)))
+        assertEquals(0L, countProducts(conn, Filters(players = 2)))
+        assertEquals(catan, countProducts(conn, Filters(maxPlayTime = 120)))
+        assertEquals(0L, countProducts(conn, Filters(maxPlayTime = 60)))
+        assertEquals(catan, countProducts(conn, Filters(mechanic = "Trading")))
+        assertEquals(0L, countProducts(conn, Filters(mechanic = "Bluffing")))
+        assertEquals(listOf("Dice Rolling", "Trading"), bggMechanics(conn).sorted())
+    }
+
+    @Test
+    fun gameBggCarriesFactsAndMechanics() = db { conn ->
+        conn.exec("INSERT INTO bgg(id, name, norm, usersrated, is_expansion) VALUES (1, 'Catan', 'catan', 1000, 0)")
+        conn.exec("INSERT INTO bgg_facts(bgg_id, min_players, complexity) VALUES (1, 3, 2.3)")
+        conn.exec("INSERT INTO bgg_mechanic(bgg_id, mechanic) VALUES (1, 'Trading'), (1, 'Dice Rolling')")
+        conn.exec("UPDATE game SET bgg_id = 1 WHERE id = ?", conn.id("Catan"))
+        val row = gameBgg(conn, conn.id("Catan"))!!
+        assertEquals(3L, row["min_players"])
+        assertEquals(2.3, row["complexity"])
+        assertEquals("Dice Rolling · Trading", row["mechanics"])
     }
 
     @Test
@@ -141,5 +186,20 @@ class CollectionTest {
         assertTrue(fresh.getValue("a").dim(now = 100))
         assertFalse(fresh.getValue("b").dim(now = 100))
         assertTrue(fresh.getValue("b").dim(now = 100 + 4 * 86_400))
+    }
+
+    @Test
+    fun bggRanksRefreshExistingEntriesOnly() = db { conn ->
+        conn.exec("""INSERT INTO bgg(id, name, norm, rank, usersrated, is_expansion, familygames_rank)
+                     VALUES (1, 'Catan', 'catan', 400, 1000, 0, 12)""")
+        val csv = "ID,Name,Year,Rank,Average,Bayes average,Users rated,URL,Thumbnail\n" +
+            "1,\"Catan, the \"\"game\"\"\",1995,350,7.1,6.9,2000,/x,/y\n" +
+            "2,Other,2000,1,8,8,9,/x,/y\n"
+        assertEquals(2, refreshBggRanks(conn, csv, now = 1000))
+        val row = conn.query("SELECT * FROM bgg").single()
+        assertEquals(350L, row["rank"])
+        assertEquals(2000L, row["usersrated"])
+        assertEquals(12L, row["familygames_rank"])
+        assertFailsWith<IllegalArgumentException> { refreshBggRanks(conn, "a,b\n1,2") }
     }
 }

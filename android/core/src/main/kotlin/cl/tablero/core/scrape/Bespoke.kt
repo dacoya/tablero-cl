@@ -140,3 +140,43 @@ fun shivano(html: Element): List<Scraped> = cards(html.findAll("li", cls = "ajax
         image = img(item, "https://shivano.cl"),
     )
 }
+
+private const val CALABOZO = "https://www.calabozotienda.cl"
+
+/** Bootstrap cards: struck-through span is the list price, `font-color` the sale one. */
+fun calabozotienda(html: Element): List<Scraped> = cards(html.findAll("div", cls = "card mb-3 box-shadow")) { item ->
+    val title = item.find("p", cls = "card-text")?.find("span") ?: return@cards null
+    val was = txt(item.find("span", where = { it.attr("style").contains("line-through") })).orNullIfEmpty()
+    val now = txt(item.find("span", cls = "font-color")).orNullIfEmpty()
+    val (orig, curr) = norm(was ?: now, if (was != null) now else null)
+    val stock = when {
+        item.find("span", cls = "badge-danger") != null -> AGOTADO
+        curr != null || item.find("span", cls = "burbuja-descuento") != null -> OFERTA
+        else -> null
+    }
+    Scraped(
+        title = txt(title), url = url(item.find("a", where = hasHref), CALABOZO),
+        originalPrice = orig, currentPrice = curr, stockStatus = stock, image = img(item, CALABOZO),
+    )
+}
+
+private const val ARAUCANIA = "https://araucaniagaming.cl"
+
+/** WooCommerce, but a lone price is the whole `price` span's text, not its <bdi>. */
+fun araucania(html: Element): List<Scraped> = cards(html.findAll("li", cls = "product")) { item ->
+    val title = item.find("h3", cls = "woocommerce-loop-product__title") ?: return@cards null
+    var was: String? = null
+    var now: String? = null
+    item.find("span", cls = "price")?.let { pc ->
+        val del = pc.find("del")
+        val ins = pc.find("ins")
+        if (del != null && ins != null) { was = txt(del); now = txt(ins) } else now = txt(pc)
+    }
+    val (orig, curr) = norm(was, now)
+    val soldOut = "outofstock" in item.classes() || oos(txt(item.find("span", cls = "stock-label")))
+    Scraped(
+        title = txt(title), url = url(title.find("a"), ARAUCANIA),
+        originalPrice = orig, currentPrice = curr, stockStatus = saleOr(soldOut, curr, false),
+        image = img(item, ARAUCANIA),
+    )
+}

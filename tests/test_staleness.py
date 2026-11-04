@@ -63,13 +63,18 @@ def test_stale_rows_are_kept_not_deleted(db_conn):
     assert row == 1
 
 
-def test_a_failed_scrape_does_not_make_everything_stale(db_conn):
-    """Staleness is measured against the last SUCCESSFUL scrape."""
+def test_a_failed_scrape_hides_the_store_until_one_succeeds(db_conn):
+    """Latest attempt failed = store likely in maintenance: hidden, history kept."""
     now = int(time.time())
-    _scrape(db_conn, "tiendaA", [_record("Azul", "https://tiendaa.cl/p/azul")], ts=now)
-    before = repo.count_products(db_conn, store="tiendaA")
+    rec = [_record("Azul", "https://tiendaa.cl/p/azul")]
+    _scrape(db_conn, "tiendaA", rec, ts=now)
+    rows = db_conn.execute("SELECT COUNT(*) FROM product WHERE store='tiendaA'").fetchone()[0]
     ingest.record_failure(db_conn, "tiendaA", ts=now + 3600)
-    assert repo.count_products(db_conn, store="tiendaA") == before
+    assert repo.count_products(db_conn, store="tiendaA") == 0
+    assert db_conn.execute("SELECT COUNT(*) FROM product WHERE store='tiendaA'").fetchone()[0] == rows
+
+    _scrape(db_conn, "tiendaA", rec, ts=now + 7200)
+    assert repo.count_products(db_conn, store="tiendaA") >= 1
 
 
 # ---------------------------------------------------------------------------

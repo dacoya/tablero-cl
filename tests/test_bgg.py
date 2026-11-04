@@ -67,8 +67,8 @@ def test_refresh_imports_only_a_newer_csv(db_conn, tmp_path):
 def test_spanish_alias_wins_over_the_csv_name(db_conn, tmp_path):
     bgg.import_csv(db_conn, _csv(tmp_path / "r.csv", [["105593", "Cheating Moth", "2011", "900", "6.5", "6.8", "9000", "0"]]))
     aliases = tmp_path / "es.csv"
-    aliases.write_text("bgg_id,name_es,source,bgg_name\n105593,Polilla Tramposa,manual,Cheating Moth\n"
-                       "999,Juego Fantasma,manual,Not imported\n", encoding="utf-8")
+    _aliases(aliases, {"bgg_id": 105593, "name_es": "Polilla Tramposa", "source": "manual", "bgg_name": "Cheating Moth"},
+             {"bgg_id": 999, "name_es": "Juego Fantasma", "source": "manual", "bgg_name": "Not imported"})
     assert bgg.load_aliases(db_conn, aliases) == 1
     assert bgg.lookup(db_conn, "polilla tramposa") == 105593
 
@@ -77,4 +77,89 @@ def test_shipped_aliases_point_at_real_ids():
     import csv as csv_mod
     rows = list(csv_mod.DictReader(open(bgg.ALIASES_PATH, encoding="utf-8")))
     assert rows and all(int(r["bgg_id"]) > 0 and r["name_es"].strip() for r in rows)
-    assert not any(r["name_es"].rstrip().endswith(("...", "…")) for r in rows)
+    assert list(rows[0]) == list(bgg.ALIAS_COLUMNS)
+    names = [n for r in rows for n in bgg._alias_names(r)]
+    assert not any(n.endswith(("...", "…")) for n in names)
+
+
+def _aliases(path, *rows):
+    """Write an alias file; each row is a dict of the columns it fills."""
+    with open(path, "w", encoding="utf-8", newline="") as fh:
+        w = csv.DictWriter(fh, bgg.ALIAS_COLUMNS, lineterminator="\n")
+        w.writeheader()
+        w.writerows(rows or [{"bgg_id": 13, "name_es": "Catán", "source": "manual", "bgg_name": "Catan"}])
+    return path
+
+
+def test_aliases_read_variants_and_skip_blanks(db_conn, tmp_path):
+    bgg.import_csv(db_conn, _csv(tmp_path / "r.csv", ROWS))
+    path = _aliases(tmp_path / "a.csv", {"bgg_id": 13, "name_es": "Catán", "variants": "Los Colonos de Catán| |Colonos"},
+                    {"bgg_id": 266192, "name_es": ""})
+    assert bgg.load_aliases(db_conn, path) == 3
+    assert bgg.lookup(db_conn, "colonos catan") == 13
+    assert bgg.lookup(db_conn, "colonos") == 13
+
+
+def test_alias_claimed_by_two_entries_is_dropped(db_conn, tmp_path):
+    bgg.import_csv(db_conn, _csv(tmp_path / "r.csv", ROWS))
+    path = _aliases(tmp_path / "a.csv", {"bgg_id": 13, "name_es": "Catán", "variants": "Alas"},
+                    {"bgg_id": 266192, "name_es": "Alas"})
+    assert bgg.load_aliases(db_conn, path) == 1
+    assert bgg.lookup(db_conn, "alas") is None
+
+
+def test_load_facts_maps_values_and_keeps_mechanics_whole(db_conn, tmp_path):
+    path = _aliases(
+        tmp_path / "a.csv",
+        {"bgg_id": 13, "name_es": "Catán", "min_players": 3, "max_players": 4, "play_time": 120, "min_age": 10,
+         "complexity": 2.32, "mechanics": "Dice Rolling|I Cut, You Choose|Trading", "categories": "Negotiation"},
+        {"bgg_id": 14, "name_es": "Parcial", "min_players": 2, "complexity": 0},
+        {"bgg_id": 15, "name_es": "Sin datos", "year": 2000, "rank": 7},
+    )
+    assert bgg.load_facts(db_conn, path) == 2
+    assert tuple(db_conn.execute("SELECT * FROM bgg_facts WHERE bgg_id = 13").fetchone()) == (13, 3, 4, 120, 10, 2.32)
+    assert tuple(db_conn.execute("SELECT * FROM bgg_facts WHERE bgg_id = 14").fetchone()) == (14, 2, None, None, None, None)
+    assert db_conn.execute("SELECT count(*) FROM bgg_facts WHERE bgg_id = 15").fetchone()[0] == 0
+    assert [m for (m,) in db_conn.execute("SELECT mechanic FROM bgg_mechanic ORDER BY mechanic")] == [
+        "Dice Rolling", "I Cut, You Choose", "Trading"]
+
+
+def test_load_facts_replaces_earlier_rows(db_conn, tmp_path):
+    bgg.load_facts(db_conn, _aliases(tmp_path / "a.csv", {"bgg_id": 13, "min_players": 3, "mechanics": "Trading"}))
+    bgg.load_facts(db_conn, _aliases(tmp_path / "b.csv", {"bgg_id": 20, "min_players": 1, "mechanics": "Trading"}))
+    assert [i for (i,) in db_conn.execute("SELECT bgg_id FROM bgg_facts")] == [20]
+    assert [i for (i,) in db_conn.execute("SELECT bgg_id FROM bgg_mechanic")] == [20]
+
+
+def test_refresh_loads_facts_from_the_alias_file(db_conn, tmp_path, monkeypatch):
+    monkeypatch.setattr(bgg, "ALIASES_PATH", _aliases(tmp_path / "a.csv", {"bgg_id": 13, "name_es": "Catán", "min_players": 3}))
+    bgg.refresh(db_conn, tmp_path / "missing.csv")
+    assert db_conn.execute("SELECT min_players FROM bgg_facts WHERE bgg_id = 13").fetchone()[0] == 3
+
+
+def test_merge_wikidata_adds_only_safe_names(db_conn, tmp_path):
+    bgg.import_csv(db_conn, _csv(tmp_path / "r.csv", ROWS))
+    path = _aliases(tmp_path / "a.csv", {"bgg_id": 13, "name_es": "Catán", "source": "manual", "bgg_name": "Catan",
+                                         "min_players": 3})
+    added = bgg.merge_wikidata_names(db_conn, [
+        ("266192", "Alas"),          # new: added
+        ("266192", "alas"),          # same norm, same id: once
+        ("266192", "Aves"),          # second name for a new row: a variant
+        ("13", "Los Colonos"),       # existing row: a variant, the manual name stays
+        ("50", "Catán"),             # a manual row owns this norm
+        ("50", "Robin"), ("51", "Robin"),  # same name, two entries: ambiguous
+        ("99", "Oscuro"),            # not in the bgg table
+        ("Q5", "Raro"),              # not a BGG id
+    ], path)
+    assert added == 3
+    with open(path, encoding="utf-8", newline="") as fh:
+        rows = list(csv.DictReader(fh))
+    assert [(r["bgg_id"], r["name_es"], r["variants"], r["source"], r["bgg_name"], r["min_players"]) for r in rows] == [
+        ("13", "Catán", "Los Colonos", "manual", "Catan", "3"),
+        ("266192", "Alas", "Aves", "wikidata", "Wingspan", "")]
+
+
+def test_merge_wikidata_skips_a_name_already_a_variant(db_conn, tmp_path):
+    bgg.import_csv(db_conn, _csv(tmp_path / "r.csv", ROWS))
+    path = _aliases(tmp_path / "a.csv", {"bgg_id": 13, "name_es": "Catán", "variants": "Los Colonos"})
+    assert bgg.merge_wikidata_names(db_conn, [("266192", "los colonos")], path) == 0

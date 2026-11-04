@@ -72,6 +72,25 @@ CREATE TABLE IF NOT EXISTS bgg_alias (
     bgg_id INTEGER NOT NULL
 );
 
+-- Game facts and mechanics from scripts/bgg_names_es.csv. Apart from `bgg`, whose
+-- import replaces every row. Not foreign keys, for the same reason as game.bgg_id.
+CREATE TABLE IF NOT EXISTS bgg_facts (
+    bgg_id      INTEGER PRIMARY KEY,
+    min_players INTEGER,
+    max_players INTEGER,
+    play_time   INTEGER,
+    min_age     INTEGER,
+    complexity  REAL
+);
+
+CREATE TABLE IF NOT EXISTS bgg_mechanic (
+    bgg_id   INTEGER NOT NULL,
+    mechanic TEXT    NOT NULL,
+    PRIMARY KEY (bgg_id, mechanic)
+);
+
+CREATE INDEX IF NOT EXISTS idx_bgg_mechanic ON bgg_mechanic(mechanic);
+
 -- ---------------------------------------------------------------------------
 -- Products: one row per (store, canonical URL).
 --

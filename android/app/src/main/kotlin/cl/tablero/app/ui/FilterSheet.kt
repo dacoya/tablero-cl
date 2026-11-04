@@ -31,6 +31,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import cl.tablero.app.Db
 import cl.tablero.app.count
+import cl.tablero.core.data.bggMechanics
 import cl.tablero.core.data.Filters
 import cl.tablero.core.data.countProducts
 import kotlinx.coroutines.delay
@@ -49,6 +50,11 @@ val BGG_USES = listOf(
 
 /** "Top 500 BGG": how far down the overall ranking the filter reaches. */
 const val BGG_TOP = 500
+
+private val PLAYERS = 1..6
+private val PLAY_TIMES = listOf(30, 60, 120)
+/** Mechanics shown before "Ver todas": the full list is too long for the sheet. */
+private const val TOP_MECHANICS = 12
 
 private val DISCOUNTS = listOf(null, 10.0, 25.0, 50.0, 70.0)
 private val NOVELTY = listOf(null to "Todos", "new" to "Nuevos", "restock" to "Repuestos")
@@ -70,6 +76,9 @@ fun FilterSheet(db: Db, initial: Filters, onDismiss: () -> Unit, apply: (Filters
         value = db.read { countProducts(it, draft) }
     }
 
+    val mechanics by produceState(emptyList<String>()) { value = db.read { bggMechanics(it) } }
+    var allMechanics by remember { mutableStateOf(false) }
+
     ModalBottomSheet(onDismissRequest = onDismiss, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)) {
         Column(Modifier.weight(1f, fill = false).verticalScroll(rememberScrollState()).padding(horizontal = 16.dp)) {
             Text("Filtros", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
@@ -86,6 +95,26 @@ fun FilterSheet(db: Db, initial: Filters, onDismiss: () -> Unit, apply: (Filters
                 }
                 FilterChip(draft.bggTop != null, { draft = draft.copy(bggTop = if (draft.bggTop == null) BGG_TOP else null) },
                     { Text("Top $BGG_TOP BGG") })
+            }
+            Group("Jugadores") {
+                PLAYERS.forEach { n ->
+                    FilterChip(draft.players == n, { draft = draft.copy(players = n.takeIf { draft.players != it }) }, { Text("$n") })
+                }
+            }
+            Group("Duración") {
+                PLAY_TIMES.forEach { m ->
+                    FilterChip(draft.maxPlayTime == m, { draft = draft.copy(maxPlayTime = m.takeIf { draft.maxPlayTime != it }) },
+                        { Text("Hasta $m min") })
+                }
+            }
+            if (mechanics.isNotEmpty()) Group("Mecánica") {
+                val shown = if (allMechanics) mechanics else (mechanics.take(TOP_MECHANICS) + listOfNotNull(draft.mechanic)).distinct()
+                shown.forEach { m ->
+                    FilterChip(draft.mechanic == m, { draft = draft.copy(mechanic = m.takeIf { draft.mechanic != it }) }, { Text(m) })
+                }
+                if (mechanics.size > TOP_MECHANICS) {
+                    FilterChip(allMechanics, { allMechanics = !allMechanics }, { Text(if (allMechanics) "Ver menos" else "Ver todas") })
+                }
             }
             Group("Precio") { PriceRange(draft) { draft = it } }
             Group("Descuento mínimo") {

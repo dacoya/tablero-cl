@@ -119,11 +119,24 @@ def cmd_bgg(args) -> int:
         raise CommandError(str(exc))
     if bgg_mod.ALIASES_PATH.exists():
         bgg_mod.load_aliases(conn)
+        bgg_mod.load_facts(conn)
     matched = bgg_mod.match_games(conn)
     total = conn.execute(
         f"SELECT count(*) FROM game WHERE kind IN ({','.join('?' * len(bgg_mod.MATCHED_KINDS))})",
         bgg_mod.MATCHED_KINDS).fetchone()[0]
     print(f"BGG: {kept} entradas importadas · {matched} de {total} juegos asociados")
+    return 0
+
+
+def cmd_bgg_names(args) -> int:
+    conn = _open_db(read_only=False)
+    try:
+        pairs = bgg_mod.fetch_wikidata_names()
+    except (OSError, ValueError, KeyError) as exc:
+        raise CommandError(f"No se pudo consultar Wikidata: {exc}")
+    added = bgg_mod.merge_wikidata_names(conn, pairs)
+    print(f"Wikidata: {len(pairs)} nombres leídos · {added} agregados a {bgg_mod.ALIASES_PATH.name}. "
+          "Revísalos y corre tablero bgg.")
     return 0
 
 
@@ -213,6 +226,9 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("path", nargs="?", metavar="CSV",
                    help="boardgames_ranks.csv (default: data/boardgames_ranks.csv)")
 
+    sub.add_parser("bgg-names",
+                   help="agregar nombres en español de Wikidata a bgg_names_es.csv")
+
     p = sub.add_parser("snapshot",
                        help="copia de la base en un solo archivo, para importar en el teléfono")
     p.add_argument("path", nargs="?", metavar="ARCHIVO",
@@ -235,6 +251,7 @@ def build_parser() -> argparse.ArgumentParser:
 COMMANDS = {
     "update": cmd_update,
     "bgg": cmd_bgg,
+    "bgg-names": cmd_bgg_names,
     "snapshot": cmd_snapshot,
     "fixtures": cmd_fixtures,
 }

@@ -86,6 +86,7 @@ python -m pytest            # tests (requiere pytest)
 ```
 tablero update             scrapear tiendas y actualizar la base (la crea si no existe)
 tablero bgg [CSV]          importar el CSV de rankings de BoardGameGeek y asociar juegos
+tablero bgg-names          agregar nombres en español de Wikidata a bgg_names_es.csv
 tablero snapshot           copia de la base en un archivo, para importar en la app
 tablero fixtures           guardar páginas y vectores de referencia (paridad con Android)
 ```
