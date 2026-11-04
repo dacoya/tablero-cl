@@ -24,7 +24,6 @@ import cl.tablero.core.data.query
 import cl.tablero.core.data.shippingCosts
 import cl.tablero.core.data.shippingSet
 import cl.tablero.core.data.recordFailure
-import cl.tablero.core.data.refreshBggRanks
 import cl.tablero.core.data.storeFreshness
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -196,20 +195,5 @@ class CollectionTest {
         assertTrue(fresh.getValue("a").dim(now = 100))
         assertFalse(fresh.getValue("b").dim(now = 100))
         assertTrue(fresh.getValue("b").dim(now = 100 + 4 * 86_400))
-    }
-
-    @Test
-    fun bggRanksRefreshExistingEntriesOnly() = db { conn ->
-        conn.exec("""INSERT INTO bgg(id, name, norm, rank, usersrated, is_expansion, familygames_rank)
-                     VALUES (1, 'Catan', 'catan', 400, 1000, 0, 12)""")
-        val csv = "ID,Name,Year,Rank,Average,Bayes average,Users rated,URL,Thumbnail\n" +
-            "1,\"Catan, the \"\"game\"\"\",1995,350,7.1,6.9,2000,/x,/y\n" +
-            "2,Other,2000,1,8,8,9,/x,/y\n"
-        assertEquals(2, refreshBggRanks(conn, csv, now = 1000))
-        val row = conn.query("SELECT * FROM bgg").single()
-        assertEquals(350L, row["rank"])
-        assertEquals(2000L, row["usersrated"])
-        assertEquals(12L, row["familygames_rank"])
-        assertFailsWith<IllegalArgumentException> { refreshBggRanks(conn, "a,b\n1,2") }
     }
 }

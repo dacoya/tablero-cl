@@ -49,18 +49,4 @@ object Schedule {
         // UPDATE keeps an existing schedule's timing but takes new constraints.
         work.enqueueUniquePeriodicWork(NAME, ExistingPeriodicWorkPolicy.UPDATE, request)
     }
-
-    /** The BGG ranking download, every `bggFrequency` days; independent of the store update. */
-    fun applyBgg(context: Context, prefs: Prefs) {
-        val request = PeriodicWorkRequestBuilder<BggWorker>(prefs.bggFrequency.days, TimeUnit.DAYS)
-            .setConstraints(
-                Constraints.Builder()
-                    .setRequiredNetworkType(if (prefs.wifiOnly.value) NetworkType.UNMETERED else NetworkType.CONNECTED)
-                    .build(),
-            )
-            .setInitialDelay(untilNextRun(), TimeUnit.MILLISECONDS)
-            .build()
-        // UPDATE takes the new interval and constraints without restarting the cycle.
-        WorkManager.getInstance(context).enqueueUniquePeriodicWork(BggWorker.NAME, ExistingPeriodicWorkPolicy.UPDATE, request)
-    }
 }

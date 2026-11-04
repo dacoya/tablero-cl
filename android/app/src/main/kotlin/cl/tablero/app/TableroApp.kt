@@ -3,6 +3,7 @@ package cl.tablero.app
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import androidx.work.WorkManager
 
 /** Holds the one [Db] and [Prefs] for the process; the screens and the worker share them. */
 class TableroApp : Application() {
@@ -20,7 +21,8 @@ class TableroApp : Application() {
             NotificationChannel(ALERT_CHANNEL, "Avisos de precio y cambios", NotificationManager.IMPORTANCE_DEFAULT),
         ))
         Schedule.apply(this, prefs)
-        Schedule.applyBgg(this, prefs)
+        // 1.9.4 and older scheduled a BGG rank download; its worker is gone.
+        WorkManager.getInstance(this).cancelUniqueWork("bgg-ranks")
     }
 
     companion object {

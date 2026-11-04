@@ -20,8 +20,8 @@ android {
         // price-observation queries use window functions, which need 3.25.
         minSdk = 30
         targetSdk = 37
-        versionCode = 13
-        versionName = "1.9.4"
+        versionCode = 14
+        versionName = "1.9.5"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
