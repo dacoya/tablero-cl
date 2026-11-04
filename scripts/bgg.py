@@ -10,14 +10,32 @@ A match is exact on the same `norm` key games use. When several BGG entries
 share a name ("Robin Hood" is twelve of them) the most voted wins only if it
 has CLEAR_WINNER times the votes of the next; otherwise the game stays
 unmatched. A wrong rating is worse than none.
+
+Two fallbacks, in order, for a norm with no exact hit:
+
+1. Without its edition words. "Wingspan Deluxe" and "On Mars KS" are their
+   own products, so the words stay in `norm` and grouping keeps them apart,
+   but they are the base game on BGG. Only EDITION_WORDS may go: any other
+   extra word ("Carcassonne 2 Constructores", "Marvel Champions Civil War")
+   names an expansion or another game, and a subset match there (token_set
+   style) gave 3500 matches, mostly wrong.
+2. Fuzzy, in match_games only: token_sort_ratio >= grouping.THRESHOLD with
+   grouping.same_game's guards, which catches word order ("Fluxx Oz") and
+   Spanish spellings of English names ("Not Alone Exploracion"). Without
+   same_game's one-letter exception: "Stick Up" is not "Stack Up".
 """
 import csv
 import json
 import os
+import re
 import urllib.parse
 import urllib.request
+from bisect import bisect_left
 from pathlib import Path
 
+from rapidfuzz import fuzz, process
+
+from . import grouping
 from .paths import DATA_DIR, PKG_DIR
 from .utils import clean_title, normalize
 
@@ -40,6 +58,13 @@ CLEAR_WINNER = 10
 # Kinds BGG catalogues. Accessories, puzzles and TCG products are not games
 # there, and a sleeve pack named like a game must not borrow its rating.
 MATCHED_KINDS = ("game", "expansion")
+
+# Norm words that name a printing of a game, not another game. Not "ultimate"
+# ("Ultimate Werewolf" is not "Werewolf") or "coleccion" (often a bundle).
+EDITION_WORDS = re.compile(
+    r"\b(deluxe|kickstarter|ks|collectors?|coleccionista|retail|premium|limitada|limited|especial"
+    r"|special|lujo|definitiva|definitive|aniversario|anniversary|all in|big box)\b"
+)
 
 _INT_COLUMNS = (
     "yearpublished", "rank", "abstracts_rank", "cgs_rank", "childrensgames_rank",
@@ -211,7 +236,19 @@ def merge_wikidata_names(conn, pairs, path: Path = ALIASES_PATH) -> int:
     return sum(map(len, added.values()))
 
 
+def without_edition(norm: str) -> str:
+    """The norm without EDITION_WORDS, or "" when they are all it has."""
+    return " ".join(EDITION_WORDS.sub(" ", norm).split())
+
+
 def lookup(conn, norm: str) -> int | None:
+    """BGG id for a norm, or for it without edition words. Aliases win."""
+    hit = _exact(conn, norm)
+    base = without_edition(norm)
+    return hit if hit or not base or base == norm else _exact(conn, base)
+
+
+def _exact(conn, norm: str) -> int | None:
     """BGG id for a norm, or None when absent or ambiguous. Aliases win."""
     alias = conn.execute("SELECT bgg_id FROM bgg_alias WHERE norm = ?", (norm,)).fetchone()
     if alias:
@@ -227,11 +264,54 @@ def lookup(conn, norm: str) -> int | None:
     return top[0][0]
 
 
+def _sorted_tokens(norm: str) -> str:
+    return " ".join(sorted(norm.split()))
+
+
+class _FuzzyIndex:
+    """
+    BGG and alias norms keyed by their sorted tokens, the keys in length order.
+    Sorting tokens once here lets fuzz.ratio score what token_sort_ratio would
+    without re-sorting 89k names per lookup, and a length window is a slice.
+    """
+
+    def __init__(self, conn):
+        self.names: dict[str, list[str]] = {}
+        for (norm,) in conn.execute("SELECT norm FROM bgg UNION SELECT norm FROM bgg_alias"):
+            self.names.setdefault(_sorted_tokens(norm), []).append(norm)
+        self.keys = sorted(self.names, key=len)
+        self.lens = [len(k) for k in self.keys]
+
+    def near(self, norm: str) -> list[str]:
+        """Keys whose length can still score grouping.THRESHOLD against norm."""
+        window = grouping._length_window(len(norm))
+        return self.keys[bisect_left(self.lens, window.start):bisect_left(self.lens, window.stop)]
+
+
+def fuzzy_lookup(conn, norm: str, index: _FuzzyIndex) -> int | None:
+    """
+    BGG id of the names grouping.same_game takes for `norm`, scoring at least
+    THRESHOLD on token_sort_ratio. None when none, when the best disagree, or
+    when the entry has no year: those are mostly unpublished homonyms
+    ("King of the Court" is not the yearless "Court of Kings").
+    """
+    hits = [(score, c) for key, score, _ in process.extract(
+        _sorted_tokens(norm), index.near(norm), scorer=fuzz.ratio, score_cutoff=grouping.THRESHOLD,
+        limit=None, processor=None) for c in index.names[key] if c != norm and grouping.same_game(norm, c)]
+    if not hits:
+        return None
+    best = max(score for score, _ in hits)
+    ids = {_exact(conn, c) for score, c in hits if score == best}
+    hit = ids.pop() if len(ids) == 1 else None
+    dated = hit and conn.execute("SELECT yearpublished FROM bgg WHERE id = ?", (hit,)).fetchone()[0]
+    return hit if dated else None
+
+
 def match_games(conn) -> int:
     """
     Set game.bgg_id for every game from its own norm or, failing that, any of
-    its products' norms (a cluster folds spellings BGG may know under one).
-    Returns games matched.
+    its products' norms (a cluster folds spellings BGG may know under one),
+    exact first and fuzzy after. Returns games matched.
     """
     kinds = ",".join("?" * len(MATCHED_KINDS))
     candidates: dict[int, list[str]] = {}
@@ -240,9 +320,16 @@ def match_games(conn) -> int:
          WHERE g.kind IN ({kinds}) GROUP BY g.id, p.norm ORDER BY g.id, 3 DESC, p.norm
     """, MATCHED_KINDS):
         candidates.setdefault(gid, []).append(norm)
+    index = _FuzzyIndex(conn)
+
+    def fuzzy(n: str) -> int | None:
+        base = without_edition(n) or n
+        return fuzzy_lookup(conn, n, index) or (fuzzy_lookup(conn, base, index) if base != n else None)
+
     matches = {}
     for gid, norms in candidates.items():
-        matches[gid] = next((hit for hit in map(lambda n: lookup(conn, n), norms) if hit), None)
+        matches[gid] = (next((hit for hit in map(lambda n: lookup(conn, n), norms) if hit), None)
+                        or next((hit for hit in map(fuzzy, norms) if hit), None))
     conn.execute("UPDATE game SET bgg_id = NULL")
     conn.executemany("UPDATE game SET bgg_id = ? WHERE id = ?",
                      [(bid, gid) for gid, bid in matches.items() if bid is not None])

@@ -13,8 +13,27 @@ private const val CLEAR_WINNER = 10
 /** bgg.MATCHED_KINDS: kinds BGG catalogues. */
 internal val BGG_KINDS = setOf("game", "expansion")
 
-/** bgg.lookup: BGG id for a norm, or null when absent or ambiguous. Aliases win. */
+/** bgg.EDITION_WORDS: norm words that name a printing of a game, not another game. */
+private val EDITION_WORDS = pyRegex(
+    """\b(deluxe|kickstarter|ks|collectors?|coleccionista|retail|premium|limitada|limited|especial""" +
+        """|special|lujo|definitiva|definitive|aniversario|anniversary|all in|big box)\b""",
+)
+
+/** bgg.without_edition: the norm without EDITION_WORDS, or "" when they are all it has. */
+internal fun withoutEdition(norm: String): String =
+    EDITION_WORDS.replace(norm, " ").split(' ').filter { it.isNotEmpty() }.joinToString(" ")
+
+/**
+ * bgg.lookup: BGG id for a norm, or for it without edition words. Aliases win.
+ * ponytail: no fuzzy pass here, as bgg.match_games has; the next snapshot brings it.
+ */
 internal fun bggLookup(conn: SQLiteConnection, norm: String): Long? {
+    exactLookup(conn, norm)?.let { return it }
+    val base = withoutEdition(norm)
+    return if (base.isEmpty() || base == norm) null else exactLookup(conn, base)
+}
+
+private fun exactLookup(conn: SQLiteConnection, norm: String): Long? {
     conn.query("SELECT bgg_id FROM bgg_alias WHERE norm = ?", norm).firstOrNull()?.let { return it["bgg_id"] as Long }
     val top = conn.query(
         "SELECT id, usersrated FROM bgg WHERE norm = ? ORDER BY usersrated DESC, id LIMIT 2", norm,

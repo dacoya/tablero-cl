@@ -4,6 +4,7 @@ import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import cl.tablero.core.data.Filters
 import cl.tablero.core.data.Scraped
+import cl.tablero.core.data.bggLookup
 import cl.tablero.core.data.bggMechanics
 import cl.tablero.core.data.browse
 import cl.tablero.core.data.countProducts
@@ -119,6 +120,15 @@ class CollectionTest {
         assertEquals(0L, countProducts(conn, Filters(bggCategory = "partygames_rank")))
         // The column name goes into the SQL, so only known ones are accepted.
         assertFailsWith<IllegalArgumentException> { countProducts(conn, Filters(bggCategory = "rank; DROP TABLE game")) }
+    }
+
+    @Test
+    fun editionWordsReachTheBaseEntryAndNothingElseDoes() = db { conn ->
+        conn.exec("INSERT INTO bgg(id, name, norm, usersrated, is_expansion) VALUES (822, 'Carcassonne', 'carcassonne', 1000, 0)")
+        assertEquals(822L, bggLookup(conn, "carcassonne deluxe"))
+        assertEquals(822L, bggLookup(conn, "carcassonne big box"))
+        assertNull(bggLookup(conn, "carcassonne 2 constructores"))
+        assertNull(bggLookup(conn, "deluxe"))
     }
 
     @Test

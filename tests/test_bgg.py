@@ -163,3 +163,45 @@ def test_merge_wikidata_skips_a_name_already_a_variant(db_conn, tmp_path):
     bgg.import_csv(db_conn, _csv(tmp_path / "r.csv", ROWS))
     path = _aliases(tmp_path / "a.csv", {"bgg_id": 13, "name_es": "Catán", "variants": "Los Colonos"})
     assert bgg.merge_wikidata_names(db_conn, [("266192", "los colonos")], path) == 0
+
+
+EDITIONS = [
+    ["266192", "Wingspan", "2019", "30", "7.9", "8.0", "110000", "0"],
+    ["822", "Carcassonne", "2000", "200", "7.3", "7.4", "100000", "0"],
+    ["184267", "On Mars", "2020", "200", "7.9", "8.2", "9000", "0"],
+    ["8203", "Not Alone: Exploration", "2017", "0", "", "7.6", "1500", "1"],
+    ["12", "Oz Fluxx", "2012", "0", "", "6.0", "900", "0"],
+    ["5157", "Stack Up", "2015", "0", "", "6.0", "500", "0"],
+    ["200725", "Court of Kings", "0", "0", "", "6.0", "6", "0"],     # no year
+]
+
+
+def test_edition_words_reach_the_base_entry(db_conn, tmp_path):
+    bgg.import_csv(db_conn, _csv(tmp_path / "r.csv", EDITIONS))
+    assert bgg.lookup(db_conn, "wingspan deluxe") == 266192
+    assert bgg.lookup(db_conn, "on mars ks") == 184267
+    assert bgg.lookup(db_conn, "carcassonne aniversario") == 822
+    assert bgg.lookup(db_conn, "deluxe") is None
+    # Any other extra word is an expansion or another game, not the base.
+    assert bgg.lookup(db_conn, "carcassonne 2 constructores comerciantes") is None
+    assert bgg.lookup(db_conn, "wingspan europea") is None
+
+
+def test_fuzzy_takes_word_order_and_spelling_but_not_other_games(db_conn, tmp_path):
+    bgg.import_csv(db_conn, _csv(tmp_path / "r.csv", EDITIONS))
+    index = bgg._FuzzyIndex(db_conn)
+    assert bgg.fuzzy_lookup(db_conn, "fluxx oz", index) == 12
+    assert bgg.fuzzy_lookup(db_conn, "not alone exploracion", index) == 8203
+    assert bgg.fuzzy_lookup(db_conn, "stick up", index) is None       # one letter, another game
+    assert bgg.fuzzy_lookup(db_conn, "king court", index) is None     # only a yearless entry
+    assert bgg.fuzzy_lookup(db_conn, "fluxx oz deluxe", index) is None  # deluxe is a variant word to same_game
+
+
+def test_match_games_falls_back_to_fuzzy_after_edition_words(db_conn, tmp_path):
+    bgg.import_csv(db_conn, _csv(tmp_path / "r.csv", EDITIONS))
+    ingest.ingest_store(db_conn, "tiendaF", [
+        {"title": "Fluxx Oz Deluxe", "original_price": "$9.990", "url": "https://f.cl/p/oz"},
+    ], ts=1_700_300_000)
+    assert db_conn.execute("SELECT bgg_id FROM game WHERE norm = 'fluxx oz deluxe'").fetchone()[0] is None
+    bgg.match_games(db_conn)
+    assert db_conn.execute("SELECT bgg_id FROM game WHERE norm = 'fluxx oz deluxe'").fetchone()[0] == 12
