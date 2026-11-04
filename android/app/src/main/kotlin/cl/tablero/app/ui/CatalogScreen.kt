@@ -42,6 +42,7 @@ import cl.tablero.core.data.Filters
 import cl.tablero.core.data.SqlRow
 import cl.tablero.core.data.browse
 import cl.tablero.core.data.browseRows
+import cl.tablero.core.data.withCheapest
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -210,8 +211,9 @@ private fun rememberPaged(db: Db, filters: Filters, sort: String, grid: LazyGrid
             if (!exhausted && last >= rows.size - 10) {
                 // The total only changes with the filters: counted with the first page, not every page.
                 val (page, n) = db.read {
-                    if (total == null) browse(it, sort, filters, limit = PAGE)
-                    else browseRows(it, sort, filters, limit = PAGE, offset = rows.size) to total
+                    val (found, n) = if (total == null) browse(it, sort, filters, limit = PAGE)
+                        else browseRows(it, sort, filters, limit = PAGE, offset = rows.size) to total
+                    withCheapest(it, found) to n
                 }
                 rows = rows + page
                 total = n

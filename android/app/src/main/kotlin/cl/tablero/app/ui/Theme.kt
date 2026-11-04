@@ -6,6 +6,7 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.lerp
 
 /*
  * The app's own colours, not the wallpaper's: a warm orange shop front, teal
@@ -21,6 +22,27 @@ val Brand = listOf(Color(0xFFD9480F), Color(0xFF6A3FC0))
 
 /** "Disponible": in stock at that store. */
 val InStock = Color(0xFF2E7D32)
+
+// A price against the game's cheapest in-stock listing: green at it, amber
+// halfway, red at RED_AT above it. Dark enough to read on white and on dark.
+private val PriceGood = InStock
+private val PriceFair = Color(0xFFC08A00)
+private val PriceBad = Color(0xFFC62828)
+
+/** How far above the cheapest a price is fully red: 0.5 is 50 % more. Tune here. */
+private const val RED_AT = 0.5
+
+/**
+ * The colour of a row's price against its "cheapest" (see withCheapest), or
+ * null when there is nothing to compare: one store, no price, or out of stock.
+ */
+fun priceColor(row: Map<String, Any?>): Color? {
+    val cheapest = row["cheapest"] as Double? ?: return null
+    val price = (row["price_eff"] as Number?)?.toDouble()?.takeIf { it > 0 } ?: return null
+    if (row["in_stock"] == 0L) return null
+    val t = ((price / cheapest - 1) / RED_AT).coerceIn(0.0, 1.0).toFloat()
+    return if (t < 0.5f) lerp(PriceGood, PriceFair, t * 2) else lerp(PriceFair, PriceBad, t * 2 - 1)
+}
 
 private val Light = lightColorScheme(
     primary = Color(0xFFD9480F), onPrimary = Color.White,

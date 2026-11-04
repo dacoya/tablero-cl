@@ -75,6 +75,7 @@ import cl.tablero.core.data.gameTrends
 import cl.tablero.core.data.watchAdd
 import cl.tablero.core.data.watchOf
 import cl.tablero.core.data.watchRemove
+import cl.tablero.core.data.withCheapest
 import kotlinx.coroutines.launch
 
 private class Detail(
@@ -93,7 +94,7 @@ fun GameScreen(db: Db, game: GameRef, notify: (String) -> Unit, open: (GameRef) 
     val version by db.version.collectAsState()
     val detail by produceState<Detail?>(null, game.id, version) {
         value = db.read {
-            Detail(offersByTotal(gamePrices(it, game.id), shippingCosts(it)), gameTrends(it, game.id, minPoints = 2),
+            Detail(withCheapest(it, offersByTotal(gamePrices(it, game.id), shippingCosts(it))), gameTrends(it, game.id, minPoints = 2),
                 watchOf(it, game.id), gameBgg(it, game.id), isOwned(it, game.id), storeFreshness(it),
                 gameExpansions(it, game.id), gameBase(it, game.id))
         }

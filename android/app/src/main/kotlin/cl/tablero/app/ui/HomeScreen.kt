@@ -54,6 +54,7 @@ import cl.tablero.core.data.SqlRow
 import cl.tablero.core.data.browseRows
 import cl.tablero.core.data.countProductsEach
 import cl.tablero.core.data.searchGames
+import cl.tablero.core.data.withCheapest
 import kotlinx.coroutines.delay
 
 /** A tile on Home: a name, a colour and the catalogue view it opens. */
@@ -143,7 +144,7 @@ private fun Feed(db: Db, open: (GameRef) -> Unit, show: (Browse) -> Unit) {
     // Each shelf shows as soon as its own query is back, not when the slowest is.
     val shelves by produceState(List<List<SqlRow>?>(SHELVES.size) { null }, updates) {
         SHELVES.forEachIndexed { i, shelf ->
-            val rows = db.read { conn -> browseRows(conn, shelf.browse.sort, shelf.browse.filters, limit = SHELF_SIZE) }
+            val rows = db.read { conn -> withCheapest(conn, browseRows(conn, shelf.browse.sort, shelf.browse.filters, limit = SHELF_SIZE)) }
             value = value.toMutableList().apply { set(i, rows) }
         }
     }

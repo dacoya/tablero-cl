@@ -107,7 +107,7 @@ fun ProductCard(row: SqlRow, open: (GameRef) -> Unit, modifier: Modifier = Modif
         CardText(row["store"] as String, row["kind"], title) {
             Row(verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 Text(money(row["price_eff"]), style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                    fontWeight = FontWeight.Bold, color = priceColor(row) ?: MaterialTheme.colorScheme.onSurface)
                 if (row["discount_pct"] != null) {
                     Text(money(row["price_original"]), style = MaterialTheme.typography.labelSmall,
                         textDecoration = TextDecoration.LineThrough, color = MaterialTheme.colorScheme.onSurfaceVariant,

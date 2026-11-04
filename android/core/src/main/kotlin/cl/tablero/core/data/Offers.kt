@@ -45,3 +45,23 @@ fun storeFreshness(conn: SQLiteConnection): Map<String, Freshness> = conn.query(
     val lastOk = row["last_ok"] as Long?
     row["store"] as String to Freshness(lastOk, lastOk == null || (row["last_try"] as Long) > lastOk)
 }
+
+// Games per query in [withCheapest]: SQLite before 3.32 caps a statement at 999 variables.
+private const val CHEAPEST_CHUNK = 500
+
+/**
+ * Each row with "cheapest": the lowest price among its game's visible, in-stock
+ * listings, or null when fewer than two stores have it in stock, since one
+ * store has nothing to be compared with.
+ */
+fun withCheapest(conn: SQLiteConnection, rows: List<SqlRow>): List<SqlRow> {
+    val cheapest = rows.mapNotNull { it["game_id"] as Long? }.distinct().chunked(CHEAPEST_CHUNK).flatMap { ids ->
+        conn.query("""
+            SELECT p.game_id, MIN(p.price_eff) AS lo FROM product p
+             WHERE p.game_id IN (${ids.joinToString { "?" }}) AND p.price_eff > 0
+               AND COALESCE(p.in_stock, 1) != 0 AND $STALE_CLAUSE
+             GROUP BY p.game_id HAVING COUNT(DISTINCT p.store) >= 2
+        """, *ids.toTypedArray()).map { it["game_id"] as Long to (it["lo"] as Number).toDouble() }
+    }.toMap()
+    return rows.map { it + ("cheapest" to cheapest[it["game_id"]]) }
+}

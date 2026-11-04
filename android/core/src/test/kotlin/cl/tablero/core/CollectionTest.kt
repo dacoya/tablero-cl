@@ -12,6 +12,7 @@ import cl.tablero.core.data.exec
 import cl.tablero.core.data.gameBase
 import cl.tablero.core.data.gameBgg
 import cl.tablero.core.data.gameExpansions
+import cl.tablero.core.data.importBggCsv
 import cl.tablero.core.data.ingestStore
 import cl.tablero.core.data.initDb
 import cl.tablero.core.data.isOwned
@@ -25,6 +26,7 @@ import cl.tablero.core.data.shippingCosts
 import cl.tablero.core.data.shippingSet
 import cl.tablero.core.data.recordFailure
 import cl.tablero.core.data.storeFreshness
+import cl.tablero.core.data.withCheapest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -195,5 +197,36 @@ class CollectionTest {
         assertTrue(fresh.getValue("a").dim(now = 100))
         assertFalse(fresh.getValue("b").dim(now = 100))
         assertTrue(fresh.getValue("b").dim(now = 100 + 4 * 86_400))
+    }
+
+    @Test
+    fun bggCsvReplacesEntriesAliasesAndMatches() = db { conn ->
+        // Skull's old match (an id the CSV keeps) survives with no name hit, as a fuzzy one would.
+        conn.exec("INSERT INTO bgg(id, name, norm, usersrated, is_expansion) VALUES (92415, 'Skull', 'skull', 9000, 0)")
+        conn.exec("UPDATE game SET bgg_id = 92415 WHERE id = ?", conn.id("Skull"))
+        val csv = """
+            id,name,yearpublished,rank,bayesaverage,average,usersrated,is_expansion,abstracts_rank,cgs_rank,childrensgames_rank,familygames_rank,partygames_rank,strategygames_rank,thematic_rank,wargames_rank,name_es,variants_es,name_es_source
+            13,"Catan, the game",1995,600,6.9,7.1,140000,0,,,,120,,,,,Catan,Los Colonos de Catán|Colonos,manual
+            92415,Skull & Roses,2011,300,7.0,7.2,9000,0,,,,,50,,,,,,
+            99,Obscure,0,0,,,2,0,,,,,,,,,Calavera,,web
+        """.trimIndent()
+        val r = importBggCsv(conn, csv.lineSequence())
+        assertEquals(2, r.entries)                  // Obscure is under MIN_VOTES
+        assertEquals(3, r.aliases)                  // Calavera points at an entry not kept
+        assertEquals(13L, conn.query("SELECT bgg_id FROM game WHERE id = ?", conn.id("Catan")).single()["bgg_id"])
+        assertEquals(92415L, conn.query("SELECT bgg_id FROM game WHERE id = ?", conn.id("Skull")).single()["bgg_id"])
+        assertEquals(2, r.matched)
+        val catan = conn.query("SELECT * FROM bgg WHERE id = 13").single()
+        assertEquals("Catan, the game", catan["name"]); assertEquals(120L, catan["familygames_rank"]); assertNull(catan["abstracts_rank"])
+        assertFailsWith<IllegalArgumentException> { importBggCsv(conn, sequenceOf("a,b", "1,2")) }
+        assertEquals(2L, conn.query("SELECT COUNT(*) AS n FROM bgg").single()["n"]) // a bad file changes nothing
+    }
+
+    @Test
+    fun cheapestComparesOnlyGamesTwoStoresSell() = db { conn ->
+        val rows = withCheapest(conn, products(conn, "title"))
+        val byStore = rows.filter { it["title"] == "Catan" }.associate { it["store"] to it["cheapest"] }
+        assertEquals<Map<Any?, Any?>>(mapOf("a" to 35000.0, "b" to 35000.0), byStore)
+        assertNull(rows.single { it["title"] == "Skull" }["cheapest"])
     }
 }

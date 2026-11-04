@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
@@ -43,11 +44,14 @@ fun Facts(text: String) =
     Text(text, maxLines = 1, overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant)
 
-/** The effective price, with the struck list price and discount under it when on sale. */
+/**
+ * The effective price, coloured against the other stores (see priceColor), with
+ * the struck list price and discount under it when on sale.
+ */
 @Composable
 fun Price(row: Map<String, Any?>) {
     Column(horizontalAlignment = Alignment.End) {
-        Text(money(row["price_eff"]), fontWeight = FontWeight.SemiBold)
+        Text(money(row["price_eff"]), fontWeight = FontWeight.SemiBold, color = priceColor(row) ?: Color.Unspecified)
         val discount = pct(row["discount_pct"])
         if (discount != null) Row {
             Text(money(row["price_original"]), style = MaterialTheme.typography.bodySmall,

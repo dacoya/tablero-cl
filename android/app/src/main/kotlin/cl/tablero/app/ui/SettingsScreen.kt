@@ -39,6 +39,7 @@ import cl.tablero.app.Prefs
 import cl.tablero.app.Schedule
 import cl.tablero.app.TableroApp
 import cl.tablero.app.count
+import cl.tablero.core.data.importBggCsv
 import cl.tablero.core.data.query
 import cl.tablero.core.data.userVersion
 import kotlinx.coroutines.launch
@@ -93,6 +94,14 @@ private fun DatabaseSection(db: Db, notify: (String) -> Unit) {
         val input = checkNotNull(context.contentResolver.openInputStream(uri)) { "No se pudo abrir el archivo." }
         "Base importada: ${count(db.import(input, context.cacheDir))} productos."
     }
+    val pickBgg = rememberFileAction(ActivityResultContracts.OpenDocument(), notify) { context, uri ->
+        val r = db.write { conn ->
+            checkNotNull(context.contentResolver.openInputStream(uri)) { "No se pudo abrir el archivo." }
+                .bufferedReader().useLines { importBggCsv(conn, it) }
+        }
+        "BGG: ${count(r.entries)} juegos" + (if (r.aliases >= 0) ", ${count(r.aliases)} nombres en español" else "") +
+            ". ${count(r.matched)} juegos del catálogo con datos de BGG."
+    }
     val pickExport = rememberFileAction(ActivityResultContracts.CreateDocument("application/octet-stream"), notify) { context, uri ->
         val out = checkNotNull(context.contentResolver.openOutputStream(uri)) { "No se pudo crear el archivo." }
         db.export(out, context.cacheDir)
@@ -102,11 +111,13 @@ private fun DatabaseSection(db: Db, notify: (String) -> Unit) {
     Row(Modifier.padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         OutlinedButton(onClick = { confirmImport = true }, enabled = !updating) { Text("Importar") }
         OutlinedButton(onClick = { pickExport.launch("tablero-telefono.db") }) { Text("Exportar") }
+        OutlinedButton(onClick = { pickBgg.launch(arrayOf("*/*")) }) { Text("CSV de BGG") }
     }
     Hint(
         if (updating) "Hay una actualización en curso: para importar, detenla primero en Tiendas, arriba."
         else "Importar trae la base del PC (créala con  tablero snapshot ). Exportar guarda una copia " +
-            "de la del teléfono, que el PC puede usar como su tablero.db.",
+            "de la del teléfono, que el PC puede usar como su tablero.db. CSV de BGG carga " +
+            "boardgames_ranks_es.csv (rankings y nombres en español) y vuelve a emparejar los juegos.",
     )
 
     if (confirmImport) {
