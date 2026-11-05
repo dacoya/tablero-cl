@@ -8,7 +8,8 @@ import androidx.sqlite.SQLiteConnection
  * looks entries up. Ranks are as fresh as the last imported snapshot.
  */
 
-private const val CLEAR_WINNER = 10
+/** bgg.CLEAR_WINNER. */
+internal const val CLEAR_WINNER = 3
 
 /** bgg.MATCHED_KINDS: kinds BGG catalogues. */
 internal val BGG_KINDS = setOf("game", "expansion")
@@ -25,7 +26,7 @@ internal fun withoutEdition(norm: String): String =
 
 /**
  * bgg.lookup: BGG id for a norm, or for it without edition words. Aliases win.
- * ponytail: no fuzzy pass here, as bgg.match_games has; the next snapshot brings it.
+ * ponytail: no derived-name or fuzzy pass for games new on the phone; the next CSV import or snapshot brings them.
  */
 internal fun bggLookup(conn: SQLiteConnection, norm: String): Long? {
     exactLookup(conn, norm)?.let { return it }

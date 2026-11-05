@@ -37,10 +37,15 @@ private const val DISCOUNT_PCT_SQL = """
     END
 """
 
+// A store without a photo for a product shows another store's photo of the same game.
+internal const val IMAGE_SQL = """
+    COALESCE(p.image_url, (SELECT MIN(q.image_url) FROM product q WHERE q.game_id = p.game_id)) AS image_url
+"""
+
 private const val PRODUCT_COLS = """
     p.id AS product_id, p.store, p.title, p.url, p.game_id, p.kind,
     p.price_original, p.price_current, p.price_eff, p.in_stock, p.flag,
-    p.image_url,
+    $IMAGE_SQL,
     $DISCOUNT_PCT_SQL AS discount_pct
 """
 
@@ -290,7 +295,7 @@ fun smartProducts(conn: SQLiteConnection, by: String = "value", filters: Filters
     return conn.query("""
         SELECT p.id AS product_id, p.store, p.title, p.url, p.game_id, p.kind,
                p.price_original, p.price_current, p.price_eff, p.in_stock, p.flag,
-               p.image_url, s.n_stores, m.median,
+               $IMAGE_SQL, s.n_stores, m.median,
                $DISCOUNT_PCT_SQL AS discount_pct,
                ROUND($score, 4) AS score
           FROM product p

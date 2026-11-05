@@ -205,3 +205,63 @@ def test_match_games_falls_back_to_fuzzy_after_edition_words(db_conn, tmp_path):
     assert db_conn.execute("SELECT bgg_id FROM game WHERE norm = 'fluxx oz deluxe'").fetchone()[0] is None
     bgg.match_games(db_conn)
     assert db_conn.execute("SELECT bgg_id FROM game WHERE norm = 'fluxx oz deluxe'").fetchone()[0] == 12
+
+
+def test_homonym_needs_three_times_the_votes(db_conn, tmp_path):
+    bgg.import_csv(db_conn, _csv(tmp_path / "r.csv", [
+        ["1", "Cartagena", "2000", "500", "6.5", "6.7", "8221", "0"],
+        ["2", "Cartagena", "2019", "0", "", "6.0", "1161", "0"],     # 7x: Cartagena 2000 wins
+        ["3", "Robin Hood", "2000", "0", "", "6.0", "600", "0"],
+        ["4", "Robin Hood", "2010", "0", "", "6.5", "400", "0"],     # 1.5x: no winner
+    ]))
+    assert bgg.lookup(db_conn, "cartagena") == 1
+    assert bgg.lookup(db_conn, "robin hood") is None
+
+
+def test_low_vote_entries_kept_only_with_an_unambiguous_name(db_conn, tmp_path):
+    kept = bgg.import_csv(db_conn, _csv(tmp_path / "r.csv", [
+        ["466525", "Mala Leche con Ají", "2024", "0", "", "", "0", "0"],   # two words, unique: kept
+        ["59117", "Chispas", "0", "0", "", "", "0", "0"],                  # one word: dropped
+        ["10", "Night Shift", "2001", "0", "", "", "2", "0"],              # shares its name: both dropped
+        ["11", "Night Shift", "2015", "0", "", "", "3", "0"],
+        ["12", "Wingspan", "2019", "30", "7.9", "8.0", "110000", "0"],
+        ["13", "Wingspan", "2001", "0", "", "", "1", "0"],                 # low-vote homonym of a kept name: dropped
+    ]))
+    assert kept == 2
+    assert bgg.lookup(db_conn, "mala leche con aji") == 466525
+    assert bgg.lookup(db_conn, "chispas") is None and bgg.lookup(db_conn, "night shift") is None
+
+
+DERIVED = [
+    ["1", "Marvel Champions: The Card Game", "2019", "40", "8.0", "8.3", "50000", "0"],
+    ["2", "Marvel Champions: The Card Game – Iceman Hero Pack", "2023", "0", "", "8.0", "287", "1"],
+    ["3", "Hutan: Life in the Rainforest", "2022", "0", "", "7.0", "1221", "0"],
+    ["4", "Winter: Reaction Cards", "2018", "0", "", "7.0", "71", "1"],
+    ["5", "Connect 4: Card Game", "2010", "0", "", "5.0", "125", "0"],
+    ["6", "Atmosfear: The Card Game", "2014", "0", "", "5.0", "30", "0"],
+    ["7", "Polis", "2012", "0", "", "6.0", "1081", "0"],
+    ["8", "Polis: Fight for the Hegemony", "2012", "0", "", "7.5", "2463", "0"],
+]
+
+
+def test_derived_names_match_pack_words_and_colon_prefix(db_conn, tmp_path):
+    bgg.import_csv(db_conn, _csv(tmp_path / "r.csv", DERIVED))
+    index = bgg._DerivedIndex(db_conn)
+    assert bgg.derived_lookup("marvel champions iceman", "game", index) == 2
+    assert bgg.derived_lookup("hutan", "game", index) == 3
+    assert bgg.derived_lookup("polis fight hegemony", "game", index) is None  # its own name: exact rules
+    assert bgg.derived_lookup("marvel champions", "game", index) is None  # base's subtitle is "The Card Game"
+    assert bgg.derived_lookup("winter", "game", index) is None          # a game never takes an expansion by prefix
+    assert bgg.derived_lookup("winter", "expansion", index) == 4
+    assert bgg.derived_lookup("connect 4", "game", index) is None       # "Card Game" subtitle is a spin-off
+    assert bgg.derived_lookup("atmosfear", "game", index) is None
+    assert bgg.derived_lookup("polis", "game", index) is None           # BGG has "Polis": exact rules decide
+
+
+def test_match_games_uses_derived_names(db_conn, tmp_path):
+    bgg.import_csv(db_conn, _csv(tmp_path / "r.csv", DERIVED))
+    ingest.ingest_store(db_conn, "tiendaD", [
+        {"title": "Hutan - Juego de Mesa", "original_price": "$30.000", "url": "https://d.cl/p/hutan"},
+    ], ts=1_700_300_000)
+    bgg.match_games(db_conn)
+    assert db_conn.execute("SELECT bgg_id FROM game WHERE norm = 'hutan'").fetchone()[0] == 3

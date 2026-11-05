@@ -6,12 +6,12 @@ ratings, votes, category ranks). It carries only the primary name, mostly
 English, so Spanish store titles ("Polilla Tramposa", "Código Secreto") stay
 unmatched until alternate names are added.
 
-A match is exact on the same `norm` key games use. When several BGG entries
-share a name ("Robin Hood" is twelve of them) the most voted wins only if it
-has CLEAR_WINNER times the votes of the next; otherwise the game stays
-unmatched. A wrong rating is worse than none.
+A match is exact on the same `norm` key games use, Spanish aliases first.
+When several BGG entries share a name ("Robin Hood" is twelve of them) the
+most voted wins only if it has CLEAR_WINNER times the votes of the next;
+otherwise the game stays unmatched. A wrong rating is worse than none.
 
-Two fallbacks, in order, for a norm with no exact hit:
+Three fallbacks, in order, for a norm with no exact hit:
 
 1. Without its edition words. "Wingspan Deluxe" and "On Mars KS" are their
    own products, so the words stay in `norm` and grouping keeps them apart,
@@ -19,7 +19,13 @@ Two fallbacks, in order, for a norm with no exact hit:
    extra word ("Carcassonne 2 Constructores", "Marvel Champions Civil War")
    names an expansion or another game, and a subset match there (token_set
    style) gave 3500 matches, mostly wrong.
-2. Fuzzy, in match_games only: token_sort_ratio >= grouping.THRESHOLD with
+2. Derived BGG names, in match_games only: the name without pack words
+   ("Marvel Champions: The Card Game – Iceman Hero Pack" is "Marvel Champions
+   Iceman" in stores) or the part before its colon ("Hutan: Life in the
+   Rainforest" is "Hutan"). Only for a norm BGG does not have at all, and a
+   store game never takes a BGG expansion by prefix ("Winter" is not "Winter:
+   Reaction Cards").
+3. Fuzzy, in match_games only: token_sort_ratio >= grouping.THRESHOLD with
    grouping.same_game's guards, which catches word order ("Fluxx Oz") and
    Spanish spellings of English names ("Not Alone Exploracion"). Without
    same_game's one-letter exception: "Stick Up" is not "Stack Up".
@@ -31,6 +37,7 @@ import re
 import urllib.parse
 import urllib.request
 from bisect import bisect_left
+from collections import Counter
 from pathlib import Path
 
 from rapidfuzz import fuzz, process
@@ -50,10 +57,16 @@ ALIAS_COLUMNS = ("bgg_id", "bgg_name", "name_es", "variants", "min_players", "ma
 LIST_SEP = "|"
 CURSOR = "bgg_csv"
 
-# Entries with fewer votes are mostly obscure homonyms: keeping them added
-# ~70 matches, nearly all wrong ("Trama" 1990, 0 votes), and 90k rows.
+# Entries with fewer votes are mostly obscure homonyms: keeping them all added
+# ~70 matches, nearly all wrong ("Trama" 1990, 0 votes). One is kept when its
+# name has two words or more and no other entry shares it, which is how local
+# games with few BGG voters match ("Mala Leche con Ají", "Colo Colo 100 Años").
+# The fuzzy and derived passes never guess with one.
 MIN_VOTES = 5
-CLEAR_WINNER = 10
+# Most names that tie are editions of one game (Cartagena 8221 votes vs 1161,
+# Talisman, London) or one famous game against an obscure homonym; at 3x the
+# winner was right on every case reviewed. Robin Hood (600 vs 400) still ties.
+CLEAR_WINNER = 3
 
 # Kinds BGG catalogues. Accessories, puzzles and TCG products are not games
 # there, and a sleeve pack named like a game must not borrow its rating.
@@ -101,15 +114,21 @@ def _float(value: str) -> float | None:
 
 
 def _row(r: dict) -> tuple | None:
-    """A CSV row as a bgg table row, or None when unusable or under MIN_VOTES."""
-    votes = _int(r.get("usersrated")) or 0
+    """A CSV row as a bgg table row, or None when unusable."""
     norm = normalize(clean_title(r.get("name") or ""))
     bgg_id = _int(r.get("id"))
-    if votes < MIN_VOTES or not norm or bgg_id is None:
+    if not norm or bgg_id is None:
         return None
     return (bgg_id, r["name"].strip(), norm, *(_int(r.get(c)) for c in _INT_COLUMNS),
-            _float(r.get("bayesaverage")), _float(r.get("average")), votes,
+            _float(r.get("bayesaverage")), _float(r.get("average")), _int(r.get("usersrated")) or 0,
             1 if r.get("is_expansion") == "1" else 0)
+
+
+def _kept(rows: list[tuple]) -> list[tuple]:
+    """Rows with MIN_VOTES, and those under it whose name is unambiguous. See MIN_VOTES."""
+    VOTES = _COLUMNS.index("usersrated")
+    names = Counter(r[2] for r in rows)
+    return [r for r in rows if r[VOTES] >= MIN_VOTES or (len(r[2].split()) >= 2 and names[r[2]] == 1)]
 
 
 def import_csv(conn, path: Path) -> int:
@@ -119,7 +138,7 @@ def import_csv(conn, path: Path) -> int:
         missing = {"id", "name", "usersrated"} - set(reader.fieldnames or ())
         if missing:
             raise ValueError(f"{path} is not a BGG ranks CSV: missing {sorted(missing)}")
-        rows = [row for row in map(_row, reader) if row is not None]
+        rows = _kept([row for row in map(_row, reader) if row is not None])
     conn.execute("DELETE FROM bgg")
     conn.executemany(
         f"INSERT OR REPLACE INTO bgg({', '.join(_COLUMNS)}) VALUES ({', '.join('?' * len(_COLUMNS))})",
@@ -277,7 +296,8 @@ class _FuzzyIndex:
 
     def __init__(self, conn):
         self.names: dict[str, list[str]] = {}
-        for (norm,) in conn.execute("SELECT norm FROM bgg UNION SELECT norm FROM bgg_alias"):
+        for (norm,) in conn.execute("SELECT norm FROM bgg WHERE usersrated >= ? UNION SELECT norm FROM bgg_alias",
+                                    (MIN_VOTES,)):
             self.names.setdefault(_sorted_tokens(norm), []).append(norm)
         self.keys = sorted(self.names, key=len)
         self.lens = [len(k) for k in self.keys]
@@ -307,6 +327,54 @@ def fuzzy_lookup(conn, norm: str, index: _FuzzyIndex) -> int | None:
     return hit if dated else None
 
 
+# BGG name words that stores leave out: "Marvel Champions: The Card Game –
+# Iceman Hero Pack" is "Marvel Champions Iceman". "card game" and "board game"
+# only with words after them, where they name the line, not the product:
+# "Connect 4: Card Game" is not "Connect 4".
+_PACK_WORDS = re.compile(r"\b(hero|scenario|villain|expansion) pack\b|\bexpansion\b|\b(card|board) game\b(?= [^ ])")
+
+# A subtitle that only says what kind of game it is, as a norm: "Atmosfear:
+# The Card Game" is a spin-off, not "Atmosfear".
+_KIND_SUBTITLES = frozenset({"card game", "board game", "dice game"})
+
+
+class _DerivedIndex:
+    """BGG ids by derived name: without _PACK_WORDS, and before the colon. Voted entries only."""
+
+    def __init__(self, conn):
+        self.taken = {n for (n,) in conn.execute("SELECT norm FROM bgg UNION SELECT norm FROM bgg_alias")}
+        self.pack: dict[str, set[int]] = {}
+        self.prefix: dict[str, set[int]] = {}
+        self.entry: dict[int, tuple[int, int]] = {}
+        for bgg_id, name, norm, votes, is_exp in conn.execute(
+                "SELECT id, name, norm, usersrated, is_expansion FROM bgg WHERE usersrated >= ?", (MIN_VOTES,)):
+            self.entry[bgg_id] = (votes, is_exp)
+            packless = " ".join(_PACK_WORDS.sub(" ", norm).split())
+            if packless and packless != norm:
+                self.pack.setdefault(packless, set()).add(bgg_id)
+            head, colon, tail = name.partition(":")
+            prefix = normalize(clean_title(head)) if colon and normalize(tail) not in _KIND_SUBTITLES else ""
+            if prefix and prefix != norm:
+                self.prefix.setdefault(prefix, set()).add(bgg_id)
+
+    def winner(self, ids) -> int | None:
+        """The most voted id, when it has CLEAR_WINNER times the votes of the next."""
+        top = sorted(ids, key=lambda i: (-self.entry[i][0], i))
+        if not top or (len(top) > 1 and self.entry[top[0]][0] < CLEAR_WINNER * self.entry[top[1]][0]):
+            return None
+        return top[0]
+
+
+def derived_lookup(norm: str, kind: str, index: _DerivedIndex) -> int | None:
+    """BGG id whose derived name is `norm`; see the module docstring, fallback 2."""
+    if norm in index.taken:
+        return None
+    if norm in index.pack:
+        return index.winner(index.pack[norm])
+    ids = {i for i in index.prefix.get(norm, ()) if kind == "expansion" or not index.entry[i][1]}
+    return index.winner(ids)
+
+
 def match_games(conn) -> int:
     """
     Set game.bgg_id for every game from its own norm or, failing that, any of
@@ -315,12 +383,20 @@ def match_games(conn) -> int:
     """
     kinds = ",".join("?" * len(MATCHED_KINDS))
     candidates: dict[int, list[str]] = {}
-    for gid, norm, own in conn.execute(f"""
-        SELECT g.id, p.norm, p.norm = g.norm FROM game g JOIN product p ON p.game_id = g.id
-         WHERE g.kind IN ({kinds}) GROUP BY g.id, p.norm ORDER BY g.id, 3 DESC, p.norm
+    kind_of: dict[int, str] = {}
+    for gid, kind, norm, own in conn.execute(f"""
+        SELECT g.id, g.kind, p.norm, p.norm = g.norm FROM game g JOIN product p ON p.game_id = g.id
+         WHERE g.kind IN ({kinds}) GROUP BY g.id, p.norm ORDER BY g.id, 4 DESC, p.norm
     """, MATCHED_KINDS):
         candidates.setdefault(gid, []).append(norm)
+        kind_of[gid] = kind
     index = _FuzzyIndex(conn)
+    derived = _DerivedIndex(conn)
+
+    def derive(gid: int, n: str) -> int | None:
+        base = without_edition(n)
+        return derived_lookup(n, kind_of[gid], derived) or (
+            derived_lookup(base, kind_of[gid], derived) if base and base != n else None)
 
     def fuzzy(n: str) -> int | None:
         base = without_edition(n) or n
@@ -329,6 +405,7 @@ def match_games(conn) -> int:
     matches = {}
     for gid, norms in candidates.items():
         matches[gid] = (next((hit for hit in map(lambda n: lookup(conn, n), norms) if hit), None)
+                        or next((hit for n in norms if (hit := derive(gid, n))), None)
                         or next((hit for hit in map(fuzzy, norms) if hit), None))
     conn.execute("UPDATE game SET bgg_id = NULL")
     conn.executemany("UPDATE game SET bgg_id = ? WHERE id = ?",

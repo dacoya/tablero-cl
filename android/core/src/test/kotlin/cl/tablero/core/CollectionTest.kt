@@ -223,10 +223,48 @@ class CollectionTest {
     }
 
     @Test
+    fun bggCsvMatchesDerivedNamesLowVoteNamesAndClearHomonyms() = db { conn ->
+        ingestStore(conn, "c", listOf(
+            Scraped("Hutan", "https://c.cl/hutan", "$30.000"),
+            Scraped("Winter", "https://c.cl/winter", "$20.000"),
+            Scraped("Mala Leche con Ají", "https://c.cl/mala", "$15.000"),
+            Scraped("Cartagena", "https://c.cl/cartagena", "$18.000"),
+            Scraped("Marvel Champions Iceman", "https://c.cl/iceman", "$16.000"),
+        ), ts = 100)
+        val csv = """
+            id,name,yearpublished,rank,bayesaverage,average,usersrated,is_expansion
+            3,Hutan: Life in the Rainforest,2022,0,,7.0,1221,0
+            4,Winter: Reaction Cards,2018,0,,7.0,71,1
+            466525,Mala Leche con Ají,2024,0,,,0,0
+            59117,Chispas,0,0,,,0,0
+            1,Cartagena,2000,500,6.5,6.7,8221,0
+            2,Cartagena,2019,0,,6.0,1161,0
+            5,Marvel Champions: The Card Game – Iceman Hero Pack,2023,0,,8.0,287,1
+        """.trimIndent()
+        val r = importBggCsv(conn, csv.lineSequence())
+        assertEquals(6, r.entries)                  // Chispas: one word under MIN_VOTES
+        assertEquals(-1, r.aliases)                 // no name_es column: aliases untouched
+        fun bggOf(title: String) = conn.query("SELECT bgg_id FROM game WHERE id = ?", conn.id(title)).single()["bgg_id"]
+        assertEquals(3L, bggOf("Hutan"))            // colon prefix
+        assertNull(bggOf("Winter"))                 // a game never takes an expansion by prefix
+        assertEquals(466525L, bggOf("Mala Leche con Ají"))
+        assertEquals(1L, bggOf("Cartagena"))        // 7x the votes of its homonym
+        assertEquals(5L, bggOf("Marvel Champions Iceman"))  // pack words
+    }
+
+    @Test
     fun cheapestComparesOnlyGamesTwoStoresSell() = db { conn ->
         val rows = withCheapest(conn, products(conn, "title"))
         val byStore = rows.filter { it["title"] == "Catan" }.associate { it["store"] to it["cheapest"] }
         assertEquals<Map<Any?, Any?>>(mapOf("a" to 35000.0, "b" to 35000.0), byStore)
         assertNull(rows.single { it["title"] == "Skull" }["cheapest"])
+    }
+
+    @Test
+    fun aProductWithoutAPhotoBorrowsOneFromTheSameGameElsewhere() = db { conn ->
+        ingestStore(conn, "b", listOf(Scraped("Catan", "https://b.cl/catan", "$35.000", image = "https://b.cl/catan.jpg")), ts = 200)
+        val images = browse(conn, "price").first.associate { (it["store"] to it["title"]) to it["image_url"] }
+        assertEquals("https://b.cl/catan.jpg", images["a" to "Catan"])
+        assertNull(images["a" to "Skull"]) // no photo anywhere stays without one
     }
 }

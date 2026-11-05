@@ -9,8 +9,14 @@ import androidx.sqlite.SQLiteConnection
  * bgg.match_games, without match_games' fuzzy pass.
  */
 
-/** bgg.MIN_VOTES. */
+/** bgg.MIN_VOTES: under it, an entry is kept only with an unambiguous name of two words or more. */
 private const val MIN_VOTES = 5
+
+/** bgg._PACK_WORDS. */
+private val PACK_WORDS = pyRegex("""\b(hero|scenario|villain|expansion) pack\b|\bexpansion\b|\b(card|board) game\b(?= [^ ])""")
+
+/** bgg._KIND_SUBTITLES. */
+private val KIND_SUBTITLES = setOf("card game", "board game", "dice game")
 
 /** bgg.LIST_SEP: between the names of variants_es. */
 private const val LIST_SEP = '|'
@@ -65,7 +71,7 @@ fun importBggCsv(conn: SQLiteConnection, lines: Sequence<String>): BggImported {
         "No es el CSV de BGG: faltan las columnas id, name o usersrated."
     }
     val hasNames = "name_es" in col
-    val entries = mutableListOf<List<Any?>>()
+    val parsed = mutableListOf<List<Any?>>()
     val claims = mutableMapOf<String, MutableSet<Long>>()
     for (line in rows) {
         val f = csvFields(line)
@@ -77,11 +83,12 @@ fun importBggCsv(conn: SQLiteConnection, lines: Sequence<String>): BggImported {
         }
         val votes = int(get("usersrated")) ?: 0L
         val name = get("name")?.trim().orEmpty()
-        val norm = if (votes < MIN_VOTES) "" else key(name)
+        val norm = key(name)
         if (norm.isEmpty()) continue
-        entries += listOf(id, name, norm) + INT_COLUMNS.map { int(get(it)) } +
+        parsed += listOf(id, name, norm) + INT_COLUMNS.map { int(get(it)) } +
             listOf(real(get("bayesaverage")), real(get("average")), votes, if (get("is_expansion")?.trim() == "1") 1L else 0L)
     }
+    val entries = kept(parsed)
     require(entries.isNotEmpty()) { "El CSV de BGG no trae juegos." }
     val known = entries.mapTo(HashSet()) { it[0] as Long }
     // An alias two entries claim cannot say which game it means.
@@ -94,28 +101,88 @@ fun importBggCsv(conn: SQLiteConnection, lines: Sequence<String>): BggImported {
             conn.exec("DELETE FROM bgg_alias")
             conn.execMany("INSERT INTO bgg_alias(norm, bgg_id) VALUES (?, ?)", aliases)
         }
-        BggImported(entries.size, if (hasNames) aliases.size else -1, matchGames(conn, known))
+        BggImported(entries.size, if (hasNames) aliases.size else -1, matchGames(conn, known, DerivedIndex(conn, entries)))
     }
+}
+
+private val VOTES = BGG_COLUMNS.indexOf("usersrated")
+private val IS_EXPANSION = BGG_COLUMNS.indexOf("is_expansion")
+
+/** bgg._kept: rows with MIN_VOTES, and those under it whose name is unambiguous. */
+private fun kept(rows: List<List<Any?>>): List<List<Any?>> {
+    val names = rows.groupingBy { it[2] as String }.eachCount()
+    return rows.filter { r ->
+        val norm = r[2] as String
+        r[VOTES] as Long >= MIN_VOTES || (norm.split(' ').size >= 2 && names[norm] == 1)
+    }
+}
+
+/** bgg._DerivedIndex: BGG ids by name without pack words, and before the colon. Voted entries only. */
+private class DerivedIndex(conn: SQLiteConnection, entries: List<List<Any?>>) {
+    val taken: Set<String> = entries.mapTo(HashSet()) { it[2] as String } +
+        conn.query("SELECT norm FROM bgg_alias").map { it["norm"] as String }
+    val pack = HashMap<String, MutableSet<Long>>()
+    val prefix = HashMap<String, MutableSet<Long>>()
+    val entry = HashMap<Long, Pair<Long, Boolean>>()
+
+    init {
+        for (r in entries) {
+            val votes = r[VOTES] as Long
+            if (votes < MIN_VOTES) continue
+            val id = r[0] as Long
+            val name = r[1] as String
+            val norm = r[2] as String
+            entry[id] = votes to (r[IS_EXPANSION] == 1L)
+            val packless = PACK_WORDS.replace(norm, " ").split(' ').filter { it.isNotEmpty() }.joinToString(" ")
+            if (packless.isNotEmpty() && packless != norm) pack.getOrPut(packless) { mutableSetOf() } += id
+            if (':' in name && normalize(name.substringAfter(':')) !in KIND_SUBTITLES) {
+                val head = key(name.substringBefore(':'))
+                if (head.isNotEmpty() && head != norm) prefix.getOrPut(head) { mutableSetOf() } += id
+            }
+        }
+    }
+
+    /** The most voted id, when it has CLEAR_WINNER times the votes of the next. */
+    fun winner(ids: Collection<Long>): Long? {
+        val top = ids.sortedWith(compareBy({ -entry.getValue(it).first }, { it }))
+        if (top.isEmpty() || (top.size > 1 && entry.getValue(top[0]).first < CLEAR_WINNER * entry.getValue(top[1]).first)) return null
+        return top[0]
+    }
+
+    /** bgg.derived_lookup. */
+    fun lookup(norm: String, kind: String): Long? {
+        if (norm in taken) return null
+        pack[norm]?.let { return winner(it) }
+        return winner(prefix[norm].orEmpty().filter { kind == "expansion" || !entry.getValue(it).second })
+    }
+
+    /** The norm, then the norm without edition words, as bgg.match_games tries them. */
+    fun lookupWithEdition(norm: String, kind: String): Long? =
+        lookup(norm, kind) ?: withoutEdition(norm).takeIf { it.isNotEmpty() && it != norm }?.let { lookup(it, kind) }
 }
 
 /**
  * bgg.match_games without its fuzzy pass: each game gets the entry of its own
- * norm or, failing that, any of its products' norms. A game nothing matches
+ * norm or, failing that, any of its products' norms, by name and then by
+ * derived name. A game nothing matches
  * keeps its entry when the CSV still has it, which is how the laptop's fuzzy
  * matches survive. Returns games matched.
  */
-private fun matchGames(conn: SQLiteConnection, known: Set<Long>): Int {
+private class Candidate(val kind: String, val old: Long?, val norms: MutableList<String> = mutableListOf())
+
+private fun matchGames(conn: SQLiteConnection, known: Set<Long>, derived: DerivedIndex): Int {
     val kinds = BGG_KINDS.joinToString { "?" }
-    val candidates = linkedMapOf<Long, Pair<Long?, MutableList<String>>>()
+    val candidates = linkedMapOf<Long, Candidate>()
     conn.query("""
-        SELECT g.id, g.bgg_id, p.norm, p.norm = g.norm AS own FROM game g JOIN product p ON p.game_id = g.id
+        SELECT g.id, g.kind, g.bgg_id, p.norm, p.norm = g.norm AS own FROM game g JOIN product p ON p.game_id = g.id
          WHERE g.kind IN ($kinds) GROUP BY g.id, p.norm ORDER BY g.id, own DESC, p.norm
     """, *BGG_KINDS.toTypedArray()).forEach { r ->
-        candidates.getOrPut(r["id"] as Long) { (r["bgg_id"] as Long?) to mutableListOf() }.second += r["norm"] as String
+        candidates.getOrPut(r["id"] as Long) { Candidate(r["kind"] as String, r["bgg_id"] as Long?) }.norms += r["norm"] as String
     }
     val matches = candidates.mapNotNull { (gid, c) ->
-        val (old, norms) = c
-        (norms.firstNotNullOfOrNull { bggLookup(conn, it) } ?: old?.takeIf { it in known })?.let { listOf(it, gid) }
+        (c.norms.firstNotNullOfOrNull { bggLookup(conn, it) }
+            ?: c.norms.firstNotNullOfOrNull { derived.lookupWithEdition(it, c.kind) }
+            ?: c.old?.takeIf { it in known })?.let { listOf(it, gid) }
     }
     conn.exec("UPDATE game SET bgg_id = NULL")
     conn.execMany("UPDATE game SET bgg_id = ? WHERE id = ?", matches)

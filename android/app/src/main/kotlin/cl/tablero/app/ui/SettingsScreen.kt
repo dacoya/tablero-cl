@@ -95,10 +95,13 @@ private fun DatabaseSection(db: Db, notify: (String) -> Unit) {
         "Base importada: ${count(db.import(input, context.cacheDir))} productos."
     }
     val pickBgg = rememberFileAction(ActivityResultContracts.OpenDocument(), notify) { context, uri ->
+        // ~180k names to normalize: tens of seconds on a phone.
+        notify("Importando el CSV de BGG…")
         val r = db.write { conn ->
             checkNotNull(context.contentResolver.openInputStream(uri)) { "No se pudo abrir el archivo." }
                 .bufferedReader().useLines { importBggCsv(conn, it) }
         }
+        db.updated() // new BGG matches change Home's tiles and shelves
         "BGG: ${count(r.entries)} juegos" + (if (r.aliases >= 0) ", ${count(r.aliases)} nombres en español" else "") +
             ". ${count(r.matched)} juegos del catálogo con datos de BGG."
     }

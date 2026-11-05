@@ -87,6 +87,17 @@ private val SHELVES = listOf(
 
 private const val SHELF_SIZE = 12
 
+/** What the feed shows: tile counts and each shelf's rows (null while loading). */
+private data class FeedData(
+    val counts: List<Long> = emptyList(),
+    val shelves: List<List<SqlRow>?> = List(SHELVES.size) { null },
+)
+
+// Home leaves composition on every tab switch. The last complete feed and the
+// update it answers survive that, so coming back re-queries only after an update.
+// ponytail: process-wide, fine for the app's one Db.
+private var feedCache: Pair<Int, FeedData>? = null
+
 /**
  * The shop front: search on top; under it, while nothing is typed, the
  * categories and a few shelves, each opening the catalogue already filtered.
@@ -138,16 +149,19 @@ private fun SearchField(query: String, change: (String) -> Unit) {
 @Composable
 private fun Feed(db: Db, open: (GameRef) -> Unit, show: (Browse) -> Unit) {
     val updates by db.updates.collectAsState()
-    val counts by produceState(emptyList<Long>(), updates) {
-        value = db.read { conn -> countProductsEach(conn, CATEGORIES.map { it.browse.filters }) }
-    }
-    // Each shelf shows as soon as its own query is back, not when the slowest is.
-    val shelves by produceState(List<List<SqlRow>?>(SHELVES.size) { null }, updates) {
+    val cached = feedCache?.takeIf { it.first == updates }?.second
+    val feed by produceState(cached ?: feedCache?.second ?: FeedData(), updates) {
+        if (cached != null) return@produceState
+        value = value.copy(counts = db.read { conn -> countProductsEach(conn, CATEGORIES.map { it.browse.filters }) })
+        // Each shelf shows as soon as its own query is back, not when the slowest is.
         SHELVES.forEachIndexed { i, shelf ->
             val rows = db.read { conn -> withCheapest(conn, browseRows(conn, shelf.browse.sort, shelf.browse.filters, limit = SHELF_SIZE)) }
-            value = value.toMutableList().apply { set(i, rows) }
+            value = value.copy(shelves = value.shelves.toMutableList().apply { set(i, rows) })
         }
+        feedCache = updates to value
     }
+    val counts = feed.counts
+    val shelves = feed.shelves
     LazyColumn(contentPadding = PaddingValues(bottom = 16.dp)) {
         item {
             SectionTitle("Categorías")

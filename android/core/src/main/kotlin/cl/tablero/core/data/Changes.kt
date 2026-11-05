@@ -41,7 +41,7 @@ private val SINCE_SQL = """
     WITH after AS (${side(">=")}),
          before AS (${side("<", ONLY_MOVED)})
     SELECT p.id AS product_id, p.store, p.title, p.url, p.game_id, p.kind,
-           p.in_stock, p.price_eff, p.image_url,
+           p.in_stock, p.price_eff, $IMAGE_SQL,
            b.price AS old_price,
            COALESCE(a.price, p.price_eff) AS new_price,
            COALESCE(a.ts, p.first_seen)   AS seen_at,
