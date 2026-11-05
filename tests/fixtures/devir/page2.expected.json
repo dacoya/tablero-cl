@@ -1,0 +1,290 @@
+[
+  {
+    "title": "La Viña",
+    "original_price": "21.990,00 CLP",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://devir.cl/la-vi-a-espa-ol",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017228236-1200-face3d-copy.jpg"
+  },
+  {
+    "title": "Silk",
+    "original_price": "22.490,00 CLP",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://devir.cl/silk",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017227253-1200-face3d-copy.jpg"
+  },
+  {
+    "title": "Papúa",
+    "original_price": "36.990,00 CLP",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://devir.cl/papua",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017226652-1200-face3d.jpg"
+  },
+  {
+    "title": "CERCA Y LEJOS",
+    "original_price": "69.990,00 CLP",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://devir.cl/cerca-y-lejos",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017227758-1200-face3d.jpg"
+  },
+  {
+    "title": "Copenhagen",
+    "original_price": "49.990,00 CLP",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://devir.cl/copenhagen",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017228496-1200-face3d.jpg"
+  },
+  {
+    "title": "Pócimas y Brebajes",
+    "original_price": "42.990,00 CLP",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://devir.cl/pocimas-y-brebajes",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017227611-1200-face3d-copy.jpg"
+  },
+  {
+    "title": "¡RESCATE!",
+    "original_price": "32.990,00 CLP",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://devir.cl/rescate",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017221695-1200-face3d-copy.jpg"
+  },
+  {
+    "title": "ALTO RIESGO - RESCATE",
+    "original_price": "34.990,00 CLP",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://devir.cl/alto-riesgo-rescate",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017223101-1200-face3d.jpg"
+  },
+  {
+    "title": "Fresco",
+    "original_price": "49.990,00 CLP",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://devir.cl/fresco",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017228311-1200-face3d.jpg"
+  },
+  {
+    "title": "HADARA",
+    "original_price": "42.990,00 CLP",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://devir.cl/hadara",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017228434-1200-face3d.jpg"
+  },
+  {
+    "title": "EX-LIBRIS",
+    "original_price": "49.990,00 CLP",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://devir.cl/ex-libris",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017228212-1200-face3d.jpg"
+  },
+  {
+    "title": "TABERNAS DE VALFONDA",
+    "original_price": "44.990,00 CLP",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://devir.cl/as-tabernas-do-vale-profundo",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017228755-1200-face3d-copy.jpg"
+  },
+  {
+    "title": "Clank! - Tesoros Sumergidos",
+    "original_price": "25.990,00 CLP",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://devir.cl/clank-tesoros-sumergidos",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017226171-1200-face3d-copy.jpg"
+  },
+  {
+    "title": "CLANK! - Una Aventura de construccion de mazos",
+    "original_price": "59.990,00 CLP",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://devir.cl/clank-una-aventura-de-construccion-de-mazos",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017226102-1200-face3d-copy.jpg"
+  },
+  {
+    "title": "La Resistencia",
+    "original_price": "22.990,00 CLP",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://devir.cl/la-resistencia",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017222999-1200-face3d-copy.jpg"
+  },
+  {
+    "title": "La Resistencia: Avalon",
+    "original_price": "24.990,00 CLP",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://devir.cl/la-resistencia-avalon",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017223156-1200-face3d.jpg"
+  },
+  {
+    "title": "FLAMME ROUGE",
+    "original_price": "44.990,00 CLP",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://devir.cl/flamme-rouge",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/6430018270517-1200-face3d.jpg"
+  },
+  {
+    "title": "Sombras sobre Londres",
+    "original_price": "52.990,00 CLP",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://devir.cl/sombras-sobre-londres",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017221619-1200-face3d-copy.jpg"
+  },
+  {
+    "title": "Alquimistas",
+    "original_price": "44.990,00 CLP",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://devir.cl/alquimistas",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017222531-1200-face3d-copy.jpg"
+  },
+  {
+    "title": "Alquimistas: El Golem del Rey",
+    "original_price": "39.990,00 CLP",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://devir.cl/alquimistas-el-golem-del-rey",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017224597-1200-face3d-copy.jpg"
+  },
+  {
+    "title": "Machi Koro Legacy",
+    "original_price": "44.990,00 CLP",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://devir.cl/machi-koro-legacy",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017228793-1200-face3d.jpg"
+  },
+  {
+    "title": "PEQUEÑOS GRANDES MECHS",
+    "original_price": "21.990,00 CLP",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://devir.cl/peque-os-grandes-mechs",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017228687-1200-face3d-copy.jpg"
+  },
+  {
+    "title": "Código Secreto",
+    "original_price": "19.990,00 CLP",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://devir.cl/codigo-secreto",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017223354-1200-face3d.jpg"
+  },
+  {
+    "title": "Código Secreto: Dúo",
+    "original_price": "21.990,00 CLP",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://devir.cl/codigo-secreto-duo",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017226270-1200-face3d.jpg"
+  },
+  {
+    "title": "Código Secreto Imágenes",
+    "original_price": "24.990,00 CLP",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://devir.cl/codigo-secreto-imagenes",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017224627-1200-face3d.jpg"
+  },
+  {
+    "title": "Pictomania",
+    "original_price": "19.990,00 CLP",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://devir.cl/pictomania",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017228533-1200-face3d.jpg"
+  },
+  {
+    "title": "TRAPWORDS",
+    "original_price": "22.990,00 CLP",
+    "current_price": null,
+    "stock_status": "Agotado",
+    "url": "https://devir.cl/trapwords",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017228083-1200-face3d.jpg"
+  },
+  {
+    "title": "COLORETTO",
+    "original_price": "12.990,00 CLP",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://devir.cl/coloretto",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017225709-1200-face3d-copy.jpg"
+  },
+  {
+    "title": "El Abejorro Tramposo",
+    "original_price": "14.990,00 CLP",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://devir.cl/bichos-abejorro-tramposo",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017226508-1200-face3d.jpg"
+  },
+  {
+    "title": "Genial (2da Edición)",
+    "original_price": "25.990,00 CLP",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://devir.cl/genial-red-version",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017221718-1200-face3d.jpg"
+  },
+  {
+    "title": "Bichos: Polilla Tramposa",
+    "original_price": "15.990,00 CLP",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://devir.cl/bichos-polilla-tramposa",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017221138-1200-face3d-copy.jpg"
+  },
+  {
+    "title": "SET",
+    "original_price": "15.990,00 CLP",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://devir.cl/set",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017222944-1200-face3d.jpg"
+  },
+  {
+    "title": "Sushi Go!",
+    "original_price": "12.990,00 CLP",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://devir.cl/sushi-go",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017221855-1200-face3d-copy.jpg"
+  },
+  {
+    "title": "Sushi Go Party!",
+    "original_price": "22.990,00 CLP",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://devir.cl/sushi-go-party",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017223880-1200-face3d-copy.jpg"
+  },
+  {
+    "title": "TORRE ENCANTADA",
+    "original_price": "15.990,00 CLP",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://devir.cl/torre-encantada",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017225648-1200-face3d.jpg"
+  },
+  {
+    "title": "Fantasma Blitz",
+    "original_price": "17.990,00 CLP",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://devir.cl/fantasma-blitz",
+    "image": "https://devirinvestments.s3.eu-west-1.amazonaws.com/img/catalog/product/8436017220681-1200-face3d-copy.jpg"
+  }
+]

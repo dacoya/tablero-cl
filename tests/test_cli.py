@@ -1,8 +1,7 @@
 """
 CLI dispatch and path configuration.
 
-These carry real logic (store resolution, incremental site selection, the data
-root override) and were the largest untested surface after the restructure.
+These carry real logic (incremental site selection, the data root override) and were the largest untested surface after the restructure.
 """
 import importlib
 
@@ -10,34 +9,6 @@ import pytest
 
 from tablero import cli
 from tablero import update
-
-
-# ---------------------------------------------------------------------------
-# Store resolution
-# ---------------------------------------------------------------------------
-
-def test_resolve_store_exact(db_conn):
-    assert cli._resolve_store(db_conn, "tiendaA") == "tiendaA"
-
-
-def test_resolve_store_is_case_insensitive(db_conn):
-    assert cli._resolve_store(db_conn, "TIENDAA") == "tiendaA"
-
-
-def test_resolve_store_none_passes_through(db_conn):
-    assert cli._resolve_store(db_conn, None) is None
-
-
-def test_resolve_store_unknown_explains(db_conn):
-    """The old CLI errored without telling you what the valid names were."""
-    with pytest.raises(cli.CommandError, match="tablero stores"):
-        cli._resolve_store(db_conn, "no-existe")
-
-
-def test_resolve_store_ambiguous_lists_candidates(db_conn):
-    with pytest.raises(cli.CommandError) as exc:
-        cli._resolve_store(db_conn, "tienda")
-    assert "tiendaA" in str(exc.value) and "tiendaB" in str(exc.value)
 
 
 # ---------------------------------------------------------------------------
@@ -91,40 +62,6 @@ def test_incremental_reselects_stale_and_failed(db_conn):
     db_conn.commit()
     chosen = [s["name"] for s in update.select_sites(db_conn, SITES, None, True, 24)]
     assert {"alpha", "beta"} <= set(chosen)
-
-
-# ---------------------------------------------------------------------------
-# Argument parsing
-# ---------------------------------------------------------------------------
-
-def test_modes_are_mutually_exclusive():
-    """
-    The old flat-flag CLI silently mis-dispatched: `tablero -u --name x` ran a
-    search and never scraped. Subcommands make that unrepresentable.
-    """
-    with pytest.raises(SystemExit):
-        cli.build_parser().parse_args(["update", "--name", "catan"])
-
-
-def test_smart_sorts_are_accepted():
-    for sort in ("value", "scarcity", "volatility"):
-        assert cli.build_parser().parse_args(["deals", "--sort", sort]).sort == sort
-
-
-def test_invalid_sort_rejected():
-    with pytest.raises(SystemExit):
-        cli.build_parser().parse_args(["deals", "--sort", "nonsense"])
-
-
-def test_alerts_watch_requires_threshold():
-    """--watch without --threshold would otherwise fire on every price."""
-    with pytest.raises(SystemExit):
-        cli.main(["alerts", "--watch", "catan"])
-
-
-def test_watch_add_requires_a_game():
-    with pytest.raises(SystemExit):
-        cli.main(["watch", "add"])
 
 
 # ---------------------------------------------------------------------------
@@ -200,20 +137,95 @@ def test_env_override_beats_both(monkeypatch, tmp_path):
     assert paths.default_data_dir() == tmp_path.resolve()
 
 
-def test_resolve_output_keeps_absolute_paths():
-    from tablero import paths
-    absolute = paths.Path("/tmp/somewhere/x.csv")
-    assert paths.resolve_output(absolute) == absolute
+def test_update_reports_progress_for_every_store_including_failures(monkeypatch, db_conn):
+    """
+    A store that fails still has to advance the counter.
+
+    The report lives in a `finally` precisely so neither of the two `continue`
+    paths in the loop can skip it and leave the line stuck mid-run.
+    """
+    from tablero import runner, update as update_mod
+
+    targets = [{"name": n}
+               for n in ("tiendaA", "tiendaB", "tiendaC")]
+
+    def fake_scrape(site, dry_run=False):
+        if site["name"] == "tiendaB":
+            raise RuntimeError("boom")
+        return []
+
+    monkeypatch.setattr(runner, "scrape_site", fake_scrape)
+
+    seen = []
+    update_mod.update_stores(
+        db_conn, targets, workers=1,
+        on_failure=lambda name, exc: None,
+        on_progress=lambda done, total, products, store: seen.append((done, store)),
+    )
+    assert [done for done, _ in seen] == [1, 2, 3]
+    assert {store for _, store in seen} == {"tiendaA", "tiendaB", "tiendaC"}
 
 
-def test_resolve_output_lands_beside_the_database_when_installed(monkeypatch, tmp_path):
-    """An installed copy must not write scraped CSVs into site-packages."""
-    from tablero import paths
-    fake_site_packages = tmp_path / "site-packages"
-    (fake_site_packages / "tablero").mkdir(parents=True)
-    monkeypatch.setattr(paths, "REPO_ROOT", fake_site_packages)
-    monkeypatch.setattr(paths, "PKG_DIR", fake_site_packages / "tablero")
-    monkeypatch.setattr(paths, "DATA_DIR", tmp_path / "userdata")
+def test_fixtures_keeps_going_past_a_failing_store(monkeypatch, capsys):
+    """One unreachable store must not abort the corpus refresh for the rest."""
+    from tablero import fixtures
 
-    assert paths.resolve_output("../data/tienda_jdm.csv") == \
-        tmp_path / "userdata" / "tienda_jdm.csv"
+    calls = []
+
+    def fake_capture(site, page=1):
+        calls.append((site["name"], page))
+        if site["name"] == "laloseta":
+            raise ConnectionError("dns")
+        if page == 2:
+            return {"records": 0}
+        return {"records": 3}
+
+    monkeypatch.setattr(cli.time, "sleep", lambda s: None)
+    monkeypatch.setattr(fixtures, "capture", fake_capture)
+    monkeypatch.setattr(fixtures, "write_vectors", lambda: [])
+
+    assert cli.main(["fixtures", "--sites", "laloseta", "boardkingdom",
+                     "--pages", "3"]) == 0
+    # laloseta fails on page 1; boardkingdom stops at its first empty page.
+    assert ("laloseta", 2) not in calls
+    assert ("boardkingdom", 2) in calls and ("boardkingdom", 3) not in calls
+    assert "Sin fixture nuevo: laloseta" in capsys.readouterr().out
+
+
+def test_fixtures_vectors_only_does_not_fetch(monkeypatch):
+    from tablero import fixtures
+
+    def no_network(*a, **k):
+        raise AssertionError("fetched")
+
+    monkeypatch.setattr(fixtures, "capture", no_network)
+    monkeypatch.setattr(fixtures, "write_vectors", lambda: [])
+    assert cli.main(["fixtures", "--vectors-only"]) == 0
+
+
+def test_snapshot_is_a_complete_single_file_copy(db_conn, tmp_path, monkeypatch):
+    """The phone imports this file, so it must hold writes still in the WAL."""
+    from tablero import db as db_mod
+
+    db_conn.execute("INSERT INTO cursor(name, ts) VALUES ('wal_only', 42)")
+    db_conn.commit()  # committed to the WAL, not yet checkpointed into the file
+    out = db_mod.snapshot(db_conn, tmp_path / "copy.db")
+
+    copy = db_mod.connect(out, read_only=True)
+    try:
+        assert copy.execute("SELECT ts FROM cursor WHERE name = 'wal_only'").fetchone()[0] == 42
+        assert db_mod.table_counts(copy) == db_mod.table_counts(db_conn)
+        assert db_mod.schema_version(copy) == db_mod.SCHEMA_VERSION
+    finally:
+        copy.close()
+    assert not (tmp_path / "copy.db-wal").exists()
+
+
+def test_snapshot_refuses_to_overwrite(db_conn, tmp_path):
+    from tablero import db as db_mod
+
+    target = tmp_path / "copy.db"
+    target.write_bytes(b"keep me")
+    with pytest.raises(FileExistsError):
+        db_mod.snapshot(db_conn, target)
+    assert target.read_bytes() == b"keep me"

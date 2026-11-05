@@ -44,23 +44,34 @@ def sample_history():
 
 
 @pytest.fixture
-def db_conn(tmp_path, sample_products, sample_history, monkeypatch):
-    """A migrated database built from the sample fixtures."""
-    data_dir = tmp_path / "data"
-    data_dir.mkdir()
-    (data_dir / "products.json").write_text(json.dumps(sample_products), encoding="utf-8")
-    (data_dir / "history.json").write_text(json.dumps(sample_history), encoding="utf-8")
-    (data_dir / "metadata.json").write_text(
-        json.dumps({"sites": {"tiendaA": {"last_scrape": 1_700_100_000,
-                                          "product_count": 3, "success": True}},
-                    "price_stats": {}}),
-        encoding="utf-8",
-    )
+def db_conn(tmp_path, sample_products, sample_history):
+    """A database ingested from the sample catalog, with its price history."""
+    from tablero import db as db_mod, ingest
 
-    from tablero import db as db_mod, migrate
-
-    db_path = tmp_path / "tablero.db"
-    migrate.migrate(db_path=db_path, data_dir=data_dir)
-    conn = db_mod.connect(db_path)
+    conn = db_mod.connect(tmp_path / "tablero.db", create=True)
+    db_mod.init_db(conn)
+    for store, records in sample_products.items():
+        ingest.ingest_store(conn, store, records, ts=1_700_100_000)
+    # A first ingest flags everything new; keep only the flags the catalog carries.
+    conn.execute("UPDATE product SET flag = NULL")
+    for store, records in sample_products.items():
+        for r in records:
+            if r.get("flag"):
+                conn.execute("UPDATE product SET flag = ? WHERE url = ?", (r["flag"], r["url"]))
+    conn.execute("DELETE FROM price_obs")  # the history below is the only price record
+    for key, points in sample_history.items():
+        norm, store = key.split("|")
+        conn.executemany(
+            "INSERT OR IGNORE INTO price_obs(product_id, ts, price) "
+            "SELECT id, ?, ? FROM product WHERE norm = ? AND store = ?",
+            [(p["t"], p["price"], norm, store) for p in points])
+    conn.commit()
     yield conn
     conn.close()
+
+
+@pytest.fixture(autouse=True)
+def _no_real_bgg_csv(tmp_path, monkeypatch):
+    """Keep every test off the 180k-row BGG CSV a real data directory may hold."""
+    from tablero import bgg
+    monkeypatch.setattr(bgg, "CSV_PATH", tmp_path / "no-bgg.csv")

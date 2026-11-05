@@ -34,6 +34,37 @@ def test_clean_title(raw, expected):
     assert clean_title(raw) == expected
 
 
+@pytest.mark.parametrize("raw, expected", [
+    ("La Corte del Zar – de cartas, intriga y deducción", "La Corte del Zar"),
+    ("Love Letter Eco Box – Juego de Cartas de Deducción y Faroleo (Z-Man Games)", "Love Letter Eco Box"),
+    ("La Corte del Zar – Juego de mesa de cartas, intriga y deducción", "La Corte del Zar"),
+    ("Spicy – de Cartas y Faroleo (Fractal Juegos / HeidelBÄR)", "Spicy"),
+    ("Sushi Go – de cartas rápido y familiar", "Sushi Go"),
+    ("Código Secreto – de palabras, deducción y trabajo en equipo", "Código Secreto"),
+    ("Taco Gatito Pizza - Juego de Cartas Infantil (Desde 4 años)", "Taco Gatito Pizza"),
+    ("Dobble Disney – Juego de Cartas de Rapidez Visual (Asmodee)", "Dobble Disney"),
+    ("The Mind — Juego de Cartas Cooperativo de Sincronización | 2–4 jugadores", "The Mind"),
+    ("Scout – Un brillante juego de cartas donde nunca podrás ordenar tu mano", "Scout"),
+    ("Sombras sobre Londres - deducción y roles ocultos en Londres victoriano", "Sombras sobre Londres"),
+])
+def test_clean_title_strips_description_tail(raw, expected):
+    assert clean_title(raw) == expected
+
+
+@pytest.mark.parametrize("raw", [
+    "Catan - El Juego de Cartas",
+    "Catan - Juego de Cartas 2da Edición",
+    "Hero Realms - Juego de Cartas",
+    "Sushi Go - Party",
+    "Dominion - Intriga II",
+    "Marvel Champions: Hercules Hero Pack",
+    "Taco Gorro Torta Regalo Pizza - Juego de Cartas",
+])
+def test_clean_title_keeps_real_subtitles(raw):
+    """A bare or edition-qualified product name is identity, not a description."""
+    assert clean_title(raw) == raw
+
+
 def test_clean_title_preserves_subtitle():
     """A definite article marks a real subtitle, not a category tag."""
     assert "Juego de Cartas" in clean_title("Arkham Horror: El Juego de Cartas")
@@ -99,7 +130,7 @@ def test_generic_category_noise_is_still_stripped(raw):
 
 
 @pytest.mark.parametrize("raw, expected", [
-    ("Clank!: En las Catacumbas (En Español)", "clank en las catacumbas"),
+    ("Clank!: En las Catacumbas (En Español)", "clank catacumbas"),
     ("Terraforming Mars Edición Kickstarter", "terraforming mars kickstarter"),
     ("ÁÉÍÓÚ ñ", "aeiou n"),
 ])

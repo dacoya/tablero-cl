@@ -39,10 +39,15 @@ def select_sites(conn, sites, names=None, incremental=False, max_age_hours=24):
 
 
 def update_stores(conn, targets, workers: int = 5, dry_run: bool = False,
-                  on_failure=None) -> dict:
+                  on_failure=None, on_progress=None) -> dict:
     """
     Scrape `targets` and write the results. Returns totals for the caller to
     report; an empty scrape is treated as a failure and leaves data untouched.
+
+    `on_progress(done, total, products, store)` fires once per finished store.
+    The store named is the one that just came back, not a "currently running"
+    one -- with five workers there are always five of those, and a progress
+    line that claims otherwise is lying.
     """
     from .runner import scrape_site
 
@@ -51,29 +56,42 @@ def update_stores(conn, targets, workers: int = 5, dry_run: bool = False,
     rejected: dict = {}
 
     with ThreadPoolExecutor(max_workers=workers) as pool:
-        futures = {pool.submit(scrape_site, site, dry_run, i): site
-                   for i, site in enumerate(targets)}
-        for future in as_completed(futures):
+        futures = {pool.submit(scrape_site, site, dry_run): site
+                   for site in targets}
+        for done, future in enumerate(as_completed(futures), 1):
             site = futures[future]
+            # In a finally so the count is current -- reporting before the
+            # ingest left it a whole store behind -- while still being
+            # unskippable by either `continue` below.
             try:
-                records = future.result() or []
-            except Exception as exc:
-                if on_failure:
-                    on_failure(site["name"], exc)
-                ingest_mod.record_failure(conn, site["name"])
-                totals["failed"] += 1
-                continue
+                try:
+                    records = future.result() or []
+                except Exception as exc:
+                    if on_failure:
+                        on_failure(site["name"], exc)
+                    ingest_mod.record_failure(conn, site["name"])
+                    totals["failed"] += 1
+                    continue
 
-            result = ingest_mod.ingest_store(conn, site["name"], records)
-            if result["skipped"]:
-                ingest_mod.record_failure(conn, site["name"])
-                totals["failed"] += 1
-                continue
-            for key in ("ingested", "new", "restock"):
-                totals[key] += result[key]
-            for reason, n in (result.get("rejected") or {}).items():
-                rejected[reason] = rejected.get(reason, 0) + n
+                result = ingest_mod.ingest_store(conn, site["name"], records)
+                if result["skipped"]:
+                    # Reported by name like a crash is. An empty scrape counts
+                    # toward "N tiendas con error", and a bare count tells you
+                    # something broke without telling you where -- which was
+                    # the whole problem with silencing the pagination 404s.
+                    if on_failure:
+                        on_failure(site["name"], "sin productos (¿URL o parser roto?)")
+                    ingest_mod.record_failure(conn, site["name"])
+                    totals["failed"] += 1
+                    continue
+                for key in ("ingested", "new", "restock"):
+                    totals[key] += result[key]
+                for reason, n in (result.get("rejected") or {}).items():
+                    rejected[reason] = rejected.get(reason, 0) + n
+            finally:
+                if on_progress:
+                    on_progress(done, len(targets), totals["ingested"], site["name"])
 
-    ingest_mod.refresh_indexes(conn)
+    totals["regroup"] = ingest_mod.refresh_indexes(conn)
     totals["rejected"] = rejected
     return totals

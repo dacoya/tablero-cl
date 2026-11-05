@@ -87,11 +87,3 @@ def game_trends(conn, game_id: int, min_points: int = 1) -> list[dict]:
     ]
     trends.sort(key=lambda t: abs(t["change_pct"]), reverse=True)
     return trends
-
-
-def observation_span(conn) -> dict:
-    """Oldest and newest observation, so callers can say how deep history goes."""
-    row = conn.execute(
-        "SELECT MIN(ts) AS first, MAX(ts) AS last, COUNT(*) AS n FROM price_obs"
-    ).fetchone()
-    return dict(row) if row else {"first": None, "last": None, "n": 0}

@@ -1,0 +1,1474 @@
+[
+  {
+    "title": "Lacrimosa",
+    "original_price": "$64.990",
+    "current_price": "$57.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/160-Lacrimosa",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_8436589626829-1200-face3d.jpg"
+  },
+  {
+    "title": "Las Ruinas Perdidas de Arnak",
+    "original_price": "$57.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/97-Las_Ruinas_Perdidas_de_Arnak",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_17282839191718036435arnak.jpg"
+  },
+  {
+    "title": "Marvel Champions",
+    "original_price": "$57.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/13-Marvel_Champions",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_17282839621718036578marvel.jpg"
+  },
+  {
+    "title": "Aventureros al Tren: Europa",
+    "original_price": "$44.990",
+    "current_price": "$39.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/2-Aventureros_al_Tren_Europa",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_172828424816969523621681491269ttre.jpg"
+  },
+  {
+    "title": "Azul Master Chocolatier",
+    "original_price": "$44.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/45-Azul_Master_Chocolatier",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1728284088azmc.jpg"
+  },
+  {
+    "title": "Aventureros Al Tren: Japón & Italia",
+    "original_price": "$42.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/71-",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1200x1200_100_1200x1200_100_1200_TTR_JAPON.jpg"
+  },
+  {
+    "title": "The River",
+    "original_price": "$39.990",
+    "current_price": "$28.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/33-The_River",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1728284194riv.jpg"
+  },
+  {
+    "title": "Pandemic",
+    "original_price": "$36.990",
+    "current_price": "$32.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/86-Pandemic",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_17282837541718036617pandemic.jpg"
+  },
+  {
+    "title": "Bamboo",
+    "original_price": "$29.990",
+    "current_price": "$27.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/46-Bamboo",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_172828397516969524691680194781bamboo.jpg"
+  },
+  {
+    "title": "Pequeños grandes Crímenes",
+    "original_price": "$26.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/255-",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_peke1.jpg"
+  },
+  {
+    "title": "Pequeños grandes Zombis",
+    "original_price": "$26.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/254-",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_zom1.jpg"
+  },
+  {
+    "title": "7 Wonders Duel",
+    "original_price": "$26.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/40-7_Wonders_Duel",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_duel.jpg"
+  },
+  {
+    "title": "Cities",
+    "original_price": "$25.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/251-Cities",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_8436607943921-1200-face3d.jpg"
+  },
+  {
+    "title": "Polilla tramposa",
+    "original_price": "$14.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/253-Polilla_tramposa",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_pol1.jpg"
+  },
+  {
+    "title": "Sushi Go!",
+    "original_price": "$12.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/252-Sushi_Go",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_sus2.jpg"
+  },
+  {
+    "title": "Taco Gatito Pizza",
+    "original_price": "$11.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/257-Taco_Gatito_Pizza",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1751303104TACO_GATITO.jpg"
+  },
+  {
+    "title": "Taco Gorro Torta Caja Pizza",
+    "original_price": "$11.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/256-Taco_Gorro_Torta_Caja_Pizza",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1751302788TACO_CAJA.jpg"
+  },
+  {
+    "title": "Oath: Crónicas del Imperio y el Exilio",
+    "original_price": "$149.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/189-",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_Capa_1.jpg"
+  },
+  {
+    "title": "Sword & Sorcery: Crónicas Antiguas",
+    "original_price": "$119.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/176-",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_8436589626492-1200-face3d-600x600.jpg"
+  },
+  {
+    "title": "Zombicide 2da Edición",
+    "original_price": "$109.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/17-",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1681490651zomb.jpg"
+  },
+  {
+    "title": "La Guerra del Anillo",
+    "original_price": "$89.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/172-La_Guerra_del_Anillo",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_guerradelanillo-600x600.jpg"
+  },
+  {
+    "title": "Senda de luz y sombra",
+    "original_price": "$84.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/175-Senda_de_luz_y_sombra",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_8436589626133-1200-face3d-600x600.jpg"
+  },
+  {
+    "title": "El Dilema del Rey",
+    "original_price": "$74.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/15-El_Dilema_del_Rey",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_800x800_100_dilema.jpg"
+  },
+  {
+    "title": "Venganza",
+    "original_price": "$74.990",
+    "current_price": "$69.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/30-Venganza",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_veng.jpg"
+  },
+  {
+    "title": "Catan Edición Extra (Básico + Navegantes)",
+    "original_price": "$69.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/164-",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_8436589624559-1200-face3d.jpg"
+  },
+  {
+    "title": "Dinosaur World",
+    "original_price": "$69.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/179-Dinosaur_World",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_8436589626249-1200-face3d.jpg"
+  },
+  {
+    "title": "Planet B",
+    "original_price": "$69.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/174-Planet_B",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_8436589628793-1200-face3d.jpg"
+  },
+  {
+    "title": "Small World of Warcraft",
+    "original_price": "$69.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/81-Small_World_of_Warcraft",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_172828401616969534121681488307wow1.jpg"
+  },
+  {
+    "title": "Wonder Book",
+    "original_price": "$69.990",
+    "current_price": "$64.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/61-Wonder_Book",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1728284216wonder_book.jpg"
+  },
+  {
+    "title": "Gloomhaven: Fauces del León",
+    "original_price": "$68.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/154-",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1696953020gloomhaven.jpg"
+  },
+  {
+    "title": "Bitoku",
+    "original_price": "$62.990",
+    "current_price": "$57.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/47-Bitoku",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_16969524911680194768bit1.jpg"
+  },
+  {
+    "title": "Everdell",
+    "original_price": "$62.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/9-Everdell",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1681515464everdell.jpg"
+  },
+  {
+    "title": "Wingspan",
+    "original_price": "$62.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/8-Wingspan",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_16969537341681487665wingspan.jpg"
+  },
+  {
+    "title": "Everdell Spirecrest",
+    "original_price": "$61.990",
+    "current_price": "$54.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/10-Everdell_Spirecrest",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1777400212spirecrest.png"
+  },
+  {
+    "title": "El Señor de los Anillos, LCG (Ed. Revisada)",
+    "original_price": "$59.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/25-",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1728284055anillos.jpg"
+  },
+  {
+    "title": "Starship Captains",
+    "original_price": "$59.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/177-Starship_Captains",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_8436589629004-1200-face3d-600x600.jpg"
+  },
+  {
+    "title": "The Magnificent",
+    "original_price": "$59.990",
+    "current_price": "$49.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/32-The_Magnificent",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_mag.jpg"
+  },
+  {
+    "title": "El Ansia",
+    "original_price": "$54.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/159-El_Ansia",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_8436589626874-1200-face3d.jpg"
+  },
+  {
+    "title": "Pacto con el Diablo",
+    "original_price": "$54.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/194-Pacto_con_el_Diablo",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_PactoCED1.png"
+  },
+  {
+    "title": "Copenhagen",
+    "original_price": "$49.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/170-Copenhagen",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_8436017228496-1200-face3d.jpg"
+  },
+  {
+    "title": "Everdell: Bellfaire",
+    "original_price": "$49.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/64-Everdell_Bellfaire",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1718036146bellfaire.jpg"
+  },
+  {
+    "title": "Holi",
+    "original_price": "$49.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/167-Holi",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_8436589621497-1200-face3d.jpg"
+  },
+  {
+    "title": "Ierusalem: Anno domini",
+    "original_price": "$49.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/173-Ierusalem_Anno_domini",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_8436589629981-1200-face3d.jpg"
+  },
+  {
+    "title": "Iki",
+    "original_price": "$49.990",
+    "current_price": "$39.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/157-Iki",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_17282838861718036287iki.jpg"
+  },
+  {
+    "title": "The Mandalorian: Adventures",
+    "original_price": "$49.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/241-The_Mandalorian_Adventures",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_m4.jpg"
+  },
+  {
+    "title": "King of Tokyo: Monster Box",
+    "original_price": "$47.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/166-King_of_Tokyo_Monster_Box",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_8436589624290-1200-face3d.jpg"
+  },
+  {
+    "title": "7 Wonders",
+    "original_price": "$45.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/38-7_Wonders",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_7_wonders.jpg"
+  },
+  {
+    "title": "Aventureros Al Tren",
+    "original_price": "$44.990",
+    "current_price": "$39.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/72-Aventureros_Al_Tren",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1200x1200_100_1200x1200_100_1200_TTR.jpg"
+  },
+  {
+    "title": "Cascadia",
+    "original_price": "$44.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/50-Cascadia",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_casca.jpg"
+  },
+  {
+    "title": "Photosynthesis",
+    "original_price": "$44.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/165-Photosynthesis",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_3770000904765-1200-face3d.jpg"
+  },
+  {
+    "title": "Paleo",
+    "original_price": "$42.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/87-Paleo",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1696953299paleo.jpg"
+  },
+  {
+    "title": "7 Wonders Architects",
+    "original_price": "$39.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/39-7_Wonders_Architects",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1718035670architects.jpg"
+  },
+  {
+    "title": "Calico",
+    "original_price": "$39.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/5-Calico",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1681487961calico.jpg"
+  },
+  {
+    "title": "King of New York",
+    "original_price": "$39.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/169-King_of_New_York",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_8436017223422-1200-face3d.jpg"
+  },
+  {
+    "title": "Cottage Garden",
+    "original_price": "$37.990",
+    "current_price": "$29.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/28-Cottage_Garden",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1728284105cotta.jpg"
+  },
+  {
+    "title": "Indian Summer",
+    "original_price": "$37.990",
+    "current_price": "$29.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/27-Indian_Summer",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_17282839021718036396indian.jpg"
+  },
+  {
+    "title": "Marvel Champions: Los Más Buscados de la Galaxia",
+    "original_price": "$37.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/14-",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1680809962marv-galax1.jpg"
+  },
+  {
+    "title": "Spring Meadow",
+    "original_price": "$37.990",
+    "current_price": "$29.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/26-Spring_Meadow",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1728284162mwad.jpg"
+  },
+  {
+    "title": "Star Wars: The Deckbuilding Game",
+    "original_price": "$37.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/80-Star_Wars_The_Deckbuilding_Game",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_169695347320221104095039_10064.jpg"
+  },
+  {
+    "title": "Pandemic: ¡Al límite!",
+    "original_price": "$36.990",
+    "current_price": "$34.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/85-",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1200x1200_100_1718036648pandemic_al_limite.jpg"
+  },
+  {
+    "title": "Rhino Hero Super Battle",
+    "original_price": "$36.490",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/12-Rhino_Hero_Super_Battle",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1674661071rhino1.jpg"
+  },
+  {
+    "title": "3 Ring Circus",
+    "original_price": "$34.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/195-3_Ring_Circus",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_3_ring_circus.png"
+  },
+  {
+    "title": "Las ruinas perdidas de Arnak: La exp. Perdida",
+    "original_price": "$31.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/239-Las_ruinas_perdidas_de_Arnak_La_exp_Perdida",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_8436607942580-1200-face3d.jpg"
+  },
+  {
+    "title": "Paleo: Un Nuevo Comienzo",
+    "original_price": "$34.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/88-Paleo_Un_Nuevo_Comienzo",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_paleo_exp.jpg"
+  },
+  {
+    "title": "Reykholt",
+    "original_price": "$34.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/6-Reykholt",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1681487061reykholt.jpg"
+  },
+  {
+    "title": "Solenia",
+    "original_price": "$34.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/24-Solenia",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_solenia.jpg"
+  },
+  {
+    "title": "Takenoko",
+    "original_price": "$34.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/11-Takenoko",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_portada_3d.jpg"
+  },
+  {
+    "title": "Trekking Through History",
+    "original_price": "$34.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/240-Trekking_Through_History",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_tth.jpg"
+  },
+  {
+    "title": "Unlock! Game Adventures",
+    "original_price": "$34.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/233-Unlock_Game_Adventures",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_unlock1.jpg"
+  },
+  {
+    "title": "Dixit Disney",
+    "original_price": "$33.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/200-Dixit_Disney",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_dixdis.jpg"
+  },
+  {
+    "title": "Catan",
+    "original_price": "$32.990",
+    "current_price": "$29.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/7-Catan",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1200x1200_100_1674660973catan1.jpg"
+  },
+  {
+    "title": "Harmonies",
+    "original_price": "$32.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/230-Harmonies",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_harm1.jpg"
+  },
+  {
+    "title": "Magic Maze Kids",
+    "original_price": "$32.990",
+    "current_price": "$27.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/93-Magic_Maze_Kids",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_17282839411718036494maze_kids.jpg"
+  },
+  {
+    "title": "Venganza : Expansión del Clan Rosario",
+    "original_price": "$32.990",
+    "current_price": "$28.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/31-",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_veng2.jpg"
+  },
+  {
+    "title": "Aventureros Al Tren: Primer Viaje",
+    "original_price": "$31.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/73-Aventureros_Al_Tren_Primer_Viaje",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1728284073aventureros_kids.jpg"
+  },
+  {
+    "title": "Marrakech",
+    "original_price": "$31.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/91-Marrakech",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_Cover_3D_Marrakech.jpg"
+  },
+  {
+    "title": "The island",
+    "original_price": "$31.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/76-The_island",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1686086950island.jpg"
+  },
+  {
+    "title": "The White Castle",
+    "original_price": "$31.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/198-The_White_Castle",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_whitecastle.png"
+  },
+  {
+    "title": "Coffee Rush",
+    "original_price": "$29.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/224-Coffee_Rush",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_coffee_rush.jpg"
+  },
+  {
+    "title": "Concept",
+    "original_price": "$29.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/221-Concept",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1718035741concept.jpg"
+  },
+  {
+    "title": "Dixit Nueva Edición",
+    "original_price": "$29.990",
+    "current_price": "$25.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/102-",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1200x1200_100_1200x1200_100_1200_dixit.jpg"
+  },
+  {
+    "title": "Dixit: Odyssey",
+    "original_price": "$29.990",
+    "current_price": "$25.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/18-Dixit_Odyssey",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1728283579dixit_odyssey.jpg"
+  },
+  {
+    "title": "Exploding Kittens: Recetas del Desastre",
+    "original_price": "$29.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/104-Exploding_Kittens_Recetas_del_Desastre",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1200x1200_100_1680709178Kittens_receta1.jpg"
+  },
+  {
+    "title": "King of Tokyo",
+    "original_price": "$29.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/180-King_of_Tokyo",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_8436017223897-1200-face3d.jpg"
+  },
+  {
+    "title": "Pesadilla antes de navidad",
+    "original_price": "$26.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/201-Pesadilla_antes_de_navidad",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_nbcc.png"
+  },
+  {
+    "title": "Ruinas Perdidas de Arnak: Líderes De La Expedición",
+    "original_price": "$29.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/162-",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_8436589627437-1200-face3d.jpg"
+  },
+  {
+    "title": "Salton sea",
+    "original_price": "$26.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/237-Salton_sea",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_8436607942610-1200-face3d_1.jpg"
+  },
+  {
+    "title": "Sand",
+    "original_price": "$29.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/235-Sand",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_sand.jpg"
+  },
+  {
+    "title": "The Red Cathedral",
+    "original_price": "$29.990",
+    "current_price": "$26.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/74-The_Red_Cathedral",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1200x1200_100_1718037063cathedral.jpg"
+  },
+  {
+    "title": "Unlock! Kids: Historias de Detective",
+    "original_price": "$29.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/65-Unlock_Kids_Historias_de_Detective",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1200_unlockkids.jpg"
+  },
+  {
+    "title": "What do you meme?",
+    "original_price": "$29.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/202-What_do_you_meme",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_meme.jpg"
+  },
+  {
+    "title": "Magic Maze",
+    "original_price": "$24.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/94-Magic_Maze",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1718036464magic_maze.jpg"
+  },
+  {
+    "title": "Exploding Kittens: Party Pack",
+    "original_price": "$27.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/70-Exploding_Kittens_Party_Pack",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1728283721kittens_party_pack.jpg"
+  },
+  {
+    "title": "MLEM: Space agency",
+    "original_price": "$24.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/225-MLEM_Space_agency",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_mlem.jpg"
+  },
+  {
+    "title": "Amazonía",
+    "original_price": "$24.990",
+    "current_price": "$23.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/43-",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_17282838331718035705amazonia.jpg"
+  },
+  {
+    "title": "Disc Cover",
+    "original_price": "$24.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/62-Disc_Cover",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1696952748disc.jpg"
+  },
+  {
+    "title": "Shadows: Amsterdam",
+    "original_price": "$24.990",
+    "current_price": "$22.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/35-Shadows_Amsterdam",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1718036805shadows.jpg"
+  },
+  {
+    "title": "What do you meme? Edición familiar",
+    "original_price": "$24.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/242-",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_me1.jpg"
+  },
+  {
+    "title": "Wonder Woods",
+    "original_price": "$24.990",
+    "current_price": "$19.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/58-Wonder_Woods",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1728284228woods.jpg"
+  },
+  {
+    "title": "Just One",
+    "original_price": "$22.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/98-Just_One",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1200x1200_100_1680708662Justone_1.jpg"
+  },
+  {
+    "title": "Concept kids: Animales",
+    "original_price": "$21.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/56-Concept_kids_Animales",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1728283867ckids.jpg"
+  },
+  {
+    "title": "Sunny Day",
+    "original_price": "$21.990",
+    "current_price": "$15.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/34-Sunny_Day",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1718036979sunny.jpg"
+  },
+  {
+    "title": "Takenoko Chibis",
+    "original_price": "$21.990",
+    "current_price": "$15.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/78-Takenoko_Chibis",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1728284124Cover_3D_Takenoko_Chibis.jpg"
+  },
+  {
+    "title": "Bitoku: Resutoran",
+    "original_price": "$19.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/197-Bitoku_Resutoran",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_Bitoku1.png"
+  },
+  {
+    "title": "Código Secreto",
+    "original_price": "$19.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/55-",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_172828400116969525961680194839cs1.jpg"
+  },
+  {
+    "title": "Dixit: Anniversary",
+    "original_price": "$19.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/142-Dixit_Anniversary",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1728283601dixann.jpg"
+  },
+  {
+    "title": "Exploding Kittens",
+    "original_price": "$19.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/67-Exploding_Kittens",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1718036176kittens.jpg"
+  },
+  {
+    "title": "Exploding Kittens: NSFW",
+    "original_price": "$19.990",
+    "current_price": "$18.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/69-Exploding_Kittens_NSFW",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_kittens_nfsw.jpg"
+  },
+  {
+    "title": "Mysterium Hidden Signs",
+    "original_price": "$19.990",
+    "current_price": "$15.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/89-Mysterium_Hidden_Signs",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1728284177mysterium-hidden-signs9160.jpg"
+  },
+  {
+    "title": "The Island: Strikes back",
+    "original_price": "$19.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/77-The_Island_Strikes_back",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_17282838081681490222isl.jpg"
+  },
+  {
+    "title": "Zampa Monstruos",
+    "original_price": "$19.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/178-Zampa_Monstruos",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_8436589626386-1200-face3d.jpg"
+  },
+  {
+    "title": "Virus!",
+    "original_price": "$18.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/222-Virus",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1705702228virus_main.jpg"
+  },
+  {
+    "title": "Cortex: Harry Potter",
+    "original_price": "$15.990",
+    "current_price": "$14.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/59-Cortex_Harry_Potter",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_harry.jpg"
+  },
+  {
+    "title": "Pikit",
+    "original_price": "$15.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/231-Pikit",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_pik1.jpg"
+  },
+  {
+    "title": "Virus! 2 Evolution",
+    "original_price": "$15.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/223-Virus_2_Evolution",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_virus2-caja-1.jpg"
+  },
+  {
+    "title": "Cortex Challenge 2: Kids",
+    "original_price": "$14.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/63-Cortex_Challenge_2_Kids",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1680194887CORTEX_K2_1.jpg"
+  },
+  {
+    "title": "Power hungry pets",
+    "original_price": "$14.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/232-Power_hungry_pets",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_pets1.jpg"
+  },
+  {
+    "title": "Trainsilvania",
+    "original_price": "$14.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/199-Trainsilvania",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_trainsilvania.png"
+  },
+  {
+    "title": "Dobble: Marvel",
+    "original_price": "$13.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/36-Dobble_Marvel",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1679617348dobble_marvel1.jpg"
+  },
+  {
+    "title": "Dobble: Pixar",
+    "original_price": "$13.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/37-Dobble_Pixar",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_167961741420210420182844_280.png"
+  },
+  {
+    "title": "Exit: El Laberinto Maldito",
+    "original_price": "$12.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/107-Exit_El_Laberinto_Maldito",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1680712019Exit_laberinto1.jpg"
+  },
+  {
+    "title": "Llama",
+    "original_price": "$12.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/96-Llama",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_llama.jpg"
+  },
+  {
+    "title": "Love Letter",
+    "original_price": "$12.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/95-Love_Letter",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_love-letter-blister.jpg"
+  },
+  {
+    "title": "Marea Alta",
+    "original_price": "$12.990",
+    "current_price": "$11.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/92-Marea_Alta",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_16969531801681490412marea.jpg"
+  },
+  {
+    "title": "Saboteur",
+    "original_price": "$12.990",
+    "current_price": "$11.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/82-Saboteur",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1696953352Cover_Saboteur_3D.jpg"
+  },
+  {
+    "title": "The Mind",
+    "original_price": "$11.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/19-The_Mind",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1704923794prod_mind.jpg"
+  },
+  {
+    "title": "The Mind Extreme",
+    "original_price": "$12.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/75-The_Mind_Extreme",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1200_THEMIND_EXTREME.jpg"
+  },
+  {
+    "title": "Bolsa de Papitas",
+    "original_price": "$9.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/48-Bolsa_de_Papitas",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_papas.jpg"
+  },
+  {
+    "title": "Exploding Kittens: Edición dos jugadores",
+    "original_price": "$9.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/66-",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1810083041827.jpg"
+  },
+  {
+    "title": "Hanabi",
+    "original_price": "$9.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/100-Hanabi",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1680708695hanabi_1.jpg"
+  },
+  {
+    "title": "Marrakesh",
+    "original_price": "$71.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/244-Marrakesh",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_17283424728436607941224-1200-face3d-600x600.jpg"
+  },
+  {
+    "title": "Clank! Catacumbas",
+    "original_price": "$58.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/243-Clank_Catacumbas",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_clank.jpg"
+  },
+  {
+    "title": "Museum",
+    "original_price": "$61.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/168-Museum",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_museum-caja-600x600.jpg"
+  },
+  {
+    "title": "Carcassonne Big Box",
+    "original_price": "$59.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/158-Carcassonne_Big_Box",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_8436017225761-1200-face3d-copy.jpg"
+  },
+  {
+    "title": "Daitoshi",
+    "original_price": "$53.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/249-Daitoshi",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_8436607943990-1200-face3d.jpg"
+  },
+  {
+    "title": "King Of Monster Island",
+    "original_price": "$59.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/226-King_Of_Monster_Island",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_Capa_11.jpg"
+  },
+  {
+    "title": "Agricola",
+    "original_price": "$49.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/41-Agricola",
+    "image": "https://www.jugones.cl/img/cache/140x140_99.868766404199_1680194672agr1.jpg"
+  },
+  {
+    "title": "Rallyman Dirt",
+    "original_price": "$49.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/193-Rallyman_Dirt",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1697104638rallyman1.png"
+  },
+  {
+    "title": "Galaxy Trucker (Segunda Edición)",
+    "original_price": "$45.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/163-",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_8436017223828-1200-face3d.jpg"
+  },
+  {
+    "title": "Alquimistas",
+    "original_price": "$44.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/188-Alquimistas",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_alquimistas-1-600x600.jpg"
+  },
+  {
+    "title": "Guerra del Anillo: El Juego de Cartas",
+    "original_price": "$44.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/186-Guerra_del_Anillo_El_Juego_de_Cartas",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_Guerra_del_anillo_juego_de_cartas.jpg"
+  },
+  {
+    "title": "Las aventuras de Robin Hood",
+    "original_price": "$44.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/182-Las_aventuras_de_Robin_Hood",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_8436589624573-1200-face3d.jpg"
+  },
+  {
+    "title": "Azul",
+    "original_price": "$39.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/44-Azul",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_azul.jpg"
+  },
+  {
+    "title": "Aventureros Al Tren: UK & Pennsylvania",
+    "original_price": "$37.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/68-Aventureros_Al_Tren_UK_Pennsylvania",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1728283677ttr.jpg"
+  },
+  {
+    "title": "Catan: Navegantes",
+    "original_price": "$35.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/54-Catan_Navegantes",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1200_catan_navegantes.jpg"
+  },
+  {
+    "title": "Agricola: Animales en la Granja",
+    "original_price": "$34.990",
+    "current_price": "$29.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/29-Agricola_Animales_en_la_Granja",
+    "image": "https://www.jugones.cl/img/cache/138x140_99.819168173599_1728284034agr_an-1.jpg"
+  },
+  {
+    "title": "Dodo",
+    "original_price": "$34.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/161-Dodo",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_8436589627406-1200-face3d.jpg"
+  },
+  {
+    "title": "Fila Filo",
+    "original_price": "$34.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/190-Fila_Filo",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_fdasfdsa.jpg"
+  },
+  {
+    "title": "Unlock!: Escape Adventures",
+    "original_price": "$31.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/106-Unlock_Escape_Adventures",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1680711417unlock_escape1.jpg"
+  },
+  {
+    "title": "Unlock!: Legendary Adventures",
+    "original_price": "$31.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/105-Unlock_Legendary_Adventures",
+    "image": "https://www.jugones.cl/img/cache/140x140_99.833333333333_1680710882unlock_legendary1.jpg"
+  },
+  {
+    "title": "Paradice",
+    "original_price": "$33.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/183-Paradice",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_Paradice-portada.png"
+  },
+  {
+    "title": "Agricola Bosques y Cenegales",
+    "original_price": "$29.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/42-Agricola_Bosques_y_Cenegales",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1200_agricola_bolsques.jpg"
+  },
+  {
+    "title": "Laberinto Mágico",
+    "original_price": "$32.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/187-",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_Laberinto_1.jpg"
+  },
+  {
+    "title": "7 Wonders: Armada",
+    "original_price": "$31.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/141-7_Wonders_Armada",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_armada.jpg"
+  },
+  {
+    "title": "Catan Junior (Trilingue)",
+    "original_price": "$29.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/204-Catan_Junior_Trilingue",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_catan-jr.png"
+  },
+  {
+    "title": "King of tokyo origins",
+    "original_price": "$26.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/250-King_of_tokyo_origins",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_8436607944928-1200-face3d-600x600.jpg"
+  },
+  {
+    "title": "Get on Board New York & London",
+    "original_price": "$24.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/238-Get_on_Board_New_York_London",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_8436589627000-1200-face3d.jpg"
+  },
+  {
+    "title": "Get On Board: Paris & Roma",
+    "original_price": "$26.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/227-Get_On_Board_Paris_Roma",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1710184319Capa_2.jpg"
+  },
+  {
+    "title": "Catan: Navegantes de Catan Exp. 5-6 Jug.",
+    "original_price": "$24.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/203-Catan_Navegantes_de_Catan_Exp_5_6_Jug",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_catan-nav-5y6.png"
+  },
+  {
+    "title": "Carcassonne (2ed)",
+    "original_price": "$24.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/49-Carcassonne_2ed",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1681489998carcass.jpg"
+  },
+  {
+    "title": "Catan El Duelo",
+    "original_price": "$24.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/245-Catan_El_Duelo",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1728759467CATAN1.png"
+  },
+  {
+    "title": "Catan: Mercaderes y Barbaros Exp. 5-6 Jugadores",
+    "original_price": "$24.990",
+    "current_price": "$19.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/53-Catan_Mercaderes_y_Barbaros_Exp_5_6_Jugadores",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1200_catan_mercaderes_exp.jpg"
+  },
+  {
+    "title": "Hanabi ¡Qué Espectáculo!",
+    "original_price": "$24.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/103-",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1680708724Hanabiespec_1.jpg"
+  },
+  {
+    "title": "Silk",
+    "original_price": "$24.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/196-Silk",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_silk.jpg"
+  },
+  {
+    "title": "Telestrations",
+    "original_price": "$24.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/207-Telestrations",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_telestration.png"
+  },
+  {
+    "title": "Telestrations After Dark",
+    "original_price": "$24.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/208-Telestrations_After_Dark",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_telestration_dark.png"
+  },
+  {
+    "title": "Catan Expansión 5-6 Jugadores",
+    "original_price": "$23.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/51-",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1200_CATAN_EXP.jpg"
+  },
+  {
+    "title": "The white castle Matcha",
+    "original_price": "$19.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/248-The_white_castle_Matcha",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_8436607944348-1200-face3d-copy.jpg"
+  },
+  {
+    "title": "Happy Bunny",
+    "original_price": "$18.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/205-Happy_Bunny",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_happybunny.png"
+  },
+  {
+    "title": "Superfly (Español)",
+    "original_price": "$17.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/206-",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_superfly.png"
+  },
+  {
+    "title": "Dobble Disney princess",
+    "original_price": "$15.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/234-Dobble_Disney_princess",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_prin1.jpg"
+  },
+  {
+    "title": "Cortex Challenge",
+    "original_price": "$14.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/57-Cortex_Challenge",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_cortex_ch.jpg"
+  },
+  {
+    "title": "Exit Kids: Acertijos en la Jungla",
+    "original_price": "$14.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/228-Exit_Kids_Acertijos_en_la_Jungla",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1710184552Capa_5.jpg"
+  },
+  {
+    "title": "Exit: La Desaparición de Sherlock Holmes",
+    "original_price": "$14.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/229-",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_Capa_8.jpg"
+  },
+  {
+    "title": "Mind Bug",
+    "original_price": "$14.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/220-Mind_Bug",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_mindbug.jpg"
+  },
+  {
+    "title": "Dobble",
+    "original_price": "$12.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/191-Dobble",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_dobble.png"
+  },
+  {
+    "title": "Fantasma Blitz",
+    "original_price": "$13.490",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/258-Fantasma_Blitz",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_f1.jpg"
+  },
+  {
+    "title": "Dungeon Raiders",
+    "original_price": "$11.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/247-Dungeon_Raiders",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1728759964dungeon.png"
+  },
+  {
+    "title": "Exit: El Cementerio de las Tinieblas",
+    "original_price": "$12.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/109-Exit_El_Cementerio_de_las_Tinieblas",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1680713188Exit_cementerio1.jpg"
+  },
+  {
+    "title": "Exit: El señor de los anillos",
+    "original_price": "$12.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/181-",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_exit_esdla.jpg"
+  },
+  {
+    "title": "Exit: La Cabaña Abandonada",
+    "original_price": "$12.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/110-",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1680714356Exit_abandonada1.jpg"
+  },
+  {
+    "title": "Exit: Muerte en el Orient Express",
+    "original_price": "$12.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/108-Exit_Muerte_en_el_Orient_Express",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_1680712597Exit_oriente1.jpg"
+  },
+  {
+    "title": "Ramen Fury",
+    "original_price": "$12.990",
+    "current_price": "$9.990",
+    "stock_status": "Oferta",
+    "url": "https://www.jugones.cl/productos/83-Ramen_Fury",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_ram.jpg"
+  },
+  {
+    "title": "Streaking Kittens",
+    "original_price": "$7.990",
+    "current_price": null,
+    "stock_status": null,
+    "url": "https://www.jugones.cl/productos/79-Streaking_Kittens",
+    "image": "https://www.jugones.cl/img/cache/140x140_100_168019572835583800842590_1.jpg"
+  }
+]

@@ -51,34 +51,3 @@ def partition(rows: list) -> tuple[list, dict]:
         else:
             reasons[reason] = reasons.get(reason, 0) + 1
     return clean, reasons
-
-
-def price_outliers(conn, sigma: float = 5.0, limit: int = 50) -> list[dict]:
-    """
-    Products far from their game's mean price -- reported, never auto-dropped.
-
-    A genuine bargain and a data error look identical here, so this is a
-    "look at these" list, not a filter.
-    """
-    sql = """
-        WITH stats AS (
-            SELECT game_id,
-                   AVG(price_eff) AS mean,
-                   COUNT(*)       AS n,
-                   AVG(price_eff * price_eff) - AVG(price_eff) * AVG(price_eff) AS var
-              FROM product
-             WHERE price_eff IS NOT NULL AND price_eff > 0
-             GROUP BY game_id
-            HAVING COUNT(*) >= 3
-        )
-        SELECT p.id AS product_id, p.store, p.title, p.url, p.price_eff,
-               s.mean, s.n,
-               ROUND(ABS(p.price_eff - s.mean) / NULLIF(SQRT(s.var), 0), 1) AS sigmas
-          FROM product p
-          JOIN stats s ON s.game_id = p.game_id
-         WHERE s.var > 0
-           AND ABS(p.price_eff - s.mean) / SQRT(s.var) > ?
-         ORDER BY sigmas DESC
-         LIMIT ?
-    """
-    return [dict(r) for r in conn.execute(sql, (float(sigma), int(limit)))]

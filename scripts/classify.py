@@ -30,13 +30,13 @@ KIND_ORDER = (KIND_GAME, KIND_EXPANSION, KIND_TCG, KIND_PUZZLE, KIND_ACCESSORY)
 # bare \bdice\b is not evidence of an accessory. These phrases are.
 _ACCESSORY = re.compile(
     r"\b("
-    r"fundas?|sleeves?|protectores?\s+de\s+cartas?"
+    r"fundas?|sleeves?|protector(?:es)?\b(?!\s+del\b)"
     r"|dice\s+(?:set|bag|tower|tray|cup)|set\s+de\s+dados|bolsa\s+de\s+dados"
     r"|torre\s+de\s+dados|dados\s+poli[eé]dricos?|d\d+\s+dice|dados?\s+d\d+"
     r"|playmat|play\s?mat|tapete|alfombrilla|mousepad|mouse\s?pad"
     r"|deck\s?box|caja\s+de\s+mazo|porta\s?mazos?|organizador(?:es)?|insertos?"
     r"|separadores?|dividers?|binder|carpeta\s+de\s+cartas"
-    r"|toploader|top\s?loader"
+    r"|toploader|top\s?loader|game\s?mat|deck\s+holder|portfolio|portafolio|\d+-pocket|\d+\s+bolsillos|mini\s+album"
     r"|pinturas?|pinceles?|aer[oó]grafo|imprimaci[oó]n"
     r"|p[oó]ster|lienzo|llavero|polera|pol[eé]r[oó]n|taza\b|mochila"
     r"|funko|figura\s+coleccionable|plush\s+toy|peluche\s+de\b"
@@ -57,6 +57,28 @@ _TCG = re.compile(
     r"|(?:magic\s+the\s+gathering|\bmtg\b|lorcana|yu-?gi-?oh|pok[eé]mon|digimon"
     r"|flesh\s+and\s+blood|one\s+piece\s+card|vanguard)"
     r"\s+(?:booster|sobre|display|deck|mazo|cartas?|tcg|single)"
+    r")\b",
+    re.IGNORECASE,
+)
+
+# Card-game lines sold under their own name: the name alone is TCG evidence.
+_TCG_LINE = re.compile(
+    r"\b("
+    r"yu-?gi-?oh|lorcana|star\s+wars:?\s+unlimited|magic\s*:?\s+the\s+gathering|mtg"
+    r"|flesh\s+and\s+blood|riftbound|altered|union\s+arena|mitos\s+y\s+leyendas"
+    r"|weiss\s+schwarz|cardfight|pok[eé]mon\s+tcg|one\s+piece\s+card|digimon\s+card"
+    r"|fusion\s+world"
+    r")\b",
+    re.IGNORECASE,
+)
+
+# Brands that also name board games ("Monopoly Pokémon", "Magic Maze", "Dobble
+# One Piece"): TCG only next to a card-product form.
+_TCG_BRAND = re.compile(r"\b(pok[eé]mon|magic|one\s+piece|dragon\s+ball|digimon)\b", re.IGNORECASE)
+_TCG_FORM = re.compile(
+    r"\b("
+    r"elite\s+trainer|etb|tin|lata|blister|bundle|collection|colecci[oó]n|baraja"
+    r"|decks?|mazos?|starter|commander|sobres?|kit\s+de\s+inicio|box|caja|packs?|tcg|singles?|battle|trainer|premium|stadium|calendar|v|vmax|vstar"
     r")\b",
     re.IGNORECASE,
 )
@@ -88,11 +110,16 @@ _GAME_NAME_GUARD = re.compile(
     re.IGNORECASE,
 )
 
+def _is_tcg(title: str) -> bool:
+    return bool(_TCG.search(title) or _TCG_LINE.search(title)
+                or (_TCG_BRAND.search(title) and _TCG_FORM.search(title)))
+
+
 _RULES = (
-    (_ACCESSORY, KIND_ACCESSORY),
-    (_TCG, KIND_TCG),
-    (_PUZZLE, KIND_PUZZLE),
-    (_EXPANSION, KIND_EXPANSION),
+    (_ACCESSORY.search, KIND_ACCESSORY),
+    (_is_tcg, KIND_TCG),
+    (_PUZZLE.search, KIND_PUZZLE),
+    (_EXPANSION.search, KIND_EXPANSION),
 )
 
 
@@ -102,8 +129,8 @@ def classify(title: str) -> str:
         return KIND_GAME
     if _GAME_NAME_GUARD.search(title):
         return KIND_GAME
-    for pattern, kind in _RULES:
-        if pattern.search(title):
+    for matches, kind in _RULES:
+        if matches(title):
             return kind
     return KIND_GAME
 

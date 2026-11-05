@@ -21,6 +21,13 @@ from tablero.classify import (KIND_ACCESSORY, KIND_EXPANSION, KIND_GAME, KIND_PU
     "Monopoly Pokémon",                   # brand alone is not TCG evidence
     "Dobble Blister",                     # packaging word, not a TCG product
     "Fábulas de Peluche",
+    "Magic Maze Kids",                    # TCG brands that also name board games
+    "Dobble One Piece",
+    "Adivina Quién? - Pokémon",
+    "Uno Dragon Ball Original",
+    "ISS Vanguard: Caja de Inicio",
+    "Combat Commander: Europa",
+    "Earthborne Rangers - Protectores del Valle",  # an expansion's name, not sleeves
 ])
 def test_games_stay_games(title):
     assert classify(title) == KIND_GAME
@@ -32,6 +39,13 @@ def test_games_stay_games(title):
     "Boardgame Sleeves - European Sized",
     "Playmat Scythe",
     "Deck Box Ultra Pro",
+    "GG PROTECTOR – STANDARD AMERICAN PRIME (VERDE) – 59X91 (50 UNIDADES)",
+    "DRAXOS Protectores Tarot 70x120mm",
+    "Yu-Gi-OH! Slifer Obelisk & Ra Game Mat",
+    "GG Altered 18-Pocket Album - Mana Orb",
+    "Album Pokémon 9 Bolsillos Pikachu",
+    "Pokémon Resplandor Astral Mini Album Español",
+    "Deck Holder Star Wars Unlimited Soft Crate – Rey y Kylo Ren",
 ])
 def test_accessories(title):
     assert classify(title) == KIND_ACCESSORY
@@ -49,6 +63,16 @@ def test_expansions(title):
 @pytest.mark.parametrize("title", [
     "Magic The Gathering Play Booster",
     "Pokemon Booster Display",
+    "Yu-Gi-Oh! Legendary Duelists: Season 3",     # a card-game line: the name is enough
+    "Star Wars Unlimited – Homeworlds ..",
+    "Altered: Kickstarter...",
+    "Pokémon Crown Zenith Tin Zapdos Inglés",       # ambiguous brand plus a card-product form
+    "Pokémon Silver Tempest Elite Trainer Box Inglés",
+    "Magic Dominaria United – Mazo de Commander",
+    "Kit De Inicio Magic Arena 2022",
+    "Star Wars: Unlimited – Qui-Gon Jinn Sample Deck - Legends of the Force (English)",
+    "Pokémon Celebrations Dark Sylveon V",
+    "Pokémon Resplandor Astral Build and Battle Stadium Español",
 ])
 def test_tcg(title):
     assert classify(title) == KIND_TCG

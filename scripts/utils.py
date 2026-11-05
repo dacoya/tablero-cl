@@ -19,16 +19,73 @@ import unicodedata
 
 # Language tags appended by stores: "en español", "(en inglés)", "castellano", etc.
 _LANG_TAG = re.compile(
-    r'[\(\[]?\b(en\s+)?(espa[nñ]ol|ingl[eé]s|ingles|english|castellano)\b[\)\]]?',
+    r'[\(\[]?\b(en\s+)?(espa[nñ]ol|ingl[eé]s|ingles|english|castellano'
+    r'|multi-?lengua(je)?|multi-?language|multil[ií]ng[uü]e|tril[ií]ng[uü]e|bil[ií]ng[uü]e)\b[\)\]]?'
+    r'|[\(\[]\s*(eng|esp|ing)\s*[\)\]]',
     re.IGNORECASE,
 )
 
 # Edition markers: "edición deluxe", "2da edición", "kickstarter edition", etc.
+# Only the word goes: "deluxe" or "aniversario" after it names a different
+# product and stays in the key.
 _EDITION_TAG = re.compile(
-    r'\b\d+[aª]?\s*(edici[oó]n|edition)\b|\b(edici[oó]n|edition)\b',
+    r'\b(\d+[aª]?|primera|segunda|tercera|cuarta|second|third)\s*(edici[oó]n|edition)\b'
+    r'|\b(edici[oó]n|edition)\b',
     re.IGNORECASE,
 )
 
+# Edition ordinals left standing on their own: "Carcassonne 2da", "(2da ed.)",
+# "Catan (4ta Edición)" once the word is gone. English "7th"/"15th" is left
+# alone -- it names games ("7th Continent") -- and so is "15º Aniversario".
+_EDITION_ORDINAL = re.compile(
+    r'\b\d+\s*(da|ra|era|ta|va|na|ed|ª|º)\b(?!\s*(aniversario|anniversary|a[nñ]os))|\bed\b\.?',
+    re.IGNORECASE,
+)
+
+# A revision of the same game: "Splendor (Nueva Versión)", "Dixit Nueva",
+# "LCG (Ed. Revisada)". "nueva" counts only at the end, where it qualifies the
+# whole title rather than naming something ("Nueva York").
+_REVISION_TAG = re.compile(
+    r'\bnuev[ao](\s+versi[oó]n)?\b(?=[\s\)\]]*$)|\brevisad[ao]\b|\breedici[oó]n\b',
+    re.IGNORECASE,
+)
+
+# Publisher in brackets: "Catan - Base (Devir)". Only known names, because a
+# bracket just as often carries what makes the product different
+# ("(ampliación 5-6 jugadores)", "(+ El Viejo Oeste)").
+_PUBLISHER_TAG = re.compile(
+    r'[\(\[]\s*(devir|fractal(\s+juegos)?|eggertspiele|next\s+move|asmodee|maldito(\s+games)?'
+    r'|ludonova|zacatrus|sd\s+games|gen\s?x(\s+games)?|arrakis(\s+games)?|tranjis(\s+games)?'
+    r'|haba|kosmos|ravensburger|mercurio|2\s?tomatoes|gdm(\s+games)?|cmon|bgl'
+    r'|edge(\s+entertainment)?|hasbro|mattel)\s*[\)\]]',
+    re.IGNORECASE,
+)
+
+# "Básico" and a bare "juego" name the plain game: "Catan Básico", "Catan - El
+# Juego". "Juego de ..." is kept -- "Juego de Cartas" is a different product.
+_PLAIN_GAME = re.compile(
+    r'\bb[aá]sico\b|\bjuego\b(?!\s+de\b)',
+    re.IGNORECASE,
+)
+
+# Words that carry no identity once titles are compared token by token:
+# "La Polilla Tramposa" vs "Polilla Tramposa", "Clank Catacumbas" vs "Clank en
+# las Catacumbas".
+_STOPWORDS = frozenset({'el', 'la', 'los', 'las', 'lo', 'de', 'del', 'y', 'e', 'en', 'the', 'of'})
+
+# A trailing "expansión" once the title already names something after the
+# game ("Heat Leyendas Expansión" = "Heat Leyendas"). Not on two-word keys, or
+# "Catan Expansión" would collapse into "Catan".
+_TRAILING_EXPANSION = frozenset({'expansion', 'expansiones'})
+
+
+# Sales-status words stores prepend or append: "PREVENTA Clank", "Clank (Pre-Order)".
+# They say nothing about which product it is, and left in they split one game
+# into a "preventa" row and a normal row.
+_PREORDER_TAG = re.compile(
+    r'\bpre[\s\-]?(venta|order|orden)\b|\breservas?\b',
+    re.IGNORECASE,
+)
 
 # "Base game" qualifiers. These name the plain game, so "Clank", "Clank Base"
 # and "Clank (juego base)" are one product listed three ways -- searching Clank
@@ -57,11 +114,13 @@ def normalize(text: str) -> str:
       1. Lowercase
       2. Strip language tags   ("en español", "en inglés", etc.)
       3. Strip edition markers ("edición deluxe", "2da edición", etc.)
+         and sales status ("preventa", "reserva")
       4. Strip qualifiers that do not change which product it is
-         ("Clank Base" -> "clank"; "Clank Expansión: X" -> "clank x")
+         ("Clank Base" -> "clank"; "Clank Expansión: X" -> "clank x";
+          "Catan Básico (Devir)" -> "catan"; "Dixit 2da" -> "dixit")
       5. Remove accents        (é→e, ñ→n, ü→u, etc.)
       6. Replace punctuation   with space (!, :, -, (, ), /, etc.)
-      7. Collapse whitespace
+      7. Drop stopwords and a trailing "expansión", unless nothing is left
 
     Note this only affects the MATCH key. The title shown on screen keeps
     whatever the store wrote.
@@ -72,17 +131,28 @@ def normalize(text: str) -> str:
     text = text.lower()
     text = _LANG_TAG.sub(' ', text)
     text = _EDITION_TAG.sub(' ', text)
+    text = _EDITION_ORDINAL.sub(' ', text)
+    text = _REVISION_TAG.sub(' ', text)
+    text = _PREORDER_TAG.sub(' ', text)
+    text = _PUBLISHER_TAG.sub(' ', text)
     text = _EXPANSION_QUALIFIER.sub(' ', text)
     text = _BASE_QUALIFIER.sub(' ', text.strip())
+    text = _PLAIN_GAME.sub(' ', text)
 
     # NFKD decomposition separates base letters from combining marks (accents).
     text = unicodedata.normalize('NFKD', text)
     text = ''.join(ch for ch in text if not unicodedata.combining(ch))
 
     text = re.sub(r'[^\w\s]', ' ', text)
-    text = re.sub(r'\s+', ' ', text).strip()
+    return _drop_filler(text.split())
 
-    return text
+
+def _drop_filler(tokens: list[str]) -> str:
+    """Join tokens without stopwords or a trailing "expansión"; keep all if that empties it."""
+    kept = [t for t in tokens if t not in _STOPWORDS] or tokens
+    if len(kept) >= 3 and kept[-1] in _TRAILING_EXPANSION:
+        kept = kept[:-1]
+    return ' '.join(kept)
 
 
 # ---------------------------------------------------------------------------
@@ -166,6 +236,27 @@ _ARTICLE_PREFIX = re.compile(r'\b(?:el|la|los|las)\s*$', re.IGNORECASE)
 _SUBTITLE_TAIL  = re.compile(r'\b(?:el|la|los|las)\s+juego\s+de\s*$', re.IGNORECASE)
 
 
+# Marketing blurb after a spaced dash ("La Corte del Zar – de cartas, intriga y
+# deducción"). Cut it with everything after it, publisher parens included.
+#
+# Narrow on purpose, for the same reason "juego de cartas" is not noise above:
+# a bare "- Juego de Cartas", "- El Juego de Cartas" or "- Juego de Cartas 2da
+# Edición" names a different product and must survive. Only tails that read as
+# a description match: lowercase "de <word>", a leading "deducción", "un/el
+# <adj> juego de ...", or "Juego de <Cartas|Dados|..>" followed by a qualifier.
+_DESCRIPTION_TAIL = re.compile(
+    r'\s+[–—-]\s+(?:'
+    r'(?-i:de)\s+\w+'
+    r'|deducci[oó]n\b'
+    r'|(?:el|un|una)\s+\w+\s+juego\s+de\b'
+    r'|juegos?\s+de\s+(?:cartas|dados|tablero|mesa)\s+(?:'
+    r'de\s+(?:deducci[oó]n|faroleo|rapidez|habilidad|intriga|humor|cultura|historia|combate|aventura|estrategia|roles|palabras)'
+    r'|infantil|familiar|cooperativo|r[aá]pido|estrat[eé]gico)\b'
+    r').*$',
+    re.IGNORECASE,
+)
+
+
 def _strip_unless_subtitle(m: re.Match) -> str:
     """Pass-1 callback: keep the noise phrase when introduced by a definite article,
     UNLESS the phrase is 'Juego de Mesa'/'Board Game' — those are always redundant
@@ -186,6 +277,38 @@ def _keep_if_subtitle_tail(m: re.Match) -> str:
     return m.group(0) if _SUBTITLE_TAIL.search(m.string[:m.start()]) else ''
 
 
+# Lowercase (or ")") running straight into an uppercase letter: where some
+# stores glue a second copy of the name or a tag onto the title
+# ("Wingspan Juego BaseWingspan", "Heat - LeyendasExpansión").
+_GLUE = re.compile(r'(?<=[a-záéíóúñ)])(?=[A-ZÁÉÍÓÚÑ])')
+_GLUED_TAG = re.compile(r'(?<=[a-záéíóúñ])(?=(Expansi[oó]n|Producto)\b)')
+_PRODUCT_LANG = re.compile(r'\s*\bproducto\s+en\s+\w+', re.IGNORECASE)
+
+
+def _words(text: str) -> list[str]:
+    return re.findall(r'\w+', text.lower())
+
+
+def _unglue(text: str) -> str:
+    """
+    Undo glued titles: split a glued tag off, drop "Producto en Inglés", and
+    cut a repeated copy of the name ("Monopoly: Cartoon NetworkCartoon Network").
+
+    A tail counts as a copy when it starts with the title's first word or
+    repeats its last words. The head must be two words or more, so camel-case
+    names ("KareKare", "BrainBox", "DoDeLiDo") are never cut.
+    """
+    text = _GLUED_TAG.sub(' ', text)
+    text = _PRODUCT_LANG.sub('', text)
+    for m in _GLUE.finditer(text):
+        head, tail = _words(text[:m.start()]), _words(text[m.start():])
+        if len(head) < 2 or not tail or len(tail[0]) < 4:
+            continue
+        if tail[0] == head[0] or head[-len(tail):] == tail:
+            return text[:m.start()]
+    return text
+
+
 def clean_title(text: str) -> str:
     """
     Remove generic category noise from a store title for display.
@@ -201,7 +324,10 @@ def clean_title(text: str) -> str:
     """
     if not isinstance(text, str):
         return text
-    cleaned = _TITLE_NOISE.sub(_strip_unless_subtitle, text)
+    cleaned = _TITLE_NOISE.sub(_strip_unless_subtitle, _unglue(text))
+    # After pass 1: "X – Juego de mesa de cartas, intriga" only exposes its blurb once
+    # "Juego de mesa" is gone.
+    cleaned = _DESCRIPTION_TAIL.sub('', cleaned)
     cleaned = _TITLE_NOISE_CONCAT.sub('', cleaned)
     cleaned = _TRAILING_NOISE.sub(_keep_if_subtitle_tail, cleaned)
     cleaned = re.sub(r'\s{2,}', ' ', cleaned)
