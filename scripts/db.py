@@ -83,14 +83,12 @@ def connect(path=None, read_only: bool = False,
     happily creates an empty database on a write connection, which meant
     `tablero watch add` on a fresh install produced a 0-byte file and then died
     with "no such table: game" -- so creation is now something a caller has to
-    ask for: `tablero update` and the test-time `migrate`.
+    ask for: `tablero update` and the tests.
 
     An existing database from an older schema is brought up to date here, on
-    open, when in-place steps exist for it. Until v5 that only happened inside
-    init_db, which only `migrate` calls -- so after a schema bump the very next
-    `tablero update` would have died on a missing column. `upgrade_schema=False`
-    is for the one reader that must see an old file as it is: the rebuild,
-    which exists precisely for schemas that cannot be upgraded in place.
+    open, when in-place steps exist for it, so after a schema bump the very
+    next `tablero update` does not die on a missing column. `upgrade_schema=False`
+    is for a reader that must see an old file as it is.
     """
     target = Path(path) if path is not None else DB_PATH
 
@@ -166,8 +164,8 @@ def upgrade(conn: sqlite3.Connection, existing: int) -> None:
     if missing:
         raise SchemaVersionError(
             f"Database at schema v{existing}, code expects v{SCHEMA_VERSION}, and "
-            f"no in-place step exists for v{missing[0]}. Rebuild with "
-            f"`tablero migrate --rebuild`."
+            f"no in-place step exists for v{missing[0]}. Delete it and run "
+            f"`tablero update` to scrape a fresh one."
         )
 
     for version in range(existing + 1, SCHEMA_VERSION + 1):

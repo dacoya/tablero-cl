@@ -74,8 +74,6 @@ class Db(private val file: File) {
     suspend fun <T> write(block: (SQLiteConnection) -> T): T =
         withContext(thread) { block(open()) }.also { _version.value++ }
 
-    fun <T> readBlocking(block: (SQLiteConnection) -> T): T = runBlocking { read(block) }
-
     /** For the update worker, which is already on a background thread. */
     fun <T> writeBlocking(block: (SQLiteConnection) -> T): T = runBlocking { write(block) }
 

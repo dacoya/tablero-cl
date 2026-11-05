@@ -9,25 +9,12 @@ instead, which makes the answer independent of how many scrapes have run.
 Cursors are named so several consumers can each keep their own position (the
 terminal and the phone should not clobber each other's "last seen").
 """
-import time
-
 DEFAULT_CURSOR = "last_reviewed"
 
 
 def get_cursor(conn, name: str = DEFAULT_CURSOR) -> int | None:
     row = conn.execute("SELECT ts FROM cursor WHERE name = ?", (name,)).fetchone()
     return row[0] if row else None
-
-
-def set_cursor(conn, ts: int | None = None, name: str = DEFAULT_CURSOR) -> int:
-    ts = int(ts if ts is not None else time.time())
-    conn.execute(
-        "INSERT INTO cursor(name, ts) VALUES (?,?) "
-        "ON CONFLICT(name) DO UPDATE SET ts=excluded.ts",
-        (name, ts),
-    )
-    conn.commit()
-    return ts
 
 
 def _limit(limit) -> int:

@@ -4,11 +4,9 @@ Scrape execution: walk a site's pages and collect its products.
 Extracted from the former main.py, which mixed this with the terminal modes it
 no longer owns. Returns records; persistence is ingest.py's job.
 """
-import csv
 import random
 import time
 
-from .paths import resolve_output
 from .scrape import build_url, fetch_html
 
 # Politeness delay between page requests. Jitter avoids a robotic cadence, which
@@ -26,8 +24,7 @@ def scrape_site(site, dry_run: bool = False) -> list[dict]:
     reserved one row per registered store -- 48 of them for 5 concurrent
     workers -- and the per-page postfixes were diagnostics nothing read.
 
-    Writes a per-store CSV as a side artifact and returns the deduplicated
-    records.
+    Returns the deduplicated records.
     """
     products: list = []
     previous_titles: list = []
@@ -75,15 +72,5 @@ def scrape_site(site, dry_run: bool = False) -> list[dict]:
     unique: dict = {}
     for item in products:
         unique.setdefault(item["url"], item)
-    # Sorted so a store reshuffling its pages between runs does not rewrite the
-    # whole CSV as a diff of moved lines.
-    rows = sorted(unique.values(), key=lambda r: r["url"])
-
-    columns = list(dict.fromkeys(key for row in rows for key in row))
-    out_path = resolve_output(site["output"])
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    with out_path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=columns)
-        writer.writeheader()
-        writer.writerows(rows)
-    return rows
+    # Sorted so a store reshuffling its pages between runs ingests in the same order.
+    return sorted(unique.values(), key=lambda r: r["url"])

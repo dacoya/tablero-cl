@@ -137,25 +137,6 @@ def test_env_override_beats_both(monkeypatch, tmp_path):
     assert paths.default_data_dir() == tmp_path.resolve()
 
 
-def test_resolve_output_keeps_absolute_paths():
-    from tablero import paths
-    absolute = paths.Path("/tmp/somewhere/x.csv")
-    assert paths.resolve_output(absolute) == absolute
-
-
-def test_resolve_output_lands_beside_the_database_when_installed(monkeypatch, tmp_path):
-    """An installed copy must not write scraped CSVs into site-packages."""
-    from tablero import paths
-    fake_site_packages = tmp_path / "site-packages"
-    (fake_site_packages / "tablero").mkdir(parents=True)
-    monkeypatch.setattr(paths, "REPO_ROOT", fake_site_packages)
-    monkeypatch.setattr(paths, "PKG_DIR", fake_site_packages / "tablero")
-    monkeypatch.setattr(paths, "DATA_DIR", tmp_path / "userdata")
-
-    assert paths.resolve_output("../data/tienda_jdm.csv") == \
-        tmp_path / "userdata" / "tienda_jdm.csv"
-
-
 def test_update_reports_progress_for_every_store_including_failures(monkeypatch, db_conn):
     """
     A store that fails still has to advance the counter.
@@ -165,7 +146,7 @@ def test_update_reports_progress_for_every_store_including_failures(monkeypatch,
     """
     from tablero import runner, update as update_mod
 
-    targets = [{"name": n, "output": f"../data/{n}.csv"}
+    targets = [{"name": n}
                for n in ("tiendaA", "tiendaB", "tiendaC")]
 
     def fake_scrape(site, dry_run=False):

@@ -12,13 +12,10 @@ dist/
 # OS
 .DS_Store
 
-# Everything under data/ is scraped output, not source: per-store CSVs, the
-# SQLite database and the legacy JSON. It is 22 MB that changes on every run
-# and is reproducible by scraping, so the repository carries code only.
-#
-# Consequence worth knowing: a fresh clone has no catalog. Run
-# `tablero update` to scrape one, then `tablero migrate` to build the
-# database. Your own data lives on your machine and in your backups.
+# Everything under data/ is local output, not source: the SQLite database
+# and the BGG CSV. It changes on every run and is reproducible by scraping,
+# so the repository carries code only. A fresh clone has no catalog: run
+# `tablero update` to scrape one.
 /data/
 
 # pytest

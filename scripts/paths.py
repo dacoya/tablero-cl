@@ -65,20 +65,3 @@ def default_data_dir() -> Path:
 
 
 DATA_DIR = default_data_dir()
-
-
-def resolve_output(output) -> Path:
-    """
-    Resolve a ``site['output']`` value to an absolute path.
-
-    Site outputs are declared relative to ``scripts/`` (e.g. ``'../data/foo.csv'``),
-    which only lines up with DATA_DIR in a source checkout. Everywhere else the
-    filename is taken and placed in DATA_DIR, so an installed copy writes its
-    CSVs alongside the database rather than into site-packages.
-    """
-    p = Path(output)
-    if p.is_absolute():
-        return p
-    if _is_source_checkout(REPO_ROOT):
-        return (PKG_DIR / p).resolve()
-    return DATA_DIR / p.name

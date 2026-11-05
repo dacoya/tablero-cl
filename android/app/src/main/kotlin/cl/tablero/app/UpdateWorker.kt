@@ -102,9 +102,6 @@ class UpdateWorker(context: Context, params: WorkerParameters) : CoroutineWorker
     companion object {
         const val WORK_NAME = "update"
         const val KEY_SKIPPED = "skipped"
-
-        /** Both kinds of update, for whoever shows progress or cancels. */
-        val ALL_WORK = listOf(WORK_NAME, Schedule.NAME)
         const val KEY_STORES = "stores"
         const val KEY_DONE = "done"
         const val KEY_TOTAL = "total"

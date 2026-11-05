@@ -286,7 +286,6 @@ def mi_tienda(html):
     'base_url':   'https://www.mitienda.cl/juegos-de-mesa',
     'parser':     mi_tienda,
     'pagination': 'woo',        # 'shopify' | 'woo' | 'page_param' | 'p' | 'product-page' | 'gatoarcano' | 'calabozo'
-    'output':     '../data/mitienda_jdm.csv',
 },
 ```
 

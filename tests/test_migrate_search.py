@@ -57,16 +57,6 @@ def test_expansion_is_its_own_game(db_conn):
     assert kinds["Catan Expansión Navegantes"] == "expansion"
 
 
-def test_history_mapped_to_product_id(db_conn):
-    """The unambiguous series carries over; the orphan is dropped, not guessed."""
-    n = db_conn.execute(
-        "SELECT COUNT(*) FROM price_obs o JOIN product p ON p.id=o.product_id "
-        "WHERE p.store='tiendaB' AND p.norm='catan'"
-    ).fetchone()[0]
-    assert n == 2
-    assert db_conn.execute("SELECT COUNT(*) FROM price_obs").fetchone()[0] == 2
-
-
 # ---------------------------------------------------------------------------
 # Features
 # ---------------------------------------------------------------------------
@@ -87,8 +77,7 @@ def test_watchlist_rejects_unknown_game(db_conn):
 
 def test_price_drop_since_cursor(db_conn):
     """Catan at tiendaB fell 52,990 -> 45,990 between the two observations."""
-    changes.set_cursor(db_conn, ts=1_700_050_000)
-    drops = changes.since_last_review(db_conn, min_pct=1.0, kinds=["baja"])
+    drops = changes.since_last_review(db_conn, since=1_700_050_000, min_pct=1.0, kinds=["baja"])
     assert len(drops) == 1
     assert drops[0]["old_price"] == 52990.0
     assert drops[0]["new_price"] == 45990.0

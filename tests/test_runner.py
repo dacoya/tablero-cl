@@ -1,5 +1,4 @@
-"""The CSV that scrape_site writes: deduplicated by url, ordered, stdlib-only."""
-import csv
+"""What scrape_site returns: deduplicated by url, ordered."""
 
 from tablero import runner
 
@@ -12,7 +11,6 @@ def _site(tmp_path, pages):
         "base_url": "https://example.test/x",
         "pagination": "page_param",
         "parser": lambda html: next(served, []),
-        "output": str(tmp_path / "fake_jdm.csv"),
     }
 
 
@@ -39,21 +37,9 @@ def test_dedupes_on_url_not_title(tmp_path, monkeypatch):
     ], "sorted by url, one row per url, distinct titles kept"
 
 
-def test_written_csv_matches_returned_rows(tmp_path, monkeypatch):
-    monkeypatch.setattr(runner, "fetch_html", lambda url: "<html/>")
-    page = [_row("B", "https://example.test/b"), _row("A", "https://example.test/a")]
-    rows = runner.scrape_site(_site(tmp_path, [page]), dry_run=True)
-
-    written = list(csv.DictReader((tmp_path / "fake_jdm.csv").open(encoding="utf-8")))
-    assert written == rows
-    assert list(written[0]) == ["title", "original_price", "current_price",
-                                "stock_status", "url"]
-
-
-def test_empty_scrape_returns_empty_and_writes_nothing(tmp_path, monkeypatch):
+def test_empty_scrape_returns_empty(tmp_path, monkeypatch):
     monkeypatch.setattr(runner, "fetch_html", lambda url: "<html/>")
     assert runner.scrape_site(_site(tmp_path, [[]]), dry_run=True) == []
-    assert not (tmp_path / "fake_jdm.csv").exists()
 
 
 def test_records_without_a_url_are_dropped_not_fatal(monkeypatch, tmp_path):
@@ -75,10 +61,9 @@ def test_records_without_a_url_are_dropped_not_fatal(monkeypatch, tmp_path):
          "original_price": None, "current_price": None, "stock_status": None},
     ]
     monkeypatch.setattr(runner, "fetch_html", lambda url: "<html/>")
-    monkeypatch.setattr(runner, "resolve_output", lambda out: tmp_path / "x.csv")
 
     site = {"name": "x", "base_url": "https://x.cl", "pagination": "page_param",
-            "output": "x.csv", "parser": lambda html: page}
+            "parser": lambda html: page}
     rows = runner.scrape_site(site, dry_run=True)
 
     assert [r["title"] for r in rows] == ["Catan"]
@@ -89,9 +74,7 @@ def test_a_page_of_only_urlless_records_is_an_empty_scrape(monkeypatch, tmp_path
     from tablero import runner
 
     monkeypatch.setattr(runner, "fetch_html", lambda url: "<html/>")
-    monkeypatch.setattr(runner, "resolve_output", lambda out: tmp_path / "x.csv")
     site = {"name": "x", "base_url": "https://x.cl", "pagination": "page_param",
-            "output": "x.csv",
             "parser": lambda html: [{"title": "Banner", "url": None}]}
 
     assert runner.scrape_site(site, dry_run=True) == []
