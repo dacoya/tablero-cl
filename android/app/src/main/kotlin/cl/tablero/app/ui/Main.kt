@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Settings
@@ -49,8 +50,9 @@ private data class Tab(val key: String, val label: String, val icon: ImageVector
 
 private val TABS = listOf(
     Tab("inicio", "Inicio", Icons.Filled.Home),
-    Tab("catalogo", "Catálogo", Icons.Filled.ShoppingCart),
+    Tab("catalogo", "Catálogo", Icons.AutoMirrored.Filled.List),
     Tab("radar", "Mi radar", Icons.Filled.Notifications),
+    Tab("carrito", "Carrito", Icons.Filled.ShoppingCart),
     Tab("ajustes", "Ajustes", Icons.Filled.Settings),
 )
 
@@ -79,7 +81,7 @@ class MainActivity : ComponentActivity() {
 }
 
 /**
- * Four tabs plus pushed screens: the stores and one of them, under Ajustes, and
+ * Five tabs plus pushed screens: the stores and one of them, under Ajustes, and
  * games over any tab, a stack since a game links to its expansions and back.
  * Navigation is a few pieces of state rather than a navigation library.
  */
@@ -142,6 +144,7 @@ private fun App(app: TableroApp, requestedTab: MutableStateFlow<String?>) {
                 tab == "inicio" -> HomeScreen(db, app.prefs, open, show = { browse = it; tab = "catalogo" }, modifier)
                 tab == "catalogo" -> CatalogScreen(db, browse, change = { browse = it; app.prefs.catalog = it.toJson() }, open, modifier)
                 tab == "radar" -> RadarScreen(db, open, modifier)
+                tab == "carrito" -> CartScreen(db, open, notify, modifier)
                 store != null -> StoreScreen(db, store!!, open, notify, onBack = { store = null }, modifier)
                 showStores -> StoresScreen(db, onBack = { showStores = false }, onStore = { store = it }, modifier)
                 else -> SettingsScreen(app, notify, onStores = { showStores = true }, modifier)

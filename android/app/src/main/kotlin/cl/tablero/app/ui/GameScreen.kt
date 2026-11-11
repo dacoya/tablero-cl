@@ -13,6 +13,11 @@ import cl.tablero.app.ago
 import cl.tablero.core.data.Freshness
 import cl.tablero.core.data.gameBase
 import cl.tablero.core.data.gameExpansions
+import cl.tablero.core.data.cartAdd
+import cl.tablero.core.data.cartPick
+import cl.tablero.core.data.cartPin
+import cl.tablero.core.data.cartRemove
+import cl.tablero.core.data.inCart
 import cl.tablero.core.data.isOwned
 import cl.tablero.core.data.offersByTotal
 import cl.tablero.core.data.ownedAdd
@@ -26,6 +31,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.outlined.ShoppingCart
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedCard
@@ -79,7 +87,8 @@ import cl.tablero.core.data.withCheapest
 import kotlinx.coroutines.launch
 
 private class Detail(
-    val offers: List<SqlRow>, val trends: List<SqlRow>, val watch: SqlRow?, val bgg: SqlRow?, val owned: Boolean,
+    val offers: List<SqlRow>, val trends: List<SqlRow>, val watch: SqlRow?, val bgg: SqlRow?, val owned: Boolean, val inCart: Boolean,
+    val cartPin: Long?,
     val fresh: Map<String, Freshness>, val expansions: List<SqlRow>, val base: SqlRow?,
 )
 
@@ -95,7 +104,7 @@ fun GameScreen(db: Db, game: GameRef, notify: (String) -> Unit, open: (GameRef) 
     val detail by produceState<Detail?>(null, game.id, version) {
         value = db.read {
             Detail(withCheapest(it, offersByTotal(gamePrices(it, game.id), shippingCosts(it))), gameTrends(it, game.id, minPoints = 2),
-                watchOf(it, game.id), gameBgg(it, game.id), isOwned(it, game.id), storeFreshness(it),
+                watchOf(it, game.id), gameBgg(it, game.id), isOwned(it, game.id), inCart(it, game.id), cartPin(it, game.id), storeFreshness(it),
                 gameExpansions(it, game.id), gameBase(it, game.id))
         }
     }
@@ -117,12 +126,17 @@ fun GameScreen(db: Db, game: GameRef, notify: (String) -> Unit, open: (GameRef) 
             if (d == null) return@LazyColumn
             item {
                 best?.let { BestPrice(it, d.offers.size, d.fresh[it["store"]]) }
-                OwnControls(d.watch, d.owned, onEdit = { editing = true }, onUnfollow = {
+                OwnControls(d.watch, d.owned, d.inCart, onEdit = { editing = true }, onUnfollow = {
                     scope.launch { db.write { watchRemove(it, game.id) }; notify("Ya no lo sigues.") }
                 }, onOwned = { own ->
                     scope.launch {
                         db.write { if (own) ownedAdd(it, game.id) else ownedRemove(it, game.id) }
                         notify(if (own) "Agregado a tu colección." else "Quitado de tu colección.")
+                    }
+                }, onCart = { add ->
+                    scope.launch {
+                        db.write { if (add) cartAdd(it, game.id) else cartRemove(it, game.id) }
+                        notify(if (add) "Agregado al carrito." else "Quitado del carrito.")
                     }
                 })
             }
@@ -130,7 +144,14 @@ fun GameScreen(db: Db, game: GameRef, notify: (String) -> Unit, open: (GameRef) 
             if (d.offers.isEmpty()) item { Empty("Ninguna tienda lo tiene en su último scrape.") }
             else item { SectionTitle("Precios por tienda") }
             items(if (allOffers) d.offers else d.offers.take(OFFERS_SHOWN), key = { it["product_id"] as Long }) { offer ->
-                OfferCard(offer, d.fresh[offer["store"]], notify) { shippingOf = offer["store"] as String }
+                val id = offer["product_id"] as Long
+                val picked = d.cartPin == id
+                OfferCard(offer, d.fresh[offer["store"]], notify, picked, onCart = {
+                    scope.launch {
+                        db.write { if (picked) cartRemove(it, game.id) else cartPick(it, game.id, id) }
+                        notify(if (picked) "Quitado del carrito." else "Al carrito desde ${offer["store"]}.")
+                    }
+                }) { shippingOf = offer["store"] as String }
             }
             if (!allOffers && d.offers.size > OFFERS_SHOWN) item {
                 TextButton(onClick = { allOffers = true }, modifier = Modifier.padding(horizontal = 4.dp)) {
@@ -190,11 +211,12 @@ private fun BuyBar(best: SqlRow, notify: (String) -> Unit) {
     }
 }
 
-/** How old an offer's price is; a store that failed since then is said outright. */
-private fun freshness(f: Freshness?): String = when {
+/** A warning when an offer's price may be stale; nothing when it is current. */
+private fun freshness(f: Freshness?): String? = when {
     f?.lastOk == null -> "Sin fecha de revisión"
     f.failed -> "No se pudo revisar · dato ${ago(f.lastOk)}"
-    else -> "Revisado ${ago(f.lastOk)}"
+    f.dim() -> "Dato ${ago(f.lastOk)}"
+    else -> null
 }
 
 /** The photo, full width, with the way back over its corner. */
@@ -222,18 +244,20 @@ private fun BestPrice(best: SqlRow, stores: Int, fresh: Freshness?) {
                 Text(listOfNotNull("en ${best["store"]}", stock(best["in_stock"]),
                     "$stores tienda${if (stores == 1) "" else "s"} lo venden").joinToString(" · "),
                     style = MaterialTheme.typography.bodySmall)
-                Text(freshness(fresh), style = MaterialTheme.typography.bodySmall,
-                    color = if (fresh?.dim() != false) MaterialTheme.colorScheme.error else Color.Unspecified)
+                freshness(fresh)?.let {
+                    Text(it, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+                }
             }
             pct(best["discount_pct"])?.let { Tag(it, Sale) }
         }
     }
 }
 
-/** "Seguir" for a game not watched, its target and "Dejar de seguir" for one that is; and "Ya lo tengo". */
+/** "Seguir" for a game not watched, its target and "Dejar de seguir" for one that is; "Ya lo tengo" and the cart. */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun OwnControls(watch: SqlRow?, owned: Boolean, onEdit: () -> Unit, onUnfollow: () -> Unit, onOwned: (Boolean) -> Unit) {
+private fun OwnControls(watch: SqlRow?, owned: Boolean, inCart: Boolean, onEdit: () -> Unit, onUnfollow: () -> Unit,
+                        onOwned: (Boolean) -> Unit, onCart: (Boolean) -> Unit) {
     FlowRow(Modifier.padding(horizontal = 16.dp, vertical = 4.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         if (watch == null) {
             Button(onClick = onEdit) { Text("Seguir") }
@@ -244,6 +268,7 @@ private fun OwnControls(watch: SqlRow?, owned: Boolean, onEdit: () -> Unit, onUn
             TextButton(onClick = onUnfollow) { Text("Dejar de seguir") }
         }
         FilterChip(owned, { onOwned(!owned) }, { Text("Ya lo tengo") })
+        FilterChip(inCart, { onCart(!inCart) }, { Text(if (inCart) "En el carrito" else "Al carrito") })
     }
 }
 
@@ -259,7 +284,8 @@ private fun shippingLabel(cost: Double?, total: Any?): String = when (cost) {
  * A price that may be out of date is drawn faded and says how old it is.
  */
 @Composable
-private fun OfferCard(offer: SqlRow, fresh: Freshness?, notify: (String) -> Unit, onShipping: () -> Unit) {
+private fun OfferCard(offer: SqlRow, fresh: Freshness?, notify: (String) -> Unit, picked: Boolean, onCart: () -> Unit,
+                      onShipping: () -> Unit) {
     val uri = LocalUriHandler.current
     val url = offer["url"]
     val available = offer["in_stock"] != 0L
@@ -269,8 +295,14 @@ private fun OfferCard(offer: SqlRow, fresh: Freshness?, notify: (String) -> Unit
         enabled = isWebUrl(url),
         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp),
     ) {
-        Row(Modifier.padding(start = 12.dp, end = 12.dp, top = 12.dp).alpha(if (fresh?.dim() != false) DIM_ALPHA else 1f),
-            verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        Row(Modifier.padding(start = 4.dp, end = 12.dp, top = 12.dp).alpha(if (fresh?.dim() != false) DIM_ALPHA else 1f),
+            verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            // This store's offer in the cart, not whichever is cheapest.
+            IconButton(onClick = onCart, enabled = available || picked) {
+                Icon(if (picked) Icons.Filled.ShoppingCart else Icons.Outlined.ShoppingCart,
+                    contentDescription = if (picked) "Quitar del carrito" else "Al carrito desde esta tienda",
+                    tint = if (picked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
+            }
             Thumb(offer["image_url"], size = 48.dp)
             Column(Modifier.weight(1f)) {
                 Text(offer["store"] as String, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
@@ -283,8 +315,8 @@ private fun OfferCard(offer: SqlRow, fresh: Freshness?, notify: (String) -> Unit
             Price(offer)
         }
         Row(Modifier.fillMaxWidth().padding(start = 12.dp, end = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-            Text(freshness(fresh), style = MaterialTheme.typography.labelSmall, modifier = Modifier.weight(1f),
-                color = if (fresh?.dim() != false) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(freshness(fresh).orEmpty(), style = MaterialTheme.typography.labelSmall, modifier = Modifier.weight(1f),
+                color = MaterialTheme.colorScheme.error)
             TextButton(onClick = onShipping) { Text(shippingLabel(shipping, offer["total"]), style = MaterialTheme.typography.labelSmall) }
         }
     }

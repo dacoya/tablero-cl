@@ -13,6 +13,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ListItem
@@ -65,6 +66,8 @@ fun SettingsScreen(app: TableroApp, notify: (String) -> Unit, onStores: () -> Un
         Toggle("Actualizar cada día", "En segundo plano, de madrugada (4:00).", prefs.autoUpdate, reschedule)
         Toggle("Solo con WiFi", "Una actualización completa usa ~150 MB.", prefs.wifiOnly, reschedule)
         Toggle("Solo cargando", "La actualización diaria espera al cargador.", prefs.chargingOnly, reschedule)
+        Choice("Tiendas favoritas", "Marca favoritas con la estrella en Tiendas.", prefs.favoriteDays, listOf(1 to "Cada día", 7 to "Cada semana"))
+        Choice("Resto de las tiendas", "Las que casi no cambian se pueden refrescar menos.", prefs.otherDays, listOf(7 to "Cada semana", 30 to "Cada mes"))
 
         Section("Avisos")
         Toggle("Precio objetivo", "Cuando un juego que sigues llega a tu precio.", prefs.notifyTargets)
@@ -92,7 +95,9 @@ private fun DatabaseSection(db: Db, notify: (String) -> Unit) {
     var confirmImport by remember { mutableStateOf(false) }
     val pickImport = rememberFileAction(ActivityResultContracts.OpenDocument(), notify) { context, uri ->
         val input = checkNotNull(context.contentResolver.openInputStream(uri)) { "No se pudo abrir el archivo." }
-        "Base importada: ${count(db.import(input, context.cacheDir))} productos."
+        val n = db.import(input, context.cacheDir)
+        feedFile(context).delete() // Home's kept feed answered the old base
+        "Base importada: ${count(n)} productos."
     }
     val pickBgg = rememberFileAction(ActivityResultContracts.OpenDocument(), notify) { context, uri ->
         // ~180k names to normalize: tens of seconds on a phone.
@@ -101,7 +106,8 @@ private fun DatabaseSection(db: Db, notify: (String) -> Unit) {
             checkNotNull(context.contentResolver.openInputStream(uri)) { "No se pudo abrir el archivo." }
                 .bufferedReader().useLines { importBggCsv(conn, it) }
         }
-        db.updated() // new BGG matches change Home's tiles and shelves
+        feedFile(context).delete() // new BGG matches change Home's tiles and shelves
+        db.updated()
         "BGG: ${count(r.entries)} juegos" + (if (r.aliases >= 0) ", ${count(r.aliases)} nombres en español" else "") +
             ". ${count(r.matched)} juegos del catálogo con datos de BGG."
     }
@@ -177,6 +183,25 @@ private fun Hint(text: String) =
 private fun Section(title: String) =
     Text(title, style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary,
         modifier = Modifier.padding(start = 16.dp, top = 20.dp, bottom = 4.dp))
+
+/** A setting with a few fixed values, one chip each. */
+@Composable
+private fun Choice(title: String, detail: String, number: Prefs.Number, options: List<Pair<Int, String>>) {
+    val current by number.flow.collectAsState()
+    ListItem(
+        headlineContent = { Text(title) },
+        supportingContent = {
+            Column {
+                Text(detail)
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    options.forEach { (value, label) ->
+                        FilterChip(selected = current == value, onClick = { number.value = value }, label = { Text(label) })
+                    }
+                }
+            }
+        },
+    )
+}
 
 @Composable
 private fun Toggle(title: String, detail: String, flag: Prefs.Flag, changed: () -> Unit = {}) {

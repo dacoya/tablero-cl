@@ -44,6 +44,20 @@ class Prefs(context: Context) {
     /** Ofertas starts with "Disponibles" on. */
     val inStockOnly = Flag("in_stock_only", false)
 
+    inner class Number(private val key: String, default: Int) {
+        private val state = MutableStateFlow(sp.getInt(key, default))
+        val flow: StateFlow<Int> = state
+        var value: Int
+            get() = state.value
+            set(v) { sp.edit { putInt(key, v) }; state.value = v }
+    }
+
+    /** The scheduled run refreshes a favourite store every this many days. */
+    val favoriteDays = Number("favorite_days", 1)
+
+    /** ...and every other store every this many days. */
+    val otherDays = Number("other_days", 7)
+
     /** The catalogue's last sort and filters (CatalogScreen's JSON), so they survive a restart. */
     var catalog: String
         get() = sp.getString("catalog", "") ?: ""

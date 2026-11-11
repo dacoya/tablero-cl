@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -22,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -39,9 +42,12 @@ import cl.tablero.app.count
 import cl.tablero.app.isWebUrl
 import cl.tablero.core.data.Filters
 import cl.tablero.core.data.SqlRow
+import cl.tablero.core.data.favSet
+import cl.tablero.core.data.favStores
 import cl.tablero.core.data.stores
 import cl.tablero.core.scrape.sites
 import coil3.compose.AsyncImage
+import kotlinx.coroutines.launch
 
 /**
  * One store: its cover, what we know of it, then its catalogue with the same
@@ -54,8 +60,11 @@ fun StoreScreen(db: Db, name: String, open: (GameRef) -> Unit, notify: (String) 
     var browse by rememberSaveable(name, stateSaver = BrowseSaver) {
         mutableStateOf(Browse(filters = Filters(stores = listOf(name))))
     }
+    val version by db.version.collectAsState()
+    val favourite by produceState(false, version) { value = db.read { name in favStores(it) } }
+    val scope = rememberCoroutineScope()
     CatalogScreen(db, browse, change = { browse = it }, open, modifier) {
-        Cover(name, onBack)
+        Cover(name, onBack, favourite) { scope.launch { db.write { favSet(it, name, !favourite) } } }
         About(db, name, notify)
     }
 }
@@ -65,7 +74,7 @@ fun StoreScreen(db: Db, name: String, open: (GameRef) -> Unit, notify: (String) 
  * both edges like a profile cover; the name sits on the lower fade.
  */
 @Composable
-private fun Cover(name: String, onBack: () -> Unit) {
+private fun Cover(name: String, onBack: () -> Unit, favourite: Boolean, toggleFavourite: () -> Unit) {
     val logo = STORE_LOGOS[name]
     val page = MaterialTheme.colorScheme.background
     val behind = when {
@@ -86,6 +95,11 @@ private fun Cover(name: String, onBack: () -> Unit) {
             0f to page.copy(alpha = 0.7f), 0.3f to Color.Transparent, 0.5f to Color.Transparent, 1f to page)))
         FilledTonalIconButton(onClick = onBack, modifier = Modifier.padding(8.dp)) {
             Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+        }
+        FilledTonalIconButton(onClick = toggleFavourite, modifier = Modifier.align(Alignment.TopEnd).padding(8.dp)) {
+            Icon(if (favourite) Icons.Filled.Star else Icons.Outlined.Star,
+                contentDescription = if (favourite) "Quitar de favoritas" else "Marcar favorita",
+                tint = if (favourite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
         }
         Text(name, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground,

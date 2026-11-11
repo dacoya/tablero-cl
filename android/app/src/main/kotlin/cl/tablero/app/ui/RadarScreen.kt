@@ -1,8 +1,15 @@
 package cl.tablero.app.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -11,6 +18,8 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
@@ -28,6 +37,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import cl.tablero.app.Db
 import cl.tablero.app.count
@@ -52,8 +62,9 @@ private val LABELS = mapOf(
 private class Radar(val since: Long?, val changes: List<SqlRow>, val watched: List<SqlRow>, val owned: List<SqlRow>)
 
 /**
- * Everything that wants a look, in one list: what moved in the games you follow,
- * those games, your collection, then what moved in the rest of the market.
+ * Everything that wants a look: the games you follow as cards (a red "!" on
+ * the ones that moved), your collection, then what moved in the rest of the
+ * market as a list.
  * "Marcar como revisado" moves the cursor to now.
  */
 @Composable
@@ -78,16 +89,19 @@ fun RadarScreen(db: Db, open: (GameRef) -> Unit, modifier: Modifier = Modifier) 
         if (r.since == null) item { StartReview(markReviewed) }
         else item { ReviewHeader(r, markReviewed) }
 
-        if (followed.isNotEmpty()) {
-            item { SectionTitle("Cambios en lo que sigues") }
-            items(followed, key = { "f${it["product_id"]}" }) { ChangeRow(it, open) }
-        }
-
         item { SectionTitle("Sigues") }
         if (r.watched.isEmpty()) {
             item { Empty("Abre un juego y toca \"Seguir\" para verlo aquí. Con un precio objetivo, te avisamos cuando lo alcance.") }
         }
-        items(r.watched, key = { "w${it["game_id"]}" }) { WatchRow(it, open) }
+        // Shop-window cards, two a row, the ones that moved first with a red "!".
+        val changed = followed.map { it["game_id"] }.toSet()
+        val watched = r.watched.sortedBy { it["game_id"] !in changed }
+        items(watched.chunked(2), key = { pair -> "w${pair.first()["game_id"]}" }) { pair ->
+            Row(Modifier.padding(horizontal = 12.dp, vertical = 6.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                pair.forEach { WatchCard(it, changed = it["game_id"] in changed, open, Modifier.weight(1f)) }
+                if (pair.size == 1) Spacer(Modifier.weight(1f))
+            }
+        }
 
         owned(r.owned, showOwned, toggle = { showOwned = !showOwned }, open)
 
@@ -125,28 +139,44 @@ private fun LazyListScope.owned(rows: List<SqlRow>, shown: Boolean, toggle: () -
 
 private fun gameRef(row: SqlRow) = GameRef(row["game_id"] as Long, row["title"] as String, row["image_url"] as String?)
 
-/** A watched game, its cheapest live price, and whether the target is met. */
+/** A watched game as a shop card: its cheapest live price, the target, and a red "!" when it moved. */
 @Composable
-private fun WatchRow(row: SqlRow, open: (GameRef) -> Unit) {
+private fun WatchCard(row: SqlRow, changed: Boolean, open: (GameRef) -> Unit, modifier: Modifier) {
     val hit = row["hit"] == true
-    val facts = listOfNotNull(
-        row["target"]?.let { "objetivo ${money(it)}" },
-        when {
-            row["min_price"] == null -> "ninguna tienda lo tiene ahora"
-            row["in_stock"] == 0L -> "agotado"
-            else -> "${row["n_stores"]} tienda${if (row["n_stores"] == 1L) "" else "s"}"
-        },
-    ).joinToString(" · ")
-    ListItem(
-        leadingContent = { Thumb(row["image_url"]) },
-        overlineContent = if (hit) ({ Text("Precio objetivo alcanzado", color = MaterialTheme.colorScheme.primary) }) else null,
-        headlineContent = { Title(row["title"] as String) },
-        supportingContent = { Facts(facts) },
-        trailingContent = {
-            Text(money(row["min_price"]), fontWeight = if (hit) FontWeight.Bold else FontWeight.Normal)
-        },
-        modifier = Modifier.clickable { open(gameRef(row)) },
-    )
+    val stores = row["n_stores"] as Long?
+    val facts = when {
+        row["min_price"] == null -> "ninguna tienda"
+        row["in_stock"] == 0L -> "agotado"
+        else -> "$stores tienda${if (stores == 1L) "" else "s"}"
+    }
+    Card(
+        onClick = { open(gameRef(row)) }, modifier = modifier,
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLowest),
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+    ) {
+        Box {
+            Photo(row["image_url"], Modifier.fillMaxWidth().aspectRatio(1f))
+            if (changed) Box(
+                Modifier.align(Alignment.TopEnd).padding(8.dp).size(24.dp)
+                    .background(MaterialTheme.colorScheme.error, CircleShape),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text("!", color = MaterialTheme.colorScheme.onError, fontWeight = FontWeight.Black)
+            }
+        }
+        Column(Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Text(facts.uppercase(), style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.secondary, fontWeight = FontWeight.Bold, maxLines = 1)
+            Text(row["title"] as String, style = MaterialTheme.typography.bodyMedium, maxLines = 2, minLines = 2,
+                overflow = TextOverflow.Ellipsis)
+            Text(money(row["min_price"]), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold,
+                color = if (hit) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface)
+            row["target"]?.let {
+                Text("objetivo ${money(it)}" + if (hit) " ✓" else "", style = MaterialTheme.typography.labelSmall,
+                    color = if (hit) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+        }
+    }
 }
 
 /** No cursor yet: there is no "since" to compare against until one is set. */

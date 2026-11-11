@@ -18,7 +18,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Card
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ListItem
@@ -31,6 +36,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -38,11 +44,17 @@ import androidx.compose.ui.unit.dp
 import androidx.work.Data
 import androidx.work.WorkInfo
 import cl.tablero.app.Db
+import cl.tablero.app.TableroApp
 import cl.tablero.app.UpdateWorker
 import cl.tablero.app.ago
 import cl.tablero.app.count
 import cl.tablero.core.data.SqlRow
+import cl.tablero.core.data.dueAt
+import cl.tablero.core.data.favSet
+import cl.tablero.core.data.favStores
+import cl.tablero.core.data.lastSuccess
 import cl.tablero.core.data.stores
+import kotlinx.coroutines.launch
 import cl.tablero.core.scrape.registry
 import cl.tablero.core.scrape.sites
 
@@ -54,7 +66,11 @@ import cl.tablero.core.scrape.sites
 @Composable
 fun StoresScreen(db: Db, onBack: () -> Unit, onStore: (String) -> Unit, modifier: Modifier = Modifier) {
     val context = LocalContext.current
-    val rows = rememberStoreRows(db)
+    val prefs = (context.applicationContext as TableroApp).prefs
+    val favDays by prefs.favoriteDays.flow.collectAsState()
+    val otherDays by prefs.otherDays.flow.collectAsState()
+    val list = rememberStoreRows(db)
+    val scope = rememberCoroutineScope()
     val scrapeable = remember { sites().map { it.name }.toSet() }
     val updates = rememberUpdates()
     val start = rememberStartUpdate()
@@ -72,42 +88,68 @@ fun StoresScreen(db: Db, onBack: () -> Unit, onStore: (String) -> Unit, modifier
         }
         updates.shown?.let { UpdateStatus(it) }
         LazyColumn {
-            items(rows, key = { it["name"] as String }) { store ->
-                StoreRow(store, canScrape = store["name"] in scrapeable, idle = updates.active == null,
+            items(list.rows, key = { it["name"] as String }) { store ->
+                val name = store["name"] as String
+                val favourite = name in list.favourites
+                StoreRow(store, canScrape = name in scrapeable, idle = updates.active == null,
+                    favourite = favourite,
+                    due = dueAt(name, list.favourites, list.last, favDays, otherDays).takeIf { list.last[name] != null },
+                    toggleFavourite = { scope.launch { db.write { favSet(it, name, !favourite) } } },
                     open = onStore) { start(listOf(it)) }
             }
         }
     }
 }
 
+private class StoreList(
+    val rows: List<SqlRow> = emptyList(),
+    val favourites: Set<String> = emptySet(),
+    val last: Map<String, Long> = emptyMap(),
+)
+
 /**
  * Every store with data, plus registry stores with none yet, so a fresh
- * install shows what it can scrape instead of an empty screen.
+ * install shows what it can scrape instead of an empty screen. Favourites first.
  */
 @Composable
-private fun rememberStoreRows(db: Db): List<SqlRow> {
+private fun rememberStoreRows(db: Db): StoreList {
     val version by db.version.collectAsState()
-    val rows by produceState(emptyList<SqlRow>(), version) {
-        val known = db.read { stores(it) }
-        val names = known.map { it["name"] }.toSet()
-        value = (known + registry().filter { it.first !in names }
-            .map { mapOf("name" to it.first, "n_products" to 0L, "last_scrape" to null, "last_success" to null) })
-            .sortedBy { it["name"] as String }
+    val list by produceState(StoreList(), version) {
+        value = db.read { conn ->
+            val known = stores(conn)
+            val names = known.map { it["name"] }.toSet()
+            val favourites = favStores(conn)
+            val rows = (known + registry().filter { it.first !in names }
+                .map { mapOf("name" to it.first, "n_products" to 0L, "last_scrape" to null, "last_success" to null) })
+                .sortedWith(compareBy({ it["name"] !in favourites }, { it["name"] as String }))
+            StoreList(rows, favourites, lastSuccess(conn))
+        }
     }
-    return rows
+    return list
 }
 
 @Composable
-private fun StoreRow(store: SqlRow, canScrape: Boolean, idle: Boolean, open: (String) -> Unit, update: (String) -> Unit) {
+private fun StoreRow(store: SqlRow, canScrape: Boolean, idle: Boolean, favourite: Boolean, due: Long?,
+                     toggleFavourite: () -> Unit, open: (String) -> Unit, update: (String) -> Unit) {
     val name = store["name"] as String
     val failed = store["last_success"] == 0L
     ListItem(
         modifier = Modifier.clickable { open(name) },
-        leadingContent = { Logo(name) },
+        leadingContent = {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                IconButton(onClick = toggleFavourite) {
+                    Icon(if (favourite) Icons.Filled.Star else Icons.Outlined.Star,
+                        contentDescription = if (favourite) "Quitar de favoritas" else "Marcar favorita",
+                        tint = if (favourite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+                Logo(name)
+            }
+        },
         headlineContent = { Title(name) },
         supportingContent = {
             Text(
-                "${count(store["n_products"])} productos · " + (if (failed) "falló " else "") + ago(store["last_scrape"]),
+                "${count(store["n_products"])} productos · " + (if (failed) "falló " else "") + ago(store["last_scrape"]) +
+                    (if (canScrape && due != null) " · ${dueIn(due)}" else ""),
                 style = MaterialTheme.typography.bodySmall,
                 color = if (failed) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -117,6 +159,12 @@ private fun StoreRow(store: SqlRow, canScrape: Boolean, idle: Boolean, open: (St
             else Text("solo PC", style = MaterialTheme.typography.labelSmall)
         },
     )
+}
+
+/** When the scheduled run takes a store again: "toca hoy", "en 3 d". */
+private fun dueIn(due: Long): String {
+    val days = (due - System.currentTimeMillis() / 1000 + 86_399) / 86_400
+    return if (days <= 0) "toca hoy" else "toca en $days d"
 }
 
 @Composable

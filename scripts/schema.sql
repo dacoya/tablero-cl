@@ -197,6 +197,26 @@ CREATE TABLE IF NOT EXISTS store_shipping (
 );
 
 -- ---------------------------------------------------------------------------
+-- Stores the user marked as favourite. The phone refreshes them on a shorter
+-- cadence than the rest; nothing else reads this table.
+-- ---------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS store_fav (
+    store TEXT PRIMARY KEY
+);
+
+-- ---------------------------------------------------------------------------
+-- The shopping cart: games the user means to buy, and how many of each.
+-- Which store each one comes from is computed, unless the user picked an
+-- offer (product_id); a picked offer out of stock falls back to the cheapest.
+-- ---------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS cart (
+    game_id  INTEGER PRIMARY KEY REFERENCES game(id) ON DELETE CASCADE,
+    qty      INTEGER NOT NULL DEFAULT 1,
+    added_at INTEGER NOT NULL,
+    product_id INTEGER
+);
+
+-- ---------------------------------------------------------------------------
 -- Named read cursors, so "since I last looked" is answerable.
 --
 -- The `flag` column on product only survives one update cycle; it means

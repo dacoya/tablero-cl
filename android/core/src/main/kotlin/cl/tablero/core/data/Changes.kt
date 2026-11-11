@@ -25,6 +25,21 @@ fun setCursor(conn: SQLiteConnection, ts: Long = System.currentTimeMillis() / 10
     return ts
 }
 
+/**
+ * A counter that moves whenever product rows change, kept in the cursor table
+ * under its own name. Only ingest writes products, so caches built from them
+ * (the smart-sort stats, the home feed) are fresh exactly while it stands
+ * still. A database without the row -- one imported from the laptop -- is at 0.
+ */
+private const val PRODUCT_REV = "product_rev"
+
+fun productRev(conn: SQLiteConnection): Long = getCursor(conn, PRODUCT_REV) ?: 0L
+
+internal fun bumpProductRev(conn: SQLiteConnection) = conn.exec(
+    "INSERT INTO cursor(name, ts) VALUES (?, 1) ON CONFLICT(name) DO UPDATE SET ts = ts + 1",
+    PRODUCT_REV,
+)
+
 private fun side(op: String, only: String = "") = """
     SELECT product_id, ts, price, in_stock,
            (price_original IS NOT NULL AND price < price_original) AS on_sale,

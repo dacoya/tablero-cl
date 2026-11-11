@@ -31,8 +31,11 @@ se prueba contra los mismos fixtures que la versión Python.
   tienda, las ofertas se ordenan por el total.
 - **Mi radar**: cambios en lo que sigues, juegos seguidos con precio objetivo, tu
   colección y lo que cambió en el resto del mercado desde tu última revisión.
+- **Carrito**: los juegos que quieres comprar y cuántos; la app reparte la compra
+  entre tiendas para el menor total con despacho, y copia la lista.
 - **Ajustes**: **Tiendas** (actualizar una o todas; las que fallaron se marcan en
-  rojo), actualización diaria (4:00, con WiFi y cargando, por defecto),
+  rojo; la estrella marca favoritas), actualización diaria (4:00, con WiFi y
+  cargando, por defecto; favoritas cada día o semana, el resto cada semana o mes),
   avisos, valores por defecto de las listas, importar/exportar la base.
 
 Scrapea 48 de las 50 tiendas. `calabozotienda` y `araucania` quedan "solo PC":

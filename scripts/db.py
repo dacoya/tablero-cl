@@ -18,7 +18,7 @@ DB_PATH = DATA_DIR / "tablero.db"
 SCHEMA_PATH = PKG_DIR / "schema.sql"
 
 # Bump when schema.sql changes in a way that needs a migration step.
-SCHEMA_VERSION = 9
+SCHEMA_VERSION = 11
 
 # Upgrades that can be applied to a populated database in place, keyed by the
 # version they move it to. Only additive changes belong here -- a column with
@@ -49,6 +49,11 @@ _UPGRADES = {
         "CREATE TABLE IF NOT EXISTS bgg_mechanic ( bgg_id INTEGER NOT NULL, mechanic TEXT NOT NULL, PRIMARY KEY (bgg_id, mechanic) )",
         "CREATE INDEX IF NOT EXISTS idx_bgg_mechanic ON bgg_mechanic(mechanic)",
     ),
+    10: (
+        "CREATE TABLE IF NOT EXISTS store_fav ( store TEXT PRIMARY KEY )",
+        "CREATE TABLE IF NOT EXISTS cart ( game_id INTEGER PRIMARY KEY REFERENCES game(id) ON DELETE CASCADE, qty INTEGER NOT NULL DEFAULT 1, added_at INTEGER NOT NULL )",
+    ),
+    11: ("ALTER TABLE cart ADD COLUMN product_id INTEGER",),
 }
 
 

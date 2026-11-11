@@ -53,6 +53,8 @@ def _v4_database(path):
     conn.executescript(schema.replace("    image_url      TEXT,\n", ""))
     # Nor what v6 added.
     conn.executescript("DROP TABLE bgg; DROP TABLE bgg_alias; ALTER TABLE game DROP COLUMN bgg_id;")
+    # Nor what v10 added.
+    conn.executescript("DROP TABLE cart; DROP TABLE store_fav;")
     conn.execute("INSERT INTO store(name) VALUES ('s')")
     conn.execute("INSERT INTO game(norm, title, created_at) VALUES ('catan', 'Catan', 1)")
     conn.execute(

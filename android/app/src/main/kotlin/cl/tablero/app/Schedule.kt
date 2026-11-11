@@ -6,6 +6,7 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import androidx.work.workDataOf
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
@@ -45,6 +46,8 @@ object Schedule {
                     .build(),
             )
             .setInitialDelay(untilNextRun(), TimeUnit.MILLISECONDS)
+            // Daily, but each store only when its cadence says it is due.
+            .setInputData(workDataOf(UpdateWorker.KEY_DUE to true))
             .build()
         // UPDATE keeps an existing schedule's timing but takes new constraints.
         work.enqueueUniquePeriodicWork(NAME, ExistingPeriodicWorkPolicy.UPDATE, request)

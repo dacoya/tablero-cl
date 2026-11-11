@@ -14,8 +14,14 @@ import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runInterruptible
+import cl.tablero.app.ui.feedFile
+import cl.tablero.app.ui.saveFeed
+import cl.tablero.core.data.dueStores
+import cl.tablero.core.data.favStores
 import cl.tablero.core.data.getCursor
 import cl.tablero.core.data.ingestStore
+import cl.tablero.core.data.lastSuccess
+import cl.tablero.core.data.stores
 import cl.tablero.core.data.recordFailure
 import cl.tablero.core.data.sinceLastReview
 import cl.tablero.core.data.watchAlerts
@@ -44,11 +50,27 @@ class UpdateWorker(context: Context, params: WorkerParameters) : CoroutineWorker
         }
     }
 
+    /**
+     * The stores this run scrapes, biggest first so a long catalogue does not
+     * start last and finish alone. Named stores are always scraped; the
+     * scheduled run (`dueOnly`) takes favourites and the rest at their own cadence.
+     */
+    private suspend fun targets(db: Db, prefs: Prefs, wanted: Set<String>?, dueOnly: Boolean) = db.read { conn ->
+        val all = sites().filter { wanted.isNullOrEmpty() || it.name in wanted }
+        val size = stores(conn).associate { it["name"] as String to (it["n_products"] as Long? ?: 0L) }
+        val due = if (!dueOnly) null
+            else dueStores(all.map { it.name }, favStores(conn), lastSuccess(conn),
+                prefs.favoriteDays.value, prefs.otherDays.value).toSet()
+        all.filter { due == null || it.name in due }.sortedByDescending { size[it.name] ?: 0L }
+    }
+
     private suspend fun update(): Result {
         val wanted = inputData.getNullableStringArray(KEY_STORES)?.filterNotNull()?.toSet()
-        val targets = sites().filter { wanted.isNullOrEmpty() || it.name in wanted }
         val app = applicationContext as TableroApp
         val db = app.db
+        val targets = targets(db, app.prefs, wanted, dueOnly = inputData.getBoolean(KEY_DUE, false))
+        // A scheduled run with nothing due: no service, no notification.
+        if (targets.isEmpty()) return Result.success(workDataOf(KEY_TOTAL to 0))
         val failures = mutableListOf<String>()
         setForeground(foreground("Actualizando ${targets.size} tiendas…", 0, targets.size))
         // Named up front when there is only one, since nothing else reports
@@ -72,6 +94,8 @@ class UpdateWorker(context: Context, params: WorkerParameters) : CoroutineWorker
                 setForegroundAsync(foreground("$store · $products productos", done, total))
             },
         ) }
+        // Home reads this instead of querying, so it is built once per run.
+        db.read { saveFeed(feedFile(applicationContext), it) }
         db.updated()
 
         // What the run means for the user, now that the data is in.
@@ -103,6 +127,8 @@ class UpdateWorker(context: Context, params: WorkerParameters) : CoroutineWorker
         const val WORK_NAME = "update"
         const val KEY_SKIPPED = "skipped"
         const val KEY_STORES = "stores"
+        /** The scheduled run: only the stores due by their cadence. */
+        const val KEY_DUE = "due"
         const val KEY_DONE = "done"
         const val KEY_TOTAL = "total"
         const val KEY_PRODUCTS = "products"

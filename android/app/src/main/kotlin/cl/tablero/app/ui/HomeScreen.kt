@@ -42,6 +42,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -51,16 +52,15 @@ import cl.tablero.app.Prefs
 import cl.tablero.app.count
 import cl.tablero.core.data.Filters
 import cl.tablero.core.data.SqlRow
-import cl.tablero.core.data.browseRows
-import cl.tablero.core.data.countProductsEach
 import cl.tablero.core.data.searchGames
-import cl.tablero.core.data.withCheapest
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 
 /** A tile on Home: a name, a colour and the catalogue view it opens. */
-private class Category(val label: String, val color: Color, val browse: Browse)
+internal class Category(val label: String, val color: Color, val browse: Browse)
 
-private val CATEGORIES = listOf(
+internal val HOME_TILES = listOf(
     Category("Ofertas", Sale, Browse(filters = Filters(onSale = true))),
     Category("Novedades", Color(0xFF6A3FC0), Browse(filters = Filters(flag = "new"))),
     Category("Repuestos", Color(0xFF00897B), Browse(filters = Filters(flag = "restock"))),
@@ -71,11 +71,11 @@ private val CATEGORIES = listOf(
 } + Category("Top $BGG_TOP BGG", Color(0xFF1565C0), Browse(BEST_DEAL, Filters(kinds = listOf("game"), bggTop = BGG_TOP, onePerGame = true)))
 
 /** A carousel on Home and the full view behind its "Ver todo". */
-private class Shelf(val title: String, val browse: Browse)
+internal class Shelf(val title: String, val browse: Browse)
 
 // "Mejor oferta" is the most pesos saved (list price minus offer price): 20% off
 // a $200.000 game beats 80% off a $10.000 one. Percentages are "Mayores descuentos".
-private val SHELVES = listOf(
+internal val SHELVES = listOf(
     Shelf("Expansiones de tus juegos", Browse("price", Filters(ownedExpansions = true))),
     // Board games only: booster displays carry big peso discounts and would fill it.
     Shelf("Mejores ofertas", Browse(BEST_DEAL, Filters(onSale = true, inStockOnly = true, kinds = listOf("game", "expansion"), hideOwned = true))),
@@ -85,17 +85,9 @@ private val SHELVES = listOf(
     Shelf("Mayores descuentos", Browse("discount", Filters(onSale = true, inStockOnly = true, hideOwned = true))),
 )
 
-private const val SHELF_SIZE = 12
-
-/** What the feed shows: tile counts and each shelf's rows (null while loading). */
-private data class FeedData(
-    val counts: List<Long> = emptyList(),
-    val shelves: List<List<SqlRow>?> = List(SHELVES.size) { null },
-)
-
-// Home leaves composition on every tab switch. The last complete feed and the
-// update it answers survive that, so coming back re-queries only after an update.
-// ponytail: process-wide, fine for the app's one Db.
+// Home leaves composition on every tab switch. The feed it last showed and the
+// database version it answers survive that, so coming back runs no query at all
+// until something is written. ponytail: process-wide, fine for the app's one Db.
 private var feedCache: Pair<Int, FeedData>? = null
 
 /**
@@ -148,17 +140,19 @@ private fun SearchField(query: String, change: (String) -> Unit) {
 
 @Composable
 private fun Feed(db: Db, open: (GameRef) -> Unit, show: (Browse) -> Unit) {
-    val updates by db.updates.collectAsState()
-    val cached = feedCache?.takeIf { it.first == updates }?.second
-    val feed by produceState(cached ?: feedCache?.second ?: FeedData(), updates) {
+    val file = feedFile(LocalContext.current)
+    val version by db.version.collectAsState()
+    val cached = feedCache?.takeIf { it.first == version }?.second
+    val feed by produceState(cached ?: feedCache?.second ?: FeedData(), version) {
         if (cached != null) return@produceState
-        value = value.copy(counts = db.read { conn -> countProductsEach(conn, CATEGORIES.map { it.browse.filters }) })
-        // Each shelf shows as soon as its own query is back, not when the slowest is.
-        SHELVES.forEachIndexed { i, shelf ->
-            val rows = db.read { conn -> withCheapest(conn, browseRows(conn, shelf.browse.sort, shelf.browse.filters, limit = SHELF_SIZE)) }
-            value = value.copy(shelves = value.shelves.toMutableList().apply { set(i, rows) })
-        }
-        feedCache = updates to value
+        // The update worker keeps the feed on disk; only a missing or outdated
+        // one is built here (first start, an imported base, a game marked owned).
+        // Mid-update every store written makes the kept feed outdated; it is
+        // shown anyway, since the worker rebuilds it once the run is over.
+        val kept = withContext(Dispatchers.IO) { loadFeed(file) }
+        value = if (kept != null && (db.busy.isLocked || kept.first == db.read(::feedKey))) kept.second
+            else db.read { saveFeed(file, it).second }
+        feedCache = version to value
     }
     val counts = feed.counts
     val shelves = feed.shelves
@@ -168,8 +162,8 @@ private fun Feed(db: Db, open: (GameRef) -> Unit, show: (Browse) -> Unit) {
             LazyRow(contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 // A tile that would open an empty catalogue is left out once the counts are in.
-                items(CATEGORIES.indices.filter { counts.getOrNull(it) != 0L }) { i ->
-                    Tile(CATEGORIES[i], counts.getOrNull(i)) { show(CATEGORIES[i].browse) }
+                items(HOME_TILES.indices.filter { counts.getOrNull(it) != 0L }) { i ->
+                    Tile(HOME_TILES[i], counts.getOrNull(i)) { show(HOME_TILES[i].browse) }
                 }
             }
         }

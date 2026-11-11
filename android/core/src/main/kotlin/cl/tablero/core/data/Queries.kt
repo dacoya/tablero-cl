@@ -224,13 +224,12 @@ fun stores(conn: SQLiteConnection, activeOnly: Boolean = false): List<SqlRow> = 
  * analytics.MEDIAN_CTE (SQLite has no median aggregate; the CTE sorts every
  * product twice through window functions, ~95 ms of a cold Home). Rows come
  * in idx_product_game_price order, so each game's prices arrive sorted. The
- * table is rebuilt whenever this connection has written since (total_changes),
- * so it is never staler than the inline CTE would be. Same rows, same order.
+ * table is rebuilt whenever products changed since ([productRev]); other
+ * writes -- watchlist, cart, favourites -- leave it alone. Only ingest writes
+ * products, so it is never staler than the inline CTE would be. Same rows,
+ * same order.
  */
 private val statsBuiltAt = java.util.WeakHashMap<SQLiteConnection, Long>()
-
-private fun totalChanges(conn: SQLiteConnection): Long =
-    conn.query("SELECT total_changes() AS n").single()["n"] as Long
 
 /** The CTE's median: the middle price, or the mean of the two middle ones. */
 private fun median(sorted: List<Double>): Double =
@@ -238,7 +237,7 @@ private fun median(sorted: List<Double>): Double =
 
 /** Ensure temp.game_stats (game_id, median, lo, hi, n_stores) matches the product table. */
 private fun gameStats(conn: SQLiteConnection) = synchronized(statsBuiltAt) {
-    if (statsBuiltAt[conn] == totalChanges(conn)) return@synchronized
+    if (statsBuiltAt[conn] == productRev(conn)) return@synchronized
     conn.execSQL("DROP TABLE IF EXISTS temp.game_stats")
     conn.execSQL("""CREATE TEMP TABLE game_stats (
         game_id INTEGER PRIMARY KEY, median REAL, lo REAL, hi REAL, n_stores INTEGER)""")
@@ -264,7 +263,7 @@ private fun gameStats(conn: SQLiteConnection) = synchronized(statsBuiltAt) {
     conn.execSQL("SAVEPOINT game_stats")
     conn.execMany("INSERT INTO temp.game_stats VALUES (?,?,?,?,?)", rows)
     conn.execSQL("RELEASE game_stats")
-    statsBuiltAt[conn] = totalChanges(conn)
+    statsBuiltAt[conn] = productRev(conn)
 }
 
 // analytics.DEAL_INDEX_SQL: the deal index. The reasoning lives there.

@@ -11,8 +11,13 @@ import java.util.concurrent.Executors
  * them on its single database thread while scrapes run on their own.
  */
 
-/** Three on the phone against Python's five: mobile networks and Cloudflare both prefer fewer. */
-const val DEFAULT_WORKERS = 3
+/**
+ * Stores scraped side by side. Each worker walks one store with its own
+ * politeness pause, so more workers never means more load on any one store.
+ * ponytail: fixed at 6; make it a setting if a mobile network or Cloudflare
+ * starts refusing.
+ */
+const val DEFAULT_WORKERS = 6
 
 data class UpdateTotals(
     val ingested: Int = 0,

@@ -34,7 +34,7 @@ class SchemaTest {
                 "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name"
             ).use { st -> buildList { while (st.step()) add(st.getText(0)) } }
             assertEquals(
-                listOf("bgg", "bgg_alias", "bgg_facts", "bgg_mechanic", "cursor", "game", "owned", "price_obs", "product", "scrape_run", "store", "store_shipping", "watchlist"),
+                listOf("bgg", "bgg_alias", "bgg_facts", "bgg_mechanic", "cart", "cursor", "game", "owned", "price_obs", "product", "scrape_run", "store", "store_fav", "store_shipping", "watchlist"),
                 tables,
             )
         }
@@ -61,6 +61,9 @@ class SchemaTest {
             conn.execSQL("DROP TABLE bgg")
             conn.execSQL("DROP TABLE bgg_alias")
             conn.execSQL("ALTER TABLE game DROP COLUMN bgg_id")
+            // nor what v10 added
+            conn.execSQL("DROP TABLE cart")
+            conn.execSQL("DROP TABLE store_fav")
             conn.execSQL("INSERT INTO store(name) VALUES ('s')")
             conn.execSQL("""INSERT INTO product(store, url_canon, url, title_raw, title, norm, first_seen, last_seen)
                             VALUES ('s', 's.cl/x', 'https://s.cl/x', 'X', 'X', 'x', 1, 1)""")
@@ -78,11 +81,14 @@ class SchemaTest {
             schemaStatements().forEach(conn::execSQL)
             conn.execSQL("DROP TABLE bgg_mechanic")
             conn.execSQL("DROP TABLE bgg_facts")
+            conn.execSQL("DROP TABLE cart")
+            conn.execSQL("DROP TABLE store_fav")
             conn.execSQL("PRAGMA user_version = 8")
             initDb(conn)
             assertEquals(SCHEMA_VERSION, userVersion(conn))
             assertEquals(emptyList(), conn.query("SELECT * FROM bgg_facts"))
             assertEquals(emptyList(), conn.query("SELECT * FROM bgg_mechanic"))
+            assertEquals(emptyList(), conn.query("SELECT product_id FROM cart")) // v11's column on v10's table
         }
     }
 

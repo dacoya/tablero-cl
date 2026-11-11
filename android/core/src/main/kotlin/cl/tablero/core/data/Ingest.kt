@@ -135,6 +135,7 @@ fun ingestStore(conn: SQLiteConnection, store: String, records: List<Scraped>, t
             "INSERT OR REPLACE INTO scrape_run(store, ts, n_products, success) VALUES (?,?,?,1)",
             store, ts, rows.size,
         )
+        bumpProductRev(conn)
         val restock = updates.count { it[FLAG_COLUMN] == "restock" }
         IngestResult(store, rows.size, inserts.size, restock, rejected, skipped = false)
     }
