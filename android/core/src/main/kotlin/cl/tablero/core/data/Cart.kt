@@ -19,6 +19,10 @@ fun cartPick(conn: SQLiteConnection, gameId: Long, productId: Long, now: Long = 
 fun cartPin(conn: SQLiteConnection, gameId: Long): Long? =
     conn.query("SELECT product_id FROM cart WHERE game_id = ?", gameId).firstOrNull()?.get("product_id") as Long?
 
+/** Back to wherever the total comes out lowest. */
+fun cartUnpin(conn: SQLiteConnection, gameId: Long) =
+    conn.exec("UPDATE cart SET product_id = NULL WHERE game_id = ?", gameId)
+
 fun cartRemove(conn: SQLiteConnection, gameId: Long) = conn.exec("DELETE FROM cart WHERE game_id = ?", gameId)
 
 /** Set how many; zero or less takes the game out. */
@@ -34,8 +38,20 @@ fun cartCount(conn: SQLiteConnection): Long =
 
 data class CartOffer(val store: String, val price: Double, val productId: Long, val title: String, val url: String?)
 
-/** A cart line with the offers it can be bought from: in stock, with a price. */
-data class CartItem(val gameId: Long, val title: String, val image: String?, val qty: Int, val offers: List<CartOffer>)
+/**
+ * A cart line with the offers it can be bought from: in stock, with a price.
+ * `pin` is the offer the user picked, if any.
+ */
+data class CartItem(
+    val gameId: Long, val title: String, val image: String?, val qty: Int, val offers: List<CartOffer>,
+    val pin: Long? = null,
+) {
+    /** What the plan may buy: only the picked offer while it sells, otherwise any. */
+    val choices get() = pinned(offers, pin)
+
+    /** The pick is in force (it was made, and that offer still sells). */
+    val picked get() = offers.any { it.productId == pin }
+}
 
 data class CartPick(val item: CartItem, val offer: CartOffer) {
     val cost get() = offer.price * item.qty
@@ -65,8 +81,8 @@ fun cartItems(conn: SQLiteConnection): List<CartItem> = conn.query("""
             CartOffer(it["store"] as String, (it["price_eff"] as Number).toDouble(), it["product_id"] as Long,
                 it["title"] as String, it["url"] as String?)
         }
-    CartItem(id, row["title"] as String, row["image_url"] as String?, (row["qty"] as Long).toInt(),
-        pinned(offers, row["product_id"] as Long?))
+    CartItem(id, row["title"] as String, row["image_url"] as String?, (row["qty"] as Long).toInt(), offers,
+        row["product_id"] as Long?)
 }
 
 /** Only the picked offer while it can be bought; otherwise every offer, cheapest wins. */
@@ -81,7 +97,7 @@ private fun cost(picks: Map<CartItem, CartOffer>, shipping: Map<String, Double>)
 private fun without(picks: Map<CartItem, CartOffer>, drop: String, others: Set<String>): Map<CartItem, CartOffer>? =
     picks.mapValues { (item, offer) ->
         if (offer.store != drop) offer
-        else item.offers.filter { it.store in others }.minByOrNull { it.price } ?: return null
+        else item.choices.filter { it.store in others }.minByOrNull { it.price } ?: return null
     }
 
 /**
@@ -95,7 +111,7 @@ private fun without(picks: Map<CartItem, CartOffer>, drop: String, others: Set<S
  */
 fun planCart(items: List<CartItem>, shipping: Map<String, Double>): CartPlan {
     val (buyable, unavailable) = items.partition { it.offers.isNotEmpty() }
-    var picks: Map<CartItem, CartOffer> = buyable.associateWith { item -> item.offers.minBy { it.price } }
+    var picks: Map<CartItem, CartOffer> = buyable.associateWith { item -> item.choices.minBy { it.price } }
 
     // Each round drops the store whose removal saves the most, not the first that saves anything.
     while (true) {

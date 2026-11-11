@@ -29,6 +29,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.clickable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ShoppingCart
@@ -98,7 +99,8 @@ private class Detail(
  * the way to buy it stays on screen. Below, the rest: BGG, expansions, history.
  */
 @Composable
-fun GameScreen(db: Db, game: GameRef, notify: (String) -> Unit, open: (GameRef) -> Unit, onBack: () -> Unit,
+fun GameScreen(db: Db, game: GameRef, notify: (String) -> Unit, open: (GameRef) -> Unit, openStore: (String) -> Unit,
+               onBack: () -> Unit,
                modifier: Modifier = Modifier) {
     val version by db.version.collectAsState()
     val detail by produceState<Detail?>(null, game.id, version) {
@@ -123,7 +125,7 @@ fun GameScreen(db: Db, game: GameRef, notify: (String) -> Unit, open: (GameRef) 
                 Text(game.title, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp))
             }
-            if (d == null) return@LazyColumn
+            if (d == null) { item { Loading() }; return@LazyColumn }
             item {
                 best?.let { BestPrice(it, d.offers.size, d.fresh[it["store"]]) }
                 OwnControls(d.watch, d.owned, d.inCart, onEdit = { editing = true }, onUnfollow = {
@@ -146,7 +148,7 @@ fun GameScreen(db: Db, game: GameRef, notify: (String) -> Unit, open: (GameRef) 
             items(if (allOffers) d.offers else d.offers.take(OFFERS_SHOWN), key = { it["product_id"] as Long }) { offer ->
                 val id = offer["product_id"] as Long
                 val picked = d.cartPin == id
-                OfferCard(offer, d.fresh[offer["store"]], notify, picked, onCart = {
+                OfferCard(offer, d.fresh[offer["store"]], notify, picked, openStore, onCart = {
                     scope.launch {
                         db.write { if (picked) cartRemove(it, game.id) else cartPick(it, game.id, id) }
                         notify(if (picked) "Quitado del carrito." else "Al carrito desde ${offer["store"]}.")
@@ -284,7 +286,8 @@ private fun shippingLabel(cost: Double?, total: Any?): String = when (cost) {
  * A price that may be out of date is drawn faded and says how old it is.
  */
 @Composable
-private fun OfferCard(offer: SqlRow, fresh: Freshness?, notify: (String) -> Unit, picked: Boolean, onCart: () -> Unit,
+private fun OfferCard(offer: SqlRow, fresh: Freshness?, notify: (String) -> Unit, picked: Boolean,
+                      openStore: (String) -> Unit, onCart: () -> Unit,
                       onShipping: () -> Unit) {
     val uri = LocalUriHandler.current
     val url = offer["url"]
@@ -305,7 +308,10 @@ private fun OfferCard(offer: SqlRow, fresh: Freshness?, notify: (String) -> Unit
             }
             Thumb(offer["image_url"], size = 48.dp)
             Column(Modifier.weight(1f)) {
-                Text(offer["store"] as String, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
+                // The name leads to the store's own page in the app; the rest of the card, to its site.
+                Text(offer["store"] as String, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.clickable { openStore(offer["store"] as String) })
                 Text(offer["title"] as String, style = MaterialTheme.typography.bodySmall, maxLines = 1,
                     overflow = TextOverflow.Ellipsis, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Text(stock(offer["in_stock"]) ?: "disponible", style = MaterialTheme.typography.labelSmall,

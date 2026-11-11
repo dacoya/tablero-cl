@@ -15,6 +15,8 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material3.NavigationBar
@@ -30,6 +32,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.listSaver
@@ -40,6 +43,9 @@ import androidx.compose.ui.platform.LocalFocusManager
 import cl.tablero.app.Notify
 import cl.tablero.app.TableroApp
 import cl.tablero.core.data.Filters
+import cl.tablero.core.data.cartCount
+import cl.tablero.core.data.sinceLastReview
+import cl.tablero.core.data.watchEntries
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
@@ -56,10 +62,17 @@ private val TABS = listOf(
     Tab("ajustes", "Ajustes", Icons.Filled.Settings),
 )
 
-// A rotation must not drop the open games back to the list. Flat: three values per game.
-private val GamesSaver = listSaver<List<GameRef>, Any?>(
-    save = { refs -> refs.flatMap { listOf(it.id, it.title, it.image) } },
-    restore = { saved -> saved.chunked(3).map { GameRef(it[0] as Long, it[1] as String, it[2] as String?) } },
+/** A screen pushed over the tabs: a game, one store, or (neither) the list of stores. */
+private data class Dest(val game: GameRef? = null, val store: String? = null)
+
+// A rotation must not drop the open screens back to the tab. Flat: three values each.
+private val StackSaver = listSaver<List<Dest>, Any?>(
+    save = { stack -> stack.flatMap { listOf(it.game?.id, it.game?.title ?: it.store, it.game?.image) } },
+    restore = { saved ->
+        saved.chunked(3).map { (id, name, image) ->
+            if (id != null) Dest(game = GameRef(id as Long, name as String, image as String?)) else Dest(store = name as String?)
+        }
+    },
 )
 
 class MainActivity : ComponentActivity() {
@@ -81,8 +94,9 @@ class MainActivity : ComponentActivity() {
 }
 
 /**
- * Five tabs plus pushed screens: the stores and one of them, under Ajustes, and
- * games over any tab, a stack since a game links to its expansions and back.
+ * Five tabs plus one stack of pushed screens over them: games, a store, the
+ * list of stores. Any of them can open any other (a game's offer opens its
+ * store, a store's catalogue opens a game) and back pops one.
  * Navigation is a few pieces of state rather than a navigation library.
  */
 @Composable
@@ -93,15 +107,13 @@ private fun App(app: TableroApp, requestedTab: MutableStateFlow<String?>) {
         mutableStateOf(browseFromJson(app.prefs.catalog)
             ?: Browse(filters = Filters(onSale = true, inStockOnly = app.prefs.inStockOnly.value)))
     }
-    var games by rememberSaveable(stateSaver = GamesSaver) { mutableStateOf(emptyList<GameRef>()) }
-    var showStores by rememberSaveable { mutableStateOf(false) }
-    var store by rememberSaveable { mutableStateOf<String?>(null) }
+    var stack by rememberSaveable(stateSaver = StackSaver) { mutableStateOf(emptyList<Dest>()) }
     val focus = LocalFocusManager.current
     val snackbar = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val notify: (String) -> Unit = { scope.launch { snackbar.showSnackbar(it) } }
 
-    val goTo: (String) -> Unit = { tab = it; games = emptyList(); showStores = false; store = null }
+    val goTo: (String) -> Unit = { tab = it; stack = emptyList() }
     val wanted by requestedTab.collectAsState()
     LaunchedEffect(wanted) {
         val target = wanted ?: return@LaunchedEffect
@@ -109,14 +121,20 @@ private fun App(app: TableroApp, requestedTab: MutableStateFlow<String?>) {
         requestedTab.value = null
     }
 
-    val back: () -> Unit = {
-        when {
-            games.isNotEmpty() -> games = games.dropLast(1)
-            store != null -> store = null
-            else -> showStores = false
+    val back: () -> Unit = { stack = stack.dropLast(1) }
+    BackHandler(enabled = stack.isNotEmpty(), onBack = back)
+
+    // What the tab bar's badges count: games in the cart, followed games that moved.
+    // ponytail: the radar count reruns the whole changes query on every write;
+    // a COUNT query of its own if the bar ever lags during an update.
+    val version by db.version.collectAsState()
+    val badges by produceState(emptyMap<String, Long>(), version) {
+        value = db.read { conn ->
+            val watched = watchEntries(conn).map { it["game_id"] }.toSet()
+            val moved = sinceLastReview(conn, limit = null).map { it["game_id"] }.filter { it in watched }.toSet()
+            mapOf("carrito" to cartCount(conn), "radar" to moved.size.toLong())
         }
     }
-    BackHandler(enabled = games.isNotEmpty() || showStores, onBack = back)
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbar) },
@@ -124,9 +142,12 @@ private fun App(app: TableroApp, requestedTab: MutableStateFlow<String?>) {
             NavigationBar {
                 TABS.forEach { t ->
                     NavigationBarItem(
-                        selected = tab == t.key && games.isEmpty(),
+                        selected = tab == t.key && stack.isEmpty(),
                         onClick = { goTo(t.key) },
-                        icon = { Icon(t.icon, contentDescription = null) },
+                        icon = {
+                            val n = badges[t.key] ?: 0L
+                            BadgedBox(badge = { if (n > 0) Badge { Text("$n") } }) { Icon(t.icon, contentDescription = null) }
+                        },
                         label = { Text(t.label, maxLines = 1, softWrap = false) },
                     )
                 }
@@ -135,23 +156,29 @@ private fun App(app: TableroApp, requestedTab: MutableStateFlow<String?>) {
     ) { padding ->
         val modifier = Modifier.padding(padding)
         // The keyboard from a search would otherwise stay up over the game and its buy button.
-        val open: (GameRef) -> Unit = { focus.clearFocus(); games = games + it }
-        val current = games.lastOrNull()
-        // The tab stays composed under an open game, so coming back lands on
-        // the same scroll position and loaded pages instead of the top.
+        val open: (GameRef) -> Unit = { focus.clearFocus(); stack = stack + Dest(game = it) }
+        val openStore: (String) -> Unit = { stack = stack + Dest(store = it) }
+        // The tab and every pushed screen stay composed under the top one, so
+        // coming back lands on the same scroll position and loaded pages.
         Box(Modifier.fillMaxSize()) {
-            when {
-                tab == "inicio" -> HomeScreen(db, app.prefs, open, show = { browse = it; tab = "catalogo" }, modifier)
-                tab == "catalogo" -> CatalogScreen(db, browse, change = { browse = it; app.prefs.catalog = it.toJson() }, open, modifier)
-                tab == "radar" -> RadarScreen(db, open, modifier)
-                tab == "carrito" -> CartScreen(db, open, notify, modifier)
-                store != null -> StoreScreen(db, store!!, open, notify, onBack = { store = null }, modifier)
-                showStores -> StoresScreen(db, onBack = { showStores = false }, onStore = { store = it }, modifier)
-                else -> SettingsScreen(app, notify, onStores = { showStores = true }, modifier)
+            when (tab) {
+                "inicio" -> HomeScreen(db, app.prefs, open, show = { browse = it; tab = "catalogo" }, modifier)
+                "catalogo" -> CatalogScreen(db, browse, change = { browse = it; app.prefs.catalog = it.toJson() }, open, modifier)
+                "radar" -> RadarScreen(db, open, notify, modifier)
+                "carrito" -> CartScreen(db, open, openStore, notify, modifier)
+                else -> SettingsScreen(app, notify, onStores = { stack = stack + Dest() }, modifier)
             }
-            if (current != null) Surface(Modifier.fillMaxSize()) {
-                // Its own scroll position per game: an expansion opens at the top.
-                key(current.id) { GameScreen(db, current, notify, open, onBack = back, modifier) }
+            stack.forEachIndexed { depth, dest ->
+                // Keyed by depth too: the same game can sit in the stack twice.
+                key(depth, dest) {
+                    Surface(Modifier.fillMaxSize()) {
+                        when {
+                            dest.game != null -> GameScreen(db, dest.game, notify, open, openStore, onBack = back, modifier)
+                            dest.store != null -> StoreScreen(db, dest.store, open, notify, onBack = back, modifier)
+                            else -> StoresScreen(db, onBack = back, onStore = openStore, modifier)
+                        }
+                    }
+                }
             }
         }
     }

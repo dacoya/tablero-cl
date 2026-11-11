@@ -23,7 +23,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -65,10 +64,10 @@ private class Radar(val since: Long?, val changes: List<SqlRow>, val watched: Li
  * Everything that wants a look: the games you follow as cards (a red "!" on
  * the ones that moved), your collection, then what moved in the rest of the
  * market as a list.
- * "Marcar como revisado" moves the cursor to now.
+ * "Ya los vi" moves the cursor to now: the "!" marks and the list start over.
  */
 @Composable
-fun RadarScreen(db: Db, open: (GameRef) -> Unit, modifier: Modifier = Modifier) {
+fun RadarScreen(db: Db, open: (GameRef) -> Unit, notify: (String) -> Unit, modifier: Modifier = Modifier) {
     val version by db.version.collectAsState()
     val scope = rememberCoroutineScope()
     var kind by rememberSaveable { mutableStateOf<String?>(null) }
@@ -78,16 +77,19 @@ fun RadarScreen(db: Db, open: (GameRef) -> Unit, modifier: Modifier = Modifier) 
             Radar(getCursor(conn), sinceLastReview(conn, limit = null), watchEntries(conn), ownedEntries(conn))
         }
     }
-    val markReviewed: () -> Unit = { scope.launch { db.write { setCursor(it) }; kind = null } }
+    val markReviewed: () -> Unit = {
+        scope.launch { db.write { setCursor(it) }; kind = null; notify("Radar al día. Verás lo que cambie desde ahora.") }
+    }
 
     val r = radar
-    if (r == null) { Empty("Cargando…"); return }
+    if (r == null) { Loading(modifier); return }
     val watchedIds = r.watched.map { it["game_id"] }.toSet()
     val (followed, market) = r.changes.partition { it["game_id"] in watchedIds }
 
     LazyColumn(modifier) {
+        item { ScreenTitle("Mi radar") }
         if (r.since == null) item { StartReview(markReviewed) }
-        else item { ReviewHeader(r, markReviewed) }
+        else item { ReviewHeader(r, followed.map { it["game_id"] }.toSet().size, markReviewed) }
 
         item { SectionTitle("Sigues") }
         if (r.watched.isEmpty()) {
@@ -189,12 +191,20 @@ private fun StartReview(start: () -> Unit) {
     }
 }
 
+/** What changed since the last look, and the way to say it has been seen. */
 @Composable
-private fun ReviewHeader(r: Radar, markReviewed: () -> Unit) {
-    Row(Modifier.padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-        Text("${count(r.changes.size)} cambios desde el ${date(r.since)}",
-            style = MaterialTheme.typography.labelLarge, modifier = Modifier.weight(1f))
-        OutlinedButton(onClick = markReviewed) { Text("Marcar como revisado") }
+private fun ReviewHeader(r: Radar, followed: Int, markReviewed: () -> Unit) {
+    Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)) {
+        Row(Modifier.padding(start = 16.dp, end = 8.dp, top = 8.dp, bottom = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+            Column(Modifier.weight(1f)) {
+                Text(if (r.changes.isEmpty()) "Sin cambios" else "${count(r.changes.size)} cambios",
+                    style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                Text("desde el ${date(r.since)}" + if (followed > 0) " · $followed en juegos que sigues" else "",
+                    style = MaterialTheme.typography.bodySmall)
+            }
+            if (r.changes.isNotEmpty()) TextButton(onClick = markReviewed) { Text("Ya los vi") }
+        }
     }
 }
 

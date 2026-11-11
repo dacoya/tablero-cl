@@ -53,7 +53,7 @@ fun SettingsScreen(app: TableroApp, notify: (String) -> Unit, onStores: () -> Un
     val reschedule = { Schedule.apply(context, prefs) }
 
     Column(modifier.verticalScroll(rememberScrollState())) {
-        Text("Ajustes", style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(16.dp))
+        ScreenTitle("Ajustes")
 
         ListItem(
             headlineContent = { Text("Tiendas") },

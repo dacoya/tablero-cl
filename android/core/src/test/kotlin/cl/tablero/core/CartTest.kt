@@ -22,6 +22,9 @@ class CartTest {
         assertEquals(listOf(atB), pinned(catan.offers, atB.productId))
         assertEquals(catan.offers, pinned(catan.offers, null))
         assertEquals(catan.offers, pinned(catan.offers, -1L)) // picked offer gone: back to all
+        // The plan honours the pick even though a is cheaper.
+        val plan = planCart(listOf(catan.copy(pin = atB.productId)), emptyMap())
+        assertEquals(listOf("b"), plan.orders.map { it.store })
     }
 
     @Test

@@ -76,10 +76,7 @@ fun StoresScreen(db: Db, onBack: () -> Unit, onStore: (String) -> Unit, modifier
     val start = rememberStartUpdate()
 
     Column(modifier) {
-        Row(Modifier.padding(end = 16.dp, top = 8.dp, bottom = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically) {
-            Back(onBack)
-            Text("Tiendas", style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f))
+        ScreenTitle("Tiendas", onBack) {
             if (updates.active == null) {
                 Button(onClick = { start(emptyList()) }) { Text("Actualizar ${scrapeable.size}") }
             } else {
