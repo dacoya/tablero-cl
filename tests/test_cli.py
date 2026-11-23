@@ -229,3 +229,48 @@ def test_snapshot_refuses_to_overwrite(db_conn, tmp_path):
     with pytest.raises(FileExistsError):
         db_mod.snapshot(db_conn, target)
     assert target.read_bytes() == b"keep me"
+
+
+def test_catalog_snapshot_drops_personal_tables(db_conn, tmp_path):
+    from tablero import db as db_mod
+
+    db_conn.execute("INSERT INTO cursor(name, ts) VALUES ('review', 1)")
+    db_conn.execute("INSERT INTO store_fav(store) VALUES ('x')")
+    db_conn.commit()
+    out = db_mod.snapshot(db_conn, tmp_path / "pub.db", catalog=True)
+
+    copy = db_mod.connect(out, read_only=True)
+    try:
+        counts = db_mod.table_counts(copy)
+        assert all(counts[t] == 0 for t in db_mod.USER_TABLES)
+        assert counts["product"] == db_mod.table_counts(db_conn)["product"]
+    finally:
+        copy.close()
+
+
+def test_lean_snapshot_keeps_matched_bgg_and_drops_indexes(db_conn, tmp_path):
+    from tablero import db as db_mod
+
+    db_conn.execute("INSERT INTO game(norm, title, created_at, bgg_id) VALUES ('a','A',1,7)")
+    for i in (7, 8):
+        db_conn.execute("INSERT INTO bgg(id, name, norm, usersrated, is_expansion) VALUES (?, 'n', 'n', 1, 0)", (i,))
+    db_conn.commit()
+    out = db_mod.snapshot(db_conn, tmp_path / "lean.db", lean=True)
+
+    copy = db_mod.connect(out, read_only=True)
+    try:
+        assert [r[0] for r in copy.execute("SELECT id FROM bgg")] == [7]
+        assert copy.execute("SELECT COUNT(*) FROM sqlite_master WHERE name LIKE 'idx_%'").fetchone()[0] == 0
+    finally:
+        copy.close()
+
+
+def test_snapshot_flags_reach_db(db_conn, tmp_path, monkeypatch):
+    from tablero import cli, db as db_mod
+
+    seen = {}
+    monkeypatch.setattr(cli, "_open_db", lambda: db_conn)
+    monkeypatch.setattr(db_mod, "snapshot", lambda c, t, catalog=False, lean=False: seen.update(c=catalog, l=lean) or tmp_path / "x.db")
+    monkeypatch.setattr(type(tmp_path), "stat", lambda self, **k: type("S", (), {"st_size": 0})(), raising=False)
+    cli.main(["snapshot", "--lean", str(tmp_path / "x.db")])
+    assert seen == {"c": False, "l": True}

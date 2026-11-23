@@ -1,0 +1,43 @@
+name: scrape
+
+# Daily scrape. Publishes two rolling release assets:
+#   tablero.db.gz       lean copy the app downloads
+#   tablero-full.db.gz  full copy the next run starts from (keeps price history
+#                       and every BGG row, which the lean copy drops)
+on:
+  schedule:
+    - cron: "0 7 * * *"   # 03:00-04:00 in Chile
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency: scrape
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TABLERO_DATA_DIR: ${{ github.workspace }}/data
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -e .
+      - name: Fetch previous catalogue
+        run: |
+          mkdir -p data
+          gh release view data >/dev/null 2>&1 || gh release create data --title "data" --notes "Rolling catalogue, replaced by the scrape workflow."
+          gh release download data -p tablero-full.db.gz -D data 2>/dev/null && gunzip -c data/tablero-full.db.gz > data/tablero.db && rm data/tablero-full.db.gz || echo "no previous catalogue"
+      - run: tablero update
+      - name: Publish
+        run: |
+          mkdir out
+          tablero snapshot --lean out/tablero.db
+          tablero snapshot --catalog out/tablero-full.db
+          gzip -9 out/*.db
+          gh release upload data out/tablero.db.gz out/tablero-full.db.gz --clobber

@@ -144,7 +144,7 @@ def cmd_snapshot(args) -> int:
     target = args.path or (paths.DATA_DIR / "exports" / time.strftime("tablero-%Y%m%d-%H%M.db"))
     conn = _open_db()
     try:
-        written = db_mod.snapshot(conn, target)
+        written = db_mod.snapshot(conn, target, catalog=args.catalog, lean=args.lean)
     except FileExistsError as exc:
         raise CommandError(str(exc))
     finally:
@@ -233,6 +233,10 @@ def build_parser() -> argparse.ArgumentParser:
                        help="copia de la base en un solo archivo, para importar en el teléfono")
     p.add_argument("path", nargs="?", metavar="ARCHIVO",
                    help="destino (default: data/exports/tablero-AAAAMMDD-HHMM.db)")
+    p.add_argument("--catalog", action="store_true",
+                   help="sin datos personales (seguimiento, carrito...)")
+    p.add_argument("--lean", action="store_true",
+                   help="como --catalog, sin filas BGG sin usar ni índices: lo que descarga la app")
 
     p = sub.add_parser("fixtures",
                        help="guardar páginas y vectores de referencia (paridad con Android)")

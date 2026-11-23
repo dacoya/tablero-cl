@@ -180,7 +180,11 @@ def upgrade(conn: sqlite3.Connection, existing: int) -> None:
     conn.commit()
 
 
-def snapshot(conn: sqlite3.Connection, target) -> Path:
+# Personal state, never published: the phone keeps its own.
+USER_TABLES = ("watchlist", "owned", "store_shipping", "store_fav", "cart", "cursor")
+
+
+def snapshot(conn: sqlite3.Connection, target, catalog: bool = False, lean: bool = False) -> Path:
     """
     Write a consistent single-file copy of the database to `target`.
 
@@ -194,6 +198,23 @@ def snapshot(conn: sqlite3.Connection, target) -> Path:
         raise FileExistsError(f"{target} already exists")
     target.parent.mkdir(parents=True, exist_ok=True)
     conn.execute("VACUUM INTO ?", (str(target),))
+    if catalog or lean:
+        # What the cron publishes: the scraped catalogue without personal tables.
+        copy = sqlite3.connect(target)
+        try:
+            with copy:
+                for table in USER_TABLES:
+                    copy.execute(f"DELETE FROM {table}")
+                if lean:
+                    # For the phone, which never rematches: keep only the BGG rows games
+                    # point at, and drop plain indexes (the app's initDb recreates them).
+                    copy.execute("DELETE FROM bgg WHERE id NOT IN (SELECT bgg_id FROM game WHERE bgg_id IS NOT NULL)")
+                    for (name,) in copy.execute(
+                            "SELECT name FROM sqlite_master WHERE type='index' AND sql IS NOT NULL").fetchall():
+                        copy.execute(f"DROP INDEX {name}")
+            copy.execute("VACUUM")
+        finally:
+            copy.close()
     return target
 
 
