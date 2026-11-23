@@ -25,7 +25,6 @@ import cl.tablero.core.data.query
 import cl.tablero.core.data.recordFailure
 import cl.tablero.core.data.sinceLastReview
 import cl.tablero.core.data.stores
-import cl.tablero.core.data.unreachableStores
 import cl.tablero.core.data.watchAlerts
 import cl.tablero.core.scrape.Http
 import cl.tablero.core.scrape.Site
@@ -34,21 +33,19 @@ import cl.tablero.core.scrape.sites
 import cl.tablero.core.scrape.updateStores
 
 /**
- * The daily update, from two sources. First the catalogue the scrape workflow
- * publishes, swapped in with the user's own tables kept. Then, scraped here,
- * the stores the workflow could not reach (Cloudflare blocks its servers on
- * some). Naming stores skips the download and scrapes just those, here.
+ * A manual update, one of two kinds. With no stores named: sync, i.e. the
+ * catalogue the scrape workflow publishes, swapped in with the user's own
+ * tables kept. With stores named: those scraped here on the phone, for the
+ * ones the workflow cannot reach (Cloudflare blocks its servers on some).
  *
- * ponytail: a sync replaces the phone-scraped rows with the workflow's stale
- * ones, and the phone scrapes them again right after; the price history the
- * phone recorded for those stores in between is lost. Carry their price_obs
- * across in carryUserState if that history starts to matter.
+ * ponytail: the next sync replaces phone-scraped rows with the workflow's
+ * stale ones, losing what the phone recorded for those stores. Carry their
+ * product/price_obs across in carryUserState if that starts to matter.
  */
 class UpdateWorker(context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
-        // One update at a time across the daily job and manual ones, and
-        // never during an import.
+        // One update at a time, and never during an import.
         val db = (applicationContext as TableroApp).db
         if (!db.busy.tryLock()) return Result.success(workDataOf(KEY_SKIPPED to true))
         try {
@@ -65,16 +62,12 @@ class UpdateWorker(context: Context, params: WorkerParameters) : CoroutineWorker
         val notes = mutableListOf<String>()
 
         val synced = if (wanted.isNotEmpty()) null else sync(db, notes)
-        val targets = db.read { conn ->
-            val all = sites()
-            if (wanted.isNotEmpty()) all.filter { it.name in wanted }
-            else unreachableStores(conn, all.map { it.name }).let { names -> all.filter { it.name in names } }
-        }
+        val targets = sites().filter { it.name in wanted }
         val scraped = if (targets.isEmpty()) null else scrape(db, targets, notes)
 
         if (synced == null && scraped == null) {
-            // Nothing new: the catalogue was current and no store needed the phone.
-            return if (notes.isEmpty()) Result.success(workDataOf(KEY_PRODUCTS to db.read(::productCount)))
+            // Nothing new: the catalogue was already current.
+            return if (notes.isEmpty()) Result.success(workDataOf(KEY_CURRENT to true))
                 else Result.failure(workDataOf(KEY_FAILED to notes.toTypedArray()))
         }
 
@@ -167,11 +160,13 @@ class UpdateWorker(context: Context, params: WorkerParameters) : CoroutineWorker
         const val KEY_STORE = "store"
         const val KEY_NEW = "new"
         const val KEY_FAILED = "failed"
+        /** A sync that found the catalogue already here. */
+        const val KEY_CURRENT = "current"
         private const val NOTIFICATION_ID = 1
 
         /**
-         * Queue an update: the catalogue plus the stores it could not reach,
-         * or, when `stores` is not empty, just those scraped on the phone.
+         * Queue an update: the catalogue sync, or, when `stores` is not
+         * empty, just those scraped on the phone.
          * WiFi only unless `mobileData`. One at a time; asking again while
          * one runs is a no-op.
          */

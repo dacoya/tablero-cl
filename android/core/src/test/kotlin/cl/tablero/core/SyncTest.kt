@@ -7,7 +7,6 @@ import cl.tablero.core.data.catalogStamp
 import cl.tablero.core.data.exec
 import cl.tablero.core.data.initDb
 import cl.tablero.core.data.query
-import cl.tablero.core.data.unreachableStores
 import java.io.File
 import java.nio.file.Files
 import kotlin.test.Test
@@ -57,13 +56,5 @@ class SyncTest {
             assertEquals(500L, catalogStamp(c))
             assertEquals(0, c.query("PRAGMA database_list").count { it["name"] == "old" })
         }
-    }
-
-    @Test
-    fun unreachableIsLatestRunFailedOrNeverRun() = BundledSQLiteDriver().open(":memory:").use { c ->
-        initDb(c)
-        c.exec("""INSERT INTO scrape_run(store, ts, n_products, success) VALUES
-                  ('ok', 1, 5, 0), ('ok', 2, 5, 1), ('blocked', 1, 5, 1), ('blocked', 2, 0, 0)""")
-        assertEquals(listOf("blocked", "new"), unreachableStores(c, listOf("ok", "blocked", "new")))
     }
 }

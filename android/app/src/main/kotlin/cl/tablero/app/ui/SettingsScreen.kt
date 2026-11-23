@@ -13,7 +13,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ListItem
@@ -37,7 +36,6 @@ import android.net.Uri
 import cl.tablero.app.BuildConfig
 import cl.tablero.app.Db
 import cl.tablero.app.Prefs
-import cl.tablero.app.Schedule
 import cl.tablero.app.TableroApp
 import cl.tablero.app.count
 import cl.tablero.core.data.importBggCsv
@@ -48,26 +46,20 @@ import kotlinx.coroutines.launch
 /** Settings, the laptop round trip, and what is in the database. */
 @Composable
 fun SettingsScreen(app: TableroApp, notify: (String) -> Unit, onStores: () -> Unit, modifier: Modifier = Modifier) {
-    val context = LocalContext.current
     val prefs = app.prefs
-    val reschedule = { Schedule.apply(context, prefs) }
 
     Column(modifier.verticalScroll(rememberScrollState())) {
         ScreenTitle("Ajustes")
 
         ListItem(
             headlineContent = { Text("Tiendas") },
-            supportingContent = { Text("Actualizar ahora, ver cuáles fallaron y entrar a cada catálogo.") },
+            supportingContent = { Text("Sincronizar el catálogo y entrar a cada tienda.") },
             trailingContent = { Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null) },
             modifier = Modifier.clickable(onClick = onStores),
         )
 
         Section("Actualización")
-        Toggle("Actualizar cada día", "En segundo plano, de madrugada (4:00).", prefs.autoUpdate, reschedule)
-        Toggle("Solo con WiFi", "Una actualización completa usa ~150 MB.", prefs.wifiOnly, reschedule)
-        Toggle("Solo cargando", "La actualización diaria espera al cargador.", prefs.chargingOnly, reschedule)
-        Choice("Tiendas favoritas", "Marca favoritas con la estrella en Tiendas.", prefs.favoriteDays, listOf(1 to "Cada día", 7 to "Cada semana"))
-        Choice("Resto de las tiendas", "Las que casi no cambian se pueden refrescar menos.", prefs.otherDays, listOf(7 to "Cada semana", 30 to "Cada mes"))
+        Toggle("Solo con WiFi", "Sincronizar y actualizar tiendas esperan una red WiFi.", prefs.wifiOnly)
 
         Section("Avisos")
         Toggle("Precio objetivo", "Cuando un juego que sigues llega a tu precio.", prefs.notifyTargets)
@@ -184,31 +176,12 @@ private fun Section(title: String) =
     Text(title, style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary,
         modifier = Modifier.padding(start = 16.dp, top = 20.dp, bottom = 4.dp))
 
-/** A setting with a few fixed values, one chip each. */
 @Composable
-private fun Choice(title: String, detail: String, number: Prefs.Number, options: List<Pair<Int, String>>) {
-    val current by number.flow.collectAsState()
-    ListItem(
-        headlineContent = { Text(title) },
-        supportingContent = {
-            Column {
-                Text(detail)
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    options.forEach { (value, label) ->
-                        FilterChip(selected = current == value, onClick = { number.value = value }, label = { Text(label) })
-                    }
-                }
-            }
-        },
-    )
-}
-
-@Composable
-private fun Toggle(title: String, detail: String, flag: Prefs.Flag, changed: () -> Unit = {}) {
+private fun Toggle(title: String, detail: String, flag: Prefs.Flag) {
     val on by flag.flow.collectAsState()
     ListItem(
         headlineContent = { Text(title) },
         supportingContent = { Text(detail) },
-        trailingContent = { Switch(checked = on, onCheckedChange = { flag.value = it; changed() }) },
+        trailingContent = { Switch(checked = on, onCheckedChange = { flag.value = it }) },
     )
 }

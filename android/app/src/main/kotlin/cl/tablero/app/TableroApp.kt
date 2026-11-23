@@ -20,9 +20,9 @@ class TableroApp : Application() {
             NotificationChannel(UPDATE_CHANNEL, "Actualización en curso", NotificationManager.IMPORTANCE_LOW),
             NotificationChannel(ALERT_CHANNEL, "Avisos de precio y cambios", NotificationManager.IMPORTANCE_DEFAULT),
         ))
-        Schedule.apply(this, prefs)
-        // 1.9.4 and older scheduled a BGG rank download; its worker is gone.
-        WorkManager.getInstance(this).cancelUniqueWork("bgg-ranks")
+        // Jobs older versions scheduled: the BGG rank download (1.9.4 and
+        // older) and the daily update (1.10.1 and older). Updates are manual now.
+        WorkManager.getInstance(this).run { cancelUniqueWork("bgg-ranks"); cancelUniqueWork("daily-update") }
     }
 
     companion object {

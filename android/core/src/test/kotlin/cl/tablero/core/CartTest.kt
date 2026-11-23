@@ -2,7 +2,6 @@ package cl.tablero.core
 
 import cl.tablero.core.data.CartItem
 import cl.tablero.core.data.CartOffer
-import cl.tablero.core.data.dueStores
 import cl.tablero.core.data.pinned
 import cl.tablero.core.data.planCart
 import kotlin.test.Test
@@ -53,16 +52,5 @@ class CartTest {
         val plan = planCart(listOf(gone, azul), emptyMap())
         assertEquals(listOf(gone), plan.unavailable)
         assertEquals(25_000.0, plan.total)
-    }
-
-    @Test
-    fun dueByCadence() {
-        val day = 86_400L
-        val now = 100 * day
-        val last = mapOf("fav" to now - day, "slow" to now - 3 * day, "old" to now - 8 * day, "failed" to now - 2 * day)
-        val due = dueStores(listOf("fav", "slow", "old", "new", "failed"), setOf("fav", "failed"), last,
-            favDays = 1, otherDays = 7, now = now)
-        // "new" was never scraped; "failed" last succeeded two days ago, so it is retried.
-        assertEquals(listOf("fav", "old", "new", "failed"), due)
     }
 }

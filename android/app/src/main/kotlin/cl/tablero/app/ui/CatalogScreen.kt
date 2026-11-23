@@ -48,7 +48,7 @@ import org.json.JSONException
 import org.json.JSONObject
 
 private const val PAGE = 50
-private val GUTTER = 12.dp
+internal val GUTTER = 12.dp
 
 /** "Mejor oferta": most pesos saved, list price minus offer price, biggest first. */
 const val BEST_DEAL = "savings"

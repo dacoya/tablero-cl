@@ -16,9 +16,13 @@ no puede scrapear, rankings de BoardGameGeek y la copia que importa la app).
 
 ## App Android
 
-`android/` es una app personal que scrapea directamente desde el teléfono, sin
-el PC de por medio. Reutiliza `scripts/schema.sql` y el registro de tiendas, y
-se prueba contra los mismos fixtures que la versión Python.
+`android/` es una app personal. Un workflow de GitHub Actions
+(`.github/workflows/scrape.yml`) scrapea todas las tiendas cada día a las 07:00 UTC
+y publica la base en el release `data`; la app la descarga con **Sincronizar** y
+conserva lo tuyo (seguimiento, colección, carrito, favoritas, despachos). Las
+tiendas que bloquean a GitHub se pueden actualizar una por una desde el teléfono.
+Reutiliza `scripts/schema.sql` y el registro de tiendas, y se prueba contra los
+mismos fixtures que la versión Python.
 
 - **Inicio**: buscador (tolera errores de tipeo), categorías y vitrinas
   (mayores descuentos, novedades, mejor valor); cada una abre el catálogo ya filtrado.
@@ -33,13 +37,14 @@ se prueba contra los mismos fixtures que la versión Python.
   colección y lo que cambió en el resto del mercado desde tu última revisión.
 - **Carrito**: los juegos que quieres comprar y cuántos; la app reparte la compra
   entre tiendas para el menor total con despacho, y copia la lista.
-- **Ajustes**: **Tiendas** (actualizar una o todas; las que fallaron se marcan en
-  rojo; la estrella marca favoritas), actualización diaria (4:00, con WiFi y
-  cargando, por defecto; favoritas cada día o semana, el resto cada semana o mes),
-  avisos, valores por defecto de las listas, importar/exportar la base.
+- **Ajustes**: **Tiendas** (grilla de tiendas, favoritas primero; las que fallaron
+  se marcan en rojo; **Sincronizar** descarga el catálogo; dentro de cada tienda,
+  **Actualizar** la scrapea desde el teléfono), solo con WiFi, avisos, valores por
+  defecto de las listas, importar/exportar la base. No hay actualización automática.
 
-Scrapea 48 de las 50 tiendas. `calabozotienda` y `araucania` quedan "solo PC":
-desde esta red no se pudo guardar ninguna página suya para probar el parser.
+El teléfono puede scrapear 48 de las 50 tiendas. `calabozotienda` y `araucania`
+quedan "solo PC": desde esta red no se pudo guardar ninguna página suya para
+probar el parser.
 
 ### Instalar
 

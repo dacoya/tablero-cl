@@ -1,98 +1,93 @@
 package cl.tablero.app.ui
 
-import coil3.compose.AsyncImage
-import cl.tablero.app.isWebUrl
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.draw.clip
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Card
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.work.Data
 import androidx.work.WorkInfo
 import cl.tablero.app.Db
-import cl.tablero.app.TableroApp
 import cl.tablero.app.UpdateWorker
 import cl.tablero.app.ago
 import cl.tablero.app.count
+import cl.tablero.app.isWebUrl
+import cl.tablero.core.data.CATALOG_CURSOR
 import cl.tablero.core.data.SqlRow
-import cl.tablero.core.data.dueAt
 import cl.tablero.core.data.favSet
 import cl.tablero.core.data.favStores
-import cl.tablero.core.data.lastSuccess
+import cl.tablero.core.data.getCursor
 import cl.tablero.core.data.stores
-import kotlinx.coroutines.launch
 import cl.tablero.core.scrape.registry
-import cl.tablero.core.scrape.sites
+import coil3.compose.AsyncImage
+import kotlinx.coroutines.launch
 
 /**
- * Store status and updates. Stores the phone cannot scrape yet still list
- * with their imported data, marked "solo PC", so it is clear where those
- * prices came from; a store whose last scrape failed says so.
+ * The stores as a grid of cards, favourites first, and the catalogue sync:
+ * one download of what the daily scrape workflow published. A store's own
+ * page has the button to scrape it from the phone.
  */
 @Composable
 fun StoresScreen(db: Db, onBack: () -> Unit, onStore: (String) -> Unit, modifier: Modifier = Modifier) {
     val context = LocalContext.current
-    val prefs = (context.applicationContext as TableroApp).prefs
-    val favDays by prefs.favoriteDays.flow.collectAsState()
-    val otherDays by prefs.otherDays.flow.collectAsState()
     val list = rememberStoreRows(db)
     val scope = rememberCoroutineScope()
-    val scrapeable = remember { sites().map { it.name }.toSet() }
     val updates = rememberUpdates()
     val start = rememberStartUpdate()
 
     Column(modifier) {
         ScreenTitle("Tiendas", onBack) {
-            if (updates.active == null) {
-                Button(onClick = { start(emptyList()) }) { Text("Actualizar ${scrapeable.size}") }
-            } else {
-                OutlinedButton(onClick = { updates.stop(context) }) { Text("Detener") }
-            }
+            if (updates.active == null) Button(onClick = { start(emptyList()) }) { Text("Sincronizar") }
+            else OutlinedButton(onClick = { updates.stop(context) }) { Text("Detener") }
         }
-        updates.shown?.let { UpdateStatus(it) }
-        LazyColumn {
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(160.dp),
+            contentPadding = PaddingValues(GUTTER),
+            horizontalArrangement = Arrangement.spacedBy(GUTTER), verticalArrangement = Arrangement.spacedBy(GUTTER),
+        ) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                Column {
+                    Facts(list.catalog?.let { "Catálogo con datos de ${ago(it)}." } ?: "Aún sin sincronizar.")
+                    updates.shown?.let { UpdateStatus(it) }
+                }
+            }
             items(list.rows, key = { it["name"] as String }) { store ->
                 val name = store["name"] as String
                 val favourite = name in list.favourites
-                StoreRow(store, canScrape = name in scrapeable, idle = updates.active == null,
-                    favourite = favourite,
-                    due = dueAt(name, list.favourites, list.last, favDays, otherDays).takeIf { list.last[name] != null },
-                    toggleFavourite = { scope.launch { db.write { favSet(it, name, !favourite) } } },
-                    open = onStore) { start(listOf(it)) }
+                StoreCard(store, favourite, open = onStore,
+                    toggleFavourite = { scope.launch { db.write { favSet(it, name, !favourite) } } })
             }
         }
     }
@@ -101,12 +96,13 @@ fun StoresScreen(db: Db, onBack: () -> Unit, onStore: (String) -> Unit, modifier
 private class StoreList(
     val rows: List<SqlRow> = emptyList(),
     val favourites: Set<String> = emptySet(),
-    val last: Map<String, Long> = emptyMap(),
+    /** Newest scrape in the synced catalogue, unix seconds; null before the first sync. */
+    val catalog: Long? = null,
 )
 
 /**
  * Every store with data, plus registry stores with none yet, so a fresh
- * install shows what it can scrape instead of an empty screen. Favourites first.
+ * install shows them all instead of an empty screen. Favourites first.
  */
 @Composable
 private fun rememberStoreRows(db: Db): StoreList {
@@ -119,61 +115,50 @@ private fun rememberStoreRows(db: Db): StoreList {
             val rows = (known + registry().filter { it.first !in names }
                 .map { mapOf("name" to it.first, "n_products" to 0L, "last_scrape" to null, "last_success" to null) })
                 .sortedWith(compareBy({ it["name"] !in favourites }, { it["name"] as String }))
-            StoreList(rows, favourites, lastSuccess(conn))
+            StoreList(rows, favourites, getCursor(conn, CATALOG_CURSOR))
         }
     }
     return list
 }
 
+/** A store laid out like a product card: its logo as the photo, the star in the corner. */
 @Composable
-private fun StoreRow(store: SqlRow, canScrape: Boolean, idle: Boolean, favourite: Boolean, due: Long?,
-                     toggleFavourite: () -> Unit, open: (String) -> Unit, update: (String) -> Unit) {
+private fun StoreCard(store: SqlRow, favourite: Boolean, open: (String) -> Unit, toggleFavourite: () -> Unit) {
     val name = store["name"] as String
     val failed = store["last_success"] == 0L
-    ListItem(
-        modifier = Modifier.clickable { open(name) },
-        leadingContent = {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = toggleFavourite) {
-                    Icon(if (favourite) Icons.Filled.Star else Icons.Outlined.Star,
-                        contentDescription = if (favourite) "Quitar de favoritas" else "Marcar favorita",
-                        tint = if (favourite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
-                }
-                Logo(name)
+    Card(
+        onClick = { open(name) },
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLowest),
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+    ) {
+        Box {
+            Logo(name, Modifier.fillMaxWidth().aspectRatio(1f))
+            IconButton(onClick = toggleFavourite, modifier = Modifier.align(Alignment.TopEnd)) {
+                Icon(if (favourite) Icons.Filled.Star else Icons.Outlined.Star,
+                    contentDescription = if (favourite) "Quitar de favoritas" else "Marcar favorita",
+                    tint = if (favourite) MaterialTheme.colorScheme.primary else Color(0x99222222))
             }
-        },
-        headlineContent = { Title(name) },
-        supportingContent = {
-            Text(
-                "${count(store["n_products"])} productos · " + (if (failed) "falló " else "") + ago(store["last_scrape"]) +
-                    (if (canScrape && due != null) " · ${dueIn(due)}" else ""),
-                style = MaterialTheme.typography.bodySmall,
-                color = if (failed) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        },
-        trailingContent = {
-            if (canScrape) TextButton(onClick = { update(name) }, enabled = idle) { Text("Actualizar") }
-            else Text("solo PC", style = MaterialTheme.typography.labelSmall)
-        },
-    )
-}
-
-/** When the scheduled run takes a store again: "toca hoy", "en 3 d". */
-private fun dueIn(due: Long): String {
-    val days = (due - System.currentTimeMillis() / 1000 + 86_399) / 86_400
-    return if (days <= 0) "toca hoy" else "toca en $days d"
+        }
+        CardText((store["city"] as String?) ?: "Chile", null, name) {
+            Text("${count(store["n_products"])} productos", style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Bold)
+            Text((if (failed) "Falló " else "") + ago(store["last_scrape"]),
+                style = MaterialTheme.typography.labelSmall,
+                color = if (failed) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+    }
 }
 
 @Composable
 private fun UpdateStatus(info: WorkInfo) {
-    Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp)) {
+    Card(Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
         Column(Modifier.padding(12.dp)) {
             when (info.state) {
                 WorkInfo.State.ENQUEUED, WorkInfo.State.BLOCKED -> Text("Esperando conexión WiFi… (cámbialo en Ajustes)")
                 WorkInfo.State.RUNNING -> Running(info.progress)
                 WorkInfo.State.SUCCEEDED -> Finished(info.outputData)
-                WorkInfo.State.FAILED -> Text("La actualización falló.")
-                WorkInfo.State.CANCELLED -> Text("Actualización detenida. Lo ya scrapeado quedó guardado.")
+                WorkInfo.State.FAILED -> Finished(info.outputData, failedRun = true)
+                WorkInfo.State.CANCELLED -> Text("Actualización detenida.")
             }
         }
     }
@@ -185,6 +170,7 @@ private fun Running(progress: Data) {
     val total = progress.getInt(UpdateWorker.KEY_TOTAL, 0)
     val store = progress.getString(UpdateWorker.KEY_STORE)
     Text(when {
+        store == "catálogo" -> "Descargando el catálogo…"
         total == 0 -> "Empezando…"
         done == 0 -> "Actualizando ${store ?: "$total tiendas"}…"
         else -> "[$done/$total] $store · ${count(progress.getInt(UpdateWorker.KEY_PRODUCTS, 0))} productos"
@@ -196,31 +182,32 @@ private fun Running(progress: Data) {
 }
 
 @Composable
-private fun Finished(out: Data) {
-    if (out.getBoolean(UpdateWorker.KEY_SKIPPED, false)) {
-        Text("Había otra actualización o una importación en curso; esta no se hizo.")
-        return
-    }
+private fun Finished(out: Data, failedRun: Boolean = false) {
     val failed = out.getNullableStringArray(UpdateWorker.KEY_FAILED).orEmpty().filterNotNull()
-    Text("Última actualización: ${count(out.getInt(UpdateWorker.KEY_PRODUCTS, 0))} productos, " +
-        "${count(out.getInt(UpdateWorker.KEY_NEW, 0))} nuevos, ${failed.size} con error.")
+    when {
+        out.getBoolean(UpdateWorker.KEY_SKIPPED, false) ->
+            Text("Había otra actualización o una importación en curso; esta no se hizo.")
+        out.getBoolean(UpdateWorker.KEY_CURRENT, false) -> Text("El catálogo ya estaba al día.")
+        failedRun -> Text("La actualización falló.")
+        else -> Text("Última actualización: ${count(out.getInt(UpdateWorker.KEY_PRODUCTS, 0))} productos, " +
+            "${count(out.getInt(UpdateWorker.KEY_NEW, 0))} nuevos, ${failed.size} con error.")
+    }
     failed.forEach { Facts(it) }
 }
 
-/** The store's own logo, or its initial on a tile when there is none. */
+/** The store's own logo on its background, or its initial on a tile when there is none. */
 @Composable
-private fun Logo(name: String) {
-    val tile = Modifier.size(40.dp).clip(RoundedCornerShape(8.dp))
+private fun Logo(name: String, modifier: Modifier) {
     val logo = STORE_LOGOS[name]
     if (logo != null) {
         AsyncImage(
             model = logo.url.takeIf(::isWebUrl), contentDescription = null, contentScale = ContentScale.Fit,
-            modifier = tile.background(if (logo.dark) Color.Black else Color.White).padding(2.dp),
+            modifier = modifier.background(if (logo.dark) Color.Black else Color.White).padding(16.dp),
         )
     } else {
-        Box(tile.background(MaterialTheme.colorScheme.secondaryContainer), contentAlignment = Alignment.Center) {
-            Text(name.take(1).uppercase(), fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSecondaryContainer)
+        Box(modifier.background(MaterialTheme.colorScheme.secondaryContainer), contentAlignment = Alignment.Center) {
+            Text(name.take(1).uppercase(), fontSize = 64.sp, fontWeight = FontWeight.Black,
+                color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.5f))
         }
     }
 }

@@ -90,17 +90,3 @@ fun carryUserState(conn: SQLiteConnection, old: File): Int {
         conn.execSQL("DETACH DATABASE old")
     }
 }
-
-/**
- * Of `names`, the stores whose latest scrape in this database failed or that
- * were never scraped: after a sync, the ones the workflow could not reach,
- * which the phone then tries itself. Once the phone succeeds they drop out
- * until the next catalogue brings the workflow's failure back.
- */
-fun unreachableStores(conn: SQLiteConnection, names: List<String>): List<String> {
-    val latest = conn.query("""
-        SELECT r.store, r.success FROM scrape_run r
-         WHERE r.ts = (SELECT MAX(ts) FROM scrape_run WHERE store = r.store)""")
-        .associate { it["store"] as String to it["success"] as Long }
-    return names.filter { latest[it] != 1L }
-}
