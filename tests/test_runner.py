@@ -188,3 +188,22 @@ def test_playkingdom_parses_a_product_block():
         </article>""", "html.parser")
     [row] = next(s for s in scrape.sites if s["name"] == "playkingdom")["parser"](html)
     assert (row["title"], row["original_price"], row["url"]) == ("Catan", "$40.000", "https://playkingdom.cl/catan")
+
+
+def test_pages_every_listed_base_url(monkeypatch):
+    """zonaxgamers lists its games only per subcategory: each URL is paged in turn."""
+    fetched = []
+    monkeypatch.setattr(runner, "fetch_html", lambda url: fetched.append(url) or url)
+    monkeypatch.setattr(runner.time, "sleep", lambda s: None)
+    pages = {
+        "https://x.test/a": [_row("A1", "https://x.test/1")],
+        "https://x.test/b": [_row("B1", "https://x.test/2"), _row("A1", "https://x.test/1")],
+    }
+    site = {"name": "fake", "base_url": "https://x.test/a https://x.test/b",
+            "pagination": "page_param", "parser": lambda url: pages.get(url, [])}
+
+    rows = runner.scrape_site(site)
+
+    assert [r["url"] for r in rows] == ["https://x.test/1", "https://x.test/2"]
+    assert fetched == ["https://x.test/a", "https://x.test/a?page=2",
+                       "https://x.test/b", "https://x.test/b?page=2"]

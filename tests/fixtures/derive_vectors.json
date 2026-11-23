@@ -5483,54 +5483,27 @@
  {
   "store": "chileboardgames",
   "record": {
-   "title": "7 Wonders Architects el juego de mesa",
-   "original_price": "$36,990",
-   "current_price": null,
-   "stock_status": "Agotado",
-   "url": "https://chileboardgames.com/collections/all/products/pre-venta-7-wonders-architects",
-   "image": "https://chileboardgames.com/cdn/shop/products/20210922160521_8228_360x.jpg?v=1633968126"
-  },
-  "row": {
-   "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/pre-venta-7-wonders-architects",
-   "url": "https://chileboardgames.com/collections/all/products/pre-venta-7-wonders-architects",
-   "title_raw": "7 Wonders Architects el juego de mesa",
-   "title": "7 Wonders Architects",
-   "norm": "7 wonders architects",
-   "kind": "game",
-   "price_original": 36990.0,
-   "price_current": null,
-   "price_eff": 36990.0,
-   "in_stock": 0,
-   "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/products/20210922160521_8228_360x.jpg?v=1633968126"
-  },
-  "rejected": null
- },
- {
-  "store": "chileboardgames",
-  "record": {
    "title": "8Bit Box",
-   "original_price": "$34,990",
-   "current_price": "$24,490",
+   "original_price": "$34,990 CLP",
+   "current_price": null,
    "stock_status": null,
-   "url": "https://chileboardgames.com/collections/all/products/8bit-box",
-   "image": "https://chileboardgames.com/cdn/shop/products/8bitbox-cajachileboardgames_360x.jpg?v=1586013167"
+   "url": "https://chileboardgames.com/products/8bit-box",
+   "image": "https://chileboardgames.com/cdn/shop/products/8bitbox-cajachileboardgames.jpg?v=1586013167&width=240"
   },
   "row": {
    "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/8bit-box",
-   "url": "https://chileboardgames.com/collections/all/products/8bit-box",
+   "url_canon": "chileboardgames.com/products/8bit-box",
+   "url": "https://chileboardgames.com/products/8bit-box",
    "title_raw": "8Bit Box",
    "title": "8Bit Box",
    "norm": "8bit box",
    "kind": "game",
    "price_original": 34990.0,
-   "price_current": 24490.0,
-   "price_eff": 24490.0,
+   "price_current": null,
+   "price_eff": 34990.0,
    "in_stock": 1,
    "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/products/8bitbox-cajachileboardgames_360x.jpg?v=1586013167"
+   "image_url": "https://chileboardgames.com/cdn/shop/products/8bitbox-cajachileboardgames.jpg?v=1586013167&width=240"
   },
   "rejected": null
  },
@@ -5538,26 +5511,26 @@
   "store": "chileboardgames",
   "record": {
    "title": "Academy Rector - english",
-   "original_price": "$350,000",
+   "original_price": "$500,000 CLP",
    "current_price": null,
    "stock_status": null,
-   "url": "https://chileboardgames.com/collections/all/products/academy-rector",
-   "image": "https://chileboardgames.com/cdn/shop/files/product_6135_360x.webp?v=1790808095"
+   "url": "https://chileboardgames.com/products/academy-rector",
+   "image": "https://chileboardgames.com/cdn/shop/files/product_6135.webp?v=1790808095&width=240"
   },
   "row": {
    "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/academy-rector",
-   "url": "https://chileboardgames.com/collections/all/products/academy-rector",
+   "url_canon": "chileboardgames.com/products/academy-rector",
+   "url": "https://chileboardgames.com/products/academy-rector",
    "title_raw": "Academy Rector - english",
    "title": "Academy Rector - english",
    "norm": "academy rector",
    "kind": "game",
-   "price_original": 350000.0,
+   "price_original": 500000.0,
    "price_current": null,
-   "price_eff": 350000.0,
+   "price_eff": 500000.0,
    "in_stock": 1,
    "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/files/product_6135_360x.webp?v=1790808095"
+   "image_url": "https://chileboardgames.com/cdn/shop/files/product_6135.webp?v=1790808095&width=240"
   },
   "rejected": null
  },
@@ -5565,16 +5538,16 @@
   "store": "chileboardgames",
   "record": {
    "title": "Academy Rector - spanish",
-   "original_price": "$80,000",
+   "original_price": "$80,000 CLP",
    "current_price": null,
    "stock_status": null,
-   "url": "https://chileboardgames.com/collections/all/products/academy-rector-spanish",
-   "image": "https://chileboardgames.com/cdn/shop/files/product_6135_360x.webp?v=1790808095"
+   "url": "https://chileboardgames.com/products/academy-rector-spanish",
+   "image": "https://chileboardgames.com/cdn/shop/files/product_6135.webp?v=1790808095&width=240"
   },
   "row": {
    "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/academy-rector-spanish",
-   "url": "https://chileboardgames.com/collections/all/products/academy-rector-spanish",
+   "url_canon": "chileboardgames.com/products/academy-rector-spanish",
+   "url": "https://chileboardgames.com/products/academy-rector-spanish",
    "title_raw": "Academy Rector - spanish",
    "title": "Academy Rector - spanish",
    "norm": "academy rector spanish",
@@ -5584,7 +5557,7 @@
    "price_eff": 80000.0,
    "in_stock": 1,
    "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/files/product_6135_360x.webp?v=1790808095"
+   "image_url": "https://chileboardgames.com/cdn/shop/files/product_6135.webp?v=1790808095&width=240"
   },
   "rejected": null
  },
@@ -5592,26 +5565,26 @@
   "store": "chileboardgames",
   "record": {
    "title": "Accesorio Wingspan impreso en 3d",
-   "original_price": "$9,990",
-   "current_price": "$6,990",
+   "original_price": "$9,990 CLP",
+   "current_price": null,
    "stock_status": null,
-   "url": "https://chileboardgames.com/collections/all/products/accesorio-wigspan-impreso-en-3d",
-   "image": "https://chileboardgames.com/cdn/shop/products/20200815_163528_360x.jpg?v=1597523945"
+   "url": "https://chileboardgames.com/products/accesorio-wigspan-impreso-en-3d",
+   "image": "https://chileboardgames.com/cdn/shop/products/20200815_163528.jpg?v=1597523945&width=240"
   },
   "row": {
    "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/accesorio-wigspan-impreso-en-3d",
-   "url": "https://chileboardgames.com/collections/all/products/accesorio-wigspan-impreso-en-3d",
+   "url_canon": "chileboardgames.com/products/accesorio-wigspan-impreso-en-3d",
+   "url": "https://chileboardgames.com/products/accesorio-wigspan-impreso-en-3d",
    "title_raw": "Accesorio Wingspan impreso en 3d",
    "title": "Accesorio Wingspan impreso en 3d",
    "norm": "accesorio wingspan impreso 3d",
    "kind": "game",
    "price_original": 9990.0,
-   "price_current": 6990.0,
-   "price_eff": 6990.0,
+   "price_current": null,
+   "price_eff": 9990.0,
    "in_stock": 1,
    "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/products/20200815_163528_360x.jpg?v=1597523945"
+   "image_url": "https://chileboardgames.com/cdn/shop/products/20200815_163528.jpg?v=1597523945&width=240"
   },
   "rejected": null
  },
@@ -5619,16 +5592,16 @@
   "store": "chileboardgames",
   "record": {
    "title": "Actos Del Pasado - Pagan: El Destino De Roanoke",
-   "original_price": "$9,000",
+   "original_price": "$9,000 CLP",
    "current_price": null,
    "stock_status": null,
-   "url": "https://chileboardgames.com/collections/all/products/actos-del-pasado-pagan-el-destino-de-roanoke",
-   "image": "https://chileboardgames.com/cdn/shop/files/actos-del-pasado-pagan-el-destino-de-roanoke_360x.jpg?v=1719763144"
+   "url": "https://chileboardgames.com/products/actos-del-pasado-pagan-el-destino-de-roanoke",
+   "image": "https://chileboardgames.com/cdn/shop/files/actos-del-pasado-pagan-el-destino-de-roanoke.jpg?v=1719763144&width=240"
   },
   "row": {
    "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/actos-del-pasado-pagan-el-destino-de-roanoke",
-   "url": "https://chileboardgames.com/collections/all/products/actos-del-pasado-pagan-el-destino-de-roanoke",
+   "url_canon": "chileboardgames.com/products/actos-del-pasado-pagan-el-destino-de-roanoke",
+   "url": "https://chileboardgames.com/products/actos-del-pasado-pagan-el-destino-de-roanoke",
    "title_raw": "Actos Del Pasado - Pagan: El Destino De Roanoke",
    "title": "Actos Del Pasado - Pagan: El Destino De Roanoke",
    "norm": "actos pasado pagan destino roanoke",
@@ -5638,7 +5611,34 @@
    "price_eff": 9000.0,
    "in_stock": 1,
    "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/files/actos-del-pasado-pagan-el-destino-de-roanoke_360x.jpg?v=1719763144"
+   "image_url": "https://chileboardgames.com/cdn/shop/files/actos-del-pasado-pagan-el-destino-de-roanoke.jpg?v=1719763144&width=240"
+  },
+  "rejected": null
+ },
+ {
+  "store": "chileboardgames",
+  "record": {
+   "title": "Age of War",
+   "original_price": "$14,500 CLP",
+   "current_price": null,
+   "stock_status": null,
+   "url": "https://chileboardgames.com/products/age-of-war",
+   "image": "https://chileboardgames.com/cdn/shop/files/Purple-TealGold-Gemini-20649.jpg?v=1792789147&width=240"
+  },
+  "row": {
+   "store": "chileboardgames",
+   "url_canon": "chileboardgames.com/products/age-of-war",
+   "url": "https://chileboardgames.com/products/age-of-war",
+   "title_raw": "Age of War",
+   "title": "Age of War",
+   "norm": "age war",
+   "kind": "game",
+   "price_original": 14500.0,
+   "price_current": null,
+   "price_eff": 14500.0,
+   "in_stock": 1,
+   "flag": null,
+   "image_url": "https://chileboardgames.com/cdn/shop/files/Purple-TealGold-Gemini-20649.jpg?v=1792789147&width=240"
   },
   "rejected": null
  },
@@ -5646,16 +5646,16 @@
   "store": "chileboardgames",
   "record": {
    "title": "Aggravated Assault",
-   "original_price": "$25,000",
+   "original_price": "$25,000 CLP",
    "current_price": null,
    "stock_status": null,
-   "url": "https://chileboardgames.com/collections/all/products/aggravated-assault",
-   "image": "https://chileboardgames.com/cdn/shop/files/product_509512_360x.webp?v=1790814856"
+   "url": "https://chileboardgames.com/products/aggravated-assault",
+   "image": "https://chileboardgames.com/cdn/shop/files/product_509512.webp?v=1790814856&width=240"
   },
   "row": {
    "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/aggravated-assault",
-   "url": "https://chileboardgames.com/collections/all/products/aggravated-assault",
+   "url_canon": "chileboardgames.com/products/aggravated-assault",
+   "url": "https://chileboardgames.com/products/aggravated-assault",
    "title_raw": "Aggravated Assault",
    "title": "Aggravated Assault",
    "norm": "aggravated assault",
@@ -5665,61 +5665,7 @@
    "price_eff": 25000.0,
    "in_stock": 1,
    "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/files/product_509512_360x.webp?v=1790814856"
-  },
-  "rejected": null
- },
- {
-  "store": "chileboardgames",
-  "record": {
-   "title": "Agricola el juego de mesa",
-   "original_price": "$49,990",
-   "current_price": null,
-   "stock_status": "Agotado",
-   "url": "https://chileboardgames.com/collections/all/products/agricola",
-   "image": "https://chileboardgames.com/cdn/shop/products/20210413154512_206_360x.jpg?v=1618354307"
-  },
-  "row": {
-   "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/agricola",
-   "url": "https://chileboardgames.com/collections/all/products/agricola",
-   "title_raw": "Agricola el juego de mesa",
-   "title": "Agricola",
-   "norm": "agricola",
-   "kind": "game",
-   "price_original": 49990.0,
-   "price_current": null,
-   "price_eff": 49990.0,
-   "in_stock": 0,
-   "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/products/20210413154512_206_360x.jpg?v=1618354307"
-  },
-  "rejected": null
- },
- {
-  "store": "chileboardgames",
-  "record": {
-   "title": "Alhambra",
-   "original_price": "$29,990",
-   "current_price": "$25,500",
-   "stock_status": "Agotado",
-   "url": "https://chileboardgames.com/collections/all/products/alhambra",
-   "image": "https://chileboardgames.com/cdn/shop/products/alhambra-2020-caja-600x600_360x.png?v=1618878045"
-  },
-  "row": {
-   "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/alhambra",
-   "url": "https://chileboardgames.com/collections/all/products/alhambra",
-   "title_raw": "Alhambra",
-   "title": "Alhambra",
-   "norm": "alhambra",
-   "kind": "game",
-   "price_original": 29990.0,
-   "price_current": 25500.0,
-   "price_eff": 25500.0,
-   "in_stock": 0,
-   "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/products/alhambra-2020-caja-600x600_360x.png?v=1618878045"
+   "image_url": "https://chileboardgames.com/cdn/shop/files/product_509512.webp?v=1790814856&width=240"
   },
   "rejected": null
  },
@@ -5727,16 +5673,16 @@
   "store": "chileboardgames",
   "record": {
    "title": "Alma Mater - Juego de Mesa Estratégico de Gestión Universitaria (Eggertspiele)",
-   "original_price": "$59,990",
-   "current_price": "$47,990",
+   "original_price": "$59,990 CLP",
+   "current_price": "$47,990 CLP",
    "stock_status": null,
-   "url": "https://chileboardgames.com/collections/all/products/alma-mater",
-   "image": "https://chileboardgames.com/cdn/shop/products/20220201103031_8773_360x.jpg?v=1648308385"
+   "url": "https://chileboardgames.com/products/alma-mater",
+   "image": "https://chileboardgames.com/cdn/shop/products/20220201103031_8773.jpg?v=1648308385&width=240"
   },
   "row": {
    "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/alma-mater",
-   "url": "https://chileboardgames.com/collections/all/products/alma-mater",
+   "url_canon": "chileboardgames.com/products/alma-mater",
+   "url": "https://chileboardgames.com/products/alma-mater",
    "title_raw": "Alma Mater - Juego de Mesa Estratégico de Gestión Universitaria (Eggertspiele)",
    "title": "Alma Mater - Estratégico de Gestión Universitaria (Eggertspiele)",
    "norm": "alma mater estrategico gestion universitaria",
@@ -5746,34 +5692,7 @@
    "price_eff": 47990.0,
    "in_stock": 1,
    "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/products/20220201103031_8773_360x.jpg?v=1648308385"
-  },
-  "rejected": null
- },
- {
-  "store": "chileboardgames",
-  "record": {
-   "title": "Amanecer Rojo (Red Rising)",
-   "original_price": "$44,000",
-   "current_price": null,
-   "stock_status": "Agotado",
-   "url": "https://chileboardgames.com/collections/all/products/amanecer-rojo-red-rising",
-   "image": "https://chileboardgames.com/cdn/shop/products/FT-Amanecer-Rojo_360x.jpg?v=1628208642"
-  },
-  "row": {
-   "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/amanecer-rojo-red-rising",
-   "url": "https://chileboardgames.com/collections/all/products/amanecer-rojo-red-rising",
-   "title_raw": "Amanecer Rojo (Red Rising)",
-   "title": "Amanecer Rojo (Red Rising)",
-   "norm": "amanecer rojo red rising",
-   "kind": "game",
-   "price_original": 44000.0,
-   "price_current": null,
-   "price_eff": 44000.0,
-   "in_stock": 0,
-   "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/products/FT-Amanecer-Rojo_360x.jpg?v=1628208642"
+   "image_url": "https://chileboardgames.com/cdn/shop/products/20220201103031_8773.jpg?v=1648308385&width=240"
   },
   "rejected": null
  },
@@ -5781,16 +5700,16 @@
   "store": "chileboardgames",
   "record": {
    "title": "Amigos de Mierda – Juego de Cartas y Humor Negro +18 (Incluye Expansión Cachonda / Buró)",
-   "original_price": "$13,000",
+   "original_price": "$13,000 CLP",
    "current_price": null,
    "stock_status": null,
-   "url": "https://chileboardgames.com/collections/all/products/amigos-de-mierda",
-   "image": "https://chileboardgames.com/cdn/shop/files/amigos-de-mierda_360x.png?v=1718920475"
+   "url": "https://chileboardgames.com/products/amigos-de-mierda",
+   "image": "https://chileboardgames.com/cdn/shop/files/amigos-de-mierda.png?v=1718920475&width=240"
   },
   "row": {
    "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/amigos-de-mierda",
-   "url": "https://chileboardgames.com/collections/all/products/amigos-de-mierda",
+   "url_canon": "chileboardgames.com/products/amigos-de-mierda",
+   "url": "https://chileboardgames.com/products/amigos-de-mierda",
    "title_raw": "Amigos de Mierda – Juego de Cartas y Humor Negro +18 (Incluye Expansión Cachonda / Buró)",
    "title": "Amigos de Mierda – Juego de Cartas y Humor Negro +18 (Incluye Expansión Cachonda / Buró)",
    "norm": "amigos mierda juego cartas humor negro 18 incluye cachonda buro",
@@ -5800,7 +5719,7 @@
    "price_eff": 13000.0,
    "in_stock": 1,
    "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/files/amigos-de-mierda_360x.png?v=1718920475"
+   "image_url": "https://chileboardgames.com/cdn/shop/files/amigos-de-mierda.png?v=1718920475&width=240"
   },
   "rejected": null
  },
@@ -5808,16 +5727,16 @@
   "store": "chileboardgames",
   "record": {
    "title": "Ancient Tomb",
-   "original_price": "$120,000",
+   "original_price": "$120,000 CLP",
    "current_price": null,
    "stock_status": null,
-   "url": "https://chileboardgames.com/collections/all/products/ancient-tomb",
-   "image": "https://chileboardgames.com/cdn/shop/files/product_5457_360x.webp?v=1790809127"
+   "url": "https://chileboardgames.com/products/ancient-tomb",
+   "image": "https://chileboardgames.com/cdn/shop/files/product_5457.webp?v=1790809127&width=240"
   },
   "row": {
    "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/ancient-tomb",
-   "url": "https://chileboardgames.com/collections/all/products/ancient-tomb",
+   "url_canon": "chileboardgames.com/products/ancient-tomb",
+   "url": "https://chileboardgames.com/products/ancient-tomb",
    "title_raw": "Ancient Tomb",
    "title": "Ancient Tomb",
    "norm": "ancient tomb",
@@ -5827,7 +5746,7 @@
    "price_eff": 120000.0,
    "in_stock": 1,
    "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/files/product_5457_360x.webp?v=1790809127"
+   "image_url": "https://chileboardgames.com/cdn/shop/files/product_5457.webp?v=1790809127&width=240"
   },
   "rejected": null
  },
@@ -5835,16 +5754,16 @@
   "store": "chileboardgames",
   "record": {
    "title": "Anda a Lavar",
-   "original_price": "$15,950",
+   "original_price": "$15,950 CLP",
    "current_price": null,
    "stock_status": null,
-   "url": "https://chileboardgames.com/collections/all/products/anda-a-lavar",
-   "image": "https://chileboardgames.com/cdn/shop/files/anda-a-lavar-e65fa96f-d0cb-48c9-b2b8-837fe6f884b0_360x.jpg?v=1717545817"
+   "url": "https://chileboardgames.com/products/anda-a-lavar",
+   "image": "https://chileboardgames.com/cdn/shop/files/anda-a-lavar-e65fa96f-d0cb-48c9-b2b8-837fe6f884b0.jpg?v=1717545817&width=240"
   },
   "row": {
    "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/anda-a-lavar",
-   "url": "https://chileboardgames.com/collections/all/products/anda-a-lavar",
+   "url_canon": "chileboardgames.com/products/anda-a-lavar",
+   "url": "https://chileboardgames.com/products/anda-a-lavar",
    "title_raw": "Anda a Lavar",
    "title": "Anda a Lavar",
    "norm": "anda a lavar",
@@ -5854,7 +5773,7 @@
    "price_eff": 15950.0,
    "in_stock": 1,
    "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/files/anda-a-lavar-e65fa96f-d0cb-48c9-b2b8-837fe6f884b0_360x.jpg?v=1717545817"
+   "image_url": "https://chileboardgames.com/cdn/shop/files/anda-a-lavar-e65fa96f-d0cb-48c9-b2b8-837fe6f884b0.jpg?v=1717545817&width=240"
   },
   "rejected": null
  },
@@ -5862,134 +5781,26 @@
   "store": "chileboardgames",
   "record": {
    "title": "Aristeia!: Prime Time Multiplayer Expansion el juego de mesa",
-   "original_price": "$30,000",
-   "current_price": "$21,000",
+   "original_price": "$30,000 CLP",
+   "current_price": null,
    "stock_status": null,
-   "url": "https://chileboardgames.com/collections/all/products/aristeia-prime-time-multiplayer-expansion",
-   "image": "https://chileboardgames.com/cdn/shop/products/pre-venta-aristeia-prime-time-multiplayer-expansion_360x.png?v=1612702169"
+   "url": "https://chileboardgames.com/products/aristeia-prime-time-multiplayer-expansion",
+   "image": "https://chileboardgames.com/cdn/shop/products/pre-venta-aristeia-prime-time-multiplayer-expansion.png?v=1612702169&width=240"
   },
   "row": {
    "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/aristeia-prime-time-multiplayer-expansion",
-   "url": "https://chileboardgames.com/collections/all/products/aristeia-prime-time-multiplayer-expansion",
+   "url_canon": "chileboardgames.com/products/aristeia-prime-time-multiplayer-expansion",
+   "url": "https://chileboardgames.com/products/aristeia-prime-time-multiplayer-expansion",
    "title_raw": "Aristeia!: Prime Time Multiplayer Expansion el juego de mesa",
    "title": "Aristeia!: Prime Time Multiplayer Expansion",
    "norm": "aristeia prime time multiplayer",
    "kind": "expansion",
    "price_original": 30000.0,
-   "price_current": 21000.0,
-   "price_eff": 21000.0,
+   "price_current": null,
+   "price_eff": 30000.0,
    "in_stock": 1,
    "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/products/pre-venta-aristeia-prime-time-multiplayer-expansion_360x.png?v=1612702169"
-  },
-  "rejected": null
- },
- {
-  "store": "chileboardgames",
-  "record": {
-   "title": "Arkham Horror LCG: El legado de Dunwich Expansión investigadores",
-   "original_price": "$36,990",
-   "current_price": null,
-   "stock_status": "Agotado",
-   "url": "https://chileboardgames.com/collections/all/products/pre-venta-arkham-horror-lcg-el-legado-de-dunwich-expansion-investigadores",
-   "image": "https://chileboardgames.com/cdn/shop/products/20211210151238_1049_360x.jpg?v=1642272653"
-  },
-  "row": {
-   "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/pre-venta-arkham-horror-lcg-el-legado-de-dunwich-expansion-investigadores",
-   "url": "https://chileboardgames.com/collections/all/products/pre-venta-arkham-horror-lcg-el-legado-de-dunwich-expansion-investigadores",
-   "title_raw": "Arkham Horror LCG: El legado de Dunwich Expansión investigadores",
-   "title": "Arkham Horror LCG: El legado de Dunwich Expansión investigadores",
-   "norm": "arkham horror lcg legado dunwich investigadores",
-   "kind": "expansion",
-   "price_original": 36990.0,
-   "price_current": null,
-   "price_eff": 36990.0,
-   "in_stock": 0,
-   "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/products/20211210151238_1049_360x.jpg?v=1642272653"
-  },
-  "rejected": null
- },
- {
-  "store": "chileboardgames",
-  "record": {
-   "title": "Arkham Horror LCG: Los confines de la Tierra Expansión investigadores",
-   "original_price": "$34,990",
-   "current_price": null,
-   "stock_status": "Agotado",
-   "url": "https://chileboardgames.com/collections/all/products/arkham-horror-lcg-los-confines-de-la-tierra-expansion-investigadores",
-   "image": "https://chileboardgames.com/cdn/shop/products/20210707143418_724_360x.jpg?v=1635904487"
-  },
-  "row": {
-   "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/arkham-horror-lcg-los-confines-de-la-tierra-expansion-investigadores",
-   "url": "https://chileboardgames.com/collections/all/products/arkham-horror-lcg-los-confines-de-la-tierra-expansion-investigadores",
-   "title_raw": "Arkham Horror LCG: Los confines de la Tierra Expansión investigadores",
-   "title": "Arkham Horror LCG: Los confines de la Tierra Expansión investigadores",
-   "norm": "arkham horror lcg confines tierra investigadores",
-   "kind": "expansion",
-   "price_original": 34990.0,
-   "price_current": null,
-   "price_eff": 34990.0,
-   "in_stock": 0,
-   "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/products/20210707143418_724_360x.jpg?v=1635904487"
-  },
-  "rejected": null
- },
- {
-  "store": "chileboardgames",
-  "record": {
-   "title": "Arkham Horror LCG: Regreso a La Noche de la Fanática",
-   "original_price": "$24,990",
-   "current_price": null,
-   "stock_status": "Agotado",
-   "url": "https://chileboardgames.com/collections/all/products/arkham-horror-lcg-regreso-a-la-noche-de-la-fanatica",
-   "image": "https://chileboardgames.com/cdn/shop/products/20210817185406_766_360x.jpg?v=1635904627"
-  },
-  "row": {
-   "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/arkham-horror-lcg-regreso-a-la-noche-de-la-fanatica",
-   "url": "https://chileboardgames.com/collections/all/products/arkham-horror-lcg-regreso-a-la-noche-de-la-fanatica",
-   "title_raw": "Arkham Horror LCG: Regreso a La Noche de la Fanática",
-   "title": "Arkham Horror LCG: Regreso a La Noche de la Fanática",
-   "norm": "arkham horror lcg regreso a noche fanatica",
-   "kind": "game",
-   "price_original": 24990.0,
-   "price_current": null,
-   "price_eff": 24990.0,
-   "in_stock": 0,
-   "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/products/20210817185406_766_360x.jpg?v=1635904627"
-  },
-  "rejected": null
- },
- {
-  "store": "chileboardgames",
-  "record": {
-   "title": "Arkham Horror: El juego de cartas (Ed. Revisada)",
-   "original_price": "$59,990",
-   "current_price": null,
-   "stock_status": "Agotado",
-   "url": "https://chileboardgames.com/collections/all/products/arkham-horror-el-juego-de-cartas-ed-revisada",
-   "image": "https://chileboardgames.com/cdn/shop/products/20210624201631_719_360x.jpg?v=1635030474"
-  },
-  "row": {
-   "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/arkham-horror-el-juego-de-cartas-ed-revisada",
-   "url": "https://chileboardgames.com/collections/all/products/arkham-horror-el-juego-de-cartas-ed-revisada",
-   "title_raw": "Arkham Horror: El juego de cartas (Ed. Revisada)",
-   "title": "Arkham Horror: El juego de cartas (Ed. Revisada)",
-   "norm": "arkham horror juego cartas",
-   "kind": "game",
-   "price_original": 59990.0,
-   "price_current": null,
-   "price_eff": 59990.0,
-   "in_stock": 0,
-   "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/products/20210624201631_719_360x.jpg?v=1635030474"
+   "image_url": "https://chileboardgames.com/cdn/shop/products/pre-venta-aristeia-prime-time-multiplayer-expansion.png?v=1612702169&width=240"
   },
   "rejected": null
  },
@@ -5997,26 +5808,26 @@
   "store": "chileboardgames",
   "record": {
    "title": "Arkham Horror: Secretos de la Orden el juego de mesa",
-   "original_price": "$37,000",
-   "current_price": "$25,900",
+   "original_price": "$37,000 CLP",
+   "current_price": null,
    "stock_status": null,
-   "url": "https://chileboardgames.com/collections/all/products/arkham-horror-secretos-de-la-orden",
-   "image": "https://chileboardgames.com/cdn/shop/products/20210329172547_50_360x.jpg?v=1629238655"
+   "url": "https://chileboardgames.com/products/arkham-horror-secretos-de-la-orden",
+   "image": "https://chileboardgames.com/cdn/shop/products/20210329172547_50.jpg?v=1629238655&width=240"
   },
   "row": {
    "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/arkham-horror-secretos-de-la-orden",
-   "url": "https://chileboardgames.com/collections/all/products/arkham-horror-secretos-de-la-orden",
+   "url_canon": "chileboardgames.com/products/arkham-horror-secretos-de-la-orden",
+   "url": "https://chileboardgames.com/products/arkham-horror-secretos-de-la-orden",
    "title_raw": "Arkham Horror: Secretos de la Orden el juego de mesa",
    "title": "Arkham Horror: Secretos de la Orden",
    "norm": "arkham horror secretos orden",
    "kind": "game",
    "price_original": 37000.0,
-   "price_current": 25900.0,
-   "price_eff": 25900.0,
+   "price_current": null,
+   "price_eff": 37000.0,
    "in_stock": 1,
    "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/products/20210329172547_50_360x.jpg?v=1629238655"
+   "image_url": "https://chileboardgames.com/cdn/shop/products/20210329172547_50.jpg?v=1629238655&width=240"
   },
   "rejected": null
  },
@@ -6024,16 +5835,16 @@
   "store": "chileboardgames",
   "record": {
    "title": "Arte Moderno - Modern Art 31 minutos juego de mesa",
-   "original_price": "$25,000",
+   "original_price": "$25,000 CLP",
    "current_price": null,
    "stock_status": null,
-   "url": "https://chileboardgames.com/collections/all/products/arte-moderno-modern-art",
-   "image": "https://chileboardgames.com/cdn/shop/files/Cover3DArteModerno_360x.png?v=1689349286"
+   "url": "https://chileboardgames.com/products/arte-moderno-modern-art",
+   "image": "https://chileboardgames.com/cdn/shop/files/Cover3DArteModerno.png?v=1689349286&width=240"
   },
   "row": {
    "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/arte-moderno-modern-art",
-   "url": "https://chileboardgames.com/collections/all/products/arte-moderno-modern-art",
+   "url_canon": "chileboardgames.com/products/arte-moderno-modern-art",
+   "url": "https://chileboardgames.com/products/arte-moderno-modern-art",
    "title_raw": "Arte Moderno - Modern Art 31 minutos juego de mesa",
    "title": "Arte Moderno - Modern Art 31 minutos",
    "norm": "arte moderno modern art 31 minutos",
@@ -6043,7 +5854,7 @@
    "price_eff": 25000.0,
    "in_stock": 1,
    "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/files/Cover3DArteModerno_360x.png?v=1689349286"
+   "image_url": "https://chileboardgames.com/cdn/shop/files/Cover3DArteModerno.png?v=1689349286&width=240"
   },
   "rejected": null
  },
@@ -6051,45 +5862,45 @@
   "store": "chileboardgames",
   "record": {
    "title": "Azul: Jardín de la Reina - Juego de Mesa Estratégico de Michael Kiesling (Next Move)",
-   "original_price": "$44,000",
-   "current_price": "$26,400",
+   "original_price": "$43,990 CLP",
+   "current_price": null,
    "stock_status": null,
-   "url": "https://chileboardgames.com/collections/all/products/pre-venta-azul-jardin-de-la-reina",
-   "image": "https://chileboardgames.com/cdn/shop/products/20211130194325_1046_360x.jpg?v=1644114379"
+   "url": "https://chileboardgames.com/products/pre-venta-azul-jardin-de-la-reina",
+   "image": "https://chileboardgames.com/cdn/shop/products/20211130194325_1046.jpg?v=1644114379&width=240"
   },
   "row": {
    "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/pre-venta-azul-jardin-de-la-reina",
-   "url": "https://chileboardgames.com/collections/all/products/pre-venta-azul-jardin-de-la-reina",
+   "url_canon": "chileboardgames.com/products/pre-venta-azul-jardin-de-la-reina",
+   "url": "https://chileboardgames.com/products/pre-venta-azul-jardin-de-la-reina",
    "title_raw": "Azul: Jardín de la Reina - Juego de Mesa Estratégico de Michael Kiesling (Next Move)",
    "title": "Azul: Jardín de la Reina - Estratégico de Michael Kiesling (Next Move)",
    "norm": "azul jardin reina estrategico michael kiesling",
    "kind": "game",
-   "price_original": 44000.0,
-   "price_current": 26400.0,
-   "price_eff": 26400.0,
+   "price_original": 43990.0,
+   "price_current": null,
+   "price_eff": 43990.0,
    "in_stock": 1,
    "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/products/20211130194325_1046_360x.jpg?v=1644114379"
+   "image_url": "https://chileboardgames.com/cdn/shop/products/20211130194325_1046.jpg?v=1644114379&width=240"
   },
   "rejected": null
  },
  {
   "store": "chileboardgames",
   "record": {
-   "title": "Azul: Mosaico de cristal  accesorio juego de mesa",
-   "original_price": "$14,990",
-   "current_price": "$12,990",
+   "title": "Azul: Mosaico de Cristal accesorio juego de mesa",
+   "original_price": "$14,990 CLP",
+   "current_price": "$12,990 CLP",
    "stock_status": null,
-   "url": "https://chileboardgames.com/collections/all/products/azul-mosaico-de-cristal",
-   "image": "https://chileboardgames.com/cdn/shop/products/20200813121839_6045_360x.jpg?v=1602884637"
+   "url": "https://chileboardgames.com/products/azul-mosaico-de-cristal",
+   "image": "https://chileboardgames.com/cdn/shop/products/20200813121839_6045.jpg?v=1602884637&width=240"
   },
   "row": {
    "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/azul-mosaico-de-cristal",
-   "url": "https://chileboardgames.com/collections/all/products/azul-mosaico-de-cristal",
-   "title_raw": "Azul: Mosaico de cristal  accesorio juego de mesa",
-   "title": "Azul: Mosaico de cristal accesorio",
+   "url_canon": "chileboardgames.com/products/azul-mosaico-de-cristal",
+   "url": "https://chileboardgames.com/products/azul-mosaico-de-cristal",
+   "title_raw": "Azul: Mosaico de Cristal accesorio juego de mesa",
+   "title": "Azul: Mosaico de Cristal accesorio",
    "norm": "azul mosaico cristal accesorio",
    "kind": "game",
    "price_original": 14990.0,
@@ -6097,7 +5908,7 @@
    "price_eff": 12990.0,
    "in_stock": 1,
    "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/products/20200813121839_6045_360x.jpg?v=1602884637"
+   "image_url": "https://chileboardgames.com/cdn/shop/products/20200813121839_6045.jpg?v=1602884637&width=240"
   },
   "rejected": null
  },
@@ -6105,16 +5916,16 @@
   "store": "chileboardgames",
   "record": {
    "title": "Bananagrams – El Frenético Juego de Palabras en Práctica Bolsa de Plátano",
-   "original_price": "$16,000",
+   "original_price": "$16,000 CLP",
    "current_price": null,
-   "stock_status": null,
-   "url": "https://chileboardgames.com/collections/all/products/bananagrams",
-   "image": "https://chileboardgames.com/cdn/shop/files/X1LGeHOr2ADFv7BPJyo1aCjwWa6iZpcNhfPIGquj_360x.jpg?v=1763594305"
+   "stock_status": "Agotado",
+   "url": "https://chileboardgames.com/products/bananagrams",
+   "image": "https://chileboardgames.com/cdn/shop/files/X1LGeHOr2ADFv7BPJyo1aCjwWa6iZpcNhfPIGquj.jpg?v=1763594305&width=240"
   },
   "row": {
    "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/bananagrams",
-   "url": "https://chileboardgames.com/collections/all/products/bananagrams",
+   "url_canon": "chileboardgames.com/products/bananagrams",
+   "url": "https://chileboardgames.com/products/bananagrams",
    "title_raw": "Bananagrams – El Frenético Juego de Palabras en Práctica Bolsa de Plátano",
    "title": "Bananagrams",
    "norm": "bananagrams",
@@ -6122,9 +5933,9 @@
    "price_original": 16000.0,
    "price_current": null,
    "price_eff": 16000.0,
-   "in_stock": 1,
+   "in_stock": 0,
    "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/files/X1LGeHOr2ADFv7BPJyo1aCjwWa6iZpcNhfPIGquj_360x.jpg?v=1763594305"
+   "image_url": "https://chileboardgames.com/cdn/shop/files/X1LGeHOr2ADFv7BPJyo1aCjwWa6iZpcNhfPIGquj.jpg?v=1763594305&width=240"
   },
   "rejected": null
  },
@@ -6132,16 +5943,16 @@
   "store": "chileboardgames",
   "record": {
    "title": "Bandida - Juego de Cartas Estratégico de Fractal Juegos para Toda la Familia",
-   "original_price": "$13,000",
+   "original_price": "$13,000 CLP",
    "current_price": null,
-   "stock_status": null,
-   "url": "https://chileboardgames.com/collections/all/products/bandida",
-   "image": "https://chileboardgames.com/cdn/shop/files/bandidaportada_360x.jpg?v=1715644325"
+   "stock_status": "Agotado",
+   "url": "https://chileboardgames.com/products/bandida",
+   "image": "https://chileboardgames.com/cdn/shop/files/bandidaportada.jpg?v=1715644325&width=240"
   },
   "row": {
    "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/bandida",
-   "url": "https://chileboardgames.com/collections/all/products/bandida",
+   "url_canon": "chileboardgames.com/products/bandida",
+   "url": "https://chileboardgames.com/products/bandida",
    "title_raw": "Bandida - Juego de Cartas Estratégico de Fractal Juegos para Toda la Familia",
    "title": "Bandida",
    "norm": "bandida",
@@ -6149,9 +5960,9 @@
    "price_original": 13000.0,
    "price_current": null,
    "price_eff": 13000.0,
-   "in_stock": 1,
+   "in_stock": 0,
    "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/files/bandidaportada_360x.jpg?v=1715644325"
+   "image_url": "https://chileboardgames.com/cdn/shop/files/bandidaportada.jpg?v=1715644325&width=240"
   },
   "rejected": null
  },
@@ -6159,16 +5970,16 @@
   "store": "chileboardgames",
   "record": {
    "title": "Barbecubes",
-   "original_price": "$12,000",
+   "original_price": "$12,000 CLP",
    "current_price": null,
    "stock_status": null,
-   "url": "https://chileboardgames.com/collections/all/products/barbecubes",
-   "image": "https://chileboardgames.com/cdn/shop/files/barbecubes_360x.png?v=1767882140"
+   "url": "https://chileboardgames.com/products/barbecubes",
+   "image": "https://chileboardgames.com/cdn/shop/files/barbecubes.png?v=1767882140&width=240"
   },
   "row": {
    "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/barbecubes",
-   "url": "https://chileboardgames.com/collections/all/products/barbecubes",
+   "url_canon": "chileboardgames.com/products/barbecubes",
+   "url": "https://chileboardgames.com/products/barbecubes",
    "title_raw": "Barbecubes",
    "title": "Barbecubes",
    "norm": "barbecubes",
@@ -6178,88 +5989,34 @@
    "price_eff": 12000.0,
    "in_stock": 1,
    "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/files/barbecubes_360x.png?v=1767882140"
+   "image_url": "https://chileboardgames.com/cdn/shop/files/barbecubes.png?v=1767882140&width=240"
   },
   "rejected": null
  },
  {
   "store": "chileboardgames",
   "record": {
-   "title": "Barking Kittens el juego de mesa",
-   "original_price": "$15,990",
+   "title": "Barbecubes Veggie",
+   "original_price": "$11,500 CLP",
    "current_price": null,
-   "stock_status": "Agotado",
-   "url": "https://chileboardgames.com/collections/all/products/barking-kittens",
-   "image": "https://chileboardgames.com/cdn/shop/products/20210414125210_211_360x.jpg?v=1635029862"
+   "stock_status": null,
+   "url": "https://chileboardgames.com/products/barbecubes-veggie",
+   "image": "https://chileboardgames.com/cdn/shop/files/pagina-9-1080-x-1080-px-2.jpg?v=1792789291&width=240"
   },
   "row": {
    "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/barking-kittens",
-   "url": "https://chileboardgames.com/collections/all/products/barking-kittens",
-   "title_raw": "Barking Kittens el juego de mesa",
-   "title": "Barking Kittens",
-   "norm": "barking kittens",
+   "url_canon": "chileboardgames.com/products/barbecubes-veggie",
+   "url": "https://chileboardgames.com/products/barbecubes-veggie",
+   "title_raw": "Barbecubes Veggie",
+   "title": "Barbecubes Veggie",
+   "norm": "barbecubes veggie",
    "kind": "game",
-   "price_original": 15990.0,
+   "price_original": 11500.0,
    "price_current": null,
-   "price_eff": 15990.0,
-   "in_stock": 0,
+   "price_eff": 11500.0,
+   "in_stock": 1,
    "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/products/20210414125210_211_360x.jpg?v=1635029862"
-  },
-  "rejected": null
- },
- {
-  "store": "chileboardgames",
-  "record": {
-   "title": "Barrage el juego de tablero",
-   "original_price": "$75,000",
-   "current_price": null,
-   "stock_status": "Agotado",
-   "url": "https://chileboardgames.com/collections/all/products/barrage",
-   "image": "https://chileboardgames.com/cdn/shop/products/barrage_360x.jpg?v=1622504646"
-  },
-  "row": {
-   "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/barrage",
-   "url": "https://chileboardgames.com/collections/all/products/barrage",
-   "title_raw": "Barrage el juego de tablero",
-   "title": "Barrage el juego de tablero",
-   "norm": "barrage juego tablero",
-   "kind": "game",
-   "price_original": 75000.0,
-   "price_current": null,
-   "price_eff": 75000.0,
-   "in_stock": 0,
-   "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/products/barrage_360x.jpg?v=1622504646"
-  },
-  "rejected": null
- },
- {
-  "store": "chileboardgames",
-  "record": {
-   "title": "Barrage: El Proyecto Leeghwaterel juego de mesa",
-   "original_price": "$36,990",
-   "current_price": "$35,000",
-   "stock_status": "Agotado",
-   "url": "https://chileboardgames.com/collections/all/products/barrage-el-proyecto-leeghwater",
-   "image": "https://chileboardgames.com/cdn/shop/products/FT_barrageEXP_360x.jpg?v=1622505159"
-  },
-  "row": {
-   "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/barrage-el-proyecto-leeghwater",
-   "url": "https://chileboardgames.com/collections/all/products/barrage-el-proyecto-leeghwater",
-   "title_raw": "Barrage: El Proyecto Leeghwaterel juego de mesa",
-   "title": "Barrage: El Proyecto Leeghwaterel",
-   "norm": "barrage proyecto leeghwaterel",
-   "kind": "game",
-   "price_original": 36990.0,
-   "price_current": 35000.0,
-   "price_eff": 35000.0,
-   "in_stock": 0,
-   "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/products/FT_barrageEXP_360x.jpg?v=1622505159"
+   "image_url": "https://chileboardgames.com/cdn/shop/files/pagina-9-1080-x-1080-px-2.jpg?v=1792789291&width=240"
   },
   "rejected": null
  },
@@ -6267,80 +6024,26 @@
   "store": "chileboardgames",
   "record": {
    "title": "Bitoku - Juego de Mesa de Estrategia y Fantasía",
-   "original_price": "$59,990",
-   "current_price": "$41,990",
+   "original_price": "$59,990 CLP",
+   "current_price": null,
    "stock_status": null,
-   "url": "https://chileboardgames.com/collections/all/products/pre-venta-bitoku",
-   "image": "https://chileboardgames.com/cdn/shop/products/caja3d_360x.jpg?v=1636070168"
+   "url": "https://chileboardgames.com/products/pre-venta-bitoku",
+   "image": "https://chileboardgames.com/cdn/shop/products/caja3d.jpg?v=1636070168&width=240"
   },
   "row": {
    "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/pre-venta-bitoku",
-   "url": "https://chileboardgames.com/collections/all/products/pre-venta-bitoku",
+   "url_canon": "chileboardgames.com/products/pre-venta-bitoku",
+   "url": "https://chileboardgames.com/products/pre-venta-bitoku",
    "title_raw": "Bitoku - Juego de Mesa de Estrategia y Fantasía",
    "title": "Bitoku",
    "norm": "bitoku",
    "kind": "game",
    "price_original": 59990.0,
-   "price_current": 41990.0,
-   "price_eff": 41990.0,
+   "price_current": null,
+   "price_eff": 59990.0,
    "in_stock": 1,
    "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/products/caja3d_360x.jpg?v=1636070168"
-  },
-  "rejected": null
- },
- {
-  "store": "chileboardgames",
-  "record": {
-   "title": "Bloodborne: el juego de tablero",
-   "original_price": "$99,990",
-   "current_price": null,
-   "stock_status": "Agotado",
-   "url": "https://chileboardgames.com/collections/all/products/bloodborne-el-juego-de-tablero",
-   "image": "https://chileboardgames.com/cdn/shop/products/20210624183541_684_360x.jpg?v=1632533048"
-  },
-  "row": {
-   "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/bloodborne-el-juego-de-tablero",
-   "url": "https://chileboardgames.com/collections/all/products/bloodborne-el-juego-de-tablero",
-   "title_raw": "Bloodborne: el juego de tablero",
-   "title": "Bloodborne: el juego de tablero",
-   "norm": "bloodborne juego tablero",
-   "kind": "game",
-   "price_original": 99990.0,
-   "price_current": null,
-   "price_eff": 99990.0,
-   "in_stock": 0,
-   "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/products/20210624183541_684_360x.jpg?v=1632533048"
-  },
-  "rejected": null
- },
- {
-  "store": "chileboardgames",
-  "record": {
-   "title": "Bohnanza el juego de mesa",
-   "original_price": "$13,000",
-   "current_price": null,
-   "stock_status": "Agotado",
-   "url": "https://chileboardgames.com/collections/all/products/bohnanza",
-   "image": "https://chileboardgames.com/cdn/shop/products/juego-bhonanza_360x.jpg?v=1627344952"
-  },
-  "row": {
-   "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/bohnanza",
-   "url": "https://chileboardgames.com/collections/all/products/bohnanza",
-   "title_raw": "Bohnanza el juego de mesa",
-   "title": "Bohnanza",
-   "norm": "bohnanza",
-   "kind": "game",
-   "price_original": 13000.0,
-   "price_current": null,
-   "price_eff": 13000.0,
-   "in_stock": 0,
-   "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/products/juego-bhonanza_360x.jpg?v=1627344952"
+   "image_url": "https://chileboardgames.com/cdn/shop/products/caja3d.jpg?v=1636070168&width=240"
   },
   "rejected": null
  },
@@ -6348,16 +6051,16 @@
   "store": "chileboardgames",
   "record": {
    "title": "Caja Mazo Commander",
-   "original_price": "$13,000",
+   "original_price": "$13,000 CLP",
    "current_price": null,
    "stock_status": null,
-   "url": "https://chileboardgames.com/collections/all/products/caja-mazo-commander",
-   "image": "https://chileboardgames.com/cdn/shop/files/08aa72db-e412-4a53-8df0-f9ded0b3b862_360x.jpg?v=1790897457"
+   "url": "https://chileboardgames.com/products/caja-mazo-commander",
+   "image": "https://chileboardgames.com/cdn/shop/files/08aa72db-e412-4a53-8df0-f9ded0b3b862.jpg?v=1790897457&width=240"
   },
   "row": {
    "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/caja-mazo-commander",
-   "url": "https://chileboardgames.com/collections/all/products/caja-mazo-commander",
+   "url_canon": "chileboardgames.com/products/caja-mazo-commander",
+   "url": "https://chileboardgames.com/products/caja-mazo-commander",
    "title_raw": "Caja Mazo Commander",
    "title": "Caja Mazo Commander",
    "norm": "caja mazo commander",
@@ -6367,115 +6070,34 @@
    "price_eff": 13000.0,
    "in_stock": 1,
    "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/files/08aa72db-e412-4a53-8df0-f9ded0b3b862_360x.jpg?v=1790897457"
+   "image_url": "https://chileboardgames.com/cdn/shop/files/08aa72db-e412-4a53-8df0-f9ded0b3b862.jpg?v=1790897457&width=240"
   },
   "rejected": null
  },
  {
   "store": "chileboardgames",
   "record": {
-   "title": "Calico",
-   "original_price": "$38,000",
+   "title": "Caja para Flip 7 (impresa en 3D)",
+   "original_price": "$6,990 CLP",
    "current_price": null,
-   "stock_status": "Agotado",
-   "url": "https://chileboardgames.com/collections/all/products/calico",
-   "image": "https://chileboardgames.com/cdn/shop/products/FT_Calico_360x.jpg?v=1631403175"
+   "stock_status": null,
+   "url": "https://chileboardgames.com/products/caja-para-flip-7-impresa-en-3d",
+   "image": "https://chileboardgames.com/cdn/shop/files/F14934AE-CD8E-4F93-AD00-6E3F3A194809.jpg?v=1792533050&width=240"
   },
   "row": {
    "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/calico",
-   "url": "https://chileboardgames.com/collections/all/products/calico",
-   "title_raw": "Calico",
-   "title": "Calico",
-   "norm": "calico",
+   "url_canon": "chileboardgames.com/products/caja-para-flip-7-impresa-en-3d",
+   "url": "https://chileboardgames.com/products/caja-para-flip-7-impresa-en-3d",
+   "title_raw": "Caja para Flip 7 (impresa en 3D)",
+   "title": "Caja para Flip 7 (impresa en 3D)",
+   "norm": "caja para flip 7 impresa 3d",
    "kind": "game",
-   "price_original": 38000.0,
+   "price_original": 6990.0,
    "price_current": null,
-   "price_eff": 38000.0,
-   "in_stock": 0,
+   "price_eff": 6990.0,
+   "in_stock": 1,
    "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/products/FT_Calico_360x.jpg?v=1631403175"
-  },
-  "rejected": null
- },
- {
-  "store": "chileboardgames",
-  "record": {
-   "title": "Carcassonne 20° Aniversario",
-   "original_price": "$34,990",
-   "current_price": null,
-   "stock_status": "Agotado",
-   "url": "https://chileboardgames.com/collections/all/products/carcassonne-20-aniversario",
-   "image": "https://chileboardgames.com/cdn/shop/products/1634909120_9f360c5ab7736510df54c882e9dbf188.149118_360x.jpg?v=1637800319"
-  },
-  "row": {
-   "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/carcassonne-20-aniversario",
-   "url": "https://chileboardgames.com/collections/all/products/carcassonne-20-aniversario",
-   "title_raw": "Carcassonne 20° Aniversario",
-   "title": "Carcassonne 20° Aniversario",
-   "norm": "carcassonne 20 aniversario",
-   "kind": "game",
-   "price_original": 34990.0,
-   "price_current": null,
-   "price_eff": 34990.0,
-   "in_stock": 0,
-   "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/products/1634909120_9f360c5ab7736510df54c882e9dbf188.149118_360x.jpg?v=1637800319"
-  },
-  "rejected": null
- },
- {
-  "store": "chileboardgames",
-  "record": {
-   "title": "Carpe Diem",
-   "original_price": "$43,000",
-   "current_price": "$35,000",
-   "stock_status": "Agotado",
-   "url": "https://chileboardgames.com/collections/all/products/carpe-diem",
-   "image": "https://chileboardgames.com/cdn/shop/products/carpe-diem_360x.jpg?v=1628208182"
-  },
-  "row": {
-   "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/carpe-diem",
-   "url": "https://chileboardgames.com/collections/all/products/carpe-diem",
-   "title_raw": "Carpe Diem",
-   "title": "Carpe Diem",
-   "norm": "carpe diem",
-   "kind": "game",
-   "price_original": 43000.0,
-   "price_current": 35000.0,
-   "price_eff": 35000.0,
-   "in_stock": 0,
-   "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/products/carpe-diem_360x.jpg?v=1628208182"
-  },
-  "rejected": null
- },
- {
-  "store": "chileboardgames",
-  "record": {
-   "title": "Cat Stax el juego de mesa",
-   "original_price": "$16,990",
-   "current_price": "$16,000",
-   "stock_status": "Agotado",
-   "url": "https://chileboardgames.com/collections/all/products/cat-stax",
-   "image": "https://chileboardgames.com/cdn/shop/products/FT_CatStax-1_360x.jpg?v=1622505426"
-  },
-  "row": {
-   "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/cat-stax",
-   "url": "https://chileboardgames.com/collections/all/products/cat-stax",
-   "title_raw": "Cat Stax el juego de mesa",
-   "title": "Cat Stax",
-   "norm": "cat stax",
-   "kind": "game",
-   "price_original": 16990.0,
-   "price_current": 16000.0,
-   "price_eff": 16000.0,
-   "in_stock": 0,
-   "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/products/FT_CatStax-1_360x.jpg?v=1622505426"
+   "image_url": "https://chileboardgames.com/cdn/shop/files/F14934AE-CD8E-4F93-AD00-6E3F3A194809.jpg?v=1792533050&width=240"
   },
   "rejected": null
  },
@@ -6483,16 +6105,16 @@
   "store": "chileboardgames",
   "record": {
    "title": "Catan – El Juego de Mesa Base (Devir)",
-   "original_price": "$33,960",
+   "original_price": "$33,960 CLP",
    "current_price": null,
    "stock_status": null,
-   "url": "https://chileboardgames.com/collections/all/products/catan",
-   "image": "https://chileboardgames.com/cdn/shop/products/catan_360x.jpg?v=1575846739"
+   "url": "https://chileboardgames.com/products/catan",
+   "image": "https://chileboardgames.com/cdn/shop/products/catan.jpg?v=1575846739&width=240"
   },
   "row": {
    "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/catan",
-   "url": "https://chileboardgames.com/collections/all/products/catan",
+   "url_canon": "chileboardgames.com/products/catan",
+   "url": "https://chileboardgames.com/products/catan",
    "title_raw": "Catan – El Juego de Mesa Base (Devir)",
    "title": "Catan – Base (Devir)",
    "norm": "catan",
@@ -6502,61 +6124,7 @@
    "price_eff": 33960.0,
    "in_stock": 1,
    "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/products/catan_360x.jpg?v=1575846739"
-  },
-  "rejected": null
- },
- {
-  "store": "chileboardgames",
-  "record": {
-   "title": "Chocolatext",
-   "original_price": "$14,990",
-   "current_price": "$11,500",
-   "stock_status": "Agotado",
-   "url": "https://chileboardgames.com/collections/all/products/chocolatext",
-   "image": "https://chileboardgames.com/cdn/shop/products/RenderCajaChocolatext_360x.jpg?v=1615315154"
-  },
-  "row": {
-   "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/chocolatext",
-   "url": "https://chileboardgames.com/collections/all/products/chocolatext",
-   "title_raw": "Chocolatext",
-   "title": "Chocolatext",
-   "norm": "chocolatext",
-   "kind": "game",
-   "price_original": 14990.0,
-   "price_current": 11500.0,
-   "price_eff": 11500.0,
-   "in_stock": 0,
-   "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/products/RenderCajaChocolatext_360x.jpg?v=1615315154"
-  },
-  "rejected": null
- },
- {
-  "store": "chileboardgames",
-  "record": {
-   "title": "Chromino Smallbox",
-   "original_price": "$17,000",
-   "current_price": null,
-   "stock_status": null,
-   "url": "https://chileboardgames.com/collections/all/products/chromino-smallbox",
-   "image": "https://chileboardgames.com/cdn/shop/files/ChrominoSmallbox_360x.jpg?v=1778101953"
-  },
-  "row": {
-   "store": "chileboardgames",
-   "url_canon": "chileboardgames.com/collections/all/products/chromino-smallbox",
-   "url": "https://chileboardgames.com/collections/all/products/chromino-smallbox",
-   "title_raw": "Chromino Smallbox",
-   "title": "Chromino Smallbox",
-   "norm": "chromino smallbox",
-   "kind": "game",
-   "price_original": 17000.0,
-   "price_current": null,
-   "price_eff": 17000.0,
-   "in_stock": 1,
-   "flag": null,
-   "image_url": "https://chileboardgames.com/cdn/shop/files/ChrominoSmallbox_360x.jpg?v=1778101953"
+   "image_url": "https://chileboardgames.com/cdn/shop/products/catan.jpg?v=1575846739&width=240"
   },
   "rejected": null
  },
@@ -51647,6 +51215,249 @@
    "in_stock": 1,
    "flag": null,
    "image_url": "https://dojiw2m9tvv09.cloudfront.net/72959/product/M_autumn2205.jpg?71&t=1792768703"
+  },
+  "rejected": null
+ },
+ {
+  "store": "zonaxgamers",
+  "record": {
+   "title": "3 Ring Circus",
+   "original_price": "$34.990 CLP",
+   "current_price": "$29.990 CLP",
+   "stock_status": "Oferta",
+   "url": "https://zonaxgamers.cl/3-ring-circus",
+   "image": "https://cdnx.jumpseller.com/zona-x-gamers/image/39688862/resize/200/200?1694622677"
+  },
+  "row": {
+   "store": "zonaxgamers",
+   "url_canon": "zonaxgamers.cl/3-ring-circus",
+   "url": "https://zonaxgamers.cl/3-ring-circus",
+   "title_raw": "3 Ring Circus",
+   "title": "3 Ring Circus",
+   "norm": "3 ring circus",
+   "kind": "game",
+   "price_original": 34990.0,
+   "price_current": 29990.0,
+   "price_eff": 29990.0,
+   "in_stock": 1,
+   "flag": null,
+   "image_url": "https://cdnx.jumpseller.com/zona-x-gamers/image/39688862/resize/200/200?1694622677"
+  },
+  "rejected": null
+ },
+ {
+  "store": "zonaxgamers",
+  "record": {
+   "title": "¡A Prueba de Retos!",
+   "original_price": "$24.990 CLP",
+   "current_price": null,
+   "stock_status": null,
+   "url": "https://zonaxgamers.cl/a-prueba-de-retos",
+   "image": "https://cdnx.jumpseller.com/zona-x-gamers/image/49407052/resize/200/200?1717532441"
+  },
+  "row": {
+   "store": "zonaxgamers",
+   "url_canon": "zonaxgamers.cl/a-prueba-de-retos",
+   "url": "https://zonaxgamers.cl/a-prueba-de-retos",
+   "title_raw": "¡A Prueba de Retos!",
+   "title": "¡A Prueba de Retos!",
+   "norm": "a prueba retos",
+   "kind": "game",
+   "price_original": 24990.0,
+   "price_current": null,
+   "price_eff": 24990.0,
+   "in_stock": 1,
+   "flag": null,
+   "image_url": "https://cdnx.jumpseller.com/zona-x-gamers/image/49407052/resize/200/200?1717532441"
+  },
+  "rejected": null
+ },
+ {
+  "store": "zonaxgamers",
+  "record": {
+   "title": "Pistas Cruzadas",
+   "original_price": "$16.990 CLP",
+   "current_price": null,
+   "stock_status": null,
+   "url": "https://zonaxgamers.cl/pistas-cruzadas-fractal-juegos",
+   "image": "https://cdnx.jumpseller.com/zona-x-gamers/image/51489804/resize/200/200?1723069738"
+  },
+  "row": {
+   "store": "zonaxgamers",
+   "url_canon": "zonaxgamers.cl/pistas-cruzadas-fractal-juegos",
+   "url": "https://zonaxgamers.cl/pistas-cruzadas-fractal-juegos",
+   "title_raw": "Pistas Cruzadas",
+   "title": "Pistas Cruzadas",
+   "norm": "pistas cruzadas",
+   "kind": "game",
+   "price_original": 16990.0,
+   "price_current": null,
+   "price_eff": 16990.0,
+   "in_stock": 1,
+   "flag": null,
+   "image_url": "https://cdnx.jumpseller.com/zona-x-gamers/image/51489804/resize/200/200?1723069738"
+  },
+  "rejected": null
+ },
+ {
+  "store": "zonaxgamers",
+  "record": {
+   "title": "Colt Express",
+   "original_price": "$32.990 CLP",
+   "current_price": null,
+   "stock_status": null,
+   "url": "https://zonaxgamers.cl/colt-express",
+   "image": "https://cdnx.jumpseller.com/zona-x-gamers/image/42257548/resize/200/200?1700254070"
+  },
+  "row": {
+   "store": "zonaxgamers",
+   "url_canon": "zonaxgamers.cl/colt-express",
+   "url": "https://zonaxgamers.cl/colt-express",
+   "title_raw": "Colt Express",
+   "title": "Colt Express",
+   "norm": "colt express",
+   "kind": "game",
+   "price_original": 32990.0,
+   "price_current": null,
+   "price_eff": 32990.0,
+   "in_stock": 1,
+   "flag": null,
+   "image_url": "https://cdnx.jumpseller.com/zona-x-gamers/image/42257548/resize/200/200?1700254070"
+  },
+  "rejected": null
+ },
+ {
+  "store": "zonaxgamers",
+  "record": {
+   "title": "Catan Expansión - Mercaderes y Bárbaros",
+   "original_price": "$35.990 CLP",
+   "current_price": null,
+   "stock_status": null,
+   "url": "https://zonaxgamers.cl/catan-expansion-mercaderes-y-barbaros",
+   "image": "https://cdnx.jumpseller.com/zona-x-gamers/image/33103459/resize/200/200?1678741668"
+  },
+  "row": {
+   "store": "zonaxgamers",
+   "url_canon": "zonaxgamers.cl/catan-expansion-mercaderes-y-barbaros",
+   "url": "https://zonaxgamers.cl/catan-expansion-mercaderes-y-barbaros",
+   "title_raw": "Catan Expansión - Mercaderes y Bárbaros",
+   "title": "Catan Expansión - Mercaderes y Bárbaros",
+   "norm": "catan mercaderes barbaros",
+   "kind": "expansion",
+   "price_original": 35990.0,
+   "price_current": null,
+   "price_eff": 35990.0,
+   "in_stock": 1,
+   "flag": null,
+   "image_url": "https://cdnx.jumpseller.com/zona-x-gamers/image/33103459/resize/200/200?1678741668"
+  },
+  "rejected": null
+ },
+ {
+  "store": "zonaxgamers",
+  "record": {
+   "title": "Survive The Island",
+   "original_price": "$27.990 CLP",
+   "current_price": null,
+   "stock_status": null,
+   "url": "https://zonaxgamers.cl/survive-the-island",
+   "image": "https://cdnx.jumpseller.com/zona-x-gamers/image/53688600/resize/200/200?1727104325"
+  },
+  "row": {
+   "store": "zonaxgamers",
+   "url_canon": "zonaxgamers.cl/survive-the-island",
+   "url": "https://zonaxgamers.cl/survive-the-island",
+   "title_raw": "Survive The Island",
+   "title": "Survive The Island",
+   "norm": "survive island",
+   "kind": "game",
+   "price_original": 27990.0,
+   "price_current": null,
+   "price_eff": 27990.0,
+   "in_stock": 1,
+   "flag": null,
+   "image_url": "https://cdnx.jumpseller.com/zona-x-gamers/image/53688600/resize/200/200?1727104325"
+  },
+  "rejected": null
+ },
+ {
+  "store": "zonaxgamers",
+  "record": {
+   "title": "Survive The Island Monster Pack Expansion",
+   "original_price": "$11.990 CLP",
+   "current_price": null,
+   "stock_status": null,
+   "url": "https://zonaxgamers.cl/survive-the-island-monster-pack-expansion",
+   "image": "https://cdnx.jumpseller.com/zona-x-gamers/image/83455343/resize/200/200?1793763365"
+  },
+  "row": {
+   "store": "zonaxgamers",
+   "url_canon": "zonaxgamers.cl/survive-the-island-monster-pack-expansion",
+   "url": "https://zonaxgamers.cl/survive-the-island-monster-pack-expansion",
+   "title_raw": "Survive The Island Monster Pack Expansion",
+   "title": "Survive The Island Monster Pack Expansion",
+   "norm": "survive island monster pack",
+   "kind": "expansion",
+   "price_original": 11990.0,
+   "price_current": null,
+   "price_eff": 11990.0,
+   "in_stock": 1,
+   "flag": null,
+   "image_url": "https://cdnx.jumpseller.com/zona-x-gamers/image/83455343/resize/200/200?1793763365"
+  },
+  "rejected": null
+ },
+ {
+  "store": "zonaxgamers",
+  "record": {
+   "title": "Catan El Juego",
+   "original_price": "$34.990 CLP",
+   "current_price": null,
+   "stock_status": "Agotado",
+   "url": "https://zonaxgamers.cl/catan-el-juego",
+   "image": "https://cdnx.jumpseller.com/zona-x-gamers/image/24916841/resize/200/200?1722718734"
+  },
+  "row": {
+   "store": "zonaxgamers",
+   "url_canon": "zonaxgamers.cl/catan-el-juego",
+   "url": "https://zonaxgamers.cl/catan-el-juego",
+   "title_raw": "Catan El Juego",
+   "title": "Catan El Juego",
+   "norm": "catan",
+   "kind": "game",
+   "price_original": 34990.0,
+   "price_current": null,
+   "price_eff": 34990.0,
+   "in_stock": 0,
+   "flag": null,
+   "image_url": "https://cdnx.jumpseller.com/zona-x-gamers/image/24916841/resize/200/200?1722718734"
+  },
+  "rejected": null
+ },
+ {
+  "store": "zonaxgamers",
+  "record": {
+   "title": "Catan Expansión - Ciudades y Caballeros",
+   "original_price": "$35.990 CLP",
+   "current_price": null,
+   "stock_status": "Agotado",
+   "url": "https://zonaxgamers.cl/catan-expansion-ciudades-y-caballeros",
+   "image": "https://cdnx.jumpseller.com/zona-x-gamers/image/33103491/resize/200/200?1678741782"
+  },
+  "row": {
+   "store": "zonaxgamers",
+   "url_canon": "zonaxgamers.cl/catan-expansion-ciudades-y-caballeros",
+   "url": "https://zonaxgamers.cl/catan-expansion-ciudades-y-caballeros",
+   "title_raw": "Catan Expansión - Ciudades y Caballeros",
+   "title": "Catan Expansión - Ciudades y Caballeros",
+   "norm": "catan ciudades caballeros",
+   "kind": "expansion",
+   "price_original": 35990.0,
+   "price_current": null,
+   "price_eff": 35990.0,
+   "in_stock": 0,
+   "flag": null,
+   "image_url": "https://cdnx.jumpseller.com/zona-x-gamers/image/33103491/resize/200/200?1678741782"
   },
   "rejected": null
  },

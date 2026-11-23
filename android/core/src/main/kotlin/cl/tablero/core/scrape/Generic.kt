@@ -235,6 +235,28 @@ fun parseDawn(html: Element, baseUrl: String = ""): List<Scraped> =
         )
     }
 
+/**
+ * `_parse_horizon`: Shopify Horizon grid. Title from the card link's
+ * aria-label; offer in `span.price`, list price in `span.compare-at-price`,
+ * each read from its <bdi> (the span also holds visually-hidden text).
+ */
+fun parseHorizon(html: Element, baseUrl: String = ""): List<Scraped> =
+    cards(html.findAll("li", cls = "product-grid__item")) { item ->
+        val link = item.find("a", cls = "product-card__link")
+        val title = link?.attr("aria-label")?.trim().orEmpty()
+        if (title.isEmpty()) return@cards null
+        val box = item.selectFirst("product-price") ?: item
+        val now = txt(box.selectFirst("span.price bdi"))
+        val was = txt(box.selectFirst("span.compare-at-price bdi"))
+        val (orig, curr) = if (was != null) norm(was, now) else norm(now, null)
+        val badges = item.findAll("div", cls = "product-badges__badge").joinToString(" ") { txt(it) ?: "" }
+        Scraped(
+            title = title, url = url(link, baseUrl), originalPrice = orig, currentPrice = curr,
+            stockStatus = if (oos(badges)) AGOTADO else null,
+            image = img(item, baseUrl),
+        )
+    }
+
 /** `_parse_product_block_simple`: the stripped-down product-block grid. */
 fun parseProductBlockSimple(html: Element, baseUrl: String): List<Scraped> =
     cards(html.findAll("article", cls = "product-block")) { item ->

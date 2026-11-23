@@ -58,4 +58,14 @@ class CrawlTest {
         assertEquals(listOf("u1"), got.map { it.url })
         assertEquals(0, pauses)
     }
+
+    @Test
+    fun pagesEveryListedBaseUrl() {
+        val fetched = mutableListOf<String>()
+        val pages = mapOf("https://t.cl/a" to page("A|u1"), "https://t.cl/b" to page("B|u2", "A|u1"))
+        val multi = site.copy(baseUrl = "https://t.cl/a https://t.cl/b")
+        val got = crawl(multi, { fetched += it; pages[it] }, pause = {})
+        assertEquals(listOf("u1", "u2"), got.map { it.url })
+        assertEquals(listOf("https://t.cl/a", "https://t.cl/a?page=2", "https://t.cl/b", "https://t.cl/b?page=2"), fetched)
+    }
 }

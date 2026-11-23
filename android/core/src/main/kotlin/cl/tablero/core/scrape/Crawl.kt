@@ -15,6 +15,32 @@ const val PAGE_DELAY_JITTER = 1.5
 
 fun politePause() = Thread.sleep(((PAGE_DELAY_MIN + Random.nextDouble(PAGE_DELAY_JITTER)) * 1000).toLong())
 
+/** `_scrape_pages`: every page of one listing URL. */
+private fun crawlPages(
+    site: Site, base: String, fetch: (String) -> Document?, dryRun: Boolean, pause: () -> Unit,
+): List<Scraped> {
+    val products = mutableListOf<Scraped>()
+    var previousTitles: List<String?> = emptyList()
+    var page = 1
+
+    while (true) {
+        val html = fetch(buildUrl(base, site.pagination, page)) ?: break
+        val pageData = site.parser(html)
+        if (pageData.isEmpty()) break
+
+        val titles = pageData.map { it.title }
+        if (titles == previousTitles) break
+
+        previousTitles = titles
+        products += pageData
+        page++
+        if (dryRun) break
+        pause()
+    }
+
+    return products
+}
+
 /**
  * Every page of one store, deduplicated on URL and sorted by it.
  *
@@ -29,24 +55,9 @@ fun crawl(
     dryRun: Boolean = false,
     pause: () -> Unit = ::politePause,
 ): List<Scraped> {
-    val products = mutableListOf<Scraped>()
-    var previousTitles: List<String?> = emptyList()
-    var page = 1
-
-    while (true) {
-        val html = fetch(buildUrl(site.baseUrl, site.pagination, page)) ?: break
-        val pageData = site.parser(html)
-        if (pageData.isEmpty()) break
-
-        val titles = pageData.map { it.title }
-        if (titles == previousTitles) break
-
-        previousTitles = titles
-        products += pageData
-        page++
-        if (dryRun) break
-        pause()
-    }
+    // baseUrl may list several space-separated URLs, each paged in turn (runner.scrape_site).
+    val products = site.baseUrl.split(' ').filter { it.isNotEmpty() }
+        .flatMap { crawlPages(site, it, fetch, dryRun, pause) }
 
     // A record with no URL has no identity -- it is a newsletter box or a
     // banner that matched the card selector. First record per URL wins.

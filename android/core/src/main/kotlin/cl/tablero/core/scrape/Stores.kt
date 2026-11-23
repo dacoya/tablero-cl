@@ -73,7 +73,7 @@ val PARSERS: Map<String, Parser> = mapOf(
 
     // Shopify Debut-family grids
     "flexo" to { parseShopifyCard(it, baseUrl = "https://www.flexogames.cl") },
-    "chileboardgames" to { parseShopifyCard(it, baseUrl = "https://chileboardgames.com") },
+    "chileboardgames" to { parseHorizon(it, baseUrl = "https://chileboardgames.com") },
 
     // Shopify Dawn grids
     "area52" to { parseDawn(it, baseUrl = "https://area52.cl") },

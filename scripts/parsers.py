@@ -391,6 +391,39 @@ def _parse_dawn(html, base_url=''):
     return res
 
 
+def _parse_horizon(html, base_url=''):
+    """
+    Generic Shopify Horizon collection grid (li.product-grid__item > product-card).
+
+    The card's link carries the full title in aria-label; the visible title
+    block has a generated class name. On sale, <product-price> holds the offer
+    in `span.price` and the list price in `span.compare-at-price`. Stock comes
+    from the badge text ("Agotado").
+    """
+    res = []
+    for item in (html.find_all('li', class_='product-grid__item') if html else []):
+        try:
+            link = item.find('a', class_='product-card__link')
+            title = link.get('aria-label', '').strip() if link else ''
+            if not title:
+                continue
+            box = item.find('product-price') or item
+            # The <bdi> alone: its span also holds visually-hidden "Precio de oferta".
+            now = _txt(box.select_one('span.price bdi'))
+            was = _txt(box.select_one('span.compare-at-price bdi'))
+            orig, curr = _norm(was, now) if was else _norm(now, None)
+            badges = ' '.join(_txt(b) or '' for b in item.find_all('div', class_='product-badges__badge'))
+            res.append({
+                'title': title, 'original_price': orig, 'current_price': curr,
+                'stock_status': 'Agotado' if _oos(badges) else None,
+                'url': _url(link, base_url),
+                'image': _img(item, base_url),
+            })
+        except Exception as e:
+            print(f"  [_parse_horizon] skipping item: {e}")
+    return res
+
+
 def _parse_product_block_simple(html, base_url):
     """Product-block grid parser (used by playkingdom)."""
     res = []

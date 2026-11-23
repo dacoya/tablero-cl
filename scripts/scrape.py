@@ -15,6 +15,7 @@ from .parsers import (
     _oos,
     _parse_bs,
     _parse_dawn,
+    _parse_horizon,
     _parse_presta,
     _parse_product_block,
     _parse_product_block_simple,
@@ -212,12 +213,14 @@ laguaridadeldragon = _bs_grid('https://www.laguaridadeldragon.cl')
 # Shopify Debut-family grids. flexogames had its own copy of this parser until
 # the generic was proven to produce byte-identical rows on its catalogue.
 flexogames = partial(_parse_shopify_card, base_url='https://www.flexogames.cl')
-chileboardgames = partial(_parse_shopify_card, base_url='https://chileboardgames.com')
 
 # Shopify Dawn grids.
 area52 = partial(_parse_dawn, base_url='https://area52.cl')
 ovniplay = partial(_parse_dawn, base_url='https://ovniplay.cl')
 juegosgori = partial(_parse_dawn, base_url='https://juegosgori.cl')
+
+# Shopify Horizon grids.
+chileboardgames = partial(_parse_horizon, base_url='https://chileboardgames.com')
 
 winterland = _bs_grid('https://www.winterland.cl')
 
@@ -236,6 +239,18 @@ playkingdom = partial(_parse_product_block_simple, base_url='https://playkingdom
 #   'woo'        → /page/N/       (WooCommerce, Odoo)
 #   'pagina'     → ?pagina=N      (ludoteka)
 #   'gatoarcano' → custom AJAX    (handled explicitly in build_url)
+
+# zonaxgamers' /juegos-de-mesa only links to these; no page lists every game.
+_ZONAX_CATEGORIES = (
+    'juegos-familiares',
+    'juegos-de-fiesta',
+    'juegos-de-estrategia',
+    'juegos-cooperativos',
+    'juegos-de-misterio-y-escape',
+    'juegos-de-cartas',
+    'juegos-infantiles',
+    'juego-para-2-jugadores',
+)
 
 sites = [
     {'name': 'flexo',            'base_url': 'https://www.flexogames.cl/collections/juegos-de-mesa',            'parser': flexogames,       'pagination': 'shopify'},
@@ -259,7 +274,7 @@ sites = [
     {'name': 'revaruk',          'base_url': 'https://revaruk.cl/product-category/juegos-de-mesa',               'parser': revaruk,          'pagination': 'woo'},
     {'name': 'labovedadelmago',  'base_url': 'https://www.labovedadelmago.cl/categoria-producto/juegos-de-mesa', 'parser': labovedadelmago,  'pagination': 'woo'},
     {'name': 'calabozotienda',   'base_url': 'https://www.calabozotienda.cl/tienda/familia/JUEGOS%20DE%20MESA',  'parser': calabozotienda,   'pagination': 'calabozo'},
-    {'name': 'zonaxgamers',      'base_url': 'https://zonaxgamers.cl/juegos-de-mesa',                            'parser': zonaxgamers,      'pagination': 'page_param'},
+    {'name': 'zonaxgamers',      'base_url': ' '.join(f'https://zonaxgamers.cl/juegos-de-mesa/{c}' for c in _ZONAX_CATEGORIES), 'parser': zonaxgamers,      'pagination': 'page_param'},
     {'name': 'cafe2d6',          'base_url': 'https://www.cafe2d6.cl/collections/all',                           'parser': cafe2d6,          'pagination': 'shopify'},
     {'name': 'griffingames',     'base_url': 'https://www.griffingames.cl/categoria-producto/juegos-de-mesa',    'parser': _woo,     'pagination': 'woo'},
     {'name': 'playcenter',       'base_url': 'https://playcenter.cl/categoria-producto/juegos-de-mesa',          'parser': _woo_astra,       'pagination': 'woo'},

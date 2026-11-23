@@ -38,6 +38,7 @@ class PageFixturesTest {
     fun registryMatchesUrlVectors() {
         // sites.tsv and url_vectors.json are both written from scrape.sites.
         val bases = corpus("url_vectors.json").toString()
-        registry().forEach { (_, base, _) -> assertTrue(base in bases, base) }
+        // A store listing several URLs has a vector for the first.
+        registry().forEach { (_, base, _) -> base.split(' ').first().let { assertTrue(it in bases, it) } }
     }
 }

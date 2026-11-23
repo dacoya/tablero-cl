@@ -15,23 +15,14 @@ PAGE_DELAY_MIN = 1.0
 PAGE_DELAY_JITTER = 1.5
 
 
-def scrape_site(site, dry_run: bool = False) -> list[dict]:
-    """
-    Scrape every page of one registry entry.
-
-    Silent: progress is the caller's business, reported once per finished
-    store. This used to drive a tqdm bar pinned to a fixed terminal row, which
-    reserved one row per registered store -- 48 of them for 5 concurrent
-    workers -- and the per-page postfixes were diagnostics nothing read.
-
-    Returns the deduplicated records.
-    """
+def _scrape_pages(site, base: str, dry_run: bool) -> list[dict]:
+    """Every page of one listing URL."""
     products: list = []
     previous_titles: list = []
     page = 1
 
     while True:
-        html = fetch_html(build_url(site["base_url"], site["pagination"], page))
+        html = fetch_html(build_url(base, site["pagination"], page))
         if html is None:
             break
 
@@ -53,6 +44,25 @@ def scrape_site(site, dry_run: bool = False) -> list[dict]:
             break
 
         time.sleep(PAGE_DELAY_MIN + random.uniform(0, PAGE_DELAY_JITTER))
+    return products
+
+
+def scrape_site(site, dry_run: bool = False) -> list[dict]:
+    """
+    Scrape every page of one registry entry.
+
+    Silent: progress is the caller's business, reported once per finished
+    store. This used to drive a tqdm bar pinned to a fixed terminal row, which
+    reserved one row per registered store -- 48 of them for 5 concurrent
+    workers -- and the per-page postfixes were diagnostics nothing read.
+
+    Returns the deduplicated records.
+    """
+    products: list = []
+    # base_url may list several space-separated URLs (a store whose games sit
+    # in subcategories with no page listing them all); each is paged in turn.
+    for base in site["base_url"].split():
+        products.extend(_scrape_pages(site, base, dry_run))
 
     if not products:
         return []

@@ -53,7 +53,7 @@ def parse(html: str, site: dict) -> list:
 
 def capture(site: dict, page: int = 1, out_dir: Path = None) -> dict:
     """Fetch one page and write it plus its expected parse. Returns a summary."""
-    url = scrape.build_url(site["base_url"], site["pagination"], page)
+    url = scrape.build_url(site["base_url"].split()[0], site["pagination"], page)
     response = scrape._SESSION.get(url, timeout=20)
     response.raise_for_status()
     html = response.text
@@ -205,8 +205,8 @@ def derive_vectors(root: Path = None) -> list:
 
 def url_vectors() -> list:
     return [
-        {"base_url": s["base_url"], "pagination": s["pagination"], "page": page,
-         "url": scrape.build_url(s["base_url"], s["pagination"], page)}
+        {"base_url": s["base_url"].split()[0], "pagination": s["pagination"], "page": page,
+         "url": scrape.build_url(s["base_url"].split()[0], s["pagination"], page)}
         for s in scrape.sites for page in (1, 2, 3)
     ]
 
