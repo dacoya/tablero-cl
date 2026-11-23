@@ -6,6 +6,7 @@ most stores are a binding of (see the bindings in scrape.py). Pure: a parsed
 page in, records out. The Kotlin port is core/scrape/Generic.kt and Soup.kt,
 held to this file by the page fixtures.
 """
+import re
 
 
 # ── Primitive helpers ──────────────────────────────────────────────────────────
@@ -54,6 +55,12 @@ def _srcset_first(value):
     return value.split(',')[0].strip().split(' ')[0] if value else None
 
 
+# Not product photos: WooCommerce's grey "no image" placeholder and the store's
+# own logo (Bsale names it M_logo..., others Logo-Store.png). Skipped so the
+# app borrows another store's photo of the game instead of showing a blank.
+_NOT_A_PHOTO = re.compile(r'(?i)placeholder|/(?:[a-z]_)?logo[^/]*$')
+
+
 def _img(el, base=""):
     """
     URL of the first real image inside a product card, or None.
@@ -67,7 +74,7 @@ def _img(el, base=""):
     for img in el.find_all(['img', 'source']):
         for attr in _IMG_ATTRS:
             url = _srcset_first(img.get(attr))
-            if not url or url.startswith('data:'):
+            if not url or url.startswith('data:') or _NOT_A_PHOTO.search(url):
                 continue
             url = url.replace('{width}', _IMG_WIDTH)
             if url.startswith('//'):

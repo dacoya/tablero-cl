@@ -118,3 +118,20 @@ def test_every_fixture_page_yields_photos():
         if with_image < 0.9 * len(expected):
             thin[f"{path.parent.name}/{path.name}"] = f"{with_image}/{len(expected)}"
     assert thin == {}
+
+
+def test_placeholders_and_store_logos_are_not_photos():
+    """A placeholder hid other stores' photos: MIN(image_url) could pick it for the game."""
+    from bs4 import BeautifulSoup
+    from tablero.parsers import _img
+
+    def first(html):
+        return _img(BeautifulSoup(html, "html.parser"), "https://s.cl")
+
+    assert first('<img src="https://s.cl/wp-content/uploads/woocommerce-placeholder-300x300.png">'
+                 '<img src="https://s.cl/a.jpg">') == "https://s.cl/a.jpg"
+    assert first('<img src="https://d.net/55673/3/M_logob5675.png?148&t=1">') is None
+    assert first('<img src="https://s.cl/img/Logo-Calabozo.png">') is None
+    # "logo" inside a real photo's name is not a logo.
+    assert first('<img src="https://s.cl/sherlock-tumba-arqueologo.jpg">') == "https://s.cl/sherlock-tumba-arqueologo.jpg"
+    assert first('<img src="https://s.cl/sleeves-guardians-logo.jpg">') == "https://s.cl/sleeves-guardians-logo.jpg"

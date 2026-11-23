@@ -74,6 +74,10 @@ fun url(el: Element?, base: String = ""): String? {
 // placeholder in src, so src is read last. See parsers._img.
 private val IMG_ATTRS = listOf("data-src", "data-lazy-src", "data-original", "data-srcset", "srcset", "src")
 
+// parsers._NOT_A_PHOTO: a placeholder or the store's logo, skipped so the app
+// borrows another store's photo. ASCII only, so no pyRegex needed.
+private val NOT_A_PHOTO = Regex("""(?i)placeholder|/(?:[a-z]_)?logo[^/]*$""")
+
 // Filled into Shopify's "{width}" URL templates: a phone-sized thumbnail.
 private const val IMG_WIDTH = "360"
 
@@ -84,7 +88,7 @@ fun img(el: Element?, base: String = ""): String? {
         for (attr in IMG_ATTRS) {
             val raw = tag.attr(attr).takeIf { it.isNotEmpty() } ?: continue
             val url = raw.split(',')[0].pyStrip().split(' ')[0]
-            if (url.isEmpty() || url.startsWith("data:")) continue
+            if (url.isEmpty() || url.startsWith("data:") || NOT_A_PHOTO.containsMatchIn(url)) continue
             val u = url.replace("{width}", IMG_WIDTH)
             return when {
                 u.startsWith("//") -> "https:$u"
