@@ -6,7 +6,6 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import androidx.work.workDataOf
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
@@ -14,9 +13,9 @@ import java.util.concurrent.TimeUnit
 object Schedule {
     const val NAME = "daily-update"
 
-    // Overnight: the phone is usually charging and on WiFi, and the prices are
-    // fresh by breakfast.
-    private const val HOUR = 4
+    // After the scrape workflow (07:00 UTC, 03:00-04:00 here; ~15 min) has
+    // published, and before the phone usually comes off the charger.
+    private const val HOUR = 5
 
     /**
      * Delay until the next HOUR:00. Without it WorkManager runs a new periodic
@@ -46,8 +45,6 @@ object Schedule {
                     .build(),
             )
             .setInitialDelay(untilNextRun(), TimeUnit.MILLISECONDS)
-            // Daily, but each store only when its cadence says it is due.
-            .setInputData(workDataOf(UpdateWorker.KEY_DUE to true))
             .build()
         // UPDATE keeps an existing schedule's timing but takes new constraints.
         work.enqueueUniquePeriodicWork(NAME, ExistingPeriodicWorkPolicy.UPDATE, request)

@@ -3,7 +3,12 @@ package cl.tablero.app
 import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.driver.AndroidSQLiteDriver
 import androidx.sqlite.execSQL
+import cl.tablero.core.data.CATALOG_CURSOR
 import cl.tablero.core.data.SCHEMA_VERSION
+import cl.tablero.core.data.carryUserState
+import cl.tablero.core.data.catalogStamp
+import cl.tablero.core.data.getCursor
+import cl.tablero.core.data.setCursor
 import cl.tablero.core.data.canOpen
 import cl.tablero.core.data.exec
 import cl.tablero.core.data.initDb
@@ -100,6 +105,39 @@ class Db(private val file: File) {
             }
         } finally {
             busy.unlock()
+        }
+    }
+
+    /** What a catalogue download changed: its product count and the personal entries it could not place. */
+    data class Synced(val products: Int, val dropped: Int)
+
+    /**
+     * Replace the catalogue with the one the scrape workflow published, keeping
+     * the user's own tables (watchlist, collection, cart, favourites, shipping,
+     * cursors). Null when that catalogue is the one already here. The caller
+     * holds [busy]; the same checks as [import] apply to the download.
+     */
+    suspend fun sync(source: InputStream, scratch: File): Synced? = source.use { input ->
+        withContext(thread) {
+            val incoming = scratch.resolve("sync.db").apply { delete() }
+            incoming.outputStream().use { input.copyTo(it) }
+            val products = validated(incoming)
+            val current = getCursor(open(), CATALOG_CURSOR)
+            val dropped = AndroidSQLiteDriver().open(incoming.path).use { new ->
+                new.execSQL("PRAGMA trusted_schema = OFF")
+                initDb(new) // the published copy carries no plain indexes; this builds them
+                val stamp = catalogStamp(new)
+                if (stamp != null && stamp == current) {
+                    null
+                } else {
+                    carryUserState(new, file).also { if (stamp != null) setCursor(new, stamp, CATALOG_CURSOR) }
+                }
+            }
+            if (dropped == null) {
+                incoming.delete(); null
+            } else {
+                swapIn(incoming); Synced(products, dropped)
+            }
         }
     }
 
