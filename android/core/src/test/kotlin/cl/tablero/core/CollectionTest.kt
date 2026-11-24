@@ -52,13 +52,11 @@ class CollectionTest {
         query("SELECT id FROM game WHERE title = ?", title).single()["id"] as Long
 
     @Test
-    fun aStoreWhoseLatestScrapeFailedIsHiddenUntilItRecovers() = db { conn ->
+    fun aStoreWhoseLatestScrapeFailedKeepsShowingWhatItLastListed() = db { conn ->
         val before = countProducts(conn, Filters(stores = listOf("b")))
         recordFailure(conn, "b", ts = 200)
-        assertEquals(0L, countProducts(conn, Filters(stores = listOf("b"))))
-        assertEquals(1L, conn.query("SELECT COUNT(*) AS n FROM product WHERE store = 'b'").single()["n"]) // kept
-        ingestStore(conn, "b", listOf(Scraped("Catan", "https://b.cl/catan", "$35.000")), ts = 300)
         assertEquals(before, countProducts(conn, Filters(stores = listOf("b"))))
+        assertEquals(1L, before)
     }
 
     @Test

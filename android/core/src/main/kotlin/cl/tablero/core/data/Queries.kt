@@ -13,21 +13,17 @@ import androidx.sqlite.execSQL
  */
 
 /**
- * A product is hidden, never deleted (its history survives), when
- *  - its store was scraped successfully more recently than the product was
- *    last seen: delisted, or its URL changed; or
- *  - the store's latest attempt failed: most likely down for maintenance, and
- *    prices from before are not worth showing. A later good scrape brings it back.
+ * A product is hidden, never deleted (its history survives), when its store
+ * was scraped successfully more recently than the product was last seen:
+ * delisted, or its URL changed. A store whose latest attempt failed keeps
+ * showing what it last listed; old prices beat none, and offers are marked
+ * as unchecked.
  */
 const val STALE_CLAUSE = """
     p.last_seen >= COALESCE(
         (SELECT MAX(r.ts) FROM scrape_run r WHERE r.store = p.store AND r.success = 1),
         p.last_seen
     )
-    AND COALESCE(
-        (SELECT r.success FROM scrape_run r WHERE r.store = p.store ORDER BY r.ts DESC LIMIT 1),
-        1
-    ) = 1
 """
 
 private const val DISCOUNT_PCT_SQL = """

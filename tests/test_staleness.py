@@ -63,18 +63,18 @@ def test_stale_rows_are_kept_not_deleted(db_conn):
     assert row == 1
 
 
-def test_a_failed_scrape_hides_the_store_until_one_succeeds(db_conn):
-    """Latest attempt failed = store likely in maintenance: hidden, history kept."""
+def test_a_failed_scrape_keeps_showing_what_the_store_last_listed(db_conn):
+    """Latest attempt failed: old prices beat none, so the store stays visible."""
     now = int(time.time())
-    rec = [_record("Azul", "https://tiendaa.cl/p/azul")]
+    rec = [_record("Azul", "https://tiendaa.cl/p/azul"), _record("Catan", "https://tiendaa.cl/p/catan")]
     _scrape(db_conn, "tiendaA", rec, ts=now)
-    rows = db_conn.execute("SELECT COUNT(*) FROM product WHERE store='tiendaA'").fetchone()[0]
+    before = repo.count_products(db_conn, store="tiendaA")
     ingest.record_failure(db_conn, "tiendaA", ts=now + 3600)
-    assert repo.count_products(db_conn, store="tiendaA") == 0
-    assert db_conn.execute("SELECT COUNT(*) FROM product WHERE store='tiendaA'").fetchone()[0] == rows
+    assert repo.count_products(db_conn, store="tiendaA") == before >= 1
 
-    _scrape(db_conn, "tiendaA", rec, ts=now + 7200)
-    assert repo.count_products(db_conn, store="tiendaA") >= 1
+    # The next good scrape still drops what it no longer lists.
+    _scrape(db_conn, "tiendaA", rec[:1], ts=now + 7200)
+    assert repo.count_products(db_conn, store="tiendaA") == before - 1
 
 
 # ---------------------------------------------------------------------------
