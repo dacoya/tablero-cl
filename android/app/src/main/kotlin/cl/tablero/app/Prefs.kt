@@ -23,9 +23,6 @@ class Prefs(context: Context) {
             set(v) { sp.edit { putBoolean(key, v) }; state.value = v }
     }
 
-    /** Updates wait for WiFi: the catalogue is ~5 MB, a store's scrape a few MB more. */
-    val wifiOnly = Flag("wifi_only", true)
-
     /** Notify when a watched game reaches its target price. */
     val notifyTargets = Flag("notify_targets", true)
 

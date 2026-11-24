@@ -1,12 +1,13 @@
 name: scrape
 
-# Daily scrape. Publishes two rolling release assets:
+# Scrape twice a day. Publishes two rolling release assets:
 #   tablero.db.gz       lean copy the app downloads
 #   tablero-full.db.gz  full copy the next run starts from (keeps price history
 #                       and every BGG row, which the lean copy drops)
 on:
   schedule:
     - cron: "0 7 * * *"   # 03:00-04:00 in Chile
+    - cron: "0 19 * * *"  # 15:00-16:00 in Chile
   workflow_dispatch:
 
 permissions:

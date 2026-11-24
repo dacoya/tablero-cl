@@ -129,7 +129,7 @@ private fun About(db: Db, name: String, notify: (String) -> Unit) {
         (store?.get("city") as String?)?.let { Facts(it) }
         Row(Modifier.padding(top = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             if (canScrape) {
-                OutlinedButton(onClick = { start(listOf(name)) }, enabled = updates.active == null) {
+                OutlinedButton(onClick = { start(name) }, enabled = updates.active == null) {
                     Text(if (updates.active == null) "Actualizar" else "Actualizando…")
                 }
             } else {

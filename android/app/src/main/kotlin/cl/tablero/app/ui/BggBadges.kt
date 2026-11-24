@@ -25,7 +25,7 @@ import cl.tablero.core.data.SqlRow
 import kotlin.math.log10
 
 /*
- * The BGG headline under a game's name: geek rating, overall rank and best
+ * The BGG headline under a game's name: average rating, overall rank and best
  * category rank, each in a hexagon coloured from red (bad) through blue to
  * green (good). A value BGG does not have is a light brown "?".
  */
@@ -36,9 +36,9 @@ private val Bad = Color(0xFFC62828)
 private val Unknown = Color(0xFFC8A27A)
 
 // Ranges the colour scale spans; values past either end take its end colour.
-// Geek ratings sit between ~5.5 (unloved) and ~8.5 (top of the chart).
-private const val RATING_BAD = 5.5
-private const val RATING_GOOD = 8.0
+// Average ratings sit between ~6 (unloved) and ~8.5 (top of the chart).
+private const val RATING_BAD = 6.0
+private const val RATING_GOOD = 8.5
 private const val RANK_GOOD = 10.0
 private const val RANK_BAD = 20_000.0
 private const val CATEGORY_RANK_GOOD = 5.0
@@ -81,13 +81,13 @@ private fun logRank(rank: Double, good: Double, bad: Double) = linear(log10(rank
 private class Badge(val value: String?, val label: String, val score: Double?)
 
 private fun badges(bgg: SqlRow?): List<Badge> {
-    val rating = (bgg?.get("bayesaverage") as? Number)?.toDouble()
+    val rating = (bgg?.get("average") as? Number)?.toDouble()
     val rank = (bgg?.get("rank") as? Number)?.toDouble()
     val category = CATEGORIES
         .mapNotNull { (key, label) -> (bgg?.get(key) as? Number)?.toDouble()?.let { label to it } }
         .minByOrNull { it.second }
     return listOf(
-        Badge(rating?.let { "%.1f".format(java.util.Locale.ROOT, it) }, "Nota geek",
+        Badge(rating?.let { "%.1f".format(java.util.Locale.ROOT, it) }, "Nota promedio",
             rating?.let { linear(it, RATING_BAD, RATING_GOOD) }),
         Badge(rank?.let { "#${count(it)}" }, "Ranking", rank?.let { logRank(it, RANK_GOOD, RANK_BAD) }),
         Badge(category?.let { "#${count(it.second)}" }, category?.first ?: "Categoría",

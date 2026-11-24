@@ -19,16 +19,30 @@ val USER_TABLES = listOf("watchlist", "owned", "store_shipping", "store_fav", "c
 
 private const val TIMEOUT_MS = 30_000
 
-/** The published catalogue, already gunzipped. GitHub redirects to its CDN; https to https is followed. */
-fun openCatalog(url: String = CATALOG_URL): InputStream {
+/** Cursor holding the Last-Modified (unix seconds) of the copy last fetched, so an unchanged one is not downloaded again. */
+const val CATALOG_HTTP_CURSOR = "catalog_http"
+
+/** A fetched catalogue, already gunzipped, and when GitHub last replaced it (unix seconds). */
+class Download(val stream: InputStream, val modified: Long)
+
+/**
+ * The published catalogue, or null when it has not changed since `since`
+ * (unix seconds): the If-Modified-Since check costs one request, not the
+ * download. GitHub redirects to its CDN; https to https is followed, header kept.
+ */
+fun openCatalog(since: Long? = null, url: String = CATALOG_URL): Download? {
     val http = URL(url).openConnection() as HttpURLConnection
     http.connectTimeout = TIMEOUT_MS
     http.readTimeout = TIMEOUT_MS
-    if (http.responseCode != 200) {
-        http.disconnect()
-        throw java.io.IOException("Descarga del catálogo: HTTP ${http.responseCode}")
+    if (since != null) http.ifModifiedSince = since * 1000
+    when (http.responseCode) {
+        200 -> return Download(GZIPInputStream(http.inputStream), http.lastModified / 1000)
+        304 -> { http.disconnect(); return null }
+        else -> {
+            http.disconnect()
+            throw java.io.IOException("Descarga del catálogo: HTTP ${http.responseCode}")
+        }
     }
-    return GZIPInputStream(http.inputStream)
 }
 
 /** Newest scrape in a catalogue: what tells two downloads apart. */

@@ -75,9 +75,10 @@ private fun Corners(discount: String?, flag: Any?, inStock: Any?) {
 
 /** A card's text block: where (and what, when not a plain game), two lines of title, the price line. */
 @Composable
-internal fun CardText(label: String, kind: Any?, title: String, price: @Composable () -> Unit) {
+internal fun CardText(label: String?, kind: Any?, title: String, price: @Composable () -> Unit) {
     Column(Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-        Text(listOfNotNull(label, KIND_LABELS[kind]).joinToString(" · ").uppercase(),
+        val tag = listOfNotNull(label?.takeIf { it.isNotBlank() }, KIND_LABELS[kind]).joinToString(" · ")
+        if (tag.isNotEmpty()) Text(tag.uppercase(),
             style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.secondary,
             fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
         Text(title, style = MaterialTheme.typography.bodyMedium, maxLines = 2, minLines = 2,

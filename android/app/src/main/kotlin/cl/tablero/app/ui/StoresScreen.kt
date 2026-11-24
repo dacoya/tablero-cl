@@ -69,7 +69,7 @@ fun StoresScreen(db: Db, onBack: () -> Unit, onStore: (String) -> Unit, modifier
 
     Column(modifier) {
         ScreenTitle("Tiendas", onBack) {
-            if (updates.active == null) Button(onClick = { start(emptyList()) }) { Text("Sincronizar") }
+            if (updates.active == null) Button(onClick = { start(null) }) { Text("Sincronizar") }
             else OutlinedButton(onClick = { updates.stop(context) }) { Text("Detener") }
         }
         LazyVerticalGrid(
@@ -102,7 +102,8 @@ private class StoreList(
 
 /**
  * Every store with data, plus registry stores with none yet, so a fresh
- * install shows them all instead of an empty screen. Favourites first.
+ * install shows them all instead of an empty screen. Favourites first,
+ * failed stores next.
  */
 @Composable
 private fun rememberStoreRows(db: Db): StoreList {
@@ -114,7 +115,8 @@ private fun rememberStoreRows(db: Db): StoreList {
             val favourites = favStores(conn)
             val rows = (known + registry().filter { it.first !in names }
                 .map { mapOf("name" to it.first, "n_products" to 0L, "last_scrape" to null, "last_success" to null) })
-                .sortedWith(compareBy({ it["name"] !in favourites }, { it["name"] as String }))
+                // Favourites, then stores whose last scrape failed, then the rest.
+                .sortedWith(compareBy({ it["name"] !in favourites }, { it["last_success"] != 0L }, { it["name"] as String }))
             StoreList(rows, favourites, getCursor(conn, CATALOG_CURSOR))
         }
     }
@@ -136,10 +138,14 @@ private fun StoreCard(store: SqlRow, favourite: Boolean, open: (String) -> Unit,
             IconButton(onClick = toggleFavourite, modifier = Modifier.align(Alignment.TopEnd)) {
                 Icon(if (favourite) Icons.Filled.Star else Icons.Outlined.Star,
                     contentDescription = if (favourite) "Quitar de favoritas" else "Marcar favorita",
-                    tint = if (favourite) MaterialTheme.colorScheme.primary else Color(0x99222222))
+                    tint = when {
+                        favourite -> MaterialTheme.colorScheme.primary
+                        STORE_LOGOS[name]?.dark == true -> Color(0xCCFFFFFF)
+                        else -> Color(0x99222222)
+                    })
             }
         }
-        CardText((store["city"] as String?) ?: "Chile", null, name) {
+        CardText(store["city"] as String?, null, name) {
             Text("${count(store["n_products"])} productos", style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.Bold)
             Text((if (failed) "Falló " else "") + ago(store["last_scrape"]),
@@ -154,7 +160,7 @@ private fun UpdateStatus(info: WorkInfo) {
     Card(Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
         Column(Modifier.padding(12.dp)) {
             when (info.state) {
-                WorkInfo.State.ENQUEUED, WorkInfo.State.BLOCKED -> Text("Esperando conexión WiFi… (cámbialo en Ajustes)")
+                WorkInfo.State.ENQUEUED, WorkInfo.State.BLOCKED -> Text("Esperando conexión…")
                 WorkInfo.State.RUNNING -> Running(info.progress)
                 WorkInfo.State.SUCCEEDED -> Finished(info.outputData)
                 WorkInfo.State.FAILED -> Finished(info.outputData, failedRun = true)

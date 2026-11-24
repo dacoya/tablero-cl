@@ -4,6 +4,8 @@ import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.driver.AndroidSQLiteDriver
 import androidx.sqlite.execSQL
 import cl.tablero.core.data.CATALOG_CURSOR
+import cl.tablero.core.data.CATALOG_HTTP_CURSOR
+import cl.tablero.core.data.Download
 import cl.tablero.core.data.SCHEMA_VERSION
 import cl.tablero.core.data.carryUserState
 import cl.tablero.core.data.catalogStamp
@@ -117,7 +119,7 @@ class Db(private val file: File) {
      * cursors). Null when that catalogue is the one already here. The caller
      * holds [busy]; the same checks as [import] apply to the download.
      */
-    suspend fun sync(source: InputStream, scratch: File): Synced? = source.use { input ->
+    suspend fun sync(download: Download, scratch: File): Synced? = download.stream.use { input ->
         withContext(thread) {
             val incoming = scratch.resolve("sync.db").apply { delete() }
             incoming.outputStream().use { input.copyTo(it) }
@@ -130,10 +132,14 @@ class Db(private val file: File) {
                 if (stamp != null && stamp == current) {
                     null
                 } else {
-                    carryUserState(new, file).also { if (stamp != null) setCursor(new, stamp, CATALOG_CURSOR) }
+                    carryUserState(new, file).also {
+                        if (stamp != null) setCursor(new, stamp, CATALOG_CURSOR)
+                        setCursor(new, download.modified, CATALOG_HTTP_CURSOR)
+                    }
                 }
             }
             if (dropped == null) {
+                setCursor(open(), download.modified, CATALOG_HTTP_CURSOR)
                 incoming.delete(); null
             } else {
                 swapIn(incoming); Synced(products, dropped)

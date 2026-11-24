@@ -18,6 +18,7 @@ import kotlinx.coroutines.runInterruptible
 import kotlinx.coroutines.withContext
 import cl.tablero.app.ui.feedFile
 import cl.tablero.app.ui.saveFeed
+import cl.tablero.core.data.CATALOG_HTTP_CURSOR
 import cl.tablero.core.data.getCursor
 import cl.tablero.core.data.ingestStore
 import cl.tablero.core.data.openCatalog
@@ -33,10 +34,11 @@ import cl.tablero.core.scrape.sites
 import cl.tablero.core.scrape.updateStores
 
 /**
- * A manual update, one of two kinds. With no stores named: sync, i.e. the
+ * A manual update, one of two kinds. With no store named: sync, i.e. the
  * catalogue the scrape workflow publishes, swapped in with the user's own
- * tables kept. With stores named: those scraped here on the phone, for the
- * ones the workflow cannot reach (Cloudflare blocks its servers on some).
+ * tables kept. With a store named: that one store scraped here on the phone,
+ * for the ones the workflow cannot reach (Cloudflare blocks its servers on
+ * some). The phone never scrapes every store.
  *
  * ponytail: the next sync replaces phone-scraped rows with the workflow's
  * stale ones, losing what the phone recorded for those stores. Carry their
@@ -58,12 +60,12 @@ class UpdateWorker(context: Context, params: WorkerParameters) : CoroutineWorker
     private suspend fun update(): Result {
         val app = applicationContext as TableroApp
         val db = app.db
-        val wanted = inputData.getNullableStringArray(KEY_STORES)?.filterNotNull().orEmpty()
+        val wanted = inputData.getString(KEY_TARGET)
         val notes = mutableListOf<String>()
 
-        val synced = if (wanted.isNotEmpty()) null else sync(db, notes)
-        val targets = sites().filter { it.name in wanted }
-        val scraped = if (targets.isEmpty()) null else scrape(db, targets, notes)
+        val synced = if (wanted != null) null else sync(db, notes)
+        val site = wanted?.let { name -> sites().firstOrNull { it.name == name } }
+        val scraped = site?.let { scrape(db, it, notes) }
 
         if (synced == null && scraped == null) {
             // Nothing new: the catalogue was already current.
@@ -83,18 +85,24 @@ class UpdateWorker(context: Context, params: WorkerParameters) : CoroutineWorker
         }
         Notify.changes(applicationContext, app.prefs, changed)
 
+        val brokenStores = db.read { conn -> stores(conn).count { it["last_success"] == 0L } }
         val newCount = db.read { it.query("SELECT COUNT(*) AS n FROM product WHERE flag = 'new'").first()["n"] as Long }
         return Result.success(workDataOf(
             KEY_PRODUCTS to db.read(::productCount), KEY_NEW to newCount.toInt(),
-            KEY_FAILED to notes.toTypedArray(), KEY_TOTAL to targets.size,
+            KEY_FAILED to notes.toTypedArray(), KEY_TOTAL to if (site == null) 0 else 1,
+            KEY_BROKEN_STORES to brokenStores,
         ))
     }
 
     /** The published catalogue, swapped in. Null when it was already here or could not be fetched. */
     private suspend fun sync(db: Db, notes: MutableList<String>): Db.Synced? {
         setProgress(workDataOf(KEY_DONE to 0, KEY_TOTAL to 0, KEY_STORE to "catálogo"))
+        val since = db.read { getCursor(it, CATALOG_HTTP_CURSOR) }
         val synced = try {
-            withContext(Dispatchers.IO) { db.sync(openCatalog(), applicationContext.cacheDir) }
+            withContext(Dispatchers.IO) {
+                // Unchanged since the last fetch: nothing downloaded.
+                openCatalog(since)?.let { db.sync(it, applicationContext.cacheDir) }
+            }
         } catch (e: Exception) {
             notes += "catálogo: ${e.message}"
             return null
@@ -106,23 +114,18 @@ class UpdateWorker(context: Context, params: WorkerParameters) : CoroutineWorker
     }
 
     /**
-     * Scrape `targets` on the phone, biggest first so a long catalogue does
-     * not start last and finish alone. Can run long, so as a foreground
-     * service of type dataSync with a progress notification.
+     * Scrape one store on the phone. A big catalogue can take minutes, so as
+     * a foreground service of type dataSync with a progress notification.
      */
-    private suspend fun scrape(db: Db, targets: List<Site>, notes: MutableList<String>): Int {
-        val size = db.read { conn -> stores(conn).associate { it["name"] as String to (it["n_products"] as Long? ?: 0L) } }
-        val ordered = targets.sortedByDescending { size[it.name] ?: 0L }
-        setForeground(foreground("Actualizando ${ordered.size} tiendas…", 0, ordered.size))
-        // Named up front when there is only one, since nothing else reports
-        // until that store is done.
-        setProgress(workDataOf(KEY_DONE to 0, KEY_TOTAL to ordered.size, KEY_STORE to ordered.singleOrNull()?.name))
+    private suspend fun scrape(db: Db, site: Site, notes: MutableList<String>): Int {
+        setForeground(foreground("Actualizando ${site.name}…", 0, 1))
+        setProgress(workDataOf(KEY_DONE to 0, KEY_TOTAL to 1, KEY_STORE to site.name))
 
         val http = Http()
         // updateStores blocks. runInterruptible turns a cancellation (Detener)
         // into a thread interrupt, which stops its scrapes mid-page.
         val totals = runInterruptible(Dispatchers.IO) { updateStores(
-            targets = ordered,
+            targets = listOf(site),
             ingest = { store, records -> db.writeBlocking { ingestStore(it, store, records) } },
             recordFailure = { store -> db.writeBlocking { recordFailure(it, store) } },
             scrape = { crawl(it, http::fetchHtml) },
@@ -153,29 +156,33 @@ class UpdateWorker(context: Context, params: WorkerParameters) : CoroutineWorker
     companion object {
         const val WORK_NAME = "update"
         const val KEY_SKIPPED = "skipped"
-        const val KEY_STORES = "stores"
+        /** The one store to scrape on the phone; absent for a sync. */
+        const val KEY_TARGET = "target"
         const val KEY_DONE = "done"
         const val KEY_TOTAL = "total"
         const val KEY_PRODUCTS = "products"
         const val KEY_STORE = "store"
         const val KEY_NEW = "new"
         const val KEY_FAILED = "failed"
+        /** Stores whose last scrape failed, after the run. */
+        const val KEY_BROKEN_STORES = "broken_stores"
+        /** Tag of a catalogue sync, as opposed to one store scraped on the phone. */
+        const val TAG_SYNC = "sync"
         /** A sync that found the catalogue already here. */
         const val KEY_CURRENT = "current"
         private const val NOTIFICATION_ID = 1
 
         /**
-         * Queue an update: the catalogue sync, or, when `stores` is not
-         * empty, just those scraped on the phone.
-         * WiFi only unless `mobileData`. One at a time; asking again while
-         * one runs is a no-op.
+         * Queue an update: the catalogue sync, or, with `store`, that one
+         * store scraped on the phone. Any network will do. One at a time;
+         * asking again while one runs is a no-op.
          */
-        fun start(context: Context, stores: List<String> = emptyList(),
-                  mobileData: Boolean = !(context.applicationContext as TableroApp).prefs.wifiOnly.value) {
+        fun start(context: Context, store: String? = null) {
             val request = OneTimeWorkRequestBuilder<UpdateWorker>()
-                .setInputData(workDataOf(KEY_STORES to stores.toTypedArray()))
+                .setInputData(workDataOf(KEY_TARGET to store))
+                .apply { if (store == null) addTag(TAG_SYNC) }
                 .setConstraints(Constraints.Builder()
-                    .setRequiredNetworkType(if (mobileData) NetworkType.CONNECTED else NetworkType.UNMETERED)
+                    .setRequiredNetworkType(NetworkType.CONNECTED)
                     .build())
                 .build()
             WorkManager.getInstance(context).enqueueUniqueWork(WORK_NAME, ExistingWorkPolicy.KEEP, request)

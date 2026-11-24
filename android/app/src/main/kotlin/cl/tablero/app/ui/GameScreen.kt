@@ -378,7 +378,6 @@ private fun players(min: Any?, max: Any?): String = when {
 @Composable
 private fun BggCard(bgg: SqlRow?, notify: (String) -> Unit) {
     val uri = LocalUriHandler.current
-    var more by rememberSaveable { mutableStateOf(false) }
     OutlinedCard(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp)) {
         Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
             if (bgg == null) {
@@ -403,17 +402,17 @@ private fun BggCard(bgg: SqlRow?, notify: (String) -> Unit) {
                 "Por categoría" to (categories.joinToString(" · ").ifEmpty { UNKNOWN }),
                 "Mecánicas" to (bgg["mechanics"] as String? ?: UNKNOWN),
             )
-            (if (more) main + rest else main).forEach { (label, value) ->
+            // Only what BGG knows: an unknown field is left out, not shown as "Desconocido".
+            val known = { rows: List<Pair<String, String>> -> rows.filter { it.second != UNKNOWN } }
+            known(main + rest).forEach { (label, value) ->
                 Row {
                     Text(label, style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(0.4f),
                         color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Text(value, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.weight(0.6f),
-                        color = if (value == UNKNOWN) MaterialTheme.colorScheme.onSurfaceVariant else Color.Unspecified)
+                        modifier = Modifier.weight(0.6f))
                 }
             }
             if (bgg["facts_id"] != null) Facts("Ficha: BGG")
-            TextButton(onClick = { more = !more }) { Text(if (more) "Ver menos" else "Ver más") }
             bgg["id"]?.let { id ->
                 TextButton(onClick = {
                     runCatching { uri.openUri("https://boardgamegeek.com/boardgame/$id") }

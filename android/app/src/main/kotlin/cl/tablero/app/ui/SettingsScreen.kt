@@ -58,9 +58,6 @@ fun SettingsScreen(app: TableroApp, notify: (String) -> Unit, onStores: () -> Un
             modifier = Modifier.clickable(onClick = onStores),
         )
 
-        Section("Actualización")
-        Toggle("Solo con WiFi", "Sincronizar y actualizar tiendas esperan una red WiFi.", prefs.wifiOnly)
-
         Section("Avisos")
         Toggle("Precio objetivo", "Cuando un juego que sigues llega a tu precio.", prefs.notifyTargets)
         Toggle("Cambios", "Cuando hay novedades desde tu última revisión.", prefs.notifyChanges)

@@ -16,13 +16,18 @@ import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Badge
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarVisuals
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -39,15 +44,18 @@ import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import cl.tablero.app.Notify
 import cl.tablero.app.TableroApp
+import cl.tablero.app.UpdateWorker
 import cl.tablero.core.data.Filters
 import cl.tablero.core.data.cartCount
 import cl.tablero.core.data.sinceLastReview
 import cl.tablero.core.data.watchEntries
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 
 /** A game opened from a list: what the detail screen needs to draw at once. */
 data class GameRef(val id: Long, val title: String, val image: String? = null)
@@ -63,6 +71,16 @@ private val TABS = listOf(
 )
 
 /** A screen pushed over the tabs: a game, one store, or (neither) the list of stores. */
+/** A snackbar drawn grey, for a warning that needs no action. */
+private class Warning(override val message: String) : SnackbarVisuals {
+    override val actionLabel: String? = null
+    override val withDismissAction = false
+    override val duration = SnackbarDuration.Indefinite
+}
+
+private const val WARNING_MS = 3_000L
+private val WarningGrey = Color(0xFF616161)
+
 private data class Dest(val game: GameRef? = null, val store: String? = null)
 
 // A rotation must not drop the open screens back to the tab. Flat: three values each.
@@ -84,6 +102,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         val app = application as TableroApp
         requestedTab.value = intent.getStringExtra(Notify.EXTRA_TAB)
+        // Sync on opening; unchanged since the last fetch, it downloads nothing and says nothing.
+        if (savedInstanceState == null) UpdateWorker.start(this)
         setContent { Theme { App(app, requestedTab) } }
     }
 
@@ -99,6 +119,7 @@ class MainActivity : ComponentActivity() {
  * store, a store's catalogue opens a game) and back pops one.
  * Navigation is a few pieces of state rather than a navigation library.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun App(app: TableroApp, requestedTab: MutableStateFlow<String?>) {
     val db = app.db
@@ -136,8 +157,17 @@ private fun App(app: TableroApp, requestedTab: MutableStateFlow<String?>) {
         }
     }
 
+    // Cancelling showSnackbar dismisses it: that is the 3 seconds.
+    val warn: (String) -> Unit = { scope.launch { withTimeoutOrNull(WARNING_MS) { snackbar.showSnackbar(Warning(it)) } } }
+    val sync = rememberPullSync(notify, warn)
+
     Scaffold(
-        snackbarHost = { SnackbarHost(snackbar) },
+        snackbarHost = {
+            SnackbarHost(snackbar) { data ->
+                if (data.visuals is Warning) Snackbar(data, containerColor = WarningGrey, contentColor = Color.White)
+                else Snackbar(data)
+            }
+        },
         bottomBar = {
             NavigationBar {
                 TABS.forEach { t ->
@@ -161,12 +191,15 @@ private fun App(app: TableroApp, requestedTab: MutableStateFlow<String?>) {
         // The tab and every pushed screen stay composed under the top one, so
         // coming back lands on the same scroll position and loaded pages.
         Box(Modifier.fillMaxSize()) {
-            when (tab) {
-                "inicio" -> HomeScreen(db, app.prefs, open, show = { browse = it; tab = "catalogo" }, modifier)
-                "catalogo" -> CatalogScreen(db, browse, change = { browse = it; app.prefs.catalog = it.toJson() }, open, modifier)
-                "radar" -> RadarScreen(db, open, notify, modifier)
-                "carrito" -> CartScreen(db, open, openStore, notify, modifier)
-                else -> SettingsScreen(app, notify, onStores = { stack = stack + Dest() }, modifier)
+            // Pull down on any tab to sync the catalogue.
+            PullToRefreshBox(sync.refreshing, sync.start, modifier.fillMaxSize()) {
+                when (tab) {
+                    "inicio" -> HomeScreen(db, app.prefs, open, show = { browse = it; tab = "catalogo" })
+                    "catalogo" -> CatalogScreen(db, browse, change = { browse = it; app.prefs.catalog = it.toJson() }, open)
+                    "radar" -> RadarScreen(db, open, notify)
+                    "carrito" -> CartScreen(db, open, openStore, notify)
+                    else -> SettingsScreen(app, notify, onStores = { stack = stack + Dest() })
+                }
             }
             stack.forEachIndexed { depth, dest ->
                 // Keyed by depth too: the same game can sit in the stack twice.
