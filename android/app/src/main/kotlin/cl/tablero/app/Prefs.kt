@@ -29,6 +29,9 @@ class Prefs(context: Context) {
     /** Notify when there is something new under Mi radar. */
     val notifyChanges = Flag("notify_changes", true)
 
+    /** After a sync brings a new catalogue, scrape on the phone the stores whose last scrape failed. */
+    val scrapeFailed = Flag("scrape_failed", false)
+
     /** Search shows sleeves, dice and other accessories from the start. */
     val accessories = Flag("accessories", false)
 

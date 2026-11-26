@@ -38,11 +38,10 @@ import cl.tablero.core.scrape.updateStores
  * catalogue the scrape workflow publishes, swapped in with the user's own
  * tables kept. With a store named: that one store scraped here on the phone,
  * for the ones the workflow cannot reach (Cloudflare blocks its servers on
- * some). The phone never scrapes every store.
- *
- * ponytail: the next sync replaces phone-scraped rows with the workflow's
- * stale ones, losing what the phone recorded for those stores. Carry their
- * product/price_obs across in carryUserState if that starts to matter.
+ * some). After a sync that brought a new catalogue, the stores it could not
+ * update are scraped here too when Prefs.scrapeFailed is on. The phone never
+ * scrapes every store. A sync keeps a phone-scraped
+ * store's rows while they are newer than the workflow's (carryUserState).
  */
 class UpdateWorker(context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {
 
@@ -64,8 +63,21 @@ class UpdateWorker(context: Context, params: WorkerParameters) : CoroutineWorker
         val notes = mutableListOf<String>()
 
         val synced = if (wanted != null) null else sync(db, notes)
-        val site = wanted?.let { name -> sites().firstOrNull { it.name == name } }
-        val scraped = site?.let { scrape(db, it, notes) }
+        val targets = when {
+            wanted != null -> sites().filter { it.name == wanted }
+            // A new catalogue: the stores it could not update, scraped here if the user wants that.
+            synced != null && app.prefs.scrapeFailed.value -> {
+                val failed = db.read { conn -> stores(conn).filter { it["last_success"] == 0L }.map { it["name"] } }
+                sites().filter { it.name in failed }
+            }
+            else -> emptyList()
+        }
+        if (synced != null && targets.isNotEmpty()) {
+            // The new catalogue on screen now, not after the scrapes, which can take minutes.
+            db.read { saveFeed(feedFile(applicationContext), it) }
+            db.updated()
+        }
+        val scraped = if (targets.isEmpty()) null else scrape(db, targets, notes)
 
         if (synced == null && scraped == null) {
             // Nothing new: the catalogue was already current.
@@ -89,7 +101,7 @@ class UpdateWorker(context: Context, params: WorkerParameters) : CoroutineWorker
         val newCount = db.read { it.query("SELECT COUNT(*) AS n FROM product WHERE flag = 'new'").first()["n"] as Long }
         return Result.success(workDataOf(
             KEY_PRODUCTS to db.read(::productCount), KEY_NEW to newCount.toInt(),
-            KEY_FAILED to notes.toTypedArray(), KEY_TOTAL to if (site == null) 0 else 1,
+            KEY_FAILED to notes.toTypedArray(), KEY_TOTAL to targets.size,
             KEY_BROKEN_STORES to brokenStores,
         ))
     }
@@ -114,22 +126,31 @@ class UpdateWorker(context: Context, params: WorkerParameters) : CoroutineWorker
     }
 
     /**
-     * Scrape one store on the phone. A big catalogue can take minutes, so as
+     * Scrape stores on the phone. A big catalogue can take minutes, so as
      * a foreground service of type dataSync with a progress notification.
      */
-    private suspend fun scrape(db: Db, site: Site, notes: MutableList<String>): Int {
-        setForeground(foreground("Actualizando ${site.name}…", 0, 1))
-        setProgress(workDataOf(KEY_DONE to 0, KEY_TOTAL to 1, KEY_STORE to site.name))
+    private suspend fun scrape(db: Db, targets: List<Site>, notes: MutableList<String>): Int {
+        val label = targets.singleOrNull()?.name ?: "${targets.size} tiendas"
+        setForeground(foreground("Actualizando $label…", 0, targets.size))
+        setProgress(workDataOf(KEY_DONE to 0, KEY_TOTAL to targets.size, KEY_STORE to label))
 
-        val http = Http()
+        // Network trouble goes to logcat (tag tablero), and the last of it for a
+        // store that fails into its note, so "sin productos" says why.
+        val logged = java.util.Collections.synchronizedList(mutableListOf<String>())
+        val http = Http(log = { android.util.Log.i("tablero", it); logged += it.trim() })
+        fun why(store: String): String {
+            val host = targets.firstOrNull { it.name == store }?.baseUrl?.substringAfter("://")?.substringBefore('/')
+            val last = host?.let { h -> synchronized(logged) { logged.lastOrNull { h in it } } } ?: return ""
+            return " (${last.take(WHY_MAX)})"
+        }
         // updateStores blocks. runInterruptible turns a cancellation (Detener)
         // into a thread interrupt, which stops its scrapes mid-page.
         val totals = runInterruptible(Dispatchers.IO) { updateStores(
-            targets = listOf(site),
+            targets = targets,
             ingest = { store, records -> db.writeBlocking { ingestStore(it, store, records) } },
             recordFailure = { store -> db.writeBlocking { recordFailure(it, store) } },
             scrape = { crawl(it, http::fetchHtml) },
-            onFailure = { store, reason -> notes += "$store: $reason" },
+            onFailure = { store, reason -> notes += "$store: $reason${why(store)}" },
             onProgress = { done, total, products, store ->
                 setProgressAsync(workDataOf(KEY_DONE to done, KEY_TOTAL to total,
                     KEY_PRODUCTS to products, KEY_STORE to store))
@@ -171,6 +192,7 @@ class UpdateWorker(context: Context, params: WorkerParameters) : CoroutineWorker
         /** A sync that found the catalogue already here. */
         const val KEY_CURRENT = "current"
         private const val NOTIFICATION_ID = 1
+        private const val WHY_MAX = 160
 
         /**
          * Queue an update: the catalogue sync, or, with `store`, that one

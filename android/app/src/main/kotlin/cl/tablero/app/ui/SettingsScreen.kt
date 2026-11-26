@@ -58,6 +58,9 @@ fun SettingsScreen(app: TableroApp, notify: (String) -> Unit, onStores: () -> Un
             modifier = Modifier.clickable(onClick = onStores),
         )
 
+        Toggle("Actualizar las que fallaron", "Cuando llega un catálogo nuevo, las tiendas que no se pudieron " +
+            "actualizar se actualizan desde el teléfono.", prefs.scrapeFailed)
+
         Section("Avisos")
         Toggle("Precio objetivo", "Cuando un juego que sigues llega a tu precio.", prefs.notifyTargets)
         Toggle("Cambios", "Cuando hay novedades desde tu última revisión.", prefs.notifyChanges)

@@ -54,6 +54,8 @@ fun catalogStamp(conn: SQLiteConnection): Long? =
  * downloaded catalogue that has none. The cron regroups games, so ids do not
  * survive between copies: a game is found again by its norm, else through any
  * of its products (store, url_canon); a picked cart offer by (store, url_canon).
+ * Stores the old copy scraped more recently than the download (phone
+ * scrapes of stores the workflow cannot reach) keep the old copy's rows.
  * Returns how many watchlist/owned/cart entries found no game and were dropped.
  */
 fun carryUserState(conn: SQLiteConnection, old: File): Int {
@@ -62,6 +64,7 @@ fun carryUserState(conn: SQLiteConnection, old: File): Int {
         return conn.transaction {
             // The published copy has none; whatever a download brings is not the user's.
             USER_TABLES.forEach { conn.execSQL("DELETE FROM main.$it") }
+            keepNewerStores(conn)
             conn.execSQL("DROP TABLE IF EXISTS temp.game_map")
             conn.execSQL("""
                 CREATE TEMP TABLE game_map AS
@@ -103,4 +106,48 @@ fun carryUserState(conn: SQLiteConnection, old: File): Int {
     } finally {
         conn.execSQL("DETACH DATABASE old")
     }
+}
+
+/**
+ * For every store whose latest successful scrape in `old` is newer than in
+ * the download, swap the download's products, prices and runs for the old
+ * copy's. Without this a sync puts back the workflow's stale rows for a store
+ * the phone just scraped, and the next phone scrape reports all of it as
+ * changed again. Ids are new on this side: games are found by norm (and
+ * created when missing), products by (store, url_canon).
+ */
+private fun keepNewerStores(conn: SQLiteConnection) {
+    conn.execSQL("DROP TABLE IF EXISTS temp.kept")
+    conn.execSQL("""
+        CREATE TEMP TABLE kept AS
+        SELECT o.store FROM (SELECT store, MAX(ts) AS ts FROM old.scrape_run WHERE success = 1 GROUP BY store) o
+          LEFT JOIN (SELECT store, MAX(ts) AS ts FROM main.scrape_run WHERE success = 1 GROUP BY store) n
+            ON n.store = o.store
+         WHERE n.ts IS NULL OR o.ts > n.ts""")
+    val inKept = "IN (SELECT store FROM temp.kept)"
+    conn.execSQL("INSERT OR IGNORE INTO main.store SELECT * FROM old.store WHERE name $inKept")
+    conn.execSQL("DELETE FROM main.price_obs WHERE product_id IN (SELECT id FROM main.product WHERE store $inKept)")
+    conn.execSQL("DELETE FROM main.product WHERE store $inKept")
+    conn.execSQL("DELETE FROM main.scrape_run WHERE store $inKept")
+    // A game only the phone has seen. Its BGG match only if the download still carries that row.
+    conn.execSQL("""
+        INSERT OR IGNORE INTO main.game(norm, title, kind, created_at, bgg_id)
+        SELECT g.norm, g.title, g.kind, g.created_at, (SELECT b.id FROM main.bgg b WHERE b.id = g.bgg_id)
+          FROM old.game g WHERE g.id IN (SELECT game_id FROM old.product WHERE store $inKept)""")
+    conn.execSQL("""
+        INSERT INTO main.product(store, url_canon, url, game_id, title_raw, title, norm, kind, price_original,
+                                 price_current, price_eff, in_stock, flag, first_seen, last_seen, image_url)
+        SELECT p.store, p.url_canon, p.url,
+               (SELECT g.id FROM main.game g JOIN old.game og ON og.norm = g.norm WHERE og.id = p.game_id),
+               p.title_raw, p.title, p.norm, p.kind, p.price_original,
+               p.price_current, p.price_eff, p.in_stock, p.flag, p.first_seen, p.last_seen, p.image_url
+          FROM old.product p WHERE p.store $inKept""")
+    conn.execSQL("""
+        INSERT INTO main.price_obs(product_id, ts, price, in_stock, price_original)
+        SELECT np.id, o.ts, o.price, o.in_stock, o.price_original FROM old.price_obs o
+          JOIN old.product op ON op.id = o.product_id
+          JOIN main.product np ON np.store = op.store AND np.url_canon = op.url_canon
+         WHERE op.store $inKept""")
+    conn.execSQL("INSERT INTO main.scrape_run SELECT * FROM old.scrape_run WHERE store $inKept")
+    conn.execSQL("DROP TABLE temp.kept")
 }

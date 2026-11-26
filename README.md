@@ -17,10 +17,11 @@ no puede scrapear, rankings de BoardGameGeek y la copia que importa la app).
 ## App Android
 
 `android/` es una app personal. Un workflow de GitHub Actions
-(`.github/workflows/scrape.yml`) scrapea todas las tiendas dos veces al día (07:00 y 19:00 UTC)
+(`.github/workflows/scrape.yml`) scrapea todas las tiendas una vez al día (07:00 UTC, 04:00 en Chile en verano)
 y publica la base en el release `data`; la app la descarga al abrirse, al tirar
 la pantalla hacia abajo o con **Sincronizar** (solo si cambió), y
-conserva lo tuyo (seguimiento, colección, carrito, favoritas, despachos). Las
+conserva lo tuyo (seguimiento, colección, carrito, favoritas, despachos) y las
+tiendas que el teléfono actualizó después que GitHub. Las
 tiendas que bloquean a GitHub se pueden actualizar una por una desde el teléfono.
 Reutiliza `scripts/schema.sql` y el registro de tiendas, y se prueba contra los
 mismos fixtures que la versión Python.
@@ -40,7 +41,8 @@ mismos fixtures que la versión Python.
   entre tiendas para el menor total con despacho, y copia la lista.
 - **Ajustes**: **Tiendas** (grilla de tiendas: favoritas primero, luego las que
   fallaron, marcadas en rojo; **Sincronizar** descarga el catálogo; dentro de cada tienda,
-  **Actualizar** la scrapea desde el teléfono), avisos, valores por defecto de las
+  **Actualizar** la scrapea desde el teléfono), **Actualizar las que fallaron**
+  (tras un catálogo nuevo, scrapea en el teléfono las tiendas que fallaron), avisos, valores por defecto de las
   listas, importar/exportar la base. El teléfono nunca scrapea todas las
   tiendas: solo la que abres.
 
